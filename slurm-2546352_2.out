@@ -1,0 +1,12 @@
+Sat Jul 7 08:22:21 PDT 2018 loading Kallisto 0.44.0
+Sat Jul 7 08:22:21 PDT 2018 Running Kallisto on 1DPA2
+
+[quant] fragment length distribution will be estimated from the data
+[index] k-mer length: 31
+[index] number of targets: 35,768
+[index] number of k-mers: 49,398,619
+[index] number of equivalence classes: 69,550
+[quant] running in paired-end mode
+[quant] will process pair 1: data/AC1DPA2LEFT
+                             data/AC1DPA2RIGHT
+[quant] finding pseudoalignments for the reads ...
