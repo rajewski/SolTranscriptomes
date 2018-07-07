@@ -11,5 +11,8 @@
 # $SLURM_NTASKS
 
 module load kallisto/0.44.0
-echo `date`"Loading Kallisto v 0.440"
+echo `date` "Loading Kallisto v 0.440"
 
+echo `date` "Building index of transcripts"
+kallisto index -i data/transcripts.idx data/ITAG3.2_cDNA.fasta
+echo `date` "Done."

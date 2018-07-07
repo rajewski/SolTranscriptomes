@@ -1,3 +1,5 @@
-#data files that are huge
-ITAG3.2_cDNA.fasta
-ITAG3.2_protein_go.tsv
+#results folders that are huge
+Results*
+
+#temporary files
+*~
