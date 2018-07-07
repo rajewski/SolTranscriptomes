@@ -1,0 +1,15 @@
+Fri Jul 6 22:45:52 PDT 2018Loading Kallisto v 0.440
+Fri Jul 6 22:45:52 PDT 2018Building index of transcripts
+
+[build] loading fasta file data/ITAG3.2_cDNA.fasta
+[build] k-mer length: 31
+[build] warning: clipped off poly-A tail (longer than 10)
+        from 16 target sequences
+[build] warning: replaced 2243 non-ACGUT characters in the input sequence
+        with pseudorandom nucleotides
+[build] counting k-mers ... done.
+[build] building target de Bruijn graph ...  done 
+[build] creating equivalence classes ...  done
+[build] target de Bruijn graph has 193938 contigs and contains 49398619 k-mers 
+
+Fri Jul 6 22:48:18 PDT 2018Done.
