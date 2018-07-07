@@ -2,7 +2,7 @@
 #SBATCH --ntasks=10
 #SBATCH --nodes=1
 #SBATCH --mem=40G
-#SBATCH --time=3:00:00
+#SBATCH --time=8:00:00
 #SBATCH --mail-user=araje002@ucr.edu
 #SBATCH --mail-type=ALL
 #SBATCH -p batch
@@ -19,4 +19,4 @@ Sample=$(awk "NR==$SLURM_ARRAY_TASK_ID" $RepList)
 
 echo `date` "Running Kallisto on $Sample"
 
-kallisto quant -i data/transcripts.idx -b 100 -o "Results_"$Sample --genomebam --gtf data/ITAG3.2_gene_models.gff --chromosomes data/chromosomes.txt data/"AC"$Sample"LEFT" data/"AC"$Sample"RIGHT"
+kallisto quant -t $SLURM_NTASKS -i data/transcripts.idx -b 100 -o "Results_"$Sample --genomebam --gtf data/ITAG3.2_gene_models.gff --chromosomes data/chromosomes.txt data/"AC"$Sample"LEFT" data/"AC"$Sample"RIGHT"
