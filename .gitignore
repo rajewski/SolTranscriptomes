@@ -1,5 +1,7 @@
 #results folders that are huge
 Results*
+DEGs_*
+*.RDS
 
 #temporary files
 *~
