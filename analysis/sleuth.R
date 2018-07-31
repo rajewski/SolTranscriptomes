@@ -108,7 +108,3 @@ ggplot(data=exprsumm %>% drop_na(), aes(x=apprDPA, y=est_counts)) +
   geom_line() +
   facet_wrap(~clust.sort, ncol=5, scales="free")
 dev.off()
-
-
-
-
