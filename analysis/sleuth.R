@@ -50,7 +50,7 @@ plot_transcript_heatmap(so, head(lrt_results[lrt_results$qval<0.05,], n=100)$tar
 
 
 #plot a single DE transcript
-tmp <- so$obs_raw %>% dplyr::filter(target_id == 'Solyc06g069430.3.1') #FUL1 (FUL2=Solyc03g114830.3.1)
+tmp <- so$obs_norm %>% dplyr::filter(target_id == 'Solyc06g069430.3.1') #FUL1 (FUL2=Solyc03g114830.3.1)
 tmp <- dplyr::full_join(so$sample_to_covariates, tmp, by = 'sample')
 tmp #its expression
 #make actual graph
@@ -65,7 +65,7 @@ sleuth_live(so)
 #try to make a plot of a cluster of genes
 #get a list of expression for each gene
 library(tidyr)
-data <- so$obs_raw[,c(1,2,6)] %>% spread(sample,est_counts)
+data <- so$obs_norm[,c(1,2,6)] %>% spread(sample,est_counts)
 rownames(data) <- data[,1] #give row names
 data <- data[,-1] #drop names
 data <- data[,c(4:9,1:3,10:15)] #reorder columns by time
@@ -73,7 +73,7 @@ data <- data[,c(4:9,1:3,10:15)] #reorder columns by time
 #subset this by cluster
 clust1 <- read.delim("DEGs_filtered15_Clust1GENE",header=F)
 clust1 <- data[clust1$V1,]
-tmp <- so$obs_raw[so$obs_raw$target_id %in% clust1$V1,] 
+tmp <- so$obs_raw[so$obs_norm$target_id %in% clust1$V1,] 
 tmp <- dplyr::full_join(so$sample_to_covariates, tmp, by = 'sample')
 tmp #its expression
 tmp <- tmp[,c("apprDPA","target_id","est_counts")]
