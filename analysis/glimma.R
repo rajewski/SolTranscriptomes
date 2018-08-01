@@ -2,7 +2,7 @@ library(limma)
 library(edgeR)
 so<-readRDS("Sleuth_so.rds")
 library(tidyr)
-data <- so$obs_raw[,c(1,2,6)] %>% spread(sample,est_counts)
+data <- so$obs_norm[,c(1,3,2)] %>% spread(sample,est_counts)
 rownames(data) <- data[,1] #give row names
 data <- data[,-1] #drop names
 data <- data[,c(4:9,1:3,10:15)] #reorder columns by time
@@ -14,18 +14,14 @@ dge1 <- calcNormFactors(dge1)
 countDF1 <- voom(dge1, normalize.method = "quantile") 
 
 ##PCA
-PCA<-as.data.frame(t(countDF1$E))
-SAMP=rep(c(1,2,3),5)
-TREAT=c(1,1,1,3,3,3,15,15,15,32,32,32,40,40,40)
-Genotype <- factor(SAMP)
-Treatment <- factor(TREAT) 
-library(devtools)
-install_github("vqv/ggbiplot")
+#library(devtools)
+#install_github("vqv/ggbiplot")
 library(ggbiplot)
-ir.Genotype <- Genotype
-ir.Treatment <-Treatment
-r<-PCA[,apply(countDF1, 2, var, na.rm=TRUE) != 0] 
-ir.pca <- prcomp(r,center = T,scale. = F, tol=0) 
+PCA<-as.data.frame(t(countDF1$E))
+PCA<-PCA[,apply(countDF1, 2, var, na.rm=TRUE) != 0] 
+ir.Genotype=factor(rep(c(1,2,3),5))
+ir.Treatment=factor(c(1,1,1,3,3,3,15,15,15,32,32,32,40,40,40))
+ir.pca <- prcomp(PCA,center = T,scale. = F, tol=0) 
 #print PCA
 print(ggbiplot(ir.pca, obs.scale = 1, var.scale = 1, groups = ir.Genotype, labels=rownames(ir.pca$x), 
                labels.size=0, var.axes=0)
@@ -51,10 +47,14 @@ data <- read.delim("Sleuth_splines.txt",check.names=FALSE)
 data<-data[,c(2:5,19)]
 #filter by F.p.value
 data <- data["F.p.value">0.05,]
-#calculate distance on LFC values and cluster
+####calculate distance on LFC values and cluster
 library(cluster)
+library(factoextra)
+#find the optimum number of clusters
+fviz_nbclust(data, pam, method = "silhouette")+
+  theme_classic()
 no.clust <- 15 #arbitrary here
-euc <- dist(data[,1:4], method = "euclidean")
+#euc <- dist(data[,1:4], method = "euclidean") #this never gets used again??!!
 pam <-pam(data, no.clust, diss = inherits(data, "dist"), metric = "euclidean", medoids = NULL, stand = FALSE, cluster.only = FALSE, do.swap = TRUE, pamonce = FALSE, trace.lev = 0)
 saveRDS(pam,file = "pam.RDS")
 pam<-readRDS("pam.RDS")
