@@ -5,3 +5,4 @@ DEGs_*
 
 #temporary files
 *~
+.Rproj.user

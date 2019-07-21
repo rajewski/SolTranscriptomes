@@ -9,4 +9,4 @@ Sat Jul 7 08:22:21 PDT 2018 Running Kallisto on 1DPA2
 [quant] running in paired-end mode
 [quant] will process pair 1: data/AC1DPA2LEFT
                              data/AC1DPA2RIGHT
-[quant] finding pseudoalignments for the reads ...slurmstepd-c05: error: *** JOB 2546353 ON c05 CANCELLED AT 2018-07-07T08:28:18 ***
+[quant] finding pseudoalignments for the reads ...
