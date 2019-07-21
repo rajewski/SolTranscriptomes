@@ -16,6 +16,7 @@ bg <- readRDS("bg.rds")
 #filter out lowly expressed genes by stdev
 library(genefilter)
 bg_filt = subset(bg,"rowVars(texpr(bg)) >1",genomesubset=TRUE)
+bg_gene_names = unique(texpr(bg_filt, 'all')[, 9:10])
 
 #Confirm the libraries are normal
 gene_expression <- bg_filt@expr$trans[,c(10,12,14,16,18,20,22)]
@@ -33,6 +34,9 @@ text(mds$points[,1], mds$points[,2], sampleNames(bg), col=c("tomato1", "tomato1"
 
 #Calculate differential gene expression
 stattest_results <- stattest(bg_filt, feature="gene", meas="FPKM", covariate="condition", getFC = T)
+stattest_results <- merge(bg_gene_names, stattest_results,by.y=c("id"), by.x=c("gene_id"))
+
+#Write a CSV of significantly DE genes with qval and fold change
+write.csv(stattest_results[stattest_results$pval<=0.05,c(2,4,5,6)], file="Slyc_1DPAv15DPA_DEGs.csv", row.names = F)
 
 
-#do I even need the replist.tst file?
