@@ -2,7 +2,8 @@
 Results*
 DEGs_*
 *.RDS
-
+.RData
+.Rhistory
 #temporary files
 *~
 .Rproj.user
