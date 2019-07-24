@@ -22,7 +22,49 @@ dds <- DESeqDataSetFromMatrix(countData = countData,
 
 #Run the actual analysis
 dds <- DESeq(dds)
-res <- results(dds, alpha=0.05)
+res <- results(dds, alpha=0.05, lfcThreshold = 1)
+res <- res[!is.na(res$padj),]
+res <- res[res$padj<=0.05,]
 summary(res)
-  
+
+#write to a csv
+res.ordered <- res[order(res$padj),]
+write.csv(as.data.frame(res.ordered[res.ordered$log2FoldChange<0,]), 
+          file="Slyc_1v15_DESeq_Down.csv")
+write.csv(as.data.frame(res.ordered[res.ordered$log2FoldChange>0,]), 
+          file="Slyc_1v15_DESeq_Up.csv")
+
+
+
+# Tobacco -----------------------------------------------------------------
+#I don't wanna clone this to repeat for Nobt so I am going to include it here instead
+#import the count matrix 
+NobtcountData <- as.matrix(read.csv("~/bigdata/Nobtusifolia/RNA-seq/Results_Stringtie/transcript_count_matrix.csv"))
+rownames(NobtcountData) <- gsub('.{3}$','',NobtcountData[,1])
+NobtcountData <- as.matrix(NobtcountData[,-1])
+class(NobtcountData) <- "numeric"
+
+#import a design matrix
+NobtcolData <- data.frame(row.names=c("NobtPre1", "NobtPre2", "NobtPre3", "Nobt6DPA1", "Nobt6DPA2", "Nobt6DPA3"), condition=c(rep("Pre",3), rep("6DPA", 3)) ,rep=rep(c(1,2,3),2))
+#rearrange to a more logical order
+NobtcountData <- NobtcountData[, rownames(NobtcolData)]
+
+#made the dataset for analysis
+Nobtdds <- DESeqDataSetFromMatrix(countData = NobtcountData,
+                              colData = NobtcolData,
+                              design = ~ condition)
+
+#Run the actual analysis
+Nobtdds <- DESeq(Nobtdds)
+Nobtres <- results(Nobtdds, alpha=0.05, lfcThreshold = 1)
+Nobtres <- Nobtres[!is.na(Nobtres$padj),]
+Nobtres <- Nobtres[Nobtres$padj<=0.05,]
+summary(Nobtres)
+
+#write to a csv
+Nobtres.ordered <- Nobtres[order(Nobtres$padj),]
+write.csv(as.data.frame(Nobtres.ordered[Nobtres.ordered$log2FoldChange<0,]), 
+          file="Nobt_Prev6_DESeq_Down.csv")
+write.csv(as.data.frame(Nobtres.ordered[Nobtres.ordered$log2FoldChange>0,]), 
+          file="Nobt_Prev16_DESeq_Up.csv")
 
