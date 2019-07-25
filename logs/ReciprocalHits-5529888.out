@@ -1,0 +1,43 @@
+Wed Jul 24 23:21:02 PDT 2019: Making Nicotiana obtusifolia Diamond database.
+diamond v0.9.24.125 | by Benjamin Buchfink <buchfink@gmail.com>
+Licensed under the GNU GPL <https://www.gnu.org/licenses/gpl.txt>
+Check http://github.com/bbuchfink/diamond for updates.
+
+#CPU threads: 16
+Scoring parameters: (Matrix=BLOSUM62 Lambda=0.267 K=0.041 Penalties=11/1)
+Database file: /rhome/arajewski/bigdata/Nobtusifolia/Genome_Files/NIOBT_r1.0.proteins.fa
+Opening the database file...  [0.214903s]
+Loading sequences...  [0.088096s]
+Masking sequences...  [0.309362s]
+Writing sequences...  [0.031176s]
+Hashing sequences...  [0.005808s]
+Loading sequences...  [4.3e-05s]
+Writing trailer...  [0.001666s]
+Closing the input file...  [0.000178s]
+Closing the database file...  [0.001166s]
+Database hash = fd7ea63c6973fb2b8bf09b21e6f64991
+Processed 28212 sequences, 10670830 letters.
+Total time = 0.653329s
+Wed Jul 24 23:21:03 PDT 2019: Done.
+Wed Jul 24 23:21:03 PDT 2019: Making Solanum lycopersicum Diamond database.
+diamond v0.9.24.125 | by Benjamin Buchfink <buchfink@gmail.com>
+Licensed under the GNU GPL <https://www.gnu.org/licenses/gpl.txt>
+Check http://github.com/bbuchfink/diamond for updates.
+
+#CPU threads: 16
+Scoring parameters: (Matrix=BLOSUM62 Lambda=0.267 K=0.041 Penalties=11/1)
+Database file: /rhome/arajewski/bigdata/Slycopersicum/data/ITAG3.2_proteins.fasta
+Opening the database file...  [0.090236s]
+Loading sequences...  [0.123264s]
+Masking sequences...  [0.382355s]
+Writing sequences...  [0.047665s]
+Hashing sequences...  [0.005076s]
+Loading sequences...  [4.4e-05s]
+Writing trailer...  [0.002529s]
+Closing the input file...  [0.000237s]
+Closing the database file...  [0.001137s]
+Database hash = ea808e6f854eb4dfc5749e1c28548473
+Processed 35768 sequences, 12246047 letters.
+Total time = 0.653465s
+Wed Jul 24 23:21:04 PDT 2019: Done.
+/var/spool/slurmd/job5529888/slurm_script: line 57: syntax error: unexpected end of file

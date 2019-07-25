@@ -1,0 +1,19 @@
+Wed Jul 24 23:47:43 PDT 2019: N. obtusifolia Diamond database already present.
+Wed Jul 24 23:47:43 PDT 2019: S. lycopersicum Diamond database already present
+Wed Jul 24 23:47:43 PDT 2019: Nobt to Slyc search already complete.
+Wed Jul 24 23:47:43 PDT 2019: Nobt to Nobt search already complete.
+Wed Jul 24 23:47:43 PDT 2019: Nobt to Slyc search already complete.
+Wed Jul 24 23:47:43 PDT 2019: Nobt to Nobt search already complete.
+Wed Jul 24 23:47:43 PDT 2019: Searching Up-regulated Slyc genes against Nobt DB with DIAMOND
+diamond v0.9.24.125 | by Benjamin Buchfink <buchfink@gmail.com>
+Licensed under the GNU GPL <https://www.gnu.org/licenses/gpl.txt>
+Check http://github.com/bbuchfink/diamond for updates.
+
+#CPU threads: 16
+Scoring parameters: (Matrix=BLOSUM62 Lambda=0.267 K=0.041 Penalties=11/1)
+Temporary directory: 
+Opening the database...  [0.000496s]
+#Target sequences to report alignments for: 1
+Opening the input file... No such file or directory
+ [0.000268s]
+Error: Error opening file /rhome/arajewski/bigdata/Nobtusifolia/RNA-seq/Results_Ballgown/GoAnalysis/SlycUp.fasta
