@@ -1,6 +1,9 @@
 #compare nobt input with nobt output from diamond through Slyc
 NobtUptoSlyc <- read.table("~/bigdata/Slycopersicum/slyc-WT/analysis/NobtUptoSlycHits.tsv")
+NobtUptoSlyc$V2 <- gsub(".{2}$", "", NobtUptoSlyc$V2)
 NobtUptoNobt <- read.table("~/bigdata/Slycopersicum/slyc-WT/analysis/NobtUptoNobtHits.tsv")
+NobtUptoNobt$V1 <- gsub(".{2}$", "", NobtUptoNobt$V1)
+
 
 #merge the tables of the Nobt-Slyc and Slyc-Nobt hits
 NobtUp <- merge(NobtUptoSlyc, NobtUptoNobt, by.x="V2", by.y="V1")
@@ -13,3 +16,48 @@ NobtUpAggr <- NobtUpAggr[NobtUpAggr$`NobtUp$Ortho`==0,]
 NobtUpFilt <- NobtUp[!(NobtUp$V2 %in% NobtUpAggr$`NobtUp$V2`),]
 #Final Set of Slyc Orthologs for Nobt DEGs
 NobtUpFilt <- NobtUpFilt[,c(2,1)]
+colnames(NobtUpFilt) <- c("Nobt Hit", "Slyc Ortholog")
+
+#repeat for Nobt Down
+NobtDowntoSlyc <- read.table("~/bigdata/Slycopersicum/slyc-WT/analysis/NobtDowntoSlycHits.tsv")
+NobtDowntoSlyc$V2 <- gsub(".{2}$", "", NobtDowntoSlyc$V2)
+NobtDowntoNobt <- read.table("~/bigdata/Slycopersicum/slyc-WT/analysis/NobtDowntoNobtHits.tsv")
+NobtDowntoNobt$V1 <- gsub(".{2}$", "", NobtDowntoNobt$V1)
+NobtDown <- merge(NobtDowntoSlyc, NobtDowntoNobt, by.x="V2", by.y="V1")
+NobtDown$Ortho <- as.character(NobtDown$V1) == as.character(NobtDown$V2.y)
+NobtDownAggr <- aggregate(NobtDown$Ortho~NobtDown$V2, FUN=min)
+NobtDownAggr <- NobtDownAggr[NobtDownAggr$`NobtDown$Ortho`==0,]
+NobtDownFilt <- NobtDown[!(NobtDown$V2 %in% NobtDownAggr$`NobtDown$V2`),]
+NobtDownFilt <- NobtDownFilt[,c(2,1)]
+colnames(NobtDownFilt) <- c("Nobt Hit", "Slyc Ortholog")
+
+#repeat for Slyc up
+SlycUptoNobt <- read.table("~/bigdata/Slycopersicum/slyc-WT/analysis/SlycUptoNobtHits.tsv")
+SlycUptoSlyc <- read.table("~/bigdata/Slycopersicum/slyc-WT/analysis/SlycUptoSlycHits.tsv")
+SlycUptoSlyc$V2 <- gsub(".{2}$", "", SlycUptoSlyc$V2)
+SlycUp <- merge(SlycUptoNobt, SlycUptoSlyc, by.x="V2", by.y="V1")
+SlycUp$Ortho <- as.character(SlycUp$V1) == as.character(SlycUp$V2.y)
+SlycUpAggr <- aggregate(SlycUp$Ortho~SlycUp$V2, FUN=min)
+SlycUpAggr <- SlycUpAggr[SlycUpAggr$`SlycUp$Ortho`==0,]
+SlycUpFilt <- SlycUp[!(SlycUp$V2 %in% SlycUpAggr$`SlycUp$V2`),]
+SlycUpFilt <- SlycUpFilt[,c(2,1)]
+colnames(SlycUpFilt) <- c("Slyc Hit", "Nobt Ortholog")
+
+#repeat for Slyc Down
+SlycDowntoNobt <- read.table("~/bigdata/Slycopersicum/slyc-WT/analysis/SlycDowntoNobtHits.tsv")
+SlycDowntoSlyc <- read.table("~/bigdata/Slycopersicum/slyc-WT/analysis/SlycDowntoSlycHits.tsv")
+SlycDowntoSlyc$V2 <- gsub(".{2}$", "", SlycDowntoSlyc$V2)
+SlycDown <- merge(SlycDowntoNobt, SlycDowntoSlyc, by.x="V2", by.y="V1")
+SlycDown$Ortho <- as.character(SlycDown$V1) == as.character(SlycDown$V2.y)
+SlycDownAggr <- aggregate(SlycDown$Ortho~SlycDown$V2, FUN=min)
+SlycDownAggr <- SlycDownAggr[SlycDownAggr$`SlycDown$Ortho`==0,]
+SlycDownFilt <- SlycDown[!(SlycDown$V2 %in% SlycDownAggr$`SlycDown$V2`),]
+SlycDownFilt <- SlycDownFilt[,c(2,1)]
+colnames(SlycDownFilt) <- c("Slyc Hit", "Nobt Ortholog")
+
+
+#Now begin to compare the Up lists for both species to see which genes are shared
+SlycUpDEG <- read.csv("~/bigdata/Slycopersicum/slyc-WT/Slyc_1v15_DESeq_Up.csv")
+NobtUpFilt$InSlycUp <- NobtUpFilt$`Slyc Ortholog` %in% SlycUpDEG$X
+NobtUpDEG <- read.csv("~/bigdata/Slycopersicum/slyc-WT/Nobt_Prev16_DESeq_Up.csv")
+SlycUpFilt$InNobtUp <- SlycUpFilt$`Nobt Ortholog` %in% NobtUpDEG$X
