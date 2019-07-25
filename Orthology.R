@@ -61,3 +61,22 @@ SlycUpDEG <- read.csv("~/bigdata/Slycopersicum/slyc-WT/Slyc_1v15_DESeq_Up.csv")
 NobtUpFilt$InSlycUp <- NobtUpFilt$`Slyc Ortholog` %in% SlycUpDEG$X
 NobtUpDEG <- read.csv("~/bigdata/Slycopersicum/slyc-WT/Nobt_Prev16_DESeq_Up.csv")
 SlycUpFilt$InNobtUp <- SlycUpFilt$`Nobt Ortholog` %in% NobtUpDEG$X
+ConservedUp <- merge(SlycUpFilt[SlycUpFilt$InNobtUp==TRUE,], NobtUpFilt[NobtUpFilt$InSlycUp==TRUE,],
+      by.x="Slyc Hit", by.y="Slyc Ortholog")
+ConservedUp <- ConservedUp[,c(1,4)] #should do a go enrichment with this set of genes
+write.csv(ConservedUp, file="ConservedUp.csv",quote = FALSE, row.names = FALSE)
+
+#compare the down-regulated genes for both species
+SlycDownDEG <- read.csv("~/bigdata/Slycopersicum/slyc-WT/Slyc_1v15_DESeq_Down.csv")
+NobtDownFilt$InSlycDown <- NobtDownFilt$`Slyc Ortholog` %in% SlycDownDEG$X
+NobtDownDEG <- read.csv("~/bigdata/Slycopersicum/slyc-WT/Nobt_Prev6_DESeq_Down.csv")
+SlycDownFilt$InNobtDown <- SlycDownFilt$`Nobt Ortholog` %in% NobtDownDEG$X
+ConservedDown <- merge(SlycDownFilt[SlycDownFilt$InNobtDown==TRUE,], NobtDownFilt[NobtDownFilt$InSlycDown==TRUE,],
+                     by.x="Slyc Hit", by.y="Slyc Ortholog")
+library(dplyr) #idk why but I'm getting duplicate rows
+ConservedDown <- distinct(ConservedDown)
+ConservedDown <- ConservedDown[,c(1,4)]
+write.csv(ConservedDown, file="ConservedDown.csv", quote=FALSE, row.names=FALSE)
+
+
+
