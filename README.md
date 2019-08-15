@@ -60,6 +60,12 @@ The output .csv files from this script can then be fed into the [GO Enrichment g
 
 Because my project is comparing two difeferent species that do not share a common transcriptome for RNA-seq read mapping, I have to find some way to compare gene expression across species. There are a couple ways I've though of to do this, but currently I am restricting myself to looking at 1:1 orthologous genes between the two species. This certianly leaves out many many genes that are important, so I am trying to polish this analysis to get more power.
 
-As is, the `ReciprocalHits.sh` script is what I have been using to find 1:1 orthologous genes.
+This section of the repo is meant to be run at the same time as the [GO Enrichment pipeline](https://github.com/rajewski/GoAnalysis), and thus the `ReciprocalHits.sh` script takes as input some files generated in that pipeline. Note that any list of protein sequences could be used as an input though.
+
+As is, the `ReciprocalHits.sh` script is what I have been using to find 1:1 orthologous genes. The search is based on the best reciprocal hits method. To determine orthology with this method, the protein sequence of a given gene from species A is searched against the proteome of species B. The top hit from this search is then used as the query for a second search against the proteome of species A. If the gene from the original query matches the top hit of the second search, then the genes are classified as 1:1 orthologous. 
+
+The `ReciprocalHits.sh` script creates a custom DIAMOND database (instead of BLAST) for each species, and then conducts the search for each up- or down-regulated gene used as an input. The input protein sequence file (e.g. NobtUp.fasta) is used as the query to create an output file of best hits (e.g. NobtUptoSlyc.dmndo). The input protein sequence file can be generated during the GO Enrichment pipeline mentioned earlier. Using a couple of bash and awk one liners, the .dmndo is parsed into a fasta file of protein sequences for the top hits (e.g. NobtUptoSlycHits.fasta) and a list of query-hit pairs (e.g. NobtUptoSlycHits.tsv).
+
+The fasta file of protein sequences for the top hits is then...
 
 
