@@ -18,7 +18,7 @@ python prepDE.py  -i samplelist.txt
 ## Other Analysis Files
 
 I do have plans to integrate the analysis scripts from STAR and StringTie, so stay tuned as I make this a more integrated pipeline. Additionally there are a handful of other scripts in this git that are legacy from lder versions of the analysis that I had been doing. These include:
-* Other DE gene testing scripts:
+### Other DE gene testing scripts:
 
  * Ballgown.R
 
@@ -28,7 +28,7 @@ I do have plans to integrate the analysis scripts from STAR and StringTie, so st
 
    Formerly this pipeline was run with the output of Kallisto, but I have since switched to STAR and StringTie. Ultimately this decision was arbitrary and I don't think that one is superior to the other, but I also wanted to aling my analysis pipeline with that of my labmates for easier troubleshooting. In the Kallisto-based pipeline, sleuth was used in place of DEseq2 for differential expression testing. DEseq2 also allows for more flexible analysis of the genes. That being said, the sleuth scripts are useful sources of ideas for analyses.
 
-* Clustering Scripts
+### Clustering Scripts
    
  * glimma.R
 
@@ -41,6 +41,14 @@ I do have plans to integrate the analysis scripts from STAR and StringTie, so st
  * runr.sh
  
  This script is simply a submission script for heatmap.R.
+ 
+ * WGCNA.R
+ 
+ In place of the glimma.R script, I also tried using WGCNA for clustering. I have some philosophical problems with WGCNA, but those are mostly moot.
+ 
+ * genie.R
+ 
+ This is technically more of a network creation script, but it operates off of clustering output files. It creates directed networks of genes in a cluster and outputs pdf graphs of the clusters.
 
 
 
