@@ -20,33 +20,33 @@ python prepDE.py  -i samplelist.txt
 I do have plans to integrate the analysis scripts from STAR and StringTie, so stay tuned as I make this a more integrated pipeline. Additionally there are a handful of other scripts in this git that are legacy from lder versions of the analysis that I had been doing. These include:
 ### Other DE gene testing scripts:
 
- * Ballgown.R
+ * `Ballgown.R`
 
    In place of DEseq2 I tried using Ballgown, which is part of the same package as StringTie. I found the analysis with Ballgown was not as thorough or reliable as the one with DEseq2, but I am keeping this Ballgown script around in case I decide to use it later.
    
- * sleuth.sh
+ * `sleuth.sh`
 
    Formerly this pipeline was run with the output of Kallisto, but I have since switched to STAR and StringTie. Ultimately this decision was arbitrary and I don't think that one is superior to the other, but I also wanted to aling my analysis pipeline with that of my labmates for easier troubleshooting. In the Kallisto-based pipeline, sleuth was used in place of DEseq2 for differential expression testing. DEseq2 also allows for more flexible analysis of the genes. That being said, the sleuth scripts are useful sources of ideas for analyses.
 
 ### Clustering Scripts
    
- * glimma.R
+ * `glimma.R`
 
    This script is rather poorly design (part of the reason I'm not using it anymore) but works in concert with sleuth.R to cluster the profiles of gene expression. This script aslo makes a heatmap of gene expression profiles, and this takes a long time to actually plot. Because this plotting is so intense, I have created two other scripts to do it as a separate job on a cluster computer.
 
- * heatmap.R
+ * `heatmap.R`
  
  This script is simply the subsection of code from glimma.R that makes a heatmap from a saved R data object. It is meant to be run as a submitted job on a cluster.
  
- * runr.sh
+ * `runr.sh`
  
  This script is simply a submission script for heatmap.R.
  
- * WGCNA.R
+ * `WGCNA.R`
  
  In place of the glimma.R script, I also tried using WGCNA for clustering. I have some philosophical problems with WGCNA, but those are mostly moot.
  
- * genie.R
+ * `genie.R`
  
  This is technically more of a network creation script, but it operates off of clustering output files. It creates directed networks of genes in a cluster and outputs pdf graphs of the clusters.
 
