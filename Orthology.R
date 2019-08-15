@@ -10,7 +10,9 @@ NobtUp <- merge(NobtUptoSlyc, NobtUptoNobt, by.x="V2", by.y="V1")
 #compare if the Nobt genes match
 NobtUp$Ortho <- as.character(NobtUp$V1) == as.character(NobtUp$V2.y)
 #Flag any Slyc gene where 1) input and output differ or 2) there are multiple matches
+#aggregate the NobtUp set by the Slyc gene they map to and flag them as false (0) if any Slyc gene is a "bridge" between a mismatched input and output gene
 NobtUpAggr <- aggregate(NobtUp$Ortho~NobtUp$V2, FUN=min)
+#filter this aggregate to remove Slyc genes that are bad bridges
 NobtUpAggr <- NobtUpAggr[NobtUpAggr$`NobtUp$Ortho`==0,]
 #filter the orthoset to remove the multiple Slyc genes
 NobtUpFilt <- NobtUp[!(NobtUp$V2 %in% NobtUpAggr$`NobtUp$V2`),]
