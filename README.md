@@ -1,10 +1,10 @@
-## Summary
+# Summary
 
 In this repository I am conducting a DEG analysis of *Solanum lycopersicum* cv. Ailsa Craig, *Nicotiana obtusifolia*, and *Arabidopsis thaliana*. I will supplement this DEG analysis with publicly available ChIP-chip and ChIP-seq data from *S. lycopersicum* and *A. thaliana* as well as publicly available RNA-seq data from *FRUITFULL* mutants of both speices.
 
-## Methods
+# Methods
 
-# DEG Analysis
+## DEG Analysis
 
 This pipeline will consist of STAR as the aligner for RNA seq reads and DEseq2 as the differential expression testing software. 
 
@@ -12,14 +12,24 @@ I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](ht
 
 ## Public Data
 
-| Species | NCBI BioProject ID | Description |
+| Species | NCBI or ENA BioProject ID | Description |
 | ------- | ------------------ | ----------- |
-| Tomato | PRJNA213528  | RNA-seq from a developmental series of fruits using wild-type and *FUL1*/*FUL2* knockdown lines. From Fijusawa et al, 2014 |
+| Tomato | PRJNA213528  | RNA-seq from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Fijusawa et al, 2014 |
+| Tomato | PRJNA177429 | Microarray from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Bemer et al, 2010 |
 | Arabidopsis | PRJEB25745 | RNA-seq of wild-type fruit valve tissue. From Mizzotti et al, 2018 | 
-| Arabidopsis | PRJNA316153 | Microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment |
+| Arabidopsis | PRJNA316153 | Microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment. From Bemer et al, 2017 |
 
 
 # ChIP Analysis
+
+## Public Data
+
+| Species | NCBI BioProject ID | Description |
+| ------- | ------------------ | ----------- |
+| Tomato | PRJNA21306 | ChIP-chip of wild-type fruits using anti-FUL1 or anti-FUL2 antibodies. From Fujisawa et al, 2014 |
+| Arabidopsis | PRJNA316152 | ChIP-seq of pistil/siliques of *ful-1 pFUL*:*FUL-GFP* using an anti-GFP antibody. From Bemer et al, 2017 |
+| Arabidopsis | PRJNA427320 | ChIP-seq of pistil/siliques of *ful-1 pFUL*:*FUL-GFP* using an anti-GFP antibody. From Balanza et al 2018 |
+
 
 
 I am editing a new branch of this repo as I go and will add my new methods as nedded
