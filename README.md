@@ -1,8 +1,29 @@
 ## Summary
 
-This repo is for the analysis of the transcriptome data from tomato and tobacco using a pipeline consisting of STAR, StringTie, and DEseq2. Currently this repo is starting with the output of Stringtie that has been condensed using the prepDE.py script from StringTie:
+In this repository I am conducting a DEG analysis of *Solanum lycopersicum* cv. Ailsa Craig, *Nicotiana obtusifolia*, and *Arabidopsis thaliana*. I will supplement this DEG analysis with publicly available ChIP-chip and ChIP-seq data from *S. lycopersicum* and *A. thaliana* as well as publicly available RNA-seq data from *FRUITFULL* mutants of both speices.
 
-```bash
+## Methods
+
+# DEG Analysis
+
+This pipeline will consist of STAR as the aligner for RNA seq reads and DEseq2 as the differential expression testing software. 
+
+I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](https://solgenomics.net/organism/Solanum_lycopersicum/genome). For tobacco (*N. obtusifolia*) I am using the publicly available [genome and annotation](http://nadh.ice.mpg.de/NaDH/download/overview) but with a slight modification to add in the the MBP20 gene, which was missed in the original annotation. For *Arabidopsis* I'll be using the TAIR10 genome and annotation.
+
+## Public Data
+
+| Species | NCBI BioProject ID | Description |
+| ------- | ------------------ | ----------- |
+| Tomato | PRJNA213528  | RNA-seq from a developmental series of fruits using wild-type and *FUL1*/*FUL2* knockdown lines. From Fijusawa et al, 2014 |
+| Arabidopsis | PRJEB25745 | RNA-seq of wild-type fruit valve tissue. From Mizzotti et al, 2018 | 
+| Arabidopsis | PRJNA316153 | Microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment |
+
+
+# ChIP Analysis
+
+
+I am editing a new branch of this repo as I go and will add my new methods as nedded
+
 module load stringtie/1.3.3b
 prepDE.py -i Ballgown
 ```
