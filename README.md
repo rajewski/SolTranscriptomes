@@ -14,10 +14,10 @@ I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](ht
 
 | Species | NCBI or ENA BioProject ID | Description |
 | ------- | ------------------ | ----------- |
-| Tomato | PRJNA213528  | RNA-seq from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Fijusawa et al, 2014 |
-| Tomato | PRJNA177429 | Microarray from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Bemer et al, 2010 |
-| Arabidopsis | PRJEB25745 | RNA-seq of wild-type fruit valve tissue. From Mizzotti et al, 2018 | 
-| Arabidopsis | PRJNA316153 | Microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment. From Bemer et al, 2017 |
+| Tomato | [PRJNA213528](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA213528)  | RNA-seq from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Fijusawa et al, 2014 |
+| Tomato | [PRJNA177429](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA177429) | Microarray from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Bemer et al, 2010 |
+| Arabidopsis | [PRJEB25745](https://www.ebi.ac.uk/ena/data/view/PRJEB25745) | RNA-seq of wild-type fruit valve tissue. From Mizzotti et al, 2018 | 
+| Arabidopsis | [PRJNA316153](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA316153) | Microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment. From Bemer et al, 2017 |
 
 
 # ChIP Analysis
@@ -26,9 +26,9 @@ I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](ht
 
 | Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
-| Tomato | PRJNA21306 | ChIP-chip of wild-type fruits using anti-FUL1 or anti-FUL2 antibodies. From Fujisawa et al, 2014 |
-| Arabidopsis | PRJNA316152 | ChIP-seq of pistil/siliques of *ful-1 pFUL*:*FUL-GFP* using an anti-GFP antibody. From Bemer et al, 2017 |
-| Arabidopsis | PRJNA427320 | ChIP-seq of pistil/siliques of *ful-1 pFUL*:*FUL-GFP* using an anti-GFP antibody. From Balanza et al 2018 |
+| Tomato | [PRJNA21306](https://www.ncbi.nlm.nih.gov/bioproject/) | ChIP-chip of wild-type fruits using anti-FUL1 or anti-FUL2 antibodies. From Fujisawa et al, 2014 |
+| Arabidopsis | [PRJNA316152](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA316152) | ChIP-seq of pistil/siliques of *ful-1 pFUL*:*FUL-GFP* using an anti-GFP antibody. From Bemer et al, 2017 |
+| Arabidopsis | [PRJNA427320](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA427320) | ChIP-seq of pistil/siliques of *ful-1 pFUL*:*FUL-GFP* using an anti-GFP antibody. From Balanza et al 2018 |
 
 
 
