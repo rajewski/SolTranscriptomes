@@ -17,11 +17,7 @@ Our lab has generated several transcriptome libraries that will be used for this
 
 #### Gene Expression Data
 
-<<<<<<< HEAD
 The RNA seq files are downloaded from SRA with the `1_GetExternalSRAData.sh` script and placed in the `ExternalData/RNAseq` directory.
-=======
-The RNA seq files are downloaded from SRA with the `1_GetExternalData.sh` script and placed in the `ExternalData/RNAseq` directory.
->>>>>>> d8e313c0213a062cd8e66bba05c1139f2fc8f4f0
 
 | Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
