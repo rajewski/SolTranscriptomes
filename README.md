@@ -17,7 +17,7 @@ Our lab has generated several transcriptome libraries that will be used for this
 
 #### Gene Expression Data
 
-The RNA seq files are downloaded from SRA with the `1_GetExteernaData.sh` script and placed in the `ExternaalData/RNAseq` directory.
+The RNA seq files are downloaded from SRA with the `1_GetExternalSRAData.sh` script and placed in the `ExternalData/RNAseq` directory.
 
 | Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
@@ -28,8 +28,9 @@ The RNA seq files are downloaded from SRA with the `1_GetExteernaData.sh` script
 
 #### Genomes
 
-I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](https://solgenomics.net/organism/Solanum_lycopersicum/genome). For tobacco (*N. obtusifolia*) I am using the publicly available [genome and annotation](http://nadh.ice.mpg.de/NaDH/download/overview) but with a slight modification to add in the the MBP20 gene, which was missed in the original annotation. For *Arabidopsis* I'll be using the TAIR10 genome and annotation. In the case of tomato and tobacco these files are symlinked to copies we already have using the `SlyDNA` and `NobtDNA` directories, respecitively. For Arabidopsis, I am still finding the data in a reproducible format.
+I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](https://solgenomics.net/organism/Solanum_lycopersicum/genome). For tobacco (*N. obtusifolia*) I am using the publicly available [genome and annotation](http://nadh.ice.mpg.de/NaDH/download/overview) but with a slight modification to add in the the MBP20 gene, which was missed in the original annotation. For *Arabidopsis* I'll be using the TAIR10 genome and annotation. In the case of tomato and tobacco these files are symlinked to copies we already have using the `SlyDNA` and `NobtDNA` directories, respecitively. 
 
+For Arabidopsis, the data is downloaded with the `1_GetExternalGenome.sh` to `ExternalData/TAIR10`, but I have excluded those files from the git to save space.
 
 # ChIP Analysis
 
