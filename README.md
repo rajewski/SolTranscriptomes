@@ -10,7 +10,7 @@ This pipeline will consist of STAR as the aligner for RNA seq reads and DEseq2 a
 
 I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](https://solgenomics.net/organism/Solanum_lycopersicum/genome). For tobacco (*N. obtusifolia*) I am using the publicly available [genome and annotation](http://nadh.ice.mpg.de/NaDH/download/overview) but with a slight modification to add in the the MBP20 gene, which was missed in the original annotation. For *Arabidopsis* I'll be using the TAIR10 genome and annotation.
 
-## Public Data
+### Public Data
 
 | Species | NCBI or ENA BioProject ID | Description |
 | ------- | ------------------ | ----------- |
@@ -22,7 +22,10 @@ I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](ht
 
 # ChIP Analysis
 
-## Public Data
+- How tf am I going to do a chip analysis from raw data?
+- How to integrate chipseq with chip-chip? a simple list of enriched regions/promoters
+
+### Public Data
 
 | Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
