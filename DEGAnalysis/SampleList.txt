@@ -1,0 +1,25 @@
+Accession	Species	Genotype	Timepoint	Replicate
+SRR943813	Tomato	WT	DAP35	1
+SRR943814	Tomato  WT      DAP35	2
+SRR943815	Tomato  WT      DAP35	3
+SRR943816	Tomato  WT      DAP45	1
+SRR943817       Tomato  WT      DAP45   2
+SRR943818       Tomato  WT      DAP45   3
+SRR943825       Tomato  KDF12      DAP35   1
+SRR943826       Tomato  KDF12      DAP35   2
+SRR943827       Tomato  KDF12      DAP35   3
+SRR943828       Tomato  KDF12      DAP45   1
+SRR943829       Tomato  KDF12      DAP45   2
+SRR943830       Tomato  KDF12      DAP45   3
+ERR2809794	Arabidopsis	WT	DAP1 
+ERR2809795	Arabidopsis	WT	DAP1
+ERR2809796	Arabidopsis	WT	DAP1
+ERR2809797	Arabidopsis	WT	DAP3
+ERR2809798	Arabidopsis	WT	DAP3
+ERR2809799	Arabidopsis	WT	DAP3
+ERR2809806	Arabidopsis	WT	DAP6
+ERR2809807	Arabidopsis	WT	DAP6
+ERR2809808	Arabidopsis	WT	DAP6
+ERR2809815	Arabidopsis	WT	DAP12
+ERR2809816	Arabidopsis	WT	DAP12
+ERR2809817	Arabidopsis	WT	DAP12

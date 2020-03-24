@@ -1,9 +1,1 @@
-#results folders that are huge
-Results*
-DEGs_*
-*.RDS
-.RData
-.Rhistory
-#temporary files
-*~
-.Rproj.user
+ExternalData/TAIR10/TAIR10.fa
