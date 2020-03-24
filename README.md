@@ -8,16 +8,27 @@ In this repository I am conducting a DEG analysis of *Solanum lycopersicum* cv. 
 
 This pipeline will consist of STAR as the aligner for RNA seq reads and DEseq2 as the differential expression testing software. 
 
-I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](https://solgenomics.net/organism/Solanum_lycopersicum/genome). For tobacco (*N. obtusifolia*) I am using the publicly available [genome and annotation](http://nadh.ice.mpg.de/NaDH/download/overview) but with a slight modification to add in the the MBP20 gene, which was missed in the original annotation. For *Arabidopsis* I'll be using the TAIR10 genome and annotation.
+### In-House Data
+ - I am working on uploading these to NCBI so that the whole thing will be with publicly available data
+
+Our lab has generated several transcriptome libraries that will be used for this analysis. They are symlinked to in the `SlycRNA` and `NobtRNA` for tomato and tobacco, respecitively
 
 ### Public Data
 
-| Species | NCBI or ENA BioProject ID | Description |
+#### Gene Expression Data
+
+The RNA seq files are downloaded from SRA with the `1_GetExteernaData.sh` script and placed in the `ExternaalData/RNAseq` directory.
+
+| Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
-| Tomato | [PRJNA213528](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA213528)  | RNA-seq from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Fijusawa et al, 2014 |
+| Tomato | [PRJNA213528](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA213528)  | RNA-seq from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Fujusawa et al, 2014 |
 | Tomato | [PRJNA177429](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA177429) | Microarray from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Bemer et al, 2010 |
-| Arabidopsis | [PRJEB25745](https://www.ebi.ac.uk/ena/data/view/PRJEB25745) | RNA-seq of wild-type fruit valve tissue. From Mizzotti et al, 2018 | 
+| Arabidopsis | [PRJEB25745](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB25745) | RNA-seq of wild-type fruit valve tissue. From Mizzotti et al, 2018 | 
 | Arabidopsis | [PRJNA316153](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA316153) | Microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment. From Bemer et al, 2017 |
+
+#### Genomes
+
+I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](https://solgenomics.net/organism/Solanum_lycopersicum/genome). For tobacco (*N. obtusifolia*) I am using the publicly available [genome and annotation](http://nadh.ice.mpg.de/NaDH/download/overview) but with a slight modification to add in the the MBP20 gene, which was missed in the original annotation. For *Arabidopsis* I'll be using the TAIR10 genome and annotation. In the case of tomato and tobacco these files are symlinked to copies we already have using the `SlyDNA` and `NobtDNA` directories, respecitively. For Arabidopsis, I am still finding the data in a reproducible format.
 
 
 # ChIP Analysis
