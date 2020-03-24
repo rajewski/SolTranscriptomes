@@ -1,9 +1,0 @@
-#results folders that are huge
-Results*
-DEGs_*
-*.RDS
-.RData
-.Rhistory
-#temporary files
-*~
-.Rproj.user

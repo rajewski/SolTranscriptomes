@@ -6,8 +6,18 @@
 #SBATCH --time=2:00:00
 #SBATCH --mail-user=araje002@ucr.edu
 #SBATCH --mail-type=ALL
-#SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/GetExternalData-%A.out
+#SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/STARIndex-%A.out
 set -e
+
+module load STAR/2.5.3a
+
+#Make index Files for STAR Alignments
+
+
+
+
+
+
 
 RNAseq=( SRR943813 SRR943814 SRR943815 SRR943816 SRR943817 SRR943818 SRR943825 SRR943826 SRR943827 SRR943828 SRR943829 SRR943830 ERR2809794 ERR2809795 ERR2809796 ERR2809797 ERR2809798 ERR2809799 ERR2809806 ERR2809807 ERR2809808 ERR2809815 ERR2809816 ERR2809817 )
 
