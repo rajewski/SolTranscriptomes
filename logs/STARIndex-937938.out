@@ -1,0 +1,17 @@
+STAR index for Arabidopsis already present.
+Making STAR index for N. obtusifolia...
+Mar 24 15:12:49 ..... started STAR run
+Mar 24 15:12:49 ... starting to generate Genome files
+Mar 24 15:13:21 ... starting to sort Suffix Array. This may take a long time...
+Mar 24 15:13:34 ... sorting Suffix Array chunks and saving them to disk...
+Mar 24 15:28:46 ... loading chunks from disk, packing SA...
+Mar 24 15:29:16 ... finished generating suffix array
+Mar 24 15:29:16 ... generating Suffix Array index
+Mar 24 15:31:31 ... completed Suffix Array index
+Mar 24 15:31:31 ..... processing annotations GTF
+Mar 24 15:31:34 ..... inserting junctions into the genome indices
+
+EXITING because of FATAL ERROR: cannot insert junctions on the fly because of strand GstrandBit problem
+SOLUTION: please contact STAR author at https://groups.google.com/forum/#!forum/rna-star
+
+Mar 24 15:32:14 ...... FATAL ERROR, exiting

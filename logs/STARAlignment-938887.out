@@ -1,0 +1,84 @@
+Mapping Arabidopsis reads for ERR2809815...
+Mar 25 10:19:15 ..... started STAR run
+Mar 25 10:19:15 ..... loading genome
+Mar 25 10:19:21 ..... started mapping
+Mar 25 10:21:21 ..... started sorting BAM
+Mar 25 10:21:46 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809798...
+Mar 25 10:21:46 ..... started STAR run
+Mar 25 10:21:46 ..... loading genome
+Mar 25 10:21:50 ..... started mapping
+Mar 25 10:23:47 ..... started sorting BAM
+Mar 25 10:24:12 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809807...
+Mar 25 10:24:12 ..... started STAR run
+Mar 25 10:24:12 ..... loading genome
+Mar 25 10:24:15 ..... started mapping
+Mar 25 10:26:21 ..... started sorting BAM
+Mar 25 10:26:48 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809799...
+Mar 25 10:26:49 ..... started STAR run
+Mar 25 10:26:49 ..... loading genome
+Mar 25 10:26:52 ..... started mapping
+Mar 25 10:29:05 ..... started sorting BAM
+Mar 25 10:29:41 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809816...
+Mar 25 10:29:41 ..... started STAR run
+Mar 25 10:29:41 ..... loading genome
+Mar 25 10:29:44 ..... started mapping
+Mar 25 10:32:18 ..... started sorting BAM
+Mar 25 10:32:49 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809808...
+Mar 25 10:32:49 ..... started STAR run
+Mar 25 10:32:49 ..... loading genome
+Mar 25 10:32:53 ..... started mapping
+Mar 25 10:35:12 ..... started sorting BAM
+Mar 25 10:35:44 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809817...
+Mar 25 10:35:44 ..... started STAR run
+Mar 25 10:35:44 ..... loading genome
+Mar 25 10:35:47 ..... started mapping
+Mar 25 10:38:13 ..... started sorting BAM
+Mar 25 10:38:43 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809794...
+Mar 25 10:38:43 ..... started STAR run
+Mar 25 10:38:43 ..... loading genome
+Mar 25 10:38:47 ..... started mapping
+Mar 25 10:41:14 ..... started sorting BAM
+Mar 25 10:41:40 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809796...
+Mar 25 10:41:40 ..... started STAR run
+Mar 25 10:41:40 ..... loading genome
+Mar 25 10:41:43 ..... started mapping
+Mar 25 10:44:16 ..... started sorting BAM
+Mar 25 10:44:47 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809806...
+Mar 25 10:44:47 ..... started STAR run
+Mar 25 10:44:47 ..... loading genome
+Mar 25 10:44:50 ..... started mapping
+Mar 25 10:47:19 ..... started sorting BAM
+Mar 25 10:48:05 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809797...
+Mar 25 10:48:05 ..... started STAR run
+Mar 25 10:48:05 ..... loading genome
+Mar 25 10:48:07 ..... started mapping
+Mar 25 10:50:36 ..... started sorting BAM
+Mar 25 10:51:25 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for ERR2809795...
+Mar 25 10:51:25 ..... started STAR run
+Mar 25 10:51:25 ..... loading genome
+Mar 25 10:51:27 ..... started mapping
+Mar 25 10:53:59 ..... started sorting BAM
+Mar 25 10:54:26 ..... finished successfully
+Done.

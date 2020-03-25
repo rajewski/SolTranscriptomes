@@ -1,0 +1,9 @@
+STAR index for Arabidopsis already present.
+STAR index for N. obtusifolia already present.
+Making STAR index for S. lycopersicum...
+Mar 24 16:18:50 ..... started STAR run
+Mar 24 16:18:50 ... starting to generate Genome files
+
+EXITING because of INPUT ERROR: could not open genomeFastaFile: /rhome/arajewski/bigdata/Datura/Alkaloids/ExternalData/SlycDNA/S_lycopersicum_chromosomes.4.00.fa
+
+Mar 24 16:18:50 ...... FATAL ERROR, exiting

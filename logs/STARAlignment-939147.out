@@ -1,0 +1,59 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Mapping Tomato reads for ERR2809815...
+Mar 25 11:38:58 ..... started STAR run
+Mar 25 11:38:58 ..... loading genome
+Mar 25 11:39:09 ..... started mapping
+Mar 25 11:55:20 ..... started sorting BAM
+Mar 25 11:55:24 ..... finished successfully
+Done.
+Mapping Tomato reads for ERR2809798...
+Mar 25 11:55:24 ..... started STAR run
+Mar 25 11:55:25 ..... loading genome
+Mar 25 11:55:33 ..... started mapping
+Mar 25 12:14:42 ..... started sorting BAM
+Mar 25 12:14:45 ..... finished successfully
+Done.
+Mapping Tomato reads for ERR2809807...
+Mar 25 12:14:45 ..... started STAR run
+Mar 25 12:14:45 ..... loading genome
+Mar 25 12:14:57 ..... started mapping
+Mar 25 12:32:43 ..... started sorting BAM
+Mar 25 12:32:48 ..... finished successfully
+Done.
+Mapping Tomato reads for ERR2809799...
+Mar 25 12:32:48 ..... started STAR run
+Mar 25 12:32:48 ..... loading genome
+Mar 25 12:32:57 ..... started mapping
+Mar 25 12:49:00 ..... started sorting BAM
+Mar 25 12:49:11 ..... finished successfully
+Done.
+Mapping Tomato reads for ERR2809816...
+Mar 25 12:49:11 ..... started STAR run
+Mar 25 12:49:11 ..... loading genome
+Mar 25 12:49:22 ..... started mapping
+Mar 25 13:10:50 ..... started sorting BAM
+Mar 25 13:10:55 ..... finished successfully
+Done.
+Mapping Tomato reads for ERR2809808...
+Mar 25 13:10:55 ..... started STAR run
+Mar 25 13:10:55 ..... loading genome
+Mar 25 13:11:03 ..... started mapping
+Mar 25 13:30:38 ..... started sorting BAM
+Mar 25 13:30:44 ..... finished successfully
+Done.
+Mapping Tomato reads for ERR2809817...
+Mar 25 13:30:44 ..... started STAR run
+Mar 25 13:30:44 ..... loading genome
+Mar 25 13:30:52 ..... started mapping
+slurmstepd-i03: error: *** JOB 939147 ON i03 CANCELLED AT 2020-03-25T13:39:14 DUE TO TIME LIMIT ***

@@ -1,0 +1,13 @@
+Mar 24 14:38:51 ..... started STAR run
+Mar 24 14:38:51 ... starting to generate Genome files
+Mar 24 14:38:53 ... starting to sort Suffix Array. This may take a long time...
+Mar 24 14:38:54 ... sorting Suffix Array chunks and saving them to disk...
+Mar 24 14:39:53 ... loading chunks from disk, packing SA...
+Mar 24 14:39:55 ... finished generating suffix array
+Mar 24 14:39:55 ... generating Suffix Array index
+Mar 24 14:40:26 ... completed Suffix Array index
+Mar 24 14:40:26 ..... processing annotations GTF
+
+FATAL error, could not open file sjdbGTFfile=/TAIR10.gff3
+
+Mar 24 14:40:26 ...... FATAL ERROR, exiting

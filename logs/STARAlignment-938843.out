@@ -1,0 +1,8 @@
+Mapping Arabidopsis reads for ERR2809815...
+Mar 25 10:04:07 ..... started STAR run
+Mar 25 10:04:07 ..... loading genome
+Mar 25 10:04:10 ..... started mapping
+
+ReadAlignChunk_processChunks.cpp:115:processChunks EXITING because of FATAL ERROR in input reads: unknown file format: the read ID should start with @ or > 
+
+Mar 25 10:04:10 ...... FATAL ERROR, exiting

@@ -11,7 +11,7 @@ set -e
 
 TAIRDIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/TAIR10
 NobtDIR=/rhome/arajewski/shared/Nobtusifolia/Genome_Files
-SlycDir=/rhome/arajewski/bigdata/Datura/Alkaloids/ExternalData/Slyc
+SlycDIR=/rhome/arajewski/bigdata/Datura/Alkaloids/ExternalData/Slyc
 
 module load STAR/2.5.3a
 #Make index Files for Arabidopsis
@@ -44,7 +44,10 @@ if [ ! -e $NobtDIR/SAindex ]; then
         --sjdbGTFfile $NobtDIR/NIOBT_r1.0.update.gff \
         --sjdbOverhang 100 \
         --sjdbGTFtagExonParentTranscript Parent \
-	--genomeChrBinNbits 16
+	--genomeChrBinNbits 16 \
+	--limitSjdbInsertNsj 150000
+    #Add limitSjdbInsertNsj because of error (https://groups.google.com/forum/#!msg/rna-star/ddhJDgvZfNA/ULUGGYb0BgAJ)
+    #Change genomeChrBinNbits because the genome is highly fragmented
     echo Done.
 else
     echo STAR index for N. obtusifolia already present.
@@ -65,9 +68,3 @@ if [ ! -e $SlycDIR/SAindex ]; then
 else
     echo STAR index for S. lycopersicum already present.
 fi
-
-
-
-#Add if statement to prevent remaking. 
-
-#Add Nobt and Slyc indcies

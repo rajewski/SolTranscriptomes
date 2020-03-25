@@ -1,0 +1,9 @@
+STAR index for Arabidopsis already present.
+Making STAR index for N. obtusifolia...
+Mar 24 15:06:49 ..... started STAR run
+Mar 24 15:06:49 ... starting to generate Genome files
+
+EXITING because of FATAL PARAMETER ERROR: limitGenomeGenerateRAM=31000000000is too small for your genome
+SOLUTION: please specify --limitGenomeGenerateRAM not less than 37773928490 and make that much RAM available 
+
+Mar 24 15:07:25 ...... FATAL ERROR, exiting
