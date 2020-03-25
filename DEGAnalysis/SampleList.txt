@@ -27,32 +27,23 @@ AC1DPA1		Tomato		WT	DAP1	1
 AC1DPA2         Tomato          WT      DAP1	2
 AC1DPA3         Tomato          WT      DAP1	3
 AC3DPA1         Tomato          WT      DAP3	1
-AC3DPA2 
-AC3DPA3 
-AC15DPA1 
-AC15DPA2 
-AC15DPA3 
-ACbreaker1 
-ACbreaker2 
-ACbreaker3 
-ACrr1 
-ACrr2 
-ACrr3
-NobtPre1
-NobtPre1
-Nobt6DPA3
-Nobt6DPA3
-Nobt6DPA2
-Nobt6DPA2
-Nobt3DPA2
-Nobt3DPA2
-NobtPre3
-NobtPre3
-NobtPre2
-NobtPre2
-Nobt3DPA3
-Nobt3DPA3
-Nobt3DPA1
-Nobt3DPA1
-Nobt6DPA1
-Nobt6DPA1
+AC3DPA2		Tomato		WT	DAP3	2 
+AC3DPA3		Tomato		WT	DAP3	3
+AC15DPA1	Tomato		WT	DAP15	1
+AC15DPA2        Tomato          WT      DAP15	2
+AC15DPA3        Tomato          WT      DAP15	3
+ACbreaker1        Tomato          WT      breaker	1
+ACbreaker2        Tomato          WT      breaker	2
+ACbreaker3        Tomato          WT      breaker	3
+ACrr1        Tomato          WT      redripe	1
+ACrr2        Tomato          WT      redripe	2
+ACrr        Tomato          WT      redripe	3
+NobtPre1    Tobacco	    WT	    DAP0	1
+NobtPre2    Tobacco         WT      DAP0	2
+NobtPre3    Tobacco         WT      DAP0	3
+Nobt3DPA1    Tobacco         WT      DAP3	1
+Nobt3DPA2    Tobacco         WT      DAP3	2
+Nobt3DPA3    Tobacco         WT      DAP3	3
+Nobt6DPA1    Tobacco         WT      DAP6	1
+Nobt6DPA2    Tobacco         WT      DAP6	2
+Nobt6DPA3    Tobacco         WT      DAP6	3

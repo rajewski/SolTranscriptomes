@@ -20,3 +20,17 @@ Mapping Tomato reads for ERR2809817...
 Mar 25 13:45:58 ..... started STAR run
 Mar 25 13:45:58 ..... loading genome
 Mar 25 13:46:06 ..... started mapping
+Mar 25 14:08:57 ..... started sorting BAM
+Mar 25 14:09:01 ..... finished successfully
+Done.
+Mapping Tomato reads for ERR2809794...
+Mar 25 14:09:01 ..... started STAR run
+Mar 25 14:09:01 ..... loading genome
+Mar 25 14:09:07 ..... started mapping
+Mar 25 14:33:34 ..... started sorting BAM
+Mar 25 14:33:37 ..... finished successfully
+Done.
+Mapping Tomato reads for ERR2809796...
+Mar 25 14:33:37 ..... started STAR run
+Mar 25 14:33:37 ..... loading genome
+Mar 25 14:33:43 ..... started mapping
