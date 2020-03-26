@@ -53,14 +53,14 @@ tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/TAIR10Expt.rds"), error=function(e){
   colData(TAIR10Expt) <- DataFrame(metadata[metadata$Species=="Arabidopsis",])
   saveRDS(TAIR10Expt, "DEGAnalysis/TAIR10Expt.rds")
 })
-tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/SlyCSRAExpt.rds"), error=function(e){
+tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/SlycSRAExpt.rds"), error=function(e){
   SlycSRAExpt <- summarizeOverlaps(features=Slycgenes,
                                    reads=SlycSRABamFiles,
                                    mode="Union",
                                    singleEnd=TRUE,
                                    ignore.strand=TRUE)
   colData(SlycSRAExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==0,])
-  saveRDS(SlycSRAExpt, "DEGAnalysis/SlyCSRAExpt.rds")
+  saveRDS(SlycSRAExpt, "DEGAnalysis/SlycSRAExpt.rds")
 })
 #I think this is the best way to process the in house (IH) PE strand-specific libraries.
 #I could also use preprocess.reads=invertStrand from
@@ -88,7 +88,7 @@ tryCatch(NobtExpt <- readRDS("DEGAnalysis/NobtExpt.rds"), error=function(e){
 # Experimental Design Set up ----------------------------------------------------
 #spline regression will be better suited for this
 library("splines")
-
+full_design <- model.matrix(formula(~ ns(colData(TAIR10Expt)$DAP, df = 3)))
 library("DESeq2")
 #consider analyzing all tomato datasets together
 TAIR10dds <- DESeqDataSet(TAIR10Expt, design = ~ Timepoint)
