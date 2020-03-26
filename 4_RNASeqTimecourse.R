@@ -8,15 +8,14 @@ metadata$Path <- NA
 metadata$Path[metadata$Species=="Arabidopsis"] <- paste0("DEGAnalysis/STAR/TAIR10/",metadata$Accession[metadata$Species=="Arabidopsis"],".Aligned.sortedByCoord.out.bam")
 metadata$Path[metadata$Species=="Tomato"] <- paste0("DEGAnalysis/STAR/Slyc/",metadata$Accession[metadata$Species=="Tomato"],".Aligned.sortedByCoord.out.bam")
 metadata$Path[metadata$Species=="Tobacco"] <- paste0("DEGAnalysis/STAR/Nobt/",metadata$Accession[metadata$Species=="Tobacco"],".Aligned.sortedByCoord.out.bam")
-metadata$Timepoint <- reorder(metadata$Timepoint, new.order=c("DAP0", "DAP1", "DAP3", "DAP6", "DAP12", "DAP15", "DAP35", "breaker", "DAP45", "redripe"))
 
 #Read in BAM files
 #BiocManager::install("Rsamtools")
 library("Rsamtools")
-NobtBamfiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco"], yieldSize=2000000)
+NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco"], yieldSize=2000000)
 TAIR10BamFiles <- BamFileList(metadata$Path[metadata$Species=="Arabidopsis"], yieldSize=2000000)
 SlycSRABamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0], yieldSize=2000000)
-SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0], yieldSize=2000000)
+SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1], yieldSize=2000000)
 seqinfo(TAIR10BamFiles[1]) #check that it worked
 
 #BiocManager::install("GenomicFeatures")
@@ -43,40 +42,54 @@ tryCatch(Nobttxdb <- loadDb("DEGAnalysis/NobtTxDb.sqlite"),error=function(e){
 
 # Count Reads -------------------------------------------------------------
 library("GenomicAlignments")
+library("BiocParallel")
 #To my knowledge the SRA experiments were not strand-specific
-TAIR10Expt <- summarizeOverlaps(features=TAIR10genes,
-                                reads=TAIR10BamFiles,
-                                mode="Union",
-                                singleEnd=TRUE,
-                                ignore.strand=TRUE)
-colData(TAIR10Expt) <- DataFrame(metadata[metadata$Species=="Arabidopsis",])
-SlycSRAExpt <- summarizeOverlaps(features=Slycgenes,
-                                 reads=SlycSRABamFiles,
-                                 mode="Union",
-                                 singleEnd=TRUE,
-                                 ignore.strand=TRUE)
-colData(SlycSRAExpt <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE=0,]))
+tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/TAIR10Expt.rds"), error=function(e){
+  TAIR10Expt <- summarizeOverlaps(features=TAIR10genes,
+                                  reads=TAIR10BamFiles,
+                                  mode="Union",
+                                  singleEnd=TRUE,
+                                  ignore.strand=TRUE)
+  colData(TAIR10Expt) <- DataFrame(metadata[metadata$Species=="Arabidopsis",])
+  saveRDS(TAIR10Expt, "DEGAnalysis/TAIR10Expt.rds")
+})
+tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/SlyCSRAExpt.rds"), error=function(e){
+  SlycSRAExpt <- summarizeOverlaps(features=Slycgenes,
+                                   reads=SlycSRABamFiles,
+                                   mode="Union",
+                                   singleEnd=TRUE,
+                                   ignore.strand=TRUE)
+  colData(SlycSRAExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==0,])
+  saveRDS(SlycSRAExpt, "DEGAnalysis/SlyCSRAExpt.rds")
+})
 #I think this is the best way to process the in house (IH) PE strand-specific libraries.
 #I could also use preprocess.reads=invertStrand from
 #https://support.bioconductor.org/p/65844/ but this seems unusual
-SlycIHExpt <- summarizeOverlaps(feature=Slycgenes,
-                                reads=SlycIHBamFiles,
-                                mode="Union",
-                                singleEnd=FALSE,
-                                ignore.strand=FALSE,
-                                fragments=TRUE)
-colData(SlycIHExpt <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE=1,]))
-NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
+tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/SlycIHExpt.rds"), error=function(e){
+  SlycIHExpt <- summarizeOverlaps(feature=Slycgenes,
+                                  reads=SlycIHBamFiles,
+                                  mode="Union",
+                                  singleEnd=FALSE,
+                                  ignore.strand=FALSE)
+  colData(SlycIHExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==1,])
+  saveRDS(SlycIHExpt, "DEGAnalysis/SlycIHExpt.rds")
+})
+tryCatch(NobtExpt <- readRDS("DEGAnalysis/NobtExpt.rds"), error=function(e){
+  NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
                                 reads=NobtBamfiles,
                                 mode="Union",
                                 singleEnd=FALSE,
                                 ignore.strand=FALSE,
                                 fragments=TRUE)
-colData(NobtExpt <- DataFrame(metadata[metadata$Species=="Tobacco",]))
+  colData(NobtExpt) <- DataFrame(metadata[metadata$Species=="Tobacco",])
+  saveRDS(NobtExpt, "DEGAnalysis/NobtExpt.rds")
+})
+
 # Experimental Design Set up ----------------------------------------------------
+#spline regression will be better suited for this
+library("splines")
 
 library("DESeq2")
-#consider recoding the timepoint as simply DPA and making it numerical
 #consider analyzing all tomato datasets together
 TAIR10dds <- DESeqDataSet(TAIR10Expt, design = ~ Timepoint)
 TAIR10dds <- estimateSizeFactors(TAIR10dds)

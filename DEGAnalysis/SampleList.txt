@@ -37,7 +37,7 @@ ACbreaker2	Tomato	WT	35	2	1	1
 ACbreaker3	Tomato	WT	35	3	1	1
 ACrr1	Tomato	WT	45	1	1	1
 ACrr2	Tomato	WT	45	2	1	1
-ACrr	Tomato	WT	45	3	1	1
+ACrr3	Tomato	WT	45	3	1	1
 NobtPre1	Tobacco	WT	0	1	1	1
 NobtPre2	Tobacco	WT	0	2	1	1
 NobtPre3	Tobacco	WT	0	3	1	1
