@@ -1,0 +1,45 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Mapping Tomato reads for AC1DPA1...
+Mar 25 15:36:58 ..... started STAR run
+Mar 25 15:36:58 ..... loading genome
+Mar 25 15:37:03 ..... started mapping
+Mar 25 15:51:26 ..... started sorting BAM
+Mar 25 15:53:19 ..... finished successfully
+Done.
+Mapping Tomato reads for AC1DPA2...
+Mar 25 15:53:19 ..... started STAR run
+Mar 25 15:53:19 ..... loading genome
+Mar 25 15:53:25 ..... started mapping
+Mar 25 16:19:16 ..... started sorting BAM
+Mar 25 16:25:35 ..... finished successfully
+Done.
+Mapping Tomato reads for AC1DPA3...
+Mar 25 16:25:35 ..... started STAR run
+Mar 25 16:25:35 ..... loading genome
+Mar 25 16:25:41 ..... started mapping
+Mar 25 16:36:49 ..... started sorting BAM
+Mar 25 16:38:30 ..... finished successfully
+Done.
+Mapping Tomato reads for AC3DPA1...
+Mar 25 16:38:31 ..... started STAR run
+Mar 25 16:38:31 ..... loading genome
+Mar 25 16:38:36 ..... started mapping
+Mar 25 17:08:06 ..... started sorting BAM
+Mar 25 17:14:18 ..... finished successfully
+Done.
+Mapping Tomato reads for AC3DPA2...
+Mar 25 17:14:18 ..... started STAR run
+Mar 25 17:14:18 ..... loading genome
+Mar 25 17:14:24 ..... started mapping
+slurmstepd-i03: error: *** JOB 939315 ON i03 CANCELLED AT 2020-03-25T17:37:19 DUE TO TIME LIMIT ***

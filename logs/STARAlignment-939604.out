@@ -1,0 +1,23 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Mapping Tobacco reads for NobtPre1...
+Mar 25 18:07:28 ..... started STAR run
+Mar 25 18:07:28 ..... loading genome
+Mar 25 18:09:02 ..... started mapping
+Mar 25 18:15:51 ..... started sorting BAM
+Mar 25 18:17:51 ..... finished successfully
+Done.
+Mapping Tobacco reads for NobtPre2...
+Mar 25 18:17:51 ..... started STAR run
+Mar 25 18:17:51 ..... loading genome
+Mar 25 18:18:24 ..... started mapping

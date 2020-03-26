@@ -1,0 +1,27 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Reads for AC1DPA1 already mapped.
+Reads for AC1DPA2 already mapped.
+Reads for AC1DPA3 already mapped.
+Reads for AC3DPA1 already mapped.
+Mapping Tomato reads for AC3DPA2...
+Mar 25 18:02:55 ..... started STAR run
+Mar 25 18:02:55 ..... loading genome
+Mar 25 18:03:03 ..... started mapping
+Mar 25 18:14:19 ..... started sorting BAM
+Mar 25 18:23:02 ..... finished successfully
+Done.
+Mapping Tomato reads for AC3DPA3...
+Mar 25 18:23:02 ..... started STAR run
+Mar 25 18:23:02 ..... loading genome
+Mar 25 18:23:56 ..... started mapping

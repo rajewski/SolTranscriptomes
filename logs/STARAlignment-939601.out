@@ -1,0 +1,17 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Mapping Tobacco reads for NobtPre1...
+Mar 25 18:04:26 ..... started STAR run
+gzip: NobtRNA/NobtPre1_val_*.fq.gz: No such file or directory
+Mar 25 18:04:26 ..... loading genome
+slurmstepd-i03: error: *** JOB 939601 ON i03 CANCELLED AT 2020-03-25T18:05:19 ***
