@@ -54,3 +54,13 @@ Mapping Tomato reads for SRR943829...
 Mar 25 18:23:50 ..... started STAR run
 Mar 25 18:23:50 ..... loading genome
 Mar 25 18:24:36 ..... started mapping
+Mar 25 18:25:21 ..... started sorting BAM
+Mar 25 18:25:37 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943830...
+Mar 25 18:25:37 ..... started STAR run
+Mar 25 18:25:37 ..... loading genome
+Mar 25 18:26:31 ..... started mapping
+Mar 25 18:27:36 ..... started sorting BAM
+Mar 25 18:27:59 ..... finished successfully
+Done.
