@@ -1,4 +1,3 @@
-
 # Prep Inputs -------------------------------------------------------------
 #Borrorwed heavily from https://www.bioconductor.org/help/course-materials/2015/LearnBioconductorFeb2015/B02.1.1_RNASeqLab.html#construct
 #Read in the Sample list
@@ -76,7 +75,7 @@ tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/SlycIHExpt.rds"), error=function(e){
 })
 tryCatch(NobtExpt <- readRDS("DEGAnalysis/NobtExpt.rds"), error=function(e){
   NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
-                                reads=NobtBamfiles,
+                                reads=NobtBamFiles,
                                 mode="Union",
                                 singleEnd=FALSE,
                                 ignore.strand=FALSE,
