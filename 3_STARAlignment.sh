@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=20G
+#SBATCH --cpus-per-task=12
+#SBATCH --mem-per-cpu=8G
 #SBATCH --nodes=1
 #SBATCH --time=2:00:00
 #SBATCH --mail-user=araje002@ucr.edu
@@ -34,7 +34,7 @@ for SRA in ${SRAList[@]}; do
     fi
 done
 
-#Map Tomato SRA reads
+#Map Tomato SRA reads comment out to run in parallel with others
 SRALISTTom=( SRR943813 SRR943814 SRR943815 SRR943816 SRR943817 SRR943818 SRR943825 SRR943826 SRR943827 SRR943828 SRR943829 SRR943830 )
 
 for SRA in ${SRALISTTom[@]}; do
@@ -73,9 +73,9 @@ for IH in ${IHList[@]}; do
 done
 
 #Map Tobacco in house reads
-IHList=(NobtPre1 NobtPre2 NobtPre3 Nobt3PDA1 Nobt3DPA2 Nobt3DPA3 Nobt6DPA1 Nobt6DPA2 Nobt6DPA3 )
+IHListNobt=(NobtPre1 NobtPre2 NobtPre3 Nobt3PDA1 Nobt3DPA2 Nobt3DPA3 Nobt6DPA1 Nobt6DPA2 Nobt6DPA3 )
 
-for IH in ${IHList[@]}; do
+for IH in ${IHListNobt[@]}; do
     if [ ! -s DEGAnalysis/STAR/Nobt/${IH}.Aligned.sortedByCoord.out.bam ]; then
         echo Mapping Tobacco reads for $IH...
         STAR \
@@ -83,7 +83,7 @@ for IH in ${IHList[@]}; do
             --genomeDir $NobtDIR/ \
             --outFileNamePrefix DEGAnalysis/STAR/Nobt/$IH. \
             --outSAMtype BAM SortedByCoordinate \
-            --readFilesIn NobtRNA/${IH}_val_*.fq.gz \
+            --readFilesIn NobtRNA/${IH}_*_val_*.fq.gz \
             --readFilesCommand zcat
         echo Done.
     else
