@@ -73,7 +73,7 @@ for IH in ${IHList[@]}; do
 done
 
 #Map Tobacco in house reads
-IHListNobt=(NobtPre1 NobtPre2 NobtPre3 Nobt3PDA1 Nobt3DPA2 Nobt3DPA3 Nobt6DPA1 Nobt6DPA2 Nobt6DPA3 )
+IHListNobt=(NobtPre1 NobtPre2 NobtPre3 Nobt3DPA1 Nobt3DPA2 Nobt3DPA3 Nobt6DPA1 Nobt6DPA2 Nobt6DPA3 )
 
 for IH in ${IHListNobt[@]}; do
     if [ ! -s DEGAnalysis/STAR/Nobt/${IH}.Aligned.sortedByCoord.out.bam ]; then
