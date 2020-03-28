@@ -33,10 +33,19 @@ tryCatch(Nobttxdb <- loadDb("DEGAnalysis/NobtTxDb.sqlite"),error=function(e){
   saveDb(Nobttxdb, "DEGAnalysis/NobtTxDb.sqlite")
 })
 
-#Create exon list for each species for counting
-(Slycgenes <- exonsBy(Slyctxdb, by="gene"))
-(TAIR10genes <- exonsBy(TAIR10txdb, by="gene"))
-(Nobtgenes <- exonsBy(Nobttxdb, by="gene"))
+# Load a gene list by exon for counting (or make and save one)
+tryCatch(Slycgenes <- readRDS("DEGAnalysis/Slycgenes.rds"), error=function(e){
+  Slycgenes <- exonsBy(Slyctxdb, by="gene")
+  saveRDS(Slycgenes, "DEGAnalysis/Slycgenes.rds")
+})
+tryCatch(TAIR10genes <- readRDS("DEGAnalysis/TAIR10genes.rds"), error=function(e){
+  TAIR10genes <- exonsBy(TAIR10txdb, by="gene")
+  saveRDS(TAIR10genes, "DEGAnalysis/TAIR10genes.rds")
+})
+tryCatch(Nobtgenes <- readRDS("DEGAnalysis/Nobtgenes.rds"), error=function(e){
+  Nobtgenes <- exonsBy(Nobttxdb, by="gene")
+  saveRDS(Nobtgenes, "DEGAnalysis/Nobtgenes.rds")
+})
 
 
 # Count Reads -------------------------------------------------------------
