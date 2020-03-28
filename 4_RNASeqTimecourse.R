@@ -14,7 +14,7 @@ library("Rsamtools")
 NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco"], yieldSize=2000000)
 TAIR10BamFiles <- BamFileList(metadata$Path[metadata$Species=="Arabidopsis"], yieldSize=2000000)
 SlycSRABamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0], yieldSize=2000000)
-SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1], yieldSize=2000000)
+SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1], yieldSize=50000) #lower yield size?
 seqinfo(TAIR10BamFiles[1]) #check that it worked
 
 #BiocManager::install("GenomicFeatures")
@@ -41,7 +41,6 @@ tryCatch(Nobttxdb <- loadDb("DEGAnalysis/NobtTxDb.sqlite"),error=function(e){
 
 # Count Reads -------------------------------------------------------------
 library("GenomicAlignments")
-library("BiocParallel")
 #To my knowledge the SRA experiments were not strand-specific
 tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/TAIR10Expt.rds"), error=function(e){
   TAIR10Expt <- summarizeOverlaps(features=TAIR10genes,
@@ -61,25 +60,32 @@ tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/SlycSRAExpt.rds"), error=function(e
   colData(SlycSRAExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==0,])
   saveRDS(SlycSRAExpt, "DEGAnalysis/SlycSRAExpt.rds")
 })
-#I think this is the best way to process the in house (IH) PE strand-specific libraries.
-#I could also use preprocess.reads=invertStrand from
-#https://support.bioconductor.org/p/65844/ but this seems unusual
+# I think this is the best way to process the in house (IH) PE strand-specific libraries.
+# I could also use preprocess.reads=invertStrand from
+# https://support.bioconductor.org/p/65844/ but this seems unusual
+# This dataset is too large to read in at once, maybe not with the smaller yield size, but regardless this is the easier way I can find to read it in.
 tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/SlycIHExpt.rds"), error=function(e){
-  SlycIHExpt <- summarizeOverlaps(feature=Slycgenes,
-                                  reads=SlycIHBamFiles,
-                                  mode="Union",
-                                  singleEnd=FALSE,
-                                  ignore.strand=FALSE)
+  SlycIHPart<-list()
+  for (i in 1:length(metadata$Accession[metadata$Species=="Tomato" & metadata$PE==1])) {
+      SlycIHPart[[i]] <- summarizeOverlaps(feature=Slycgenes,
+                           reads=SlycIHBamFiles[i],
+                           mode="Union",
+                           singleEnd=FALSE,
+                           ignore.strand=FALSE)
+      }
+  SlycIHExpt <- do.call(cbind,SlycIHPart)
   colData(SlycIHExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==1,])
   saveRDS(SlycIHExpt, "DEGAnalysis/SlycIHExpt.rds")
 })
+
 tryCatch(NobtExpt <- readRDS("DEGAnalysis/NobtExpt.rds"), error=function(e){
   NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
                                 reads=NobtBamFiles,
                                 mode="Union",
                                 singleEnd=FALSE,
                                 ignore.strand=FALSE,
-                                fragments=TRUE)
+                                fragments=TRUE,
+                                BPPARAM=SerialParam())
   colData(NobtExpt) <- DataFrame(metadata[metadata$Species=="Tobacco",])
   saveRDS(NobtExpt, "DEGAnalysis/NobtExpt.rds")
 })
