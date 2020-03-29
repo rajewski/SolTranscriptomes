@@ -86,7 +86,6 @@ tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/SlycIHExpt.rds"), error=function(e){
   colData(SlycIHExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==1,])
   saveRDS(SlycIHExpt, "DEGAnalysis/SlycIHExpt.rds")
 })
-
 tryCatch(NobtExpt <- readRDS("DEGAnalysis/NobtExpt.rds"), error=function(e){
   NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
                                 reads=NobtBamFiles,
@@ -102,11 +101,20 @@ tryCatch(NobtExpt <- readRDS("DEGAnalysis/NobtExpt.rds"), error=function(e){
 # Experimental Design Set up ----------------------------------------------------
 #spline regression will be better suited for this
 library("splines")
-full_design <- model.matrix(formula(~ ns(colData(TAIR10Expt)$DAP, df = 3)))
+#define a spline basis
+TAIR10design <- ns(colData(TAIR10Expt)$DAP, df = 3)
+#rename the splines for later
+colnames(TAIR10design) <- paste0("spline", seq(1:dim(TAIR10design)[2]))
+#add the spline coefficients to the Expt for regression
+colData(TAIR10Expt) <- cbind(colData(TAIR10Expt), TAIR10design)
 library("DESeq2")
-#consider analyzing all tomato datasets together
-TAIR10dds <- DESeqDataSet(TAIR10Expt, design = ~ Timepoint)
+TAIR10dds <- DESeqDataSet(TAIR10Expt, design = ~ spline1 + spline2 + spline3)
 TAIR10dds <- estimateSizeFactors(TAIR10dds)
+
+
+
+
+#consider analyzing all tomato datasets together
 SlycSRAdds <- DESeqDataSet(SlycSRAExpt, design = ~ Genotype + Timepoint)
 SlycSRAdds <- estimateSizeFactors(SLYCSRAdds)
 SlycIHdds <- DESeqDataSet(SlycIHExpt, design = ~ Timepoint)
@@ -134,7 +142,7 @@ sampleDists <- dist( t( assay(rld) ) )
 library("gplots")
 library("RColorBrewer")
 sampleDistMatrix <- as.matrix( sampleDists )
-rownames(sampleDistMatrix) <- paste( rld$Genotype, rld$Timepoint, sep="-" )
+rownames(sampleDistMatrix) <- paste( rld$Genotype, rld$DAP, sep="-" )
 colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
 hc <- hclust(sampleDists)
 heatmap.2( sampleDistMatrix, Rowv=as.dendrogram(hc),
@@ -145,7 +153,7 @@ heatmap.2( sampleDistMatrix, Rowv=as.dendrogram(hc),
 library("PoiClaClu")
 poisd <- PoissonDistance(t(counts(dds)))
 samplePoisDistMatrix <- as.matrix( poisd$dd )
-rownames(samplePoisDistMatrix) <- paste( dds$Genotype, dds$Timepoint, sep="-" )
+rownames(samplePoisDistMatrix) <- paste( dds$Genotype, dds$DAP, sep="-" )
 colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
 hc <- hclust(poisd$dd)
 heatmap.2( samplePoisDistMatrix, Rowv=as.dendrogram(hc),
@@ -153,42 +161,64 @@ heatmap.2( samplePoisDistMatrix, Rowv=as.dendrogram(hc),
            margins=c(2,10), labCol=FALSE )
 
 #Make a PCA
-plotPCA(rld, intgroup = c("Genotype", "Timepoint"))
+plotPCA(rld, intgroup = c("Genotype", "DAP"))
 
 #Make an MDS Plot with rlog counts
 library("ggplot2")
 mds <- data.frame(cmdscale(sampleDistMatrix))
 mds <- data.frame(cbind(mds, colData(rld)))
-qplot(X1,X2,color=Timepoint,shape=Genotype,data=mds)
+qplot(X1,X2,color=DAP,shape=Genotype,data=mds)
 
 #Make an MDS plot with poisson counts
 mds <- data.frame(cmdscale(samplePoisDistMatrix))
 mds <- data.frame(cbind(mds, colData(dds)))
-qplot(X1,X2,color=Timepoint,shape=Genotype,data=mds)
+qplot(X1,X2,color=DAP,shape=Genotype,data=mds)
 
 
 # Differential Expression -------------------------------------------------
-
-#do the actual DE testing
-TAIR10dds <- DESeq(TAIR10dds)
+#do the actual DE testing to see if a gene's expression is better explained by the spline model than by noise
+TAIR10dds <- DESeq(TAIR10dds,test="LRT", reduced = ~ 1)
 
 #Summarize the results
+# remeber that LFC here is kinda meaningless
 TAIR10res <- results(TAIR10dds)
 summary(TAIR10res)
 
 #Apply a FDR cutoff and sort to show the most extreme LFC
-TAIR10resSig <- subset(TAIR10res, padj < 0.1)
-head(TAIR10resSig[ order( TAIR10resSig$log2FoldChange ), ])
+TAIR10resSig <- subset(TAIR10res, padj < 0.05)
+head(TAIR10resSig[ order( TAIR10resSig$padj ), ])
 head(TAIR10resSig[ order( -TAIR10resSig$log2FoldChange ), ])
 
 #Look at other contrasts not reported by default
-results(TAIR10dds, contrast=c("Timepoint", "DAP3", "DAP6"))
+results(TAIR10dds, contrast=c("DAP", 3, 6))
 
 #Examine an individual Gene
 topGene <- rownames(TAIR10res)[which.min(TAIR10res$padj)]
-plotCounts(dds, gene=topGene, intgroup=c("Timepoint"))
-plotCounts(dds, gene="AT5G60910", intgroup=c("Timepoint")) #FRUITFULL
+plotCounts(TAIR10dds, gene=topGene, intgroup="DAP", normalized = T)
+plotCounts(TAIR10dds, gene="AT5G60910", intgroup=c("DAP"),normalized=T) #FRUITFULL
 
 #Look at dispersion. Notsure how useful this is
 plotDispEsts(TAIR10dds)
 
+
+# Clustering --------------------------------------------------------------
+#this section is sorta experimental and is HEAVILY borrowed fromL
+#https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
+library("magrittr")
+BiocManager::install("DEGreport")
+library("DEGreport")
+library("tibble")
+sig_res_TAIR10 <- TAIR10res %>%
+  data.frame() %>%
+  rownames_to_column(var="gene") %>% 
+  as_tibble() %>% 
+  filter(padj < 0.05)
+# Subset results for faster cluster finding (for classroom demo purposes)
+clustering_sig_genesTAIR10 <- sig_res_TAIR10 %>%
+  arrange(padj) %>%
+  head(n=1000)
+# Obtain rlog values for those significant genes
+cluster_rlog_TAIR10 <- rld[clustering_sig_genesTAIR10$gene, ]
+colData(cluster_rlog_TAIR10)$DAP <- as.factor(colData(cluster_rlog_TAIR10)$DAP)
+clusters <- degPatterns(assay(cluster_rlog_TAIR10), metadata = colData(cluster_rlog_TAIR10), time = "DAP", col=NULL)
+clusters <- degPatterns(assay(cluster_rlog_TAIR10), metadata = colData(cluster_rlog_TAIR10), time = "DAP", col=NULL, reduce = T)
