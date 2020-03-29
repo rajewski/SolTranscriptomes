@@ -1,4 +1,8 @@
 # Prep Inputs -------------------------------------------------------------
+library("GenomicAlignments")
+library("Rsamtools")
+library("GenomicFeatures")
+
 #Borrorwed heavily from https://www.bioconductor.org/help/course-materials/2015/LearnBioconductorFeb2015/B02.1.1_RNASeqLab.html#construct
 #Read in the Sample list
 metadata <- read.table("DEGAnalysis/SampleList.txt", header=T, sep="\t")
@@ -9,16 +13,12 @@ metadata$Path[metadata$Species=="Tomato"] <- paste0("DEGAnalysis/STAR/Slyc/",met
 metadata$Path[metadata$Species=="Tobacco"] <- paste0("DEGAnalysis/STAR/Nobt/",metadata$Accession[metadata$Species=="Tobacco"],".Aligned.sortedByCoord.out.bam")
 
 #Read in BAM files
-#BiocManager::install("Rsamtools")
-library("Rsamtools")
 NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco"], yieldSize=2000000)
 TAIR10BamFiles <- BamFileList(metadata$Path[metadata$Species=="Arabidopsis"], yieldSize=2000000)
 SlycSRABamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0], yieldSize=2000000)
 SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1], yieldSize=50000) #lower yield size?
 seqinfo(TAIR10BamFiles[1]) #check that it worked
 
-#BiocManager::install("GenomicFeatures")
-library("GenomicFeatures")
 #Import (or create and save) Transcript databases
 tryCatch(Slyctxdb <- loadDb("DEGAnalysis/SlycTxDb.sqlite"),error=function(e){
   Slyctxdb <- makeTxDbFromGFF("SlycDNA/ITAG4.0_gene_models.gff", organism="Solanum lycopersicum")
@@ -49,7 +49,6 @@ tryCatch(Nobtgenes <- readRDS("DEGAnalysis/Nobtgenes.rds"), error=function(e){
 
 
 # Count Reads -------------------------------------------------------------
-library("GenomicAlignments")
 #To my knowledge the SRA experiments were not strand-specific
 tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/TAIR10Expt.rds"), error=function(e){
   TAIR10Expt <- summarizeOverlaps(features=TAIR10genes,
@@ -69,10 +68,6 @@ tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/SlycSRAExpt.rds"), error=function(e
   colData(SlycSRAExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==0,])
   saveRDS(SlycSRAExpt, "DEGAnalysis/SlycSRAExpt.rds")
 })
-# I think this is the best way to process the in house (IH) PE strand-specific libraries.
-# I could also use preprocess.reads=invertStrand from
-# https://support.bioconductor.org/p/65844/ but this seems unusual
-# This dataset is too large to read in at once, maybe not with the smaller yield size, but regardless this is the easier way I can find to read it in.
 tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/SlycIHExpt.rds"), error=function(e){
   SlycIHPart<-list()
   for (i in 1:length(metadata$Accession[metadata$Species=="Tomato" & metadata$PE==1])) {
@@ -98,89 +93,48 @@ tryCatch(NobtExpt <- readRDS("DEGAnalysis/NobtExpt.rds"), error=function(e){
   saveRDS(NobtExpt, "DEGAnalysis/NobtExpt.rds")
 })
 
-# Experimental Design Set up ----------------------------------------------------
-#spline regression will be better suited for this
-library("splines")
-#define a spline basis
-TAIR10design <- ns(colData(TAIR10Expt)$DAP, df = 3)
-#rename the splines for later
-colnames(TAIR10design) <- paste0("spline", seq(1:dim(TAIR10design)[2]))
-#add the spline coefficients to the Expt for regression
-colData(TAIR10Expt) <- cbind(colData(TAIR10Expt), TAIR10design)
-library("DESeq2")
-TAIR10dds <- DESeqDataSet(TAIR10Expt, design = ~ spline1 + spline2 + spline3)
-TAIR10dds <- estimateSizeFactors(TAIR10dds)
-
-
-
+# Design and DE Testing ----------------------------------------------------
+# I wrote a function to do what is currently my default analysis uniformly on every expt
+DESeqSpline <- function(se, 
+                        dfSpline=3, 
+                        timeVar="DAP", 
+                        CaseCtl=FALSE, 
+                        CaseCtlVar="Genotype",
+                        DiagnosticPlots=TRUE) {
+  require("splines", "DESeq2", "ggplot2")
+  design <- ns(colData(se)[,timeVar], df=dfSpline)
+  colnames(design) <- paste0("spline", seq(1:dim(design)[2]))
+  colData(se) <- cbind(colData(se), design)
+  if (CaseCtl) {
+    dds <- DESeqDataSet(se, design = as.formula(paste0("~", CaseCtlVar, "+" ,paste(paste0(CaseCtlVar,":",colnames(design)), collapse = "+"))))
+  } else {
+    dds <- DESeqDataSet(se, design = as.formula(paste0("~",paste(colnames(design), collapse = "+"))))
+  }
+  print("Normalizing counts...")
+  rld <- rlog(dds)
+  print("Done. Now for some diagnostic plots.")
+  dds <- estimateSizeFactors(dds)
+  plot( assay(rld)[ , 1:2], col=rgb(0,0,0,.2), pch=16, cex=0.3, )
+  #This isnt printing because it's a ggplot object, I think
+  plotPCA(rld, intgroup = c(if(CaseCtl){CaseCtlVar}, timeVar))
+  if (CaseCtl) {
+    dds <- DESeq(dds,test="LRT", reduced = as.formula(paste0("~",paste(colnames(design), collapse = "+"))))
+  } else {
+    dds <- DESeq(dds,test="LRT", reduced = ~ 1)
+  }
+  print("Getting results...")
+  res <- results(dds)
+  return(res)
+}
 
 #consider analyzing all tomato datasets together
+TAIR10res <- DESeqSpline(TAIR10Expt)
+SlycSRAres <- DESeqSpline(SlycIHExpt, dfSpline = 2, CaseCtl=FALSE, DiagnosticPlots = TRUE)
 SlycSRAdds <- DESeqDataSet(SlycSRAExpt, design = ~ Genotype + Timepoint)
-SlycSRAdds <- estimateSizeFactors(SLYCSRAdds)
 SlycIHdds <- DESeqDataSet(SlycIHExpt, design = ~ Timepoint)
-SlycIHdds <- estimateSizeFactors(SlycIHdds)
 Nobtdds <- DESeqDataSet(NobtExpt, design = ~ Timepoint)
-Nobtdds <- estimateSizeFactors(Nobtdds)
 
 
-# Exploratory Analyses ----------------------------------------------------
-#This should be run for each Expt, so I am making the code once with dummy variables
-#that can map back to each expt.
-dds <- TAIR10dds
-#plot a comparison of log2 and regularized log transformations
-#the rlog is for exploratory analyses NOT for differential expression
-rld <- rlog(dds)
-par( mfrow = c( 1, 2 ) )
-dds <- estimateSizeFactors(dds)
-plot( log2( 1 + counts(dds, normalized=TRUE)[ , 1:2] ),
-      col=rgb(0,0,0,.2), pch=16, cex=0.3 )
-plot( assay(rld)[ , 1:2],
-      col=rgb(0,0,0,.2), pch=16, cex=0.3 )
-
-#Check of the euclidean distances between samples/treatments make sense
-sampleDists <- dist( t( assay(rld) ) )
-library("gplots")
-library("RColorBrewer")
-sampleDistMatrix <- as.matrix( sampleDists )
-rownames(sampleDistMatrix) <- paste( rld$Genotype, rld$DAP, sep="-" )
-colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
-hc <- hclust(sampleDists)
-heatmap.2( sampleDistMatrix, Rowv=as.dendrogram(hc),
-           symm=TRUE, trace="none", col=colors,
-           margins=c(2,10), labCol=FALSE )
-
-#Check again but with Poisson distances
-library("PoiClaClu")
-poisd <- PoissonDistance(t(counts(dds)))
-samplePoisDistMatrix <- as.matrix( poisd$dd )
-rownames(samplePoisDistMatrix) <- paste( dds$Genotype, dds$DAP, sep="-" )
-colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
-hc <- hclust(poisd$dd)
-heatmap.2( samplePoisDistMatrix, Rowv=as.dendrogram(hc),
-           symm=TRUE, trace="none", col=colors,
-           margins=c(2,10), labCol=FALSE )
-
-#Make a PCA
-plotPCA(rld, intgroup = c("Genotype", "DAP"))
-
-#Make an MDS Plot with rlog counts
-library("ggplot2")
-mds <- data.frame(cmdscale(sampleDistMatrix))
-mds <- data.frame(cbind(mds, colData(rld)))
-qplot(X1,X2,color=DAP,shape=Genotype,data=mds)
-
-#Make an MDS plot with poisson counts
-mds <- data.frame(cmdscale(samplePoisDistMatrix))
-mds <- data.frame(cbind(mds, colData(dds)))
-qplot(X1,X2,color=DAP,shape=Genotype,data=mds)
-
-
-# Differential Expression -------------------------------------------------
-#do the actual DE testing to see if a gene's expression is better explained by the spline model than by noise
-TAIR10dds <- DESeq(TAIR10dds,test="LRT", reduced = ~ 1)
-
-#Summarize the results
-# remeber that LFC here is kinda meaningless
 TAIR10res <- results(TAIR10dds)
 summary(TAIR10res)
 
@@ -197,10 +151,6 @@ topGene <- rownames(TAIR10res)[which.min(TAIR10res$padj)]
 plotCounts(TAIR10dds, gene=topGene, intgroup="DAP", normalized = T)
 plotCounts(TAIR10dds, gene="AT5G60910", intgroup=c("DAP"),normalized=T) #FRUITFULL
 
-#Look at dispersion. Notsure how useful this is
-plotDispEsts(TAIR10dds)
-
-
 # Clustering --------------------------------------------------------------
 #this section is sorta experimental and is HEAVILY borrowed fromL
 #https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
@@ -212,11 +162,11 @@ sig_res_TAIR10 <- TAIR10res %>%
   data.frame() %>%
   rownames_to_column(var="gene") %>% 
   as_tibble() %>% 
-  filter(padj < 0.05)
-# Subset results for faster cluster finding (for classroom demo purposes)
+  filter(padj < 0.001)
+# Subset results for faster cluster finding (for classroom demo purposes) originally at n=1000
 clustering_sig_genesTAIR10 <- sig_res_TAIR10 %>%
   arrange(padj) %>%
-  head(n=1000)
+  head(n=6000)
 # Obtain rlog values for those significant genes
 cluster_rlog_TAIR10 <- rld[clustering_sig_genesTAIR10$gene, ]
 colData(cluster_rlog_TAIR10)$DAP <- as.factor(colData(cluster_rlog_TAIR10)$DAP)
