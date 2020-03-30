@@ -1,8 +1,8 @@
-# Prep Inputs -------------------------------------------------------------
 library("GenomicAlignments")
 library("Rsamtools")
 library("GenomicFeatures")
 
+# Prep Inputs -------------------------------------------------------------
 #Borrorwed heavily from https://www.bioconductor.org/help/course-materials/2015/LearnBioconductorFeb2015/B02.1.1_RNASeqLab.html#construct
 #Read in the Sample list
 metadata <- read.table("DEGAnalysis/SampleList.txt", header=T, sep="\t")
@@ -95,80 +95,127 @@ tryCatch(NobtExpt <- readRDS("DEGAnalysis/NobtExpt.rds"), error=function(e){
 
 # Design and DE Testing ----------------------------------------------------
 # I wrote a function to do what is currently my default analysis uniformly on every expt
-DESeqSpline <- function(se, 
-                        dfSpline=3, 
-                        timeVar="DAP", 
-                        CaseCtl=FALSE, 
-                        CaseCtlVar="Genotype",
-                        DiagnosticPlots=TRUE) {
-  require("splines", "DESeq2", "ggplot2")
+library("splines")
+library("DESeq2")
+library("ggplot2")
+
+DESeqSpline <- function(se=se, 
+                        timeVar="DAP",
+                        CaseCtlVar="Genotype") {
+  #calculate spline df as the number of times -1
+  dfSpline <- (length(unique(colData(se)[,timeVar]))-1)
+  message("Fitting spline regresion with ", dfSpline, " degrees of freedom")
   design <- ns(colData(se)[,timeVar], df=dfSpline)
   colnames(design) <- paste0("spline", seq(1:dim(design)[2]))
   colData(se) <- cbind(colData(se), design)
-  if (CaseCtl) {
+  if (length(unique(colData(se)[,CaseCtlVar]))>1) {
+    message("Two entries detected for ", CaseCtlVar,". Incorporating this into the model")
     dds <- DESeqDataSet(se, design = as.formula(paste0("~", CaseCtlVar, "+" ,paste(paste0(CaseCtlVar,":",colnames(design)), collapse = "+"))))
   } else {
+    message("Only one entry detected for ", CaseCtlVar,". Ignoring this variable for model building")
     dds <- DESeqDataSet(se, design = as.formula(paste0("~",paste(colnames(design), collapse = "+"))))
   }
-  print("Normalizing counts...")
-  rld <- rlog(dds)
-  print("Done. Now for some diagnostic plots.")
   dds <- estimateSizeFactors(dds)
-  plot( assay(rld)[ , 1:2], col=rgb(0,0,0,.2), pch=16, cex=0.3, )
-  #This isnt printing because it's a ggplot object, I think
-  plotPCA(rld, intgroup = c(if(CaseCtl){CaseCtlVar}, timeVar))
-  if (CaseCtl) {
+  if (length(unique(colData(se)[,CaseCtlVar]))>1) {
     dds <- DESeq(dds,test="LRT", reduced = as.formula(paste0("~",paste(colnames(design), collapse = "+"))))
   } else {
     dds <- DESeq(dds,test="LRT", reduced = ~ 1)
   }
-  print("Getting results...")
-  res <- results(dds)
-  return(res)
+  return(dds)
 }
 
-#consider analyzing all tomato datasets together
-TAIR10res <- DESeqSpline(TAIR10Expt)
-SlycSRAres <- DESeqSpline(SlycIHExpt, dfSpline = 2, CaseCtl=FALSE, DiagnosticPlots = TRUE)
-SlycSRAdds <- DESeqDataSet(SlycSRAExpt, design = ~ Genotype + Timepoint)
-SlycIHdds <- DESeqDataSet(SlycIHExpt, design = ~ Timepoint)
-Nobtdds <- DESeqDataSet(NobtExpt, design = ~ Timepoint)
+# Load (or make and save) DESeq datasets for each experiment
+tryCatch(TAIR10dds <- readRDS("DEGAnalysis/TAIR10dds.rds"), error=function(e){
+  TAIR10dds <- DESeqSpline(TAIR10Expt)
+  saveRDS(TAIR10dds, "DEGAnalysis/TAIR10dds.rds")
+})
+tryCatch(SlycSRAdds <- readRDS("DEGAnalysis/SlycSRAdds.rds"), error=function(e){
+  SlycSRAdds <- DESeqSpline(SlycSRAExpt)
+  saveRDS(SlycSRAdds, "DEGAnalysis/SlycSRAdds.rds")
+})
+tryCatch(SlycIHdds <- readRDS("DEGAnalysis/SlycIHdds.rds"), error=function(e){
+  SlycIHdds <- DESeqSpline(SlycIHExpt)
+  saveRDS(SlycIHdds, "DEGAnalysis/SlycIHdds.rds")
+})
+tryCatch(Nobtdds <- readRDS("DEGAnalysis/Nobtdds.rds"), error=function(e){
+  Nobtdds <- DESeqSpline(NobtExpt)
+  saveRDS(Nobtdds, "DEGAnalysis/Nobtdds.rds")
+})
 
 
-TAIR10res <- results(TAIR10dds)
-summary(TAIR10res)
-
-#Apply a FDR cutoff and sort to show the most extreme LFC
-TAIR10resSig <- subset(TAIR10res, padj < 0.05)
-head(TAIR10resSig[ order( TAIR10resSig$padj ), ])
-head(TAIR10resSig[ order( -TAIR10resSig$log2FoldChange ), ])
-
-#Look at other contrasts not reported by default
-results(TAIR10dds, contrast=c("DAP", 3, 6))
-
+# Play around with individual genes ---------------------------------------
+Exampledds <- SlycIHdds #assign one dds as the example to streamline code
+ExampleRes <- results(Exampledds) #get results
+ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
+head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
 #Examine an individual Gene
-topGene <- rownames(TAIR10res)[which.min(TAIR10res$padj)]
-plotCounts(TAIR10dds, gene=topGene, intgroup="DAP", normalized = T)
-plotCounts(TAIR10dds, gene="AT5G60910", intgroup=c("DAP"),normalized=T) #FRUITFULL
+topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
+colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
+plotCounts(Exampledds, gene=topGene, intgroup="DAP", normalized = T) #plot best fitting gene
+
+#FUL AT5G60910 
+#FUL1 Solyc06g069430.3
+#FUL1 Solyc03g114830.3
+#MBP10 Solyc02g065730.2
+#MBP20 Solyc02g089210.4
+plotCounts(Exampledds, gene="Solyc06g069430.3", intgroup="DAP",normalized=T) #FRUITFULL
 
 # Clustering --------------------------------------------------------------
 #this section is sorta experimental and is HEAVILY borrowed fromL
 #https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
 library("magrittr")
-BiocManager::install("DEGreport")
 library("DEGreport")
+library("dplyr")
 library("tibble")
-sig_res_TAIR10 <- TAIR10res %>%
-  data.frame() %>%
-  rownames_to_column(var="gene") %>% 
-  as_tibble() %>% 
-  filter(padj < 0.001)
-# Subset results for faster cluster finding (for classroom demo purposes) originally at n=1000
-clustering_sig_genesTAIR10 <- sig_res_TAIR10 %>%
-  arrange(padj) %>%
-  head(n=6000)
-# Obtain rlog values for those significant genes
-cluster_rlog_TAIR10 <- rld[clustering_sig_genesTAIR10$gene, ]
-colData(cluster_rlog_TAIR10)$DAP <- as.factor(colData(cluster_rlog_TAIR10)$DAP)
-clusters <- degPatterns(assay(cluster_rlog_TAIR10), metadata = colData(cluster_rlog_TAIR10), time = "DAP", col=NULL)
-clusters <- degPatterns(assay(cluster_rlog_TAIR10), metadata = colData(cluster_rlog_TAIR10), time = "DAP", col=NULL, reduce = T)
+
+DESeqCluster <- function(dds=dds,
+                         numGenes=c("1000", "3000", "all"),
+                         FDRthreshold=0.01,
+                         timeVar="DAP",
+                         CaseCtlVar="Genotype"){
+  numGenes=match.arg(numGenes)
+  message("Normalizing counts")
+  rld <- rlog(dds)
+  message("Done.")
+  message("Now for some diagnostic plots:")
+  plot( assay(rld)[ , 1:2], col=rgb(0,0,0,.2), pch=16, cex=0.3, )
+  plot <- plotPCA(rld, intgroup = c(CaseCtlVar, timeVar))
+  print(plot)
+  message("Filtering DEGs to FDR threshold less than ", FDRthreshold)
+  res_LRT <- results(dds)
+  sig_res <- res_LRT %>%
+    data.frame() %>%
+    rownames_to_column(var="gene") %>% 
+    as_tibble() %>% 
+    filter(padj < FDRthreshold)
+  message(nrow(sig_res), " genes remaining")
+  # Subset results for faster clustering
+  if (numGenes=="all") {
+    numGenes <- nrow(sig_res)
+    message("Using all ", numGenes, " DEGs. Maybe consider fewer to speed clustering?")
+  } else {
+    message("Using ", numGenes, " for clustering")
+  }
+  clustering_sig_genes <- sig_res %>%
+    arrange(padj) %>%
+    head(n=as.numeric(numGenes))
+  # Obtain rlog values for those significant genes
+  cluster_rlog <- rld[clustering_sig_genes$gene, ]
+  colData(cluster_rlog)[,timeVar] <- as.factor(colData(cluster_rlog)[,timeVar])
+  if (length(unique(colData(cluster_rlog)[,CaseCtlVar]))>1) {
+    message("Two entries detected for ", CaseCtlVar,". Plots will be colored by ", CaseCtlVar)
+    clusters <- degPatterns(assay(cluster_rlog), metadata = colData(cluster_rlog), time = timeVar, col=CaseCtlVar, reduce = T)
+  } else {
+    message("Only one entry detected for ", CaseCtlVar, ". Ignoring ", CaseCtlVar, " for plotting.")
+    clusters <- degPatterns(assay(cluster_rlog), metadata = colData(cluster_rlog), time = timeVar, col=NULL, reduce = T)
+  }
+  return(clusters)
+}
+
+TAIR10cluster <- DESeqCluster(TAIR10dds, numGenes = "3000")
+saveRDS(TAIR10cluster, "DEGAnalysis/TAIR10cluster.rds")
+
+SlycSRAcluster <- DESeqCluster(SlycSRAdds, numGenes = "3000")
+saveRDS(SlycSRAcluster, "DEGAnalysis/SlycSRAcluster.rds")
+
+
