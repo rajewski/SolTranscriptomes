@@ -6,7 +6,7 @@ In this repository I am conducting a DEG analysis of *Solanum lycopersicum* cv. 
 
 ## DEG Analysis
 
-This pipeline will consist of STAR as the aligner for RNA seq reads and DEseq2 as the differential expression testing software. 
+For RNA-seq, this will consist of STAR as the read aligner and DEseq2 as the differential expression testing software. For the microarray analyses, as a preprocessing step, the probe sequences were mapped back to transcriptomic targets, and nonmapping or multimapping probes were excluded from the analyes. Differential expression testing will be done with limma/voom. In all caases, the data are fit to a spline regression model with one fewer degree of freedom than there are timepoints in the specific study. (See supplement of [Sander et al, 2017](https://www.ncbi.nlm.nih.gov/pubmed/27797772) for an implementation of this with DESeq2.)
 
 ### In-House Data
  - I am working on uploading these to NCBI so that the whole thing will be with publicly available data
@@ -34,6 +34,9 @@ For Arabidopsis, the data is downloaded with the `1_GetExternalGenome.sh` to `Ex
 
 # ChIP Analysis
 
+As a preprocessing step for the microarray study, array probe sequences were mapped to the SL4.0 genome, and probe locations were updated. Nonmapping or multimapping probes were excluded from the analysis.
+
+
 - How tf am I going to do a chip analysis from raw data?
 - How to integrate chipseq with chip-chip? a simple list of enriched regions/promoters
 
@@ -41,7 +44,7 @@ For Arabidopsis, the data is downloaded with the `1_GetExternalGenome.sh` to `Ex
 
 | Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
-| Tomato | [PRJNA21306](https://www.ncbi.nlm.nih.gov/bioproject/) | ChIP-chip of wild-type fruits using anti-FUL1 or anti-FUL2 antibodies. From Fujisawa et al, 2014 |
+| Tomato | [PRJNA213106](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA213106) | ChIP-chip of wild-type fruits using anti-FUL1 or anti-FUL2 antibodies. From Fujisawa et al, 2014 |
 | Arabidopsis | [PRJNA316152](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA316152) | ChIP-seq of pistil/siliques of *ful-1 pFUL*:*FUL-GFP* using an anti-GFP antibody. From Bemer et al, 2017 |
 | Arabidopsis | [PRJNA427320](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA427320) | ChIP-seq of pistil/siliques of *ful-1 pFUL*:*FUL-GFP* using an anti-GFP antibody. From Balanza et al 2018 |
 
