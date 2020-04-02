@@ -142,9 +142,8 @@ tryCatch(Nobtdds <- readRDS("DEGAnalysis/Nobtdds.rds"), error=function(e){
   saveRDS(Nobtdds, "DEGAnalysis/Nobtdds.rds")
 })
 
-
 # Play around with individual genes ---------------------------------------
-Exampledds <- SlycIHdds #assign one dds as the example to streamline code
+Exampledds <- NobtSwitchdds #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
@@ -154,11 +153,11 @@ colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
 plotCounts(Exampledds, gene=topGene, intgroup="DAP", normalized = T) #plot best fitting gene
 
 #FUL AT5G60910 
-#FUL1 Solyc06g069430.3
-#FUL1 Solyc03g114830.3
-#MBP10 Solyc02g065730.2
-#MBP20 Solyc02g089210.4
-plotCounts(Exampledds, gene="Solyc06g069430.3", intgroup="DAP",normalized=T) #FRUITFULL
+#FUL1 Solyc06g069430.3 NIOBTv3_g28929-D2
+#FUL1 Solyc03g114830.3 NIOBTv3_g39464
+#MBP10 Solyc02g065730.2 NIOBTv307845
+#MBP20 Solyc02g089210.4 NIOBT_gMBP20
+plotCounts(Exampledds, gene="NIOBTv3_g39464", intgroup="DAP",normalized=T) #FRUITFULL
 
 # Clustering --------------------------------------------------------------
 #this section is sorta experimental and is HEAVILY borrowed fromL
@@ -212,10 +211,46 @@ DESeqCluster <- function(dds=dds,
   return(clusters)
 }
 
-TAIR10cluster <- DESeqCluster(TAIR10dds, numGenes = "3000")
-saveRDS(TAIR10cluster, "DEGAnalysis/TAIR10cluster.rds")
+tryCatch(TAIR10cluster <- readRDS("DEGAnalysis/TAIR10cluster.rds"), error=function(e){
+  TAIR10cluster <- DESeqCluster(TAIR10dds, numGenes = "3000")
+  saveRDS(TAIR10cluster, "DEGAnalysis/TAIR10cluster.rds")
+})
 
-SlycSRAcluster <- DESeqCluster(SlycSRAdds, numGenes = "3000")
-saveRDS(SlycSRAcluster, "DEGAnalysis/SlycSRAcluster.rds")
+tryCatch(SlycSRAcluster <- readRDS("DEGAnalysis/SlycSRAcluster.rds"), error=function(e){
+  SlycSRAcluster <- DESeqCluster(SlycSRAdds, numGenes = "3000")
+  saveRDS(SlycSRAcluster, "DEGAnalysis/SlycSRAcluster.rds")
+})
+
+tryCatch(SlycIHcluster <- readRDS("DEGAnalysis/SlycIHcluster.rds"), error=function(e){
+  SlycIHcluster <- DESeqCluster(SlycIHdds, numGenes = "3000")
+  saveRDS(SlycIHcluster, "DEGAnalysis/SlycIHcluster.rds")
+})
+
+tryCatch(Nobtcluster <- readRDS("DEGAnalysis/Nobtcluster.rds"), error=function(e){
+  Nobtcluster <- DESeqCluster(Nobtdds, numGenes = "3000")
+  saveRDS(Nobtcluster, "DEGAnalysis/Nobtcluster.rds")
+})
 
 
+# Scratch -----------------------------------------------------------------
+
+
+# Code to troubleshoot the mislabele Nobt sample
+# Based on the PCA plot from the rlog data. I think that one of my samples had its 3DPA and 6DPA
+# files switch. I am going to ID which one
+Nobtrld <- rlog(Nobtdds)
+Nobtrld$DAP <- as.factor(Nobtrld$DAP)
+Nobtrld$Replicate <- as.factor(Nobtrld$Replicate)
+plotPCA(Nobtrld, intgroup = c("Genotype", "DAP"))
+plotPCA(Nobtrld, intgroup = c("Replicate"))
+#Rep1 6DAP needs to be Rep3 3DAP
+#Rep3 3DAP needs to be Rep1 6DAP
+#modify the SampleList.txt file, read it into metadata and replace colData(NotExpt) with that first
+NobtSwitchdds <- DESeqSpline(NobtExpt)
+saveRDS(NobtSwitchdds, "DEGAnalysis/NobtSwitchdds.rds")
+NobtSwitchrld <- rlog(NobtSwitchdds)
+NobtSwitchrld$DAP <- as.factor(NobtSwitchrld$DAP)
+NobtSwitchrld$Replicate <- as.factor(NobtSwitchrld$Replicate)
+plotPCA(NobtSwitchrld, intgroup=c("Genotype", "DAP"))
+NobtSwitchCluster <- DESeqCluster(NobtSwitchdds, numGenes = "3000")
+saveRDS(NobtSwitchCluster, "DEGAnalysis/NobtSwitchcluster.rds")
