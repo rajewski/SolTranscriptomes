@@ -17,28 +17,36 @@ cd ExternalData/Microarray
 
 #First for the Tomato Agilent Array
 #remove the header, select probe name and sequence columns and output to a fasta
-if [ ! -e Agilent022270.fa ]; then
-    tail -n +18 Agilent022270.txt | cut -f4,16 | awk '{if ($2) print ">"$1"\n"$2}' > Agilent022270.fa
+if [ ! -e GSE41560/Agilent022270.fa ]; then
+    mkdir -p GSE41560
+    tail -n +18 GSE41560/Agilent022270.txt | cut -f4,16 | awk '{if ($2) print ">"$1"\n"$2}' > GSE41560/Agilent022270.fa
 fi
 
 #map those probes to the transcriptome with exonerate tolerating no mismatches
-if [ ! -e Agilent022270.nodups.txt ]; then
+if [ ! -e GSE41560/Agilent022270.nodups.txt ]; then
     module load exonerate
     exonerate \
 	--showalignment FALSE \
 	--percent 100 \
 	-S no \
 	--bestn 10 \
-	Agilent022270.fa \
-	../../SlycDNA/Slyc.transcripts.fa > Agilent022270.exonerate.out
+	GSE41560/Agilent022270.fa \
+	../../SlycDNA/Slyc.transcripts.fa > GSE41560/Agilent022270.exonerate.out
     #get a list of duplicates from the exonerate output
-    tail -n +3 Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -d > Agilent022270.exonerate.dups.txt
-    grep -Fwf Agilent022270.exonerate.dups.txt Agilent022270.exonerate.out | less #Print multimappers with targets for personal entertainment
-    tail -n +3 Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less #Show how many matches each multimapper has (between 2 and 80)
+    tail -n +3 GSE41560/Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -d > GSE41560/Agilent022270.exonerate.dups.txt
+    grep -Fwf GSE41560/Agilent022270.exonerate.dups.txt GSE41560/Agilent022270.exonerate.out | less #Print multimappers with targets for personal entertainment
+    tail -n +3 GSE41560/Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less #Show how many matches each multimapper has (between 2 and 80)
     #Remove multimappers from the output
-    grep -vFwf Agilent022270.exonerate.dups.txt Agilent022270.exonerate.out > Agilent022270.exonerate.nodups.txt
+    grep -vFwf GSE41560/Agilent022270.exonerate.dups.txt GSE41560/Agilent022270.exonerate.out > GSE41560/Agilent022270.exonerate.nodups.txt
     #Create a final list of just the single mapping probes
-    tail -n +3 Agilent022270.exonerate.nodups.txt |cut -f2 -d " " | head -n -1 > Agilent022270.nodups.txt
+    tail -n +3 GSE41560/Agilent022270.exonerate.nodups.txt |cut -f2 -d " " | head -n -1 > GSE41560/Agilent022270.nodups.txt
+fi
+
+#Download the raw data files for the Tomato Agilent Array
+if [ ! -e GSE41560/GSM1019121_252227010044_A04.txt.gz ]; then
+    mkdir -p GSE41560
+    #I cant seem to download the data directly via FTP, but I've updated it myself and the command contine from here on how to process it.
+    tar -xvf GSE41560_RAW.tar
 fi
 
 #now for the Nimblegen Array, pray for me.
@@ -68,11 +76,7 @@ if [ ! -e GPL15968-24228.nodups.txt ]; then
     tail -n +3 GPL15968-24228.exonerate..nodups.txt |cut -f2 -d " " | head -n -1 > GPL15968-24228.nodups.txt
 fi
 
-
-
-#The arabidopsis tiling array is mapped to the TAIR9 genome. I want to update this to be consistent, but I am having trouble finding the design...stand by
-
-
+### I'm not goin to mess wit hthe Affy array data. It's too complex and also the results didnt turn out to be compelling at all.
 #Download the CEL files for the Arabidopsis Affy Expt
 if [ ! -e GSM2098198_GR0b-v4.CEL.gz ]; then
     echo Downlaoding Arabidopsis microarray GSE79553...
