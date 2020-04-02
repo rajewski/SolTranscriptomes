@@ -79,3 +79,23 @@ if [ ! -e ExternalData/Microarray/GSE79553/GSM2098198_GR0b-v4.CEL.gz ]; then
     tar -C ExternalData/Microarray/GSE79553/ -xvf ExternalData/Microarray/GSE79553/GSE79553_RAW.tar
     echo Done.
 fi
+
+#Load inthe normalized data from NCBI
+ curl https://ftp.ncbi.nlm.nih.gov/geo/series/GSE79nnn/GSE79553/suppl/GSE79553%5FNormalized%5Fdata%5Fwith%5Fall%5Fcontrols%2Etxt%2Egz > ExternalData/Microarray/GSE79553_Normalized_data_with_all_controls.txt.gz
+ gunzip ExternalData/Microarray/GSE79553_Normalized_data_with_all_controls.txt.gz
+
+#Download the CDF for that Affy array
+if [ ! -e ExternalData/Microarray/GPL14926_agronomics1_TAIR9_gene.CDF.gz ]; then
+    echo Downloading Affy CDF file
+    curl https://ftp.ncbi.nlm.nih.gov/geo/platforms/GPL14nnn/GPL14926/suppl/GPL14926%5Fagronomics1%5FTAIR9%5Fgene%2ECDF%2Egz > ExternalData/Microarray/GPL14926_agronomics1_TAIR9_gene.CDF.gz
+    echo Done
+fi
+
+#try anoter CDF for the Affy array
+if [ ! -e ExternalData/Microarray/AGRONOMICS1_At_TAIRG.cdf ]; then
+    cd ExternalData/Microarray
+    wget http://mbni.org/customcdf/18.0.0/tairg.download/AGRONOMICS1_At_TAIRG_18.0.0.zip
+    unzip ExternalData/Microarray/AGRONOMICS1_At_TAIRG_18.0.0.zip
+    cd ../../
+fi
+

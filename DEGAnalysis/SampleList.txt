@@ -43,7 +43,7 @@ NobtPre2	Tobacco	WT	0	2	1	1
 NobtPre3	Tobacco	WT	0	3	1	1
 Nobt3DPA1	Tobacco	WT	3	1	1	1
 Nobt3DPA2	Tobacco	WT	3	2	1	1
-Nobt3DPA3	Tobacco	WT	3	3	1	1
-Nobt6DPA1	Tobacco	WT	6	1	1	1
+Nobt3DPA3	Tobacco	WT	6	1	1	1
+Nobt6DPA1	Tobacco	WT	3	3	1	1
 Nobt6DPA2	Tobacco	WT	6	2	1	1
 Nobt6DPA3	Tobacco	WT	6	3	1	1
