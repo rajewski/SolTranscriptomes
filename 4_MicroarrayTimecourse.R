@@ -1,6 +1,7 @@
 library("limma")
-library("affy")
-library("makecdfenv")
+#library("affy")
+#library("makecdfenv")
+`%notin%` <- Negate(`%in%`)
 
 # Arabidopsis Affymetrix DEX Expt -----------------------------------------
 # I have analyzed this data and find that FUL is not differentially expressed by the 
@@ -80,5 +81,37 @@ DPMSigRes["AT3G58780.X.Chr3.plus.21738460.21741907",]
 
 
 # Tomato Agilent Timecourse -----------------------------------------------
+#Import Expt design
+TomTargets <- read.table("DEGAnalysis/Microarray/TomatoDesign.tsv", header=T)
+TomTargets$Genotype <- factor(TomTargets$Genotype, levels=c("WT", "KD"))
+TomTargets$Line <- factor(TomTargets$Line, levels=c("10","30"))
+
+# Read in the data files
+TomEset <- read.maimages(TomTargets$FileName,
+                         source="agilent",
+                         green.only = TRUE,
+                         names = paste(TomTargets$Genotype,TomTargets$Line,TomTargets$Rep, sep="_"),
+                         other.columns = "gIsWellAboveBG")
+
+# Background correct and normalize between arrays
+TomNorm <- backgroundCorrect(TomEset, method="normexp")
+TomNorm <- normalizeBetweenArrays(TomNorm, method="quantile")
+
+#start removing bad probes
+TomControl <- TomNorm$genes$ControlType==1L
+TomIsExpr <- rowSums(TomNorm$other$gIsWellAboveBG > 0) >= 1
+TomGeneNames <- read.table("ExternalData/Microarray/GSE41560/Agilent022270.final.txt", stringsAsFactors = F)
+TomBadMap <- TomNorm$genes$ProbeName %notin% TomGeneNames$V1
+TomNormFilt <- TomNorm[!TomControl & !TomBadMap & TomIsExpr, ]
+
+#Add Gene Names from exonerate output
+TomNormFilt$genes$GeneName <- TomGeneNames$V2[match(TomNormFilt$genes$ProbeName, TomGeneNames$V1)]
+
+# Fit Model and test DEs
+TomDesign <- model.matrix(~TomTargets$Genotype+TomTargets$Line)
+TomFit <- lmFit(TomNormFilt, TomDesign)
+TomFit <- eBayes(TomFit,trend=TRUE,robust=TRUE)
+summary(decideTests(TomFit[,-1]))
+topTable(TomFit, coef = 2)
 
 

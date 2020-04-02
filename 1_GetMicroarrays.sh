@@ -23,7 +23,7 @@ if [ ! -e GSE41560/Agilent022270.fa ]; then
 fi
 
 #map those probes to the transcriptome with exonerate tolerating no mismatches
-if [ ! -e GSE41560/Agilent022270.nodups.txt ]; then
+if [ ! -e GSE41560/Agilent022270.final.txt ]; then
     module load exonerate
     exonerate \
 	--showalignment FALSE \
@@ -38,8 +38,9 @@ if [ ! -e GSE41560/Agilent022270.nodups.txt ]; then
     tail -n +3 GSE41560/Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less #Show how many matches each multimapper has (between 2 and 80)
     #Remove multimappers from the output
     grep -vFwf GSE41560/Agilent022270.exonerate.dups.txt GSE41560/Agilent022270.exonerate.out > GSE41560/Agilent022270.exonerate.nodups.txt
-    #Create a final list of just the single mapping probes
-    tail -n +3 GSE41560/Agilent022270.exonerate.nodups.txt |cut -f2 -d " " | head -n -1 > GSE41560/Agilent022270.nodups.txt
+    #Create a final list of just the single mapping probes and one with targets
+    tail -n +3 GSE41560/Agilent022270.exonerate.nodups.txt | cut -f2 -d " " | head -n -1 > GSE41560/Agilent022270.nodups.txt
+    tail -n +3 GSE41560/Agilent022270.exonerate.nodups.txt | cut -f2,6 -d " "  | head -n -1 |  sed 's/mRNA://' > GSE41560/Agilent022270.final.txt
 fi
 
 #Download the raw data files for the Tomato Agilent Array
