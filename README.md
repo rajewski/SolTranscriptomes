@@ -17,14 +17,14 @@ Our lab has generated several transcriptome libraries that will be used for this
 
 #### Gene Expression Data
 
-The RNA seq files are downloaded from SRA with the `1_GetExternalSRAData.sh` script and placed in the `ExternalData/RNAseq` directory.
+The RNA seq files are downloaded from SRA with the `1_GetExternalSRAData.sh` script and placed in the `ExternalData/RNAseq` directory. The microarray data files and probe mappings are downloaded with the 1_GetMicroarrays.sh script and placed in the `ExternalData/Microarray` directory.
 
 | Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
 | Tomato | [PRJNA213528](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA213528)  | RNA-seq from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Fujusawa et al, 2014 |
 | Tomato | [PRJNA177429](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA177429) | Microarray from a developmental series of fruits using wild-type and *ful1*/*ful2* knockdown lines. From Bemer et al, 2010 |
 | Arabidopsis | [PRJEB25745](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB25745) | RNA-seq of wild-type fruit valve tissue. From Mizzotti et al, 2018 | 
-| Arabidopsis | [PRJNA316153](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA316153) | Microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment. From Bemer et al, 2017 |
+| Arabidopsis | [PRJNA316153](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA316153) | Unpublished(?) microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment. Attached to Bemer et al, 2017, but not reported. |
 
 #### Genomes
 
