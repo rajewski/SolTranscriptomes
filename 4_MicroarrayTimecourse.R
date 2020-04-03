@@ -81,7 +81,7 @@ DPMSigRes["AT3G58780.X.Chr3.plus.21738460.21741907",]
 
 
 # Tomato Agilent Timecourse -----------------------------------------------
-#Import Expt design
+# Import Expt design
 TomTargets <- read.table("DEGAnalysis/Microarray/TomatoDesign.tsv", header=T)
 TomTargets$Genotype <- factor(TomTargets$Genotype, levels=c("WT", "KD"))
 TomTargets$Line <- factor(TomTargets$Line, levels=c("10","30"))
@@ -104,14 +104,22 @@ TomGeneNames <- read.table("ExternalData/Microarray/GSE41560/Agilent022270.final
 TomBadMap <- TomNorm$genes$ProbeName %notin% TomGeneNames$V1
 TomNormFilt <- TomNorm[!TomControl & !TomBadMap & TomIsExpr, ]
 
-#Add Gene Names from exonerate output
+#Add Gene Names from exonerate output and remove useless columns
 TomNormFilt$genes$GeneName <- TomGeneNames$V2[match(TomNormFilt$genes$ProbeName, TomGeneNames$V1)]
+TomNormFilt$genes<- TomNormFilt$genes[,c("ProbeName", "GeneName")]
 
 # Fit Model and test DEs
 TomDesign <- model.matrix(~TomTargets$Genotype+TomTargets$Line)
-TomFit <- lmFit(TomNormFilt, TomDesign)
+TomWeights <- arrayWeights(TomNormFilt, design=TomDesign)
+TomFit <- lmFit(TomNormFilt, TomDesign, weights=TomWeights)
 TomFit <- eBayes(TomFit,trend=TRUE,robust=TRUE)
-summary(decideTests(TomFit[,-1]))
+summary(decideTests(TomFit[,-1], p.value = 0.05))
 topTable(TomFit, coef = 2)
-
+#Are FUL1 and FUL2 *actually* knocked down?
+topTable(TomFit, coef=2, number=Inf)[topTable(TomFit, coef=2, number=Inf)$GeneName=="Solyc06g069430.3.1",]
+topTable(TomFit, coef=2, number=Inf)[topTable(TomFit, coef=2, number=Inf)$GeneName=="Solyc03g114830.3.1",] #there are 4 probes that match this
+#There is no probe specific to MBP10, but what about MBP20?
+topTable(TomFit, coef=2, number=Inf)[topTable(TomFit, coef=2, number=Inf)$GeneName=="Solyc02g089210.4.1",]
+#Output a list of DEGs
+write.csv(topTable(TomFit, coef = 2, p.value = 0.05, number=Inf), file = "DEGAnalysis/Microarray/GSE41560_DEGs.csv")
 
