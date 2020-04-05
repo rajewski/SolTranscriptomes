@@ -19,45 +19,55 @@ cd ExternalData/Microarray
 #remove the header, select probe name and sequence columns and output to a fasta
 if [ ! -e GSE41560/Agilent022270.fa ]; then
     mkdir -p GSE41560
-    tail -n +18 GSE41560/Agilent022270.txt | cut -f4,16 | awk '{if ($2) print ">"$1"\n"$2}' > GSE41560/Agilent022270.fa
+    cd GSE41560
+    tail -n +18 Agilent022270.txt | cut -f4,16 | awk '{if ($2) print ">"$1"\n"$2}' > Agilent022270.fa
+    cd ../
 fi
 
 #map those probes to the transcriptome with exonerate tolerating no mismatches
 if [ ! -e GSE41560/Agilent022270.final.txt ]; then
+    cd GSE41560
     module load exonerate
     exonerate \
 	--showalignment FALSE \
 	--percent 100 \
 	-S no \
 	--bestn 10 \
-	GSE41560/Agilent022270.fa \
-	../../SlycDNA/Slyc.transcripts.fa > GSE41560/Agilent022270.exonerate.out
+	Agilent022270.fa \
+	../../../SlycDNA/Slyc.transcripts.fa > Agilent022270.exonerate.out
     #get a list of duplicates from the exonerate output
-    tail -n +3 GSE41560/Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -d > GSE41560/Agilent022270.exonerate.dups.txt
-    grep -Fwf GSE41560/Agilent022270.exonerate.dups.txt GSE41560/Agilent022270.exonerate.out | less #Print multimappers with targets for personal entertainment
-    tail -n +3 GSE41560/Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less #Show how many matches each multimapper has (between 2 and 80)
+    tail -n +3 Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -d > Agilent022270.exonerate.dups.txt
+    grep -Fwf Agilent022270.exonerate.dups.txt Agilent022270.exonerate.out | less #Print multimappers with targets for personal entertainment
+    tail -n +3 Agilent022270.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less #Show how many matches each multimapper has (between 2 and 80)
     #Remove multimappers from the output
-    grep -vFwf GSE41560/Agilent022270.exonerate.dups.txt GSE41560/Agilent022270.exonerate.out > GSE41560/Agilent022270.exonerate.nodups.txt
+    grep -vFwf Agilent022270.exonerate.dups.txt Agilent022270.exonerate.out > Agilent022270.exonerate.nodups.txt
     #Create a final list of just the single mapping probes and one with targets
-    tail -n +3 GSE41560/Agilent022270.exonerate.nodups.txt | cut -f2 -d " " | head -n -1 > GSE41560/Agilent022270.nodups.txt
-    tail -n +3 GSE41560/Agilent022270.exonerate.nodups.txt | cut -f2,6 -d " "  | head -n -1 |  sed 's/mRNA://' > GSE41560/Agilent022270.final.txt
+    tail -n +3 Agilent022270.exonerate.nodups.txt | cut -f2 -d " " | head -n -1 > Agilent022270.nodups.txt
+    tail -n +3 Agilent022270.exonerate.nodups.txt | cut -f2,6 -d " "  | head -n -1 |  sed 's/mRNA://' > Agilent022270.final.txt
+    cd ../
 fi
 
 #Download the raw data files for the Tomato Agilent Array
 if [ ! -e GSE41560/GSM1019121_252227010044_A04.txt.gz ]; then
-    mkdir -p GSE41560
-    #I cant seem to download the data directly via FTP, but I've updated it myself and the command contine from here on how to process it.
+    cd GSE41560
+    wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE41nnn/GSE41560/suppl/GSE41560_RAW.tar
     tar -xvf GSE41560_RAW.tar
+    cd ../
 fi
 
 #now for the Nimblegen Array, pray for me.
-#similar ot the Agilent array, I simply downloaded that datatabel with the probe names and sequences from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL15968 and named it GPL15968-24228.txt
-if [ ! -e GPL15968-24228.fa ]; then
+#similar to the Agilent array, I simply downloaded that datatable with the probe names and sequences from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL15968 and named it GPL15968-24228.txt
+if [ ! -e GSE49125/GPL15968-24228.fa ]; then
+    mkdir -p GSE49125
+    cd GSE49125
     tail -n +8 GPL15968-24228.txt | cut -f1,2 | awk '{if ($2) print ">"$1"\n"$2}' > GPL15968-24228.fa
+    cd ../
 fi
+
 #Map these targets to the genome tolerating no mismatches
 #consider outputting with --showtargetgff TRUE as a help for mapping these loci back to the genome maybe?
-if [ ! -e GPL15968-24228.nodups.txt ]; then
+if [ ! -e GSE49125/GPL15968-24228.nodups.txt ]; then
+    cd GSE49125/
     module load exonerate
     exonerate \
         --showalignment FALSE \
@@ -66,18 +76,28 @@ if [ ! -e GPL15968-24228.nodups.txt ]; then
         --bestn 10 \
 	--showtargetgff FALSE \
         GPL15968-24228.fa \
-        ../../SlycDNA/S_lycopersicum_chromosomes.4.00.fa > GPL15968-24228.exonerate.out
+        ../../../SlycDNA/S_lycopersicum_chromosomes.4.00.fa > GPL15968-24228.exonerate.out
     #get a list of duplicates from the exonerate output
     tail -n +3 GPL15968-24228.exonerate.out | cut -f2 -d " " |sort |uniq -d > GPL15968-24228.exonerate.dups.txt
     grep -Fwf GPL15968-24228.exonerate.dups.txt GPL15968-24228.exonerate.out | less #Print multimappers with targets for personal entertainment
     tail -n +3 GPL15968-24228.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less#Show how many matches each multimapper has (between 2 and 80)
     #Remove multimappers from the output
     grep -vFwf GPL15968-24228.exonerate.dups.txt GPL15968-24228.exonerate.out > GPL15968-24228.exonerate.nodups.txt
-    #Create a final list of just the single mapping
-    tail -n +3 GPL15968-24228.exonerate..nodups.txt |cut -f2 -d " " | head -n -1 > GPL15968-24228.nodups.txt
+    #Create a final list of just the single mapping and another with data suitable for import into Ringo
+    tail -n +3 GPL15968-24228.exonerate.nodups.txt |cut -f2 -d " " | head -n -1 > GPL15968-24228.nodups.txt
+    tail -n +3 GPL15968-24228.exonerate.nodups.txt |head -n -1 | cut -f2,6,7,8,9 -d " " > GPL15968-24228.final.txt
+    cd ../
 fi
 
-### I'm not goin to mess wit hthe Affy array data. It's too complex and also the results didnt turn out to be compelling at all.
+#Download the raw data files for the Tomato Nimblegen array
+if [ ! -e GSE49125/GSM1194061_71972605_ratio_peaks_mapToFeatures_All_Peaks.txt.gz ]; then
+    cd GSE49125
+    wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE49nnn/GSE49125/suppl/GSE49125_RAW.tar
+    tar -xvf GSE49125_RAW.tar
+    cd ../
+fi
+
+### I'm not going to mess with the Affy array data. It's too complex and also the results didnt turn out to be compelling at all.
 #Download the CEL files for the Arabidopsis Affy Expt
 if [ ! -e GSM2098198_GR0b-v4.CEL.gz ]; then
     echo Downlaoding Arabidopsis microarray GSE79553...
@@ -87,7 +107,7 @@ if [ ! -e GSM2098198_GR0b-v4.CEL.gz ]; then
     echo Done.
 fi
 
-#Load in the normalized data from NCBI
+#Load in the normalized data from NCBI just in case
 if [ ! -e GSE79553/GSE79553_Normalized_data_with_all_controls.txt.gz ]; then
     echo Getting non-log2 normalized data from NCBI
     curl https://ftp.ncbi.nlm.nih.gov/geo/series/GSE79nnn/GSE79553/suppl/GSE79553%5FNormalized%5Fdata%5Fwith%5Fall%5Fcontrols%2Etxt%2Egz > GSE79553/GSE79553_Normalized_data_with_all_controls.txt.gz
@@ -106,7 +126,7 @@ if [ ! -e GSE79553/GPL14926_agronomics1_TAIR9_gene.CDF.gz ]; then
     echo Done
 fi
 
-#try anoter CDF for the Affy array
+#try another CDF for the Affy array
 if [ ! -e GSE79553/AGRONOMICS1_At_TAIRG.cdf ]; then
     cd GSE79553
     wget http://mbni.org/customcdf/18.0.0/tairg.download/AGRONOMICS1_At_TAIRG_18.0.0.zip
