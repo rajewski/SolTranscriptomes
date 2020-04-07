@@ -1,9 +1,9 @@
 #!/bin/bash -l
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=60
+#SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=7G
 #SBATCH --nodes=1
-#SBATCH --time=3-0:00:00
+#SBATCH --time=03:00:00
 #SBATCH --mail-user=araje002@ucr.edu
 #SBATCH --mail-type=ALL
 #SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/PFAM-%A.out
@@ -33,9 +33,9 @@ done
 cd DEGAnalysis/Pfam
 
 # Get a list of all proteins' names
-grep ">" ../../SlycDNA/Slyc.proteins.fa | sed 's/\S*\(Solyc\S*\)\s.*/\1/' > Slyc.protein.names.txt
-grep ">" ../../NobtDNA/NIOBT_r1.0.proteins.fa | sed 's/>\(\S*\)/\1/' > Nobt.protein.names.txt
-grep ">" ../../ExternalData/TAIR10/TAIR10.proteins.fa | sed 's/>\(\S*\)\s.*/\1/' > TAIR10.protein.names.txt
+grep ">" ../../SlycDNA/Slyc.proteins.fa | sed 's/\S*\(Solyc\S*\)\s.*/\1/' | sort > Slyc.protein.names.txt
+grep ">" ../../NobtDNA/NIOBT_r1.0.proteins.fa | sed 's/>\(\S*\)/\1/' | sort > Nobt.protein.names.txt
+grep ">" ../../ExternalData/TAIR10/TAIR10.proteins.fa | sed 's/>\(\S*\)\s.*/\1/' | sort > TAIR10.protein.names.txt
 
 # Make an associative array to aid with renaming of the outputs
 declare -A PFAMs
