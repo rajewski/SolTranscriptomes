@@ -20,10 +20,18 @@ else
     echo Arabidopsis genome already present.
 fi
 
-if [ ! -e TAIR10.fa ]; then
+if [ ! -e TAIR10.gff3 ]; then
     echo Downloading Arabidopsis genome annotation from TAIR...
     curl https://www.arabidopsis.org/download_files/Genes/TAIR10_genome_release/TAIR10_gff3/TAIR10_GFF3_genes.gff > TAIR10.gff3
     echo Done.
 else
     echo Arabidopsis genome annotation already present.
+fi
+
+if [ ! -e TAIR10.proteins.fa ]; then
+    echo Downloading Arabiodpsis proteins from TAIR...
+    curl https://www.arabidopsis.org/download_files/Proteins/TAIR10_protein_lists/TAIR10_pep_20101214 > TAIR10.proteins.fa
+    echo Done.
+else
+    echo Arabidopsis proteins already present.
 fi
