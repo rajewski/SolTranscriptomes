@@ -1,0 +1,4 @@
+06/04/2020 16:08:32:992 Welcome to InterProScan-5.39-77.0
+06/04/2020 16:08:32:995 Running InterProScan v5 in STANDALONE mode... on Linux
+For the (-i) option you specified a location which doesn't exist or is not readable:
+/rhome/arajewski/bigdata/FULTranscriptomes/0

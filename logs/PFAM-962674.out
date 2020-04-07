@@ -1,0 +1,10 @@
+Running IPRScan on TAIR10.proteins.fa...
+06/04/2020 16:54:42:101 Welcome to InterProScan-5.39-77.0
+06/04/2020 16:54:42:103 Running InterProScan v5 in STANDALONE mode... on Linux
+06/04/2020 16:55:07:692 Loading file /rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/TAIR10/TAIR10.proteins.fa
+06/04/2020 16:55:07:697 Running the following analyses:
+[Pfam-32.0]
+Available matches will be retrieved from the pre-calculated match lookup service.
+
+Matches for any sequences that are not represented in the lookup service will be calculated locally.
+slurmstepd-c45: error: *** JOB 962674 ON c45 CANCELLED AT 2020-04-06T16:56:58 ***
