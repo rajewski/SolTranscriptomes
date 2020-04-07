@@ -1,2 +1,3 @@
 ExternalData/TAIR10/*
+ExternalData/Microarray/**/*.gz
 .Rproj.user
