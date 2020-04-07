@@ -1,81 +1,93 @@
 library("Ringo")
-
-# Tomato ChIP-chip -----------------------------------------------
-# Read in Raw Data
-tryCatch(loadRDS("DEGAnalysis/Microarray/GSE49125_RG.rds"), error=function(e){
-  TomRG <- readNimblegen("ChIPAnalysis/ChIP-chip/TomDesign.txt","/rhome/arajewski/R/x86_64-pc-linux-gnu-library/3.6/Ringo/exData/spottypes.txt", path=NULL)
-  saveRDS(TomRG, file="DEGAnalysis/Microarray/GSE49125_RG.rds")
+# Import Annotation Information --------------------------------------------------
+# Make a probe mapping environment from the exonerate data
+tryCatch(SL4Remapping <- readRDS("ChIPAnalysis/ChIP-chip/SL4MRemapping.rds"), error=function(e){
+  TomTargetMatches <- read.table("ExternalData/Microarray/GSE49125/GPL15968-24228.final.txt")
+  colnames(TomTargetMatches) <- c("ProbeID", "Chromosome", "StartPos", "StopPos", "Strand")
+  TomTargetMatches$Length <- abs(TomTargetMatches$StopPos - TomTargetMatches$StartPos)
+  TomTargetMatches$Position <- pmin(TomTargetMatches$StartPos,TomTargetMatches$StopPos) #probes have no inherent direction
+  TomTargetMatches$ProbeID <- as.character(TomTargetMatches$ProbeID)
+  TomTargetMatches$Chromosome <- as.character(TomTargetMatches$Chromosome)
+  SL4Remapping <- posToProbeAnno(pos = TomTargetMatches,
+                                 chrNameColumn = "Chromosome",
+                                 probeColumn = "ProbeID",
+                                 lengthColumn = "Length",
+                                 chrPositionColumn = "Position",
+                                 genome="SL4.0",
+                                 microarrayPlatform = "GPL15968",
+                                 verbose=TRUE)
 })
 
-#Make a probe mapping environment from the exonerate data
-TomTargetMatches <- read.table("ExternalData/Microarray/GSE49125/GPL15968-24228.final.txt")
-colnames(TomTargetMatches) <- c("ProbeID", "Chromosome", "StartPos", "StopPos", "Strand")
-TomTargetMatches$Length <- abs(TomTargetMatches$StopPos - TomTargetMatches$StartPos)
-TomTargetMatches$Position <- pmin(TomTargetMatches$StartPos,TomTargetMatches$StopPos)
-TomTargetMatches$ProbeID <- as.character(TomTargetMatches$ProbeID)
-TomTargetMatches$Chromosome <- as.character(TomTargetMatches$Chromosome)
-SL4Remapping <- posToProbeAnno(pos = TomTargetMatches,
-                               chrNameColumn = "Chromosome",
-                               probeColumn = "ProbeID",
-                               lengthColumn = "Length",
-                               chrPositionColumn = "Position",
-                               genome="SL4.0",
-                               microarrayPlatform = "GPL15968",
-                               verbose=TRUE)
+# Import the GFF
+tryCatch(SL4gff.df <- readRDS("ChIPAnalysis/ChIP-chip/SL4gff.rds"), error=function(e){
+  library(GenomicRanges)
+  library(rtracklayer)
+  SL4gff <- import("SlycDNA/ITAG4.0_gene_models.gff")
+  SL4gff.df <- as.data.frame(SL4gff)
+  SL4gff.df <- SL4gff.df[,c("seqnames", "start", "end", "strand", "type", "Name")]
+  SL4gff.df <- SL4gff.df[SL4gff.df$type=="gene",]
+  colnames(SL4gff.df) <- c("chr", "start", "end", "strand", "type", "name")
+  saveRDS(SL4gff.df, file="ChIPAnalysis/ChIP-chip/SL4gff.rds")
+})
 
-TomChipEset <- preprocess(TomRG, method = "nimblegen")
+# Read in Raw Data -----------------------------------------------
+# All Data
+# The 3rd rep for each is a dye swap, so I simply flipped the file names.
+# I could have written in the actual swap on the cy3 and cy5 channels, but that might complicate things
+tryCatch(TomRG <-readRDS("ChIPAnalysis/ChIP-chip/GSE49125_RG.rds"), error=function(e){
+  TomRG <- readNimblegen("ChIPAnalysis/ChIP-chip/TomDesign.txt","/rhome/arajewski/R/x86_64-pc-linux-gnu-library/3.6/Ringo/exData/spottypes.txt", path=NULL)
+  saveRDS(TomRG, file="ChIPAnalysis/ChIP-chip/GSE49125_RG.rds")
+})
 
-library(GenomicRanges)
-library(rtracklayer) #to import GFF
-SL4gff <- import("SlycDNA/ITAG4.0_gene_models.gff")
-mcols(SL4gff)
+# Just FUL1
+tryCatch(FUL1RG <- readRDS("ChIPAnalysis/ChIP-chip/GSE49125_FUL1_RG.rds"), error=function(e){
+  FUL1RG <- readNimblegen("ChIPAnalysis/ChIP-chip/FUL1Design.txt", "/rhome/arajewski/R/x86_64-pc-linux-gnu-library/3.6/Ringo/exData/spottypes.txt", path=NULL)
+  saveRDS(FUL1RG, file="ChIPAnalysis/ChIP-chip/GSE49125_FUL1_RG.rds")
+})
+
+# Assign one dataset to this variable
+RG <- TomRG
+
+#check for autocorrelation
+Autocorr <- autocor(RG, probeAnno=SL4Remapping, chrom="SL4.0ch09", lag.max=1000)
+plot(Autocorr)
+
+#preprocess the intensities
+ChipEset <- preprocess(RG, method="nimblegen")
+sampleNames(ChipEset) <- with(RG$targets, paste(Cy5,"vs",Cy3, Rep,sep="_"))
+
+#smooth the peaks in 800bp windows
+ChipEsetSmooth <- computeRunningMedians(ChipEset, 
+                                        probeAnno=SL4Remapping,
+                                        modColumn = "Cy5",
+                                        winHalfSize = 300,
+                                        combineReplicates=TRUE)
+sampleNames(ChipEsetSmooth) <- paste(sampleNames(ChipEset),"smoothed")
 
 
+#try a plot for TAGL1
+SL4gff.df[grep("Solyc07g055920", SL4gff.df$name),] #TAGL1 then add ~4kb upstream for promoter
+SL4gff.df[grep("Solyc02g077920", SL4gff.df$name),] #CNR then add ~4kb upstream for promoter
+SL4gff.df[grep("Solyc02g086930", SL4gff.df$name),] #HB-1 then add ~4kb upstream for promoter
+
+chipAlongChrom1(ChipEsetSmooth,
+                SL4Remapping, 
+                gff=SL4gff.df,
+                ylim=c(0,2),
+                #chrom="SL4.0ch07", #TAGL1
+                #xlim=c(63756000, 63760000)) #TAGL1
+                chrom="SL4.0ch02", #CNR or HB-1
+                #xlim=c(40730780, 40733000)) #CNR
+                xlim=c(47530500, 47533000))
 
 
+#make a hisotgram of reporter intensities to get a threshold
+(y0 <- apply(exprs(ChipEsetSmooth),2,upperBoundNull))
 
-
-
-
-
-system.file("exData",package="Ringo")
-TomTargets$Genotype <- factor(TomTargets$Genotype, levels=c("WT", "KD"))
-TomTargets$Line <- factor(TomTargets$Line, levels=c("10","30"))
-
-# Read in the data files
-TomEset <- read.maimages(TomTargets$FileName,
-                         source="agilent",
-                         green.only = TRUE,
-                         names = paste(TomTargets$Genotype,TomTargets$Line,TomTargets$Rep, sep="_"),
-                         other.columns = "gIsWellAboveBG")
-
-# Background correct and normalize between arrays
-TomNorm <- backgroundCorrect(TomEset, method="normexp")
-TomNorm <- normalizeBetweenArrays(TomNorm, method="quantile")
-
-#start removing bad probes
-TomControl <- TomNorm$genes$ControlType==1L
-TomIsExpr <- rowSums(TomNorm$other$gIsWellAboveBG > 0) >= 1
-TomGeneNames <- read.table("ExternalData/Microarray/GSE41560/Agilent022270.final.txt", stringsAsFactors = F)
-TomBadMap <- TomNorm$genes$ProbeName %notin% TomGeneNames$V1
-TomNormFilt <- TomNorm[!TomControl & !TomBadMap & TomIsExpr, ]
-
-#Add Gene Names from exonerate output and remove useless columns
-TomNormFilt$genes$GeneName <- TomGeneNames$V2[match(TomNormFilt$genes$ProbeName, TomGeneNames$V1)]
-TomNormFilt$genes<- TomNormFilt$genes[,c("ProbeName", "GeneName")]
-
-# Fit Model and test DEs
-TomDesign <- model.matrix(~TomTargets$Genotype+TomTargets$Line)
-TomWeights <- arrayWeights(TomNormFilt, design=TomDesign)
-TomFit <- lmFit(TomNormFilt, TomDesign, weights=TomWeights)
-TomFit <- eBayes(TomFit,trend=TRUE,robust=TRUE)
-summary(decideTests(TomFit[,-1], p.value = 0.05))
-topTable(TomFit, coef = 2)
-#Are FUL1 and FUL2 *actually* knocked down?
-topTable(TomFit, coef=2, number=Inf)[topTable(TomFit, coef=2, number=Inf)$GeneName=="Solyc06g069430.3.1",]
-topTable(TomFit, coef=2, number=Inf)[topTable(TomFit, coef=2, number=Inf)$GeneName=="Solyc03g114830.3.1",] #there are 4 probes that match this
-#There is no probe specific to MBP10, but what about MBP20?
-topTable(TomFit, coef=2, number=Inf)[topTable(TomFit, coef=2, number=Inf)$GeneName=="Solyc02g089210.4.1",]
-#Output a list of DEGs
-write.csv(topTable(TomFit, coef = 2, p.value = 0.05, number=Inf), file = "DEGAnalysis/Microarray/GSE41560_DEGs.csv")
+chersX <- findChersOnSmoothed(ChipEsetSmooth, probeAnno=SL4Remapping, threshold=y0)
+chersX <- relateChers(chersX, gff=SL4gff.df, upstream=3000)
+chersXD <- as.data.frame(chersX)
+head(chersXD[order(chersXD$maxLevel, decreasing=TRUE),])
+#save it as a bed object for IGV
+chersToBED(chersX, file="ChIPAnalysis/ChIP-chip/chers.bed")
 
