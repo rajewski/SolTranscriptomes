@@ -70,7 +70,7 @@ SL4gff.df[grep("Solyc07g055920", SL4gff.df$name),] #TAGL1 then add ~4kb upstream
 SL4gff.df[grep("Solyc02g077920", SL4gff.df$name),] #CNR then add ~4kb upstream for promoter
 SL4gff.df[grep("Solyc02g086930", SL4gff.df$name),] #HB-1 then add ~4kb upstream for promoter
 
-chipAlongChrom1(ChipEsetSmooth,
+chipAlongChrom1(ChipEset,
                 SL4Remapping, 
                 gff=SL4gff.df,
                 ylim=c(0,2),
