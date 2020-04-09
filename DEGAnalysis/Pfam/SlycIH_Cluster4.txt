@@ -1,0 +1,8 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Common central domain of tyrosinase (PF00264)	20.8	2e-02	4	9	Solyc08g074620.3.1, Solyc08g074630.2.1, Solyc08g074650.4.1, Solyc08g074683.1.1
+Polyphenol oxidase middle domain (PF12142)	20.8	2e-02	4	9	Solyc08g074620.3.1, Solyc08g074630.2.1, Solyc08g074650.4.1, Solyc08g074683.1.1
+Protein of unknown function (DUF_B2219) (PF12143)	20.8	2e-02	4	9	Solyc08g074620.3.1, Solyc08g074630.2.1, Solyc08g074650.4.1, Solyc08g074683.1.1
+Potato inhibitor I family (PF00280)	17.9	3e-05	8	21	Solyc09g083435.1.1, Solyc09g084450.3.1, Solyc09g084470.3.1, Solyc09g084480.3.1, Solyc09g084490.4.1, Solyc09g089490.4.1, Solyc09g089530.3.1, Solyc09g089540.4.1
+Cellulose synthase (PF03552)	9.4	1e-02	7	35	Solyc07g005840.2.1, Solyc07g043390.4.1, Solyc08g082640.2.1, Solyc08g082650.2.1, Solyc08g082660.2.1, Solyc12g014430.2.1, Solyc12g015770.3.1
+Transferase family (PF02458)	4.8	3e-02	10	97	Solyc02g093180.3.1, Solyc03g117600.3.1, Solyc04g079720.4.1, Solyc07g052060.2.1, Solyc08g007210.4.1, Solyc11g071480.1.1, Solyc12g005430.1.1, Solyc12g010980.3.1, Solyc12g096770.1.1, Solyc12g096790.1.1
+UDP-glucoronosyl and UDP-glucosyl transferase (PF00201)	4.5	1e-03	16	167	Solyc01g095620.3.1, Solyc02g081690.1.1, Solyc03g078810.4.1, Solyc04g074330.3.1, Solyc04g074360.3.1, Solyc04g080010.4.1, Solyc05g005930.3.1, Solyc06g062330.3.1, Solyc09g008060.4.1, Solyc09g059170.3.1, Solyc10g079980.1.1, Solyc10g085280.1.1, Solyc11g010813.1.1, Solyc11g066670.1.1, Solyc11g066680.1.1, Solyc12g009920.1.1
