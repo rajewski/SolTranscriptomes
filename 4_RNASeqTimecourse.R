@@ -216,17 +216,17 @@ tryCatch(SlycIHcluster <- readRDS("DEGAnalysis/RNA-seq/SlycIHcluster.rds"), erro
   saveRDS(SlycIHcluster, "DEGAnalysis/RNA-seq/SlycIHcluster.rds")
 })
 
-tryCatch(Nobtcluster <- readRDS("DEGAnalysis/Nobtcluster.rds"), error=function(e){
+tryCatch(Nobtcluster <- readRDS("DEGAnalysis/RNA-seq/Nobtcluster.rds"), error=function(e){
   Nobtcluster <- DESeqCluster(Nobtdds, numGenes = "3000")
-  saveRDS(Nobtcluster, "DEGAnalysis/Nobtcluster.rds")
+  saveRDS(Nobtcluster, "DEGAnalysis/RNA-seq/Nobtcluster.rds")
 })
 
 
 # Save Cluster genes to a file --------------------------------------------
-X <- split(SlycIHcluster$df, SlycIHcluster$df$cluster)
+X <- split(Nobtcluster$df, Nobtcluster$df$cluster)
 for (i in 1:length(X)) {
   write.table(row.names(X[[i]]), 
-              file=paste0("DEGAnalysis/RNA-seq/SlycIH_Cluster_", i, ".txt"),
+              file=paste0("DEGAnalysis/RNA-seq/Nobt_Cluster_", i, ".txt"),
               row.names = FALSE,
               quote = FALSE,
               col.names = FALSE)
