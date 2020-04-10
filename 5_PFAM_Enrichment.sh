@@ -45,7 +45,7 @@ for TAB in ${!PFAMs[@]}
 do
     cut -f1 ${PFAMs[$TAB]} | sort | uniq > $TAB.pfamhits.tsv # Names of all genes with a pfam hit
     #cut -f1,5 ${PFAMs[$TAB]} |sort | uniq > $TAB.gene2pfam.tsv # Association of all genes and their pfam domains
-    cut -f1,12 ${PFAMs[$TAB]} |sort |uniq > $TAB.gene2ipr.tsv # Association of all genes and their IPR domains
+    cut -f1,12 ${PFAMs[$TAB]} |sort |uniq |grep "IPR" > $TAB.gene2ipr.tsv # Association of all genes and their IPR domains
     #cut -f5,6 ${PFAMs[$TAB]} > $TAB.pfam2desc.tsv # Descriptions of pfam domains
     cut -f12,13 ${PFAMs[$TAB]} > $TAB.ipr2desc.tsv # Descriptions of IPR domains
     comm -1 -3 $TAB.pfamhits.tsv $TAB.protein.names.txt > $TAB.nopfam.tsv # Names of all genes without a pfam hit
