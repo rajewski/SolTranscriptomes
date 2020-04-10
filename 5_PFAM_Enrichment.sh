@@ -35,7 +35,7 @@ cd DEGAnalysis/Pfam
 
 # Get a list of all proteins' names
 grep ">" ../../SlycDNA/Slyc.proteins.fa | sed 's/\S*\(Solyc\S*\)\s.*/\1/' | sort > Slyc.protein.names.txt
-grep ">" ../../NobtDNA/NIOBT_r1.0.proteins.fa | sed 's/>\(\S*\)\s\S*\s\S*/\1/g' | sort | > Nobt.protein.names.txt
+grep ">" ../../NobtDNA/NIOBT_r1.0.proteins.fa | sed 's/>\(\S*\)\s\S*\s\S*/\1/g' | sort > Nobt.protein.names.txt
 grep ">" ../../ExternalData/TAIR10/TAIR10.proteins.fa | sed 's/>\(\S*\)\s.*/\1/' | sort > TAIR10.protein.names.txt
 
 # Make an associative array to aid with renaming of the outputs
