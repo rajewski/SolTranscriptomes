@@ -1,9 +1,10 @@
 #!/bin/bash -l
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=60
 #SBATCH --mem-per-cpu=7G
 #SBATCH --nodes=1
-#SBATCH --time=03:00:00
+#SBATCH -p short
+#SBATCH --time=02:00:00
 #SBATCH --mail-user=araje002@ucr.edu
 #SBATCH --mail-type=ALL
 #SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/PFAM-%A.out
