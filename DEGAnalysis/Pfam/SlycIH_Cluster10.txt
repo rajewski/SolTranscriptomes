@@ -1,4 +1,4 @@
 Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-Apocytochrome F, C-terminal (PF01333)	325	3e-02	2	3	Solyc00g500020.1.1, Solyc00g500067.1.1
-CemA family (PF03040)	243.8	3e-02	2	4	Solyc00g500020.1.1, Solyc00g500067.1.1
-Apocytochrome F, N-terminal (PF16639)	243.8	3e-02	2	4	Solyc00g500020.1.1, Solyc00g500067.1.1
+Cytochrome f (IPR002325)	250.1	4e-02	2	4	Solyc00g500020.1.1, Solyc00g500067.1.1
+Chloroplast envelope membrane protein, CemA (IPR004282)	250.1	4e-02	2	4	Solyc00g500020.1.1, Solyc00g500067.1.1
+Cytochrome f large domain (IPR024094)	250.1	4e-02	2	4	Solyc00g500020.1.1, Solyc00g500067.1.1

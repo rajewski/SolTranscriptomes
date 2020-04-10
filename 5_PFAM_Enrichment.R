@@ -3,8 +3,8 @@
 
 
 PfamEnrichment <- function(AllGenesFile = "",
-                           AllPfamFile = "",
-                           PfamDescFile = "",
+                           AllIPRFile = "",
+                           IPRDescFile = "",
                            ExcludedGenesFile = "",
                            TopGenesFile = "",
                            OutputFile = "",
@@ -13,10 +13,10 @@ PfamEnrichment <- function(AllGenesFile = "",
   # Define a useful function
   `%notin%` <- Negate(`%in%`)
   # Read in files to lists
-  AllPfam <- scan(file=AllPfamFile,
+  AllIPR <- scan(file=AllIPRFile,
                   what = list("",""),
                   sep = "\t")
-  PfamDesc <- scan(file=PfamDescFile,
+  IPRDesc <- scan(file=IPRDescFile,
                    what = list("",""),
                    sep = "\t",
                    quote = "")
@@ -32,7 +32,7 @@ PfamEnrichment <- function(AllGenesFile = "",
   top_genes <- top_genes[top_genes %notin% ExcludedGenes]
   top_genes <- top_genes[top_genes %in% AllGenes]
   # Split list of domains
-  domain_grouping <- split(AllPfam[[1]], AllPfam[[2]])
+  domain_grouping <- split(AllIPR[[1]], AllIPR[[2]])
   # Set up hypergeometric test
   ## q: Genes with given domain that are in the top set are the white balls drawn from the urn.
   ## m: Genes with given domain are white balls.
@@ -63,7 +63,7 @@ PfamEnrichment <- function(AllGenesFile = "",
   # Write result
   significant_indices = adjusted_p$index[adjusted_p$adjp[,2] < p_cut_off]
   if (length(significant_indices) == 0 ) {
-    warning("No significantly enriched domains in this group. skipping")
+    warning("No significantly enriched domains in this group. Skipping")
     if (WriteToFile){
         write.table(NULL, file = output_file, sep = "\t", quote=FALSE, row.names = FALSE)
     }
@@ -71,9 +71,9 @@ PfamEnrichment <- function(AllGenesFile = "",
   }
   significant_enrichments = enrichment_vector[significant_indices] 
   indices_by_enrichment = significant_indices[sort(significant_enrichments, decreasing = TRUE, index.return = TRUE)[[2]]]
-  sorted_descriptions = PfamDesc[[2]][match(names(domain_grouping)[indices_by_enrichment], PfamDesc[[1]])]
-  sorted_Pfam_ID = names(domain_grouping)[indices_by_enrichment] 
-  sorted_full_descriptions = paste0(sorted_descriptions, " (", sorted_Pfam_ID, ")") 
+  sorted_descriptions = IPRDesc[[2]][match(names(domain_grouping)[indices_by_enrichment], IPRDesc[[1]])]
+  sorted_IPR_ID = names(domain_grouping)[indices_by_enrichment] 
+  sorted_full_descriptions = paste0(sorted_descriptions, " (", sorted_IPR_ID, ")") 
   sorted_enrichment = enrichment_vector[indices_by_enrichment]
   sorted_p_values = adjusted_p$adjp[match(indices_by_enrichment, adjusted_p$index),2] 
   sorted_q = q_vector[indices_by_enrichment]
@@ -98,8 +98,8 @@ PfamEnrichment <- function(AllGenesFile = "",
 # Work through the Slyc IH data
 for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_Cluster*"))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
-                 AllPfamFile = "DEGAnalysis/Pfam/Slyc.gene2pfam.tsv",
-                 PfamDescFile = "DEGAnalysis/Pfam/Slyc.pfam2desc.tsv",
+                 AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
+                 IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
                  TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_Cluster_", i, ".txt"),
                  OutputFile = paste0("DEGAnalysis/Pfam/SlycIH_Cluster", i, ".txt"))
@@ -108,8 +108,8 @@ for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_Clus
 # Work through the TAIR data
 for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="TAIR_Cluster*"))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/TAIR10.protein.names.txt",
-                 AllPfamFile = "DEGAnalysis/Pfam/TAIR10.gene2pfam.tsv",
-                 PfamDescFile = "DEGAnalysis/Pfam/TAIR10.pfam2desc.tsv",
+                 AllIPRFile = "DEGAnalysis/Pfam/TAIR10.gene2ipr.tsv",
+                 IPRDescFile = "DEGAnalysis/Pfam/TAIR10.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/TAIR10.nopfam.tsv",
                  TopGenesFile = paste0("DEGAnalysis/RNA-seq/TAIR_Cluster_", i, ".txt"),
                  OutputFile = paste0("DEGAnalysis/Pfam/TAIR_Cluster", i, ".txt"))
@@ -118,8 +118,8 @@ for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="TAIR_Cluste
 # And for Nobt
 for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="Nobt_Cluster*"))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Nobt.protein.names.txt",
-                 AllPfamFile = "DEGAnalysis/Pfam/Nobt.gene2pfam.tsv",
-                 PfamDescFile = "DEGAnalysis/Pfam/Nobt.pfam2desc.tsv",
+                 AllIPRFile = "DEGAnalysis/Pfam/Nobt.gene2ipr.tsv",
+                 IPRDescFile = "DEGAnalysis/Pfam/Nobt.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Nobt.nopfam.tsv",
                  TopGenesFile = paste0("DEGAnalysis/RNA-seq/Nobt_Cluster_", i, ".txt"),
                  OutputFile = paste0("DEGAnalysis/Pfam/Nobt_Cluster", i, ".txt"))

@@ -1,2 +1,1 @@
-Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-EamA-like transporter family (PF00892)	24	1e-01	4	50	Solyc01g104750.4.1, Solyc05g005860.3.1, Solyc05g042050.4.1, Solyc08g078580.3.1
+
