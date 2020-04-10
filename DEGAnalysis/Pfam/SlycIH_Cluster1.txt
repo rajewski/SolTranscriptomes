@@ -1,6 +1,6 @@
 Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-GMC oxidoreductase (PF00732)	23.1	2e-02	4	11	Solyc03g121600.4.1, Solyc06g035580.3.1, Solyc08g075250.1.1, Solyc08g075260.1.1
-Fasciclin domain (PF02469)	17.7	1e-02	5	18	Solyc01g091530.4.1, Solyc07g045440.1.1, Solyc07g065540.1.1, Solyc10g005960.1.1, Solyc12g015690.3.1
-BURP domain (PF03181)	17	6e-02	4	15	Solyc01g109500.4.1, Solyc05g005540.4.1, Solyc05g005550.4.1, Solyc05g005560.4.1
-Chlorophyll A-B binding protein (PF00504)	10.9	2e-02	6	35	Solyc01g105050.3.1, Solyc02g070940.1.1, Solyc03g005760.1.1, Solyc03g005770.3.1, Solyc03g115900.4.1, Solyc10g007690.3.1
-UDP-glucoronosyl and UDP-glucosyl transferase (PF00201)	5.7	3e-04	15	167	Solyc02g063000.4.1, Solyc04g008330.1.1, Solyc04g079050.3.1, Solyc05g053890.3.1, Solyc07g043150.1.1, Solyc07g043480.1.1, Solyc07g043500.1.1, Solyc08g062220.3.1, Solyc10g083440.2.1, Solyc11g010740.3.1, Solyc11g010760.1.1, Solyc11g010790.1.1, Solyc11g010810.1.1, Solyc12g009930.3.1, Solyc12g096870.1.1
+Glucose-methanol-choline oxidoreductase, N-terminal (IPR000172)	23.5	2e-02	4	11	Solyc03g121600.4.1, Solyc06g035580.3.1, Solyc08g075250.1.1, Solyc08g075260.1.1
+BURP domain (IPR004873)	16.1	9e-02	4	16	Solyc01g109500.4.1, Solyc05g005540.4.1, Solyc05g005550.4.1, Solyc05g005560.4.1
+FAS1 domain (IPR000782)	14.7	2e-02	5	22	Solyc01g091530.4.1, Solyc07g045440.1.1, Solyc07g065540.1.1, Solyc10g005960.1.1, Solyc12g015690.3.1
+Chlorophyll A-B binding protein (IPR022796)	11.1	2e-02	6	35	Solyc01g105050.3.1, Solyc02g070940.1.1, Solyc03g005760.1.1, Solyc03g005770.3.1, Solyc03g115900.4.1, Solyc10g007690.3.1
+UDP-glucuronosyl/UDP-glucosyltransferase (IPR002213)	5.8	3e-04	15	167	Solyc02g063000.4.1, Solyc04g008330.1.1, Solyc04g079050.3.1, Solyc05g053890.3.1, Solyc07g043150.1.1, Solyc07g043480.1.1, Solyc07g043500.1.1, Solyc08g062220.3.1, Solyc10g083440.2.1, Solyc11g010740.3.1, Solyc11g010760.1.1, Solyc11g010790.1.1, Solyc11g010810.1.1, Solyc12g009930.3.1, Solyc12g096870.1.1
