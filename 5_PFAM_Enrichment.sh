@@ -23,7 +23,7 @@ do
 	interproscan.sh \
 	    -i ${PEPs[PEP]} \
 	    -f TSV \
-	    -appl Pfam \
+	    -appl Pfam,TIGRFAM,PRINTS,ProSiteProfiles \
 	    -d DEGAnalysis/Pfam \
 	    -cpu $SLURM_CPUS_PER_TASK
    fi
@@ -34,7 +34,7 @@ cd DEGAnalysis/Pfam
 
 # Get a list of all proteins' names
 grep ">" ../../SlycDNA/Slyc.proteins.fa | sed 's/\S*\(Solyc\S*\)\s.*/\1/' | sort > Slyc.protein.names.txt
-grep ">" ../../NobtDNA/NIOBT_r1.0.proteins.fa | sed 's/>\(\S*\)/\1/' | sort > Nobt.protein.names.txt
+grep ">" ../../NobtDNA/NIOBT_r1.0.proteins.fa | sed 's/>\(\S*\)\s\S*\s\S*/\1/g' | sort | > Nobt.protein.names.txt
 grep ">" ../../ExternalData/TAIR10/TAIR10.proteins.fa | sed 's/>\(\S*\)\s.*/\1/' | sort > TAIR10.protein.names.txt
 
 # Make an associative array to aid with renaming of the outputs
@@ -43,9 +43,9 @@ PFAMs=([TAIR10]=TAIR10.proteins.fa.tsv [Nobt]=NIOBT_r1.0.proteins.fa.tsv [Slyc]=
 for TAB in ${!PFAMs[@]}
 do
     cut -f1 ${PFAMs[$TAB]} | sort | uniq > $TAB.pfamhits.tsv # Names of all genes with a pfam hit
-    cut -f1,5 ${PFAMs[$TAB]} |sort | uniq > $TAB.gene2pfam.tsv # Association of all genes and their pfam domains
+    #cut -f1,5 ${PFAMs[$TAB]} |sort | uniq > $TAB.gene2pfam.tsv # Association of all genes and their pfam domains
     cut -f1,12 ${PFAMs[$TAB]} |sort |uniq > $TAB.gene2ipr.tsv # Association of all genes and their IPR domains
-    cut -f5,6 ${PFAMs[$TAB]} > $TAB.pfam2desc.tsv # Descriptions of pfam domains
+    #cut -f5,6 ${PFAMs[$TAB]} > $TAB.pfam2desc.tsv # Descriptions of pfam domains
     cut -f12,13 ${PFAMs[$TAB]} > $TAB.ipr2desc.tsv # Descriptions of IPR domains
     comm -1 -3 $TAB.pfamhits.tsv $TAB.protein.names.txt > $TAB.nopfam.tsv # Names of all genes without a pfam hit
 done
