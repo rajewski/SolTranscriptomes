@@ -1,0 +1,6 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Calreticulin/calnexin (IPR001580)	21.6	1e-02	4	5	NIOBTv3_g07077.t1, NIOBTv3_g31104.t1, NIOBTv3_g36140.t1, NIOBTv3_g36142.t1
+Proteasome alpha-subunit, N-terminal domain (IPR000426)	15	1e-02	5	9	NIOBTv3_g12642.t1, NIOBTv3_g12781.t1, NIOBTv3_g15207.t1, NIOBTv3_g16289.t1, NIOBTv3_g60324.t1
+Proteasome alpha-type subunit (IPR023332)	15	1e-02	5	9	NIOBTv3_g12642.t1, NIOBTv3_g12781.t1, NIOBTv3_g15207.t1, NIOBTv3_g16289.t1, NIOBTv3_g60324.t1
+Proteasome, subunit alpha/beta (IPR001353)	7.6	2e-02	7	25	NIOBTv3_g12642.t1, NIOBTv3_g12781.t1, NIOBTv3_g15207.t1, NIOBTv3_g16289.t1, NIOBTv3_g32948.t1, NIOBTv3_g57428.t1, NIOBTv3_g60324.t1
+Sugar phosphate transporter domain (IPR004853)	6.9	1e-03	11	43	NIOBTv3_g01240.t1, NIOBTv3_g03184.t1, NIOBTv3_g05235.t1, NIOBTv3_g10750.t1, NIOBTv3_g12289.t1, NIOBTv3_g13926.t1, NIOBTv3_g23509.t1, NIOBTv3_g26107.t1, NIOBTv3_g29194.t1, NIOBTv3_g31086.t1, NIOBTv3_g37031.t1
