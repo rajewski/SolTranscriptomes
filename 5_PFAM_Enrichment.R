@@ -116,23 +116,23 @@ for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All
 }
 
 # Work through the TAIR data
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="TAIR_Cluster*"))) {
+for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="TAIR10_Cluster*"))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/TAIR10.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/TAIR10.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/TAIR10.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/TAIR10.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/TAIR_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/TAIR_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/TAIR10_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/TAIR10_All_Cluster", i, ".txt"))
 }
 
 # And for Nobt
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="Nobt_Cluster*"))) {
+for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="Nobt_All_Cluster*"))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Nobt.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Nobt.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Nobt.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Nobt.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Nobt_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/Nobt_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Nobt_All_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Nobt_All_Cluster", i, ".txt"))
 }
 
 
