@@ -96,13 +96,23 @@ PfamEnrichment <- function(AllGenesFile = "",
 }
 
 # Work through the Slyc IH data
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_Cluster*"))) {
+for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_Cluster*"))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/SlycIH_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_All_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/SlycIH_All_Cluster", i, ".txt"))
+}
+
+# Work through the Slyc SRA data
+for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All_Cluster*"))) {
+  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
+                 AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
+                 IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
+                 ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_All_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/SlycSRA_All_Cluster", i, ".txt"))
 }
 
 # Work through the TAIR data
