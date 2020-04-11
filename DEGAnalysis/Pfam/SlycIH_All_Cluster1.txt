@@ -1,0 +1,5 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Glucose-methanol-choline oxidoreductase, N-terminal (IPR000172)	18.3	7e-02	4	11	Solyc03g121600.4.1, Solyc06g035580.3.1, Solyc08g075250.1.1, Solyc08g075260.1.1
+FAS1 domain (IPR000782)	13.7	8e-03	6	22	Solyc01g091530.4.1, Solyc07g045440.1.1, Solyc07g048090.2.1, Solyc07g065540.1.1, Solyc10g005960.1.1, Solyc12g015690.3.1
+Chlorophyll A-B binding protein (IPR022796)	8.6	7e-02	6	35	Solyc01g105050.3.1, Solyc02g070940.1.1, Solyc03g005760.1.1, Solyc03g005770.3.1, Solyc03g115900.4.1, Solyc10g007690.3.1
+UDP-glucuronosyl/UDP-glucosyltransferase (IPR002213)	4.8	1e-03	16	167	Solyc02g063000.4.1, Solyc04g008330.1.1, Solyc04g079050.3.1, Solyc05g053890.3.1, Solyc07g043150.1.1, Solyc07g043480.1.1, Solyc07g043500.1.1, Solyc08g062220.3.1, Solyc10g083440.2.1, Solyc11g010740.3.1, Solyc11g010760.1.1, Solyc11g010790.1.1, Solyc11g010810.1.1, Solyc12g009930.3.1, Solyc12g096870.1.1, Solyc12g098600.1.1
