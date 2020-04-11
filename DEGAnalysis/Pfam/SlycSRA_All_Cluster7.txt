@@ -1,0 +1,5 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+UBL3-like, ubiquitin domain (IPR039540)	29.5	1e-01	3	5	Solyc02g068230.3.1, Solyc02g088620.3.1, Solyc02g094350.3.1
+GOLD domain (IPR009038)	14.8	1e-02	6	20	Solyc01g104220.3.1, Solyc03g005270.3.1, Solyc09g082770.3.1, Solyc10g074690.2.1, Solyc11g013000.2.1, Solyc12g015740.2.1
+Ubiquitin-conjugating enzyme E2 (IPR000608)	6.7	5e-02	8	59	Solyc01g095490.3.1, Solyc02g087750.3.1, Solyc05g050230.4.1, Solyc05g054540.4.1, Solyc07g062570.3.1, Solyc10g083120.3.1, Solyc12g056100.3.1, Solyc12g089030.2.1
+Small GTP-binding protein domain (IPR005225)	4.5	5e-02	11	119	Solyc01g090170.4.1, Solyc01g100350.3.1, Solyc01g103380.4.1, Solyc02g069370.3.1, Solyc03g112450.4.1, Solyc04g080900.3.1, Solyc05g023800.3.1, Solyc06g005810.3.1, Solyc10g045550.2.1, Solyc10g074630.3.1, Solyc10g074643.1.1

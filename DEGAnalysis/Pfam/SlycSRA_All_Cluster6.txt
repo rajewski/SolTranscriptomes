@@ -1,0 +1,4 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+NT-type C2 domain (IPR019448)	15	2e-03	6	16	Solyc01g006890.3.1, Solyc02g093980.3.1, Solyc04g009790.4.1, Solyc04g072630.4.1, Solyc05g015050.3.1, Solyc10g006330.3.1
+Nonaspanin (TM9SF) (IPR004240)	13.4	1e-03	7	21	Solyc03g121570.3.1, Solyc04g014570.3.1, Solyc05g054040.4.1, Solyc07g056050.1.1, Solyc08g006820.4.1, Solyc10g044480.2.1, Solyc11g011910.2.1
+Putative S-adenosyl-L-methionine-dependent methyltransferase (IPR004159)	9.5	1e-03	9	38	Solyc02g071160.4.1, Solyc03g005600.3.1, Solyc04g063230.3.1, Solyc04g080360.4.1, Solyc05g052500.4.1, Solyc05g056580.3.1, Solyc08g005490.3.1, Solyc08g075870.3.1, Solyc08g077240.3.1
