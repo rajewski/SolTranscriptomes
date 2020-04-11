@@ -1,0 +1,2 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Leucine-rich repeat-containing N-terminal, plant-type (IPR013210)	14.1	2e-02	6	242	AT1G48480.1, AT2G01210.1, AT3G17840.1, AT4G20270.1, AT5G12940.1, AT5G63410.1
