@@ -1,0 +1,14 @@
+Running IPRScan on Slyc.proteins.fa...
+06/04/2020 17:13:48:302 Welcome to InterProScan-5.39-77.0
+06/04/2020 17:13:48:304 Running InterProScan v5 in STANDALONE mode... on Linux
+06/04/2020 17:14:12:302 Loading file /rhome/arajewski/bigdata/FULTranscriptomes/SlycDNA/Slyc.proteins.fa
+06/04/2020 17:14:12:309 Running the following analyses:
+[Pfam-32.0]
+Available matches will be retrieved from the pre-calculated match lookup service.
+
+Matches for any sequences that are not represented in the lookup service will be calculated locally.
+06/04/2020 17:24:53:189 37% completed
+06/04/2020 17:25:00:044 62% completed
+06/04/2020 17:25:06:716 87% completed
+06/04/2020 17:35:05:032 90% completed
+06/04/2020 17:35:20:509 100% done:  InterProScan analyses completed

@@ -1,0 +1,76 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Mapping Tobacco reads for NobtPre1...
+Mar 25 18:07:28 ..... started STAR run
+Mar 25 18:07:28 ..... loading genome
+Mar 25 18:09:02 ..... started mapping
+Mar 25 18:15:51 ..... started sorting BAM
+Mar 25 18:17:51 ..... finished successfully
+Done.
+Mapping Tobacco reads for NobtPre2...
+Mar 25 18:17:51 ..... started STAR run
+Mar 25 18:17:51 ..... loading genome
+Mar 25 18:18:24 ..... started mapping
+Mar 25 18:26:03 ..... started sorting BAM
+Mar 25 18:28:05 ..... finished successfully
+Done.
+Mapping Tobacco reads for NobtPre3...
+Mar 25 18:28:05 ..... started STAR run
+Mar 25 18:28:05 ..... loading genome
+Mar 25 18:29:21 ..... started mapping
+Mar 25 18:37:03 ..... started sorting BAM
+Mar 25 18:38:40 ..... finished successfully
+Done.
+Mapping Tobacco reads for Nobt3PDA1...
+Mar 25 18:38:40 ..... started STAR run
+Mar 25 18:38:40 ..... loading genome
+gzip: NobtRNA/Nobt3PDA1_*_val_*.fq.gz: No such file or directory
+Mar 25 18:38:52 ..... started mapping
+Mar 25 18:38:53 ..... started sorting BAM
+Mar 25 18:38:53 ..... finished successfully
+Done.
+Mapping Tobacco reads for Nobt3DPA2...
+Mar 25 18:38:53 ..... started STAR run
+Mar 25 18:38:53 ..... loading genome
+Mar 25 18:39:05 ..... started mapping
+Mar 25 18:46:17 ..... started sorting BAM
+Mar 25 18:48:10 ..... finished successfully
+Done.
+Mapping Tobacco reads for Nobt3DPA3...
+Mar 25 18:48:10 ..... started STAR run
+Mar 25 18:48:10 ..... loading genome
+Mar 25 18:49:43 ..... started mapping
+Mar 25 18:57:01 ..... started sorting BAM
+Mar 25 18:58:42 ..... finished successfully
+Done.
+Mapping Tobacco reads for Nobt6DPA1...
+Mar 25 18:58:42 ..... started STAR run
+Mar 25 18:58:42 ..... loading genome
+Mar 25 18:58:58 ..... started mapping
+Mar 25 19:07:52 ..... started sorting BAM
+Mar 25 19:10:15 ..... finished successfully
+Done.
+Mapping Tobacco reads for Nobt6DPA2...
+Mar 25 19:10:15 ..... started STAR run
+Mar 25 19:10:15 ..... loading genome
+Mar 25 19:11:43 ..... started mapping
+Mar 25 19:18:32 ..... started sorting BAM
+Mar 25 19:20:29 ..... finished successfully
+Done.
+Mapping Tobacco reads for Nobt6DPA3...
+Mar 25 19:20:30 ..... started STAR run
+Mar 25 19:20:30 ..... loading genome
+Mar 25 19:20:44 ..... started mapping
+Mar 25 19:27:32 ..... started sorting BAM
+Mar 25 19:29:06 ..... finished successfully
+Done.

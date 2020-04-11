@@ -1,0 +1,66 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Reads for SRR943813 already mapped.
+Reads for SRR943814 already mapped.
+Reads for SRR943815 already mapped.
+Reads for SRR943816 already mapped.
+Reads for SRR943817 already mapped.
+Mapping Tomato reads for SRR943818...
+Mar 25 18:15:01 ..... started STAR run
+Mar 25 18:15:01 ..... loading genome
+Mar 25 18:15:57 ..... started mapping
+Mar 25 18:16:33 ..... started sorting BAM
+Mar 25 18:16:43 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943825...
+Mar 25 18:16:43 ..... started STAR run
+Mar 25 18:16:43 ..... loading genome
+Mar 25 18:16:54 ..... started mapping
+Mar 25 18:18:01 ..... started sorting BAM
+Mar 25 18:18:26 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943826...
+Mar 25 18:18:26 ..... started STAR run
+Mar 25 18:18:26 ..... loading genome
+Mar 25 18:18:34 ..... started mapping
+Mar 25 18:19:14 ..... started sorting BAM
+Mar 25 18:19:27 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943827...
+Mar 25 18:19:28 ..... started STAR run
+Mar 25 18:19:28 ..... loading genome
+Mar 25 18:20:18 ..... started mapping
+Mar 25 18:21:15 ..... started sorting BAM
+Mar 25 18:21:35 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943828...
+Mar 25 18:21:35 ..... started STAR run
+Mar 25 18:21:36 ..... loading genome
+Mar 25 18:22:21 ..... started mapping
+Mar 25 18:23:26 ..... started sorting BAM
+Mar 25 18:23:50 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943829...
+Mar 25 18:23:50 ..... started STAR run
+Mar 25 18:23:50 ..... loading genome
+Mar 25 18:24:36 ..... started mapping
+Mar 25 18:25:21 ..... started sorting BAM
+Mar 25 18:25:37 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943830...
+Mar 25 18:25:37 ..... started STAR run
+Mar 25 18:25:37 ..... loading genome
+Mar 25 18:26:31 ..... started mapping
+Mar 25 18:27:36 ..... started sorting BAM
+Mar 25 18:27:59 ..... finished successfully
+Done.

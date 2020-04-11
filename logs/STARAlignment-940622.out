@@ -1,0 +1,54 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Reads for SRR943813 already mapped.
+Reads for SRR943814 already mapped.
+Reads for SRR943815 already mapped.
+Reads for SRR943816 already mapped.
+Reads for SRR943817 already mapped.
+Reads for SRR943818 already mapped.
+Reads for SRR943825 already mapped.
+Reads for SRR943826 already mapped.
+Reads for SRR943827 already mapped.
+Reads for SRR943828 already mapped.
+Reads for SRR943829 already mapped.
+Reads for SRR943830 already mapped.
+Reads for AC1DPA1 already mapped.
+Reads for AC1DPA2 already mapped.
+Reads for AC1DPA3 already mapped.
+Reads for AC3DPA1 already mapped.
+Reads for AC3DPA2 already mapped.
+Reads for AC3DPA3 already mapped.
+Reads for AC15DPA1 already mapped.
+Reads for AC15DPA2 already mapped.
+Reads for AC15DPA3 already mapped.
+Reads for ACbreaker1 already mapped.
+Reads for ACbreaker2 already mapped.
+Reads for ACbreaker3 already mapped.
+Reads for ACrr1 already mapped.
+Reads for ACrr2 already mapped.
+Reads for ACrr3 already mapped.
+Reads for NobtPre1 already mapped.
+Reads for NobtPre2 already mapped.
+Reads for NobtPre3 already mapped.
+Mapping Tobacco reads for Nobt3DPA1...
+Mar 26 14:37:55 ..... started STAR run
+Mar 26 14:37:55 ..... loading genome
+Mar 26 14:38:06 ..... started mapping
+Mar 26 14:48:02 ..... started sorting BAM
+Mar 26 14:53:40 ..... finished successfully
+Done.
+Reads for Nobt3DPA2 already mapped.
+Reads for Nobt3DPA3 already mapped.
+Reads for Nobt6DPA1 already mapped.
+Reads for Nobt6DPA2 already mapped.
+Reads for Nobt6DPA3 already mapped.

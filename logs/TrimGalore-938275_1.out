@@ -1,0 +1,325 @@
+miniconda2/4.4.10(23):ERROR:150: Module 'miniconda2/4.4.10' conflicts with the currently loaded module(s) 'python/2.7.5'
+miniconda2/4.4.10(23):ERROR:102: Tcl command execution failed: conflict    python
+
+Running Trim Galore on AC1DPA2...
+No quality encoding type selected. Assuming that the data provided uses Sanger encoded Phred scores (default)
+
+Path to Cutadapt set as: 'cutadapt' (default)
+1.14
+Cutadapt seems to be working fine (tested command 'cutadapt --version')
+
+
+AUTO-DETECTING ADAPTER TYPE
+===========================
+Attempting to auto-detect adapter type from the first 1 million sequences of the first file (>> AC1DPA2LEFT.gz <<)
+
+Found perfect matches for the following adapter sequences:
+Adapter type	Count	Sequence	Sequences analysed	Percentage
+Illumina	8	AGATCGGAAGAGC	1000000	0.00
+Nextera	4	CTGTCTCTTATA	1000000	0.00
+smallRNA	0	TGGAATTCTCGG	1000000	0.00
+Using Illumina adapter for trimming (count: 8). Second best hit was Nextera (count: 4)
+
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: AC1DPA2LEFT.gz
+Trimming mode: paired-end
+Trim Galore version: 0.4.2
+Cutadapt version: 1.14
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Output file(s) will be GZIP compressed
+
+Writing final adapter and quality trimmed output to AC1DPA2LEFT.gz_trimmed.fq.gz
+
+
+  >>> Now performing quality (cutoff 20) and adapter trimming in a single pass for the adapter sequence: 'AGATCGGAAGAGC' from file AC1DPA2LEFT.gz <<< 
+10000000 sequences processed
+20000000 sequences processed
+30000000 sequences processed
+40000000 sequences processed
+50000000 sequences processed
+60000000 sequences processed
+70000000 sequences processed
+80000000 sequences processed
+90000000 sequences processed
+This is cutadapt 1.14 with Python 2.7.5
+Command line parameters: -f fastq -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC AC1DPA2LEFT.gz
+Trimming 1 adapter with at most 10.0% errors in single-end mode ...
+Finished in 1379.33 s (15 us/read; 4.00 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              91,872,082
+Reads with adapters:                13,940,201 (15.2%)
+Reads written (passing filters):    91,872,082 (100.0%)
+
+Total basepairs processed: 6,933,136,130 bp
+Quality-trimmed:              19,170,248 bp (0.3%)
+Total written (filtered):  6,896,194,742 bp (99.5%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 13940201 times.
+
+No. of allowed errors:
+0-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 35.6%
+  C: 31.2%
+  G: 14.4%
+  T: 18.8%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	11862015	22968020.5	0	11862015
+2	934110	5742005.1	0	934110
+3	923555	1435501.3	0	923555
+4	146032	358875.3	0	146032
+5	54819	89718.8	0	54819
+6	5093	22429.7	0	5093
+7	528	5607.4	0	528
+8	260	1401.9	0	260
+9	252	350.5	0	208 44
+10	723	87.6	1	104 619
+11	991	21.9	1	126 865
+12	567	5.5	1	64 503
+13	281	1.4	1	20 261
+14	340	1.4	1	40 300
+15	324	1.4	1	34 290
+16	312	1.4	1	29 283
+17	396	1.4	1	38 358
+18	276	1.4	1	33 243
+19	432	1.4	1	59 373
+20	283	1.4	1	32 251
+21	495	1.4	1	64 431
+22	349	1.4	1	53 296
+23	298	1.4	1	53 245
+24	274	1.4	1	49 225
+25	342	1.4	1	65 277
+26	523	1.4	1	102 421
+27	407	1.4	1	81 326
+28	397	1.4	1	66 331
+29	165	1.4	1	22 143
+30	158	1.4	1	23 135
+31	400	1.4	1	60 340
+32	320	1.4	1	40 280
+33	269	1.4	1	40 229
+34	394	1.4	1	50 344
+35	337	1.4	1	77 260
+36	340	1.4	1	57 283
+37	231	1.4	1	26 205
+38	341	1.4	1	58 283
+39	219	1.4	1	32 187
+40	248	1.4	1	43 205
+41	128	1.4	1	16 112
+42	204	1.4	1	27 177
+43	90	1.4	1	13 77
+44	189	1.4	1	31 158
+45	123	1.4	1	19 104
+46	63	1.4	1	9 54
+47	108	1.4	1	14 94
+48	85	1.4	1	3 82
+49	94	1.4	1	20 74
+50	57	1.4	1	3 54
+51	98	1.4	1	7 91
+52	67	1.4	1	7 60
+53	39	1.4	1	3 36
+54	49	1.4	1	0 49
+55	33	1.4	1	1 32
+56	38	1.4	1	0 38
+57	48	1.4	1	1 47
+58	28	1.4	1	0 28
+59	22	1.4	1	0 22
+60	23	1.4	1	0 23
+61	11	1.4	1	0 11
+62	39	1.4	1	0 39
+63	40	1.4	1	0 40
+64	37	1.4	1	0 37
+65	49	1.4	1	0 49
+66	48	1.4	1	0 48
+67	53	1.4	1	0 53
+68	36	1.4	1	0 36
+69	22	1.4	1	0 22
+70	28	1.4	1	0 28
+71	22	1.4	1	0 22
+72	26	1.4	1	0 26
+73	55	1.4	1	0 55
+74	13	1.4	1	0 13
+75	29	1.4	1	0 29
+76	11	1.4	1	0 11
+
+
+RUN STATISTICS FOR INPUT FILE: AC1DPA2LEFT.gz
+=============================================
+91872082 sequences processed in total
+The length threshold of paired-end sequences gets evaluated later on (in the validation step)
+
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: AC1DPA2RIGHT.gz
+Trimming mode: paired-end
+Trim Galore version: 0.4.2
+Cutadapt version: 1.14
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Output file(s) will be GZIP compressed
+
+Writing final adapter and quality trimmed output to AC1DPA2RIGHT.gz_trimmed.fq.gz
+
+
+  >>> Now performing quality (cutoff 20) and adapter trimming in a single pass for the adapter sequence: 'AGATCGGAAGAGC' from file AC1DPA2RIGHT.gz <<< 
+10000000 sequences processed
+20000000 sequences processed
+30000000 sequences processed
+40000000 sequences processed
+50000000 sequences processed
+60000000 sequences processed
+70000000 sequences processed
+80000000 sequences processed
+90000000 sequences processed
+This is cutadapt 1.14 with Python 2.7.5
+Command line parameters: -f fastq -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC AC1DPA2RIGHT.gz
+Trimming 1 adapter with at most 10.0% errors in single-end mode ...
+Finished in 1387.22 s (15 us/read; 3.97 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              91,872,082
+Reads with adapters:                14,528,950 (15.8%)
+Reads written (passing filters):    91,872,082 (100.0%)
+
+Total basepairs processed: 6,934,545,081 bp
+Quality-trimmed:              46,649,379 bp (0.7%)
+Total written (filtered):  6,868,095,063 bp (99.0%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 14528950 times.
+
+No. of allowed errors:
+0-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 36.9%
+  C: 25.0%
+  G: 22.0%
+  T: 16.0%
+  none/other: 0.1%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	11696042	22968020.5	0	11696042
+2	1372364	5742005.1	0	1372364
+3	1207253	1435501.3	0	1207253
+4	168926	358875.3	0	168926
+5	52243	89718.8	0	52243
+6	5616	22429.7	0	5616
+7	323	5607.4	0	323
+8	200	1401.9	0	200
+9	445	350.5	0	223 222
+10	2054	87.6	1	132 1922
+11	1689	21.9	1	231 1458
+12	944	5.5	1	182 762
+13	451	1.4	1	64 387
+14	463	1.4	1	53 410
+15	771	1.4	1	56 715
+16	439	1.4	1	51 388
+17	517	1.4	1	80 437
+18	589	1.4	1	59 530
+19	459	1.4	1	78 381
+20	473	1.4	1	61 412
+21	501	1.4	1	87 414
+22	482	1.4	1	59 423
+23	695	1.4	1	105 590
+24	701	1.4	1	112 589
+25	591	1.4	1	86 505
+26	856	1.4	1	168 688
+27	790	1.4	1	176 614
+28	512	1.4	1	94 418
+29	491	1.4	1	100 391
+30	416	1.4	1	76 340
+31	604	1.4	1	113 491
+32	722	1.4	1	136 586
+33	843	1.4	1	173 670
+34	383	1.4	1	87 296
+35	303	1.4	1	62 241
+36	351	1.4	1	70 281
+37	631	1.4	1	138 493
+38	341	1.4	1	52 289
+39	518	1.4	1	111 407
+40	285	1.4	1	66 219
+41	239	1.4	1	35 204
+42	333	1.4	1	50 283
+43	264	1.4	1	44 220
+44	358	1.4	1	48 310
+45	313	1.4	1	66 247
+46	305	1.4	1	41 264
+47	187	1.4	1	19 168
+48	256	1.4	1	21 235
+49	247	1.4	1	28 219
+50	249	1.4	1	32 217
+51	133	1.4	1	9 124
+52	100	1.4	1	15 85
+53	109	1.4	1	4 105
+54	55	1.4	1	4 51
+55	74	1.4	1	2 72
+56	149	1.4	1	0 149
+57	47	1.4	1	0 47
+58	101	1.4	1	1 100
+59	142	1.4	1	0 142
+60	105	1.4	1	0 105
+61	95	1.4	1	0 95
+62	83	1.4	1	0 83
+63	74	1.4	1	0 74
+64	51	1.4	1	0 51
+65	75	1.4	1	4 71
+66	106	1.4	1	1 105
+67	122	1.4	1	3 119
+68	153	1.4	1	3 150
+69	56	1.4	1	1 55
+70	87	1.4	1	0 87
+71	198	1.4	1	0 198
+72	273	1.4	1	1 272
+73	161	1.4	1	2 159
+74	232	1.4	1	2 230
+75	105	1.4	1	0 105
+76	36	1.4	1	6 30
+
+
+RUN STATISTICS FOR INPUT FILE: AC1DPA2RIGHT.gz
+=============================================
+91872082 sequences processed in total
+The length threshold of paired-end sequences gets evaluated later on (in the validation step)
+
+Validate paired-end files AC1DPA2LEFT.gz_trimmed.fq.gz and AC1DPA2RIGHT.gz_trimmed.fq.gz
+file_1: AC1DPA2LEFT.gz_trimmed.fq.gz, file_2: AC1DPA2RIGHT.gz_trimmed.fq.gz
+
+
+>>>>> Now validing the length of the 2 paired-end infiles: AC1DPA2LEFT.gz_trimmed.fq.gz and AC1DPA2RIGHT.gz_trimmed.fq.gz <<<<<
+Writing validated paired-end read 1 reads to AC1DPA2LEFT.gz_val_1.fq.gz
+Writing validated paired-end read 2 reads to AC1DPA2RIGHT.gz_val_2.fq.gz
+
+Total number of sequences analysed: 91872082
+
+Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 405644 (0.44%)
+
+Deleting both intermediate output files AC1DPA2LEFT.gz_trimmed.fq.gz and AC1DPA2RIGHT.gz_trimmed.fq.gz
+
+====================================================================================================
+
+Done.
+Renaming to make it more standard...
+mv: cannot stat 'AC1DPA2LEFT.gz_val_1.fq.gz': No such file or directory

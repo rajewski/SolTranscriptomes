@@ -1,0 +1,53 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Mapping Tomato reads for SRR943813...
+Mar 25 18:01:23 ..... started STAR run
+Mar 25 18:01:24 ..... loading genome
+Mar 25 18:01:29 ..... started mapping
+Mar 25 18:02:46 ..... started sorting BAM
+Mar 25 18:03:14 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943814...
+Mar 25 18:03:14 ..... started STAR run
+Mar 25 18:03:14 ..... loading genome
+Mar 25 18:04:05 ..... started mapping
+Mar 25 18:05:25 ..... started sorting BAM
+Mar 25 18:05:54 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943815...
+Mar 25 18:05:54 ..... started STAR run
+Mar 25 18:05:54 ..... loading genome
+Mar 25 18:06:47 ..... started mapping
+Mar 25 18:08:00 ..... started sorting BAM
+Mar 25 18:08:28 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943816...
+Mar 25 18:08:29 ..... started STAR run
+Mar 25 18:08:29 ..... loading genome
+Mar 25 18:09:23 ..... started mapping
+Mar 25 18:10:12 ..... started sorting BAM
+Mar 25 18:10:32 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943817...
+Mar 25 18:10:32 ..... started STAR run
+Mar 25 18:10:32 ..... loading genome
+Mar 25 18:11:29 ..... started mapping
+Mar 25 18:11:57 ..... started sorting BAM
+Mar 25 18:12:06 ..... finished successfully
+Done.
+Mapping Tomato reads for SRR943818...
+Mar 25 18:12:06 ..... started STAR run
+Mar 25 18:12:06 ..... loading genome
+Mar 25 18:13:05 ..... started mapping
+Mar 25 18:13:43 ..... started sorting BAM
+slurmstepd-i03: error: *** JOB 939598 ON i03 CANCELLED AT 2020-03-25T18:13:44 ***

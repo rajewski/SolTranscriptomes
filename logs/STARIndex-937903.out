@@ -1,0 +1,6 @@
+Mar 24 14:37:34 ..... started STAR run
+Mar 24 14:37:34 ... starting to generate Genome files
+
+EXITING because of INPUT ERROR: could not open genomeFastaFile: /rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/TAIR10/TARI10.fa
+
+Mar 24 14:37:34 ...... FATAL ERROR, exiting
