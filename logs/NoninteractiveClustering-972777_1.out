@@ -1,0 +1,149 @@
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: 'BiocGenerics'
+
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from 'package:base':
+
+    Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+    as.data.frame, basename, cbind, colnames, dirname, do.call,
+    duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,
+    lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+    pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,
+    tapply, union, unique, unsplit, which, which.max, which.min
+
+Loading required package: S4Vectors
+Loading required package: stats4
+
+Attaching package: 'S4Vectors'
+
+The following object is masked from 'package:base':
+
+    expand.grid
+
+Loading required package: IRanges
+Loading required package: GenomeInfoDb
+Loading required package: GenomicRanges
+Loading required package: SummarizedExperiment
+Loading required package: Biobase
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+Loading required package: DelayedArray
+Loading required package: matrixStats
+
+Attaching package: 'matrixStats'
+
+The following objects are masked from 'package:Biobase':
+
+    anyMissing, rowMedians
+
+Loading required package: BiocParallel
+
+Attaching package: 'DelayedArray'
+
+The following objects are masked from 'package:matrixStats':
+
+    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
+
+The following objects are masked from 'package:base':
+
+    aperm, apply, rowsum
+
+Loading required package: Biostrings
+Loading required package: XVector
+
+Attaching package: 'Biostrings'
+
+The following object is masked from 'package:DelayedArray':
+
+    type
+
+The following object is masked from 'package:base':
+
+    strsplit
+
+Loading required package: Rsamtools
+Loading required package: AnnotationDbi
+Registered S3 methods overwritten by 'ggplot2':
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
+
+Attaching package: 'dplyr'
+
+The following object is masked from 'package:AnnotationDbi':
+
+    select
+
+The following objects are masked from 'package:GenomicAlignments':
+
+    first, last
+
+The following objects are masked from 'package:Biostrings':
+
+    collapse, intersect, setdiff, setequal, union
+
+The following object is masked from 'package:XVector':
+
+    slice
+
+The following object is masked from 'package:matrixStats':
+
+    count
+
+The following object is masked from 'package:Biobase':
+
+    combine
+
+The following objects are masked from 'package:GenomicRanges':
+
+    intersect, setdiff, union
+
+The following object is masked from 'package:GenomeInfoDb':
+
+    intersect
+
+The following objects are masked from 'package:IRanges':
+
+    collapse, desc, intersect, setdiff, slice, union
+
+The following objects are masked from 'package:S4Vectors':
+
+    first, intersect, rename, setdiff, setequal, union
+
+The following objects are masked from 'package:BiocGenerics':
+
+    combine, intersect, setdiff, union
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+Normalizing counts
+Done.
+Now for some diagnostic plots:
+Filtering DEGs to FDR threshold less than 0.01
+14395 genes remaining
+Using all 14395 DEGs. Maybe consider fewer to speed clustering?
+Only one entry detected for Genotype. Ignoring Genotype for plotting.
+A large number of genes was given-- please, make sure this is not an error. Normally, only DE genes will be useful for this function.
+Working with 14395 genes.
