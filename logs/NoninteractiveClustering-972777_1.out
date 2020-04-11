@@ -147,3 +147,6 @@ Using all 14395 DEGs. Maybe consider fewer to speed clustering?
 Only one entry detected for Genotype. Ignoring Genotype for plotting.
 A large number of genes was given-- please, make sure this is not an error. Normally, only DE genes will be useful for this function.
 Working with 14395 genes.
+Working with 13271 genes after filtering: minc > 15
+Joining, by = "merge"
+Joining, by = "merge"
