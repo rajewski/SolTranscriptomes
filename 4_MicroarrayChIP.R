@@ -53,6 +53,8 @@ ChipEset <- preprocess(RG, method="nimblegen")
 sampleNames(ChipEset) <- with(RG$targets, paste(Cy5,"vs",Cy3, Rep,sep="_"))
 
 #smooth the peaks in sliding windows
+
+#CONSIDER NOT COMBINING REPS!
 ChipEsetSmooth <- computeRunningMedians(ChipEset, 
                                         probeAnno=SL4Remapping,
                                         modColumn = "Cy5",
