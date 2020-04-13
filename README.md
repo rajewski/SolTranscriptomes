@@ -17,7 +17,7 @@ Our lab has generated several transcriptome libraries that will be used for this
 
 #### Gene Expression Data
 
-The RNA seq files are downloaded from SRA with the `1_GetExternalSRAData.sh` script and placed in the `ExternalData/RNAseq` directory. The microarray data files and probe mappings are downloaded with the 1_GetMicroarrays.sh script and placed in the `ExternalData/Microarray` directory.
+The RNA seq files are downloaded from SRA with the `1_GetExternalSRA_RNAseq.sh` script and placed in the `ExternalData/RNAseq` directory. The microarray data files and probe mappings are downloaded with the 1_GetMicroarrays.sh script and placed in the `ExternalData/Microarray` directory.
 
 | Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
@@ -34,7 +34,7 @@ For Arabidopsis, the data is downloaded with the `1_GetExternalGenome.sh` to `Ex
 
 # ChIP Analysis
 
-As a preprocessing step for the microarray study, array probe sequences were mapped to the SL4.0 genome, and probe locations were updated. Nonmapping or multimapping probes were excluded from the analysis.
+The ChIP-seq files are downloaded to `ExternalData/ChIPseq` and the microarray file is downloaded to `ExternalData/Microarray` with `1_GetExternalSRA_ChIP.sh` and `1_GetExternalMicroarray.sh`, respectively. As a preprocessing step for the microarray study, array probe sequences were mapped to the SL4.0 genome, and probe locations were updated. Nonmapping or multimapping probes were excluded from the analysis.
 
 
 - How tf am I going to do a chip analysis from raw data?

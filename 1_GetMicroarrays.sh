@@ -86,6 +86,8 @@ if [ ! -e GSE49125/GPL15968-24228.nodups.txt ]; then
     #Create a final list of just the single mapping and another with data suitable for import into Ringo
     tail -n +3 GPL15968-24228.exonerate.nodups.txt |cut -f2 -d " " | head -n -1 > GPL15968-24228.nodups.txt
     tail -n +3 GPL15968-24228.exonerate.nodups.txt |head -n -1 | cut -f2,6,7,8,9 -d " " > GPL15968-24228.final.txt
+    # get a list of the random probes
+    zgrep "RANDOM" GPL15968_110707_RDKK310_Slyc_ChIP.ndf.gz | cut -f13,5 > GPL15968-24228.randomprobes.txt
     cd ../
 fi
 
