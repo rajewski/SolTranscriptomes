@@ -23,9 +23,11 @@ tryCatch(SL4gff.df <- readRDS("ChIPAnalysis/ChIP-chip/SL4gff.rds"), error=functi
   library(GenomicRanges)
   library(rtracklayer)
   SL4gff <- import("SlycDNA/ITAG4.0_gene_models.gff")
+  #mcols(SL4gff) <- mcols(SL4gff)[,c(2,7)]
+  #names(mcols(SL4gff)) <- c("type", "name")
   SL4gff.df <- as.data.frame(SL4gff)
   SL4gff.df <- SL4gff.df[,c("seqnames", "start", "end", "strand", "type", "Name")]
-  SL4gff.df <- SL4gff.df[SL4gff.df$type=="gene",]
+  SL4gff.df <- SL4gff.df[SL4gff.df$type=="mRNA",]
   colnames(SL4gff.df) <- c("chr", "start", "end", "strand", "type", "name")
   saveRDS(SL4gff.df, file="ChIPAnalysis/ChIP-chip/SL4gff.rds")
 })
@@ -39,13 +41,7 @@ tryCatch(TomRG <-readRDS("ChIPAnalysis/ChIP-chip/GSE49125_RG.rds"), error=functi
   saveRDS(TomRG, file="ChIPAnalysis/ChIP-chip/GSE49125_RG.rds")
 })
 
-# Just FUL1
-tryCatch(FUL1RG <- readRDS("ChIPAnalysis/ChIP-chip/GSE49125_FUL1_RG.rds"), error=function(e){
-  FUL1RG <- readNimblegen("ChIPAnalysis/ChIP-chip/FUL1Design.txt", "/rhome/arajewski/R/x86_64-pc-linux-gnu-library/3.6/Ringo/exData/spottypes.txt", path=NULL)
-  saveRDS(FUL1RG, file="ChIPAnalysis/ChIP-chip/GSE49125_FUL1_RG.rds")
-})
-
-# Assign one dataset to this variable
+# Assign one dataset to this variable in case I just multiple datasets
 RG <- TomRG
 
 #check for autocorrelation
@@ -56,38 +52,79 @@ plot(Autocorr)
 ChipEset <- preprocess(RG, method="nimblegen")
 sampleNames(ChipEset) <- with(RG$targets, paste(Cy5,"vs",Cy3, Rep,sep="_"))
 
-#smooth the peaks in 800bp windows
+#smooth the peaks in sliding windows
 ChipEsetSmooth <- computeRunningMedians(ChipEset, 
                                         probeAnno=SL4Remapping,
                                         modColumn = "Cy5",
-                                        winHalfSize = 300,
-                                        combineReplicates=TRUE)
-sampleNames(ChipEsetSmooth) <- paste(sampleNames(ChipEset),"smoothed")
-
+                                        winHalfSize = 200,
+                                        combineReplicates=TRUE,
+                                        min.probes=2)
 
 #try a plot for TAGL1
 SL4gff.df[grep("Solyc07g055920", SL4gff.df$name),] #TAGL1 then add ~4kb upstream for promoter
 SL4gff.df[grep("Solyc02g077920", SL4gff.df$name),] #CNR then add ~4kb upstream for promoter
 SL4gff.df[grep("Solyc02g086930", SL4gff.df$name),] #HB-1 then add ~4kb upstream for promoter
 
-chipAlongChrom1(ChipEset,
+chipAlongChrom1(ChipEsetSmooth,
                 SL4Remapping, 
                 gff=SL4gff.df,
                 ylim=c(0,2),
-                #chrom="SL4.0ch07", #TAGL1
-                #xlim=c(63756000, 63760000)) #TAGL1
-                chrom="SL4.0ch02", #CNR or HB-1
+                chrom="SL4.0ch07", #TAGL1
+                xlim=c(63756000, 63760000)) #TAGL1
+                #chrom="SL4.0ch02", #CNR or HB-1
                 #xlim=c(40730780, 40733000)) #CNR
-                xlim=c(47530500, 47533000))
+                #xlim=c(47530500, 47533000))
 
 
 #make a hisotgram of reporter intensities to get a threshold
 (y0 <- apply(exprs(ChipEsetSmooth),2,upperBoundNull))
+(y0G <- apply(exprs(ChipEsetSmooth),2,twoGaussiansNull))
 
-chersX <- findChersOnSmoothed(ChipEsetSmooth, probeAnno=SL4Remapping, threshold=y0)
+
+#actually find chip enriched regions
+chersX <- findChersOnSmoothed(ChipEsetSmooth,
+                              probeAnno=SL4Remapping,
+                              threshold=y0G,
+                              distCutOff=200)
 chersX <- relateChers(chersX, gff=SL4gff.df, upstream=3000)
 chersXD <- as.data.frame(chersX)
 head(chersXD[order(chersXD$maxLevel, decreasing=TRUE),])
+
 #save it as a bed object for IGV
-chersToBED(chersX, file="ChIPAnalysis/ChIP-chip/chers.bed")
+chersToBED(chersX, file="ChIPAnalysis/ChIP-chip/FULchers.bed")
+
+#Find distance from cher to TSS
+library(tidyr)
+Dist2TSS <- data.frame(.id=NA, V1=NA, antibody=NA, maxlevel=NA, score=NA)
+for (i in 1:length(chersX)){
+  if (length(chersX[[i]]@extras$distMid2TSS)>0) {
+    tmpcher <- cbind(plyr::ldply(chersX[[i]]@extras$distMid2TSS),
+                     antibody=chersX[[i]]@antibody,
+                     maxlevel=chersX[[i]]@maxLevel,
+                     score=chersX[[i]]@score)
+    Dist2TSS <- rbind(Dist2TSS, tmpcher)
+  } 
+}
+names(Dist2TSS) <- c("Transcript", "Distance", "Antibody", "Max_Level", "Score")
+Dist2TSS <- Dist2TSS[-1,]
+Dist2TSS <- Dist2TSS[Dist2TSS$Distance<=3000,]
+write.csv(Dist2TSS,
+          "ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
+          row.names = F,
+          quote = F)
+
+hist(Dist2TSS$Distance[Dist2TSS$Antibody=="FUL1.sm"], 
+     breaks=50,
+     xlab="Distance from TSS (bp)",
+     main=expression(paste(alpha,"-FUL1 Binding")))
+
+hist(Dist2TSS$Distance[Dist2TSS$Antibody=="FUL2.sm"], 
+     breaks=50,
+     xlab="Distance from TSS (bp)",
+     main=expression(paste(alpha,"-FUL2 Binding")))
+
+hist(Dist2TSS$Distance, 
+     breaks=50,
+     xlab="Distance from TSS (bp)",
+     main=expression(paste(alpha,"-FUL1 and ", alpha, "-FUL2 Binding")))
 
