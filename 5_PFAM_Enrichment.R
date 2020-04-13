@@ -136,7 +136,45 @@ for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="Nobt_All_Cl
 }
 
 
+# Try with ChIP binding ---------------------------------------------------
+# this is to test if a given cluster is enriched for genes with promoters bound by FUL1/2
+FULBinding <- read.csv("ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
+                       stringsAsFactors = F)
+write.table(FULBinding[,c("Transcript", "Antibody")],
+          file="ChIPAnalysis/ChIP-chip/TomatoFULTargets.csv",
+          row.names = F,
+          col.names= F,
+          quote = F,
+          sep="\t")
+write.table(rbind(c("FUL1.sm", "FUL1_bound"),
+                  c("FUL2.sm", "FUL2_bound")),
+            file="ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
+            row.names = F,
+            col.names= F,
+            quote = F,
+            sep="\t")
+write.table(NULL, file="ChIPAnalysis/ChIP-chip/DummyChip.txt")
 
+
+# Slyc IH data
+for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_Cluster*"))) {
+  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
+                 AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULTargets.csv",
+                 IPRDescFile = "ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
+                 ExcludedGenesFile = "ChIPAnalysis/ChIP-chip/DummyChip.txt",
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_All_Cluster_", i, ".txt"),
+                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Cluster", i, ".txt"))
+}
+
+# Slyc SRA data
+for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All_Cluster*"))) {
+  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
+                 AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULTargets.csv",
+                 IPRDescFile = "ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
+                 ExcludedGenesFile = "ChIPAnalysis/ChIP-chip/DummyChip.txt",
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_All_Cluster_", i, ".txt"),
+                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycSRA_All_Cluster", i, ".txt"))
+}
 
 
 
