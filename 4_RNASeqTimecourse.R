@@ -185,40 +185,61 @@ tryCatch(Nobtdds <- readRDS("DEGAnalysis/RNA-seq/Nobtdds.rds"), error=function(e
 })
 
 # Play around with individual genes ---------------------------------------
-Exampledds <- SlycIHdds #assign one dds as the example to streamline code
+Exampledds <- TAIR10dds #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
 #Examine an individual Gene
 topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
 colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
-plotCounts(Exampledds, gene=topGene, intgroup="DAP", normalized = T) #plot best fitting gene
+plotCounts(Exampledds, gene=topGene, intgroup=c("Genotype", "DAP"), normalized = T) #plot best fitting gene
 
-#FUL AT5G60910 
-#FUL1 Solyc06g069430.3 NIOBTv3_g28929-D2
-#FUL1 Solyc03g114830.3 NIOBTv3_g39464
-#MBP10 Solyc02g065730.2 NIOBTv307845
-#MBP20 Solyc02g089210.4 NIOBT_gMBP20
-plotCounts(Exampledds, gene="NIOBTv3_g39464", intgroup="DAP",normalized=T) #FRUITFULL
+FULgenes<-c(FUL.1="AT5G60910.1",
+            FUL.2="AT5G60910.2",
+            AGL79="AT3G30260.1")
+# FULgenes<-c(SlFUL1="Solyc06g069430.3.1",
+#             SlFUL2="Solyc03g114830.3.1",
+#             SlMBP10="Solyc02g065730.2.1",
+#             SlMBP20="Solyc02g089210.4.1" )
+# FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
+#             NoFUL2="NIOBTv3_g39464.t1",
+#             NoMBP10="NIOBTv3_g07845.t1",
+#             NoMBP20="NIOBT_gMBP20.t1" )
+for (i in 1:length(FULgenes)) {
+  pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
+      width=6,
+      height=4)
+  plotCounts(Exampledds,
+             gene=FULgenes[i],
+             intgroup=c("DAP"), # Remove Genotype for nonSlycSRA
+             main=paste0(names(FULgenes[i]), 
+                         " p=",
+                         formatC(ExampleRes$padj[rownames(ExampleRes)==FULgenes[i]], format = "e", digits = 1)),
+             xlab="Days Post Anthesis",
+             normalized=T,
+             replace=T)
+  dev.off()
+}
+ 
 
 # Clustering --------------------------------------------------------------
+# For all genes, this is best run noninteractively with the 4_NoninteractiveClustering.sh script
+tryCatch(TAIR10Allcluster <- readRDS("DEGAnalysis/RNA-seq/TAIR10Allcluster.rds"), error=function(e){
+  TAIR10Allcluster <- DESeqCluster(TAIR10dds, numGenes = "all")
+  saveRDS(TAIR10Allcluster, "DEGAnalysis/RNA-seq/TAIR10Allcluster.rds")
+})
+tryCatch(SlycSRAAllcluster <- readRDS("DEGAnalysis/RNA-seq/SlycSRAAllcluster.rds"), error=function(e){
+  SlycSRAAllcluster <- DESeqCluster(SlycSRAdds, numGenes = "all")
+  saveRDS(SlycSRAAllcluster, "DEGAnalysis/RNA-seq/SlycSRAAllcluster.rds")
+})
+tryCatch(SlycIHAllcluster <- readRDS("DEGAnalysis/RNA-seq/SlycIHAllcluster.rds"), error=function(e){
+  SlycIHAllcluster <- DESeqCluster(SlycIHdds, numGenes = "all")
+  saveRDS(SlycIHAllcluster, "DEGAnalysis/RNA-seq/SlycIHAllcluster.rds")
+})
 
-tryCatch(TAIR10cluster <- readRDS("DEGAnalysis/RNA-seq/TAIR10cluster.rds"), error=function(e){
-  TAIR10cluster <- DESeqCluster(TAIR10dds, numGenes = "3000")
-  saveRDS(TAIR10cluster, "DEGAnalysis/RNA-seq/TAIR10cluster.rds")
-})
-tryCatch(SlycSRAcluster <- readRDS("DEGAnalysis/RNA-seq/SlycSRAcluster.rds"), error=function(e){
-  SlycSRAcluster <- DESeqCluster(SlycSRAdds, numGenes = "3000")
-  saveRDS(SlycSRAcluster, "DEGAnalysis/RNA-seq/SlycSRAcluster.rds")
-})
-tryCatch(SlycIHcluster <- readRDS("DEGAnalysis/RNA-seq/SlycIHcluster.rds"), error=function(e){
-  SlycIHcluster <- DESeqCluster(SlycIHdds, numGenes = "3000")
-  saveRDS(SlycIHcluster, "DEGAnalysis/RNA-seq/SlycIHcluster.rds")
-})
-
-tryCatch(Nobtcluster <- readRDS("DEGAnalysis/RNA-seq/Nobtcluster.rds"), error=function(e){
-  Nobtcluster <- DESeqCluster(Nobtdds, numGenes = "3000")
-  saveRDS(Nobtcluster, "DEGAnalysis/RNA-seq/Nobtcluster.rds")
+tryCatch(NobtAllcluster <- readRDS("DEGAnalysis/RNA-seq/NobtAllcluster.rds"), error=function(e){
+  NobtAllcluster <- DESeqCluster(Nobtdds, numGenes = "all")
+  saveRDS(NobtAllcluster, "DEGAnalysis/RNA-seq/NobtAllcluster.rds")
 })
 
 
