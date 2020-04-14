@@ -1,2 +1,2 @@
 Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-DAHP synthetase, class II (IPR002480)	387.2	5e-02	2	4	Solyc01g105383.1.1, Solyc01g105420.4.1
+DAHP synthetase, class II (IPR002480)	387.2	5e-02	2	4	Solyc01g105383.1.1,Solyc01g105420.4.1

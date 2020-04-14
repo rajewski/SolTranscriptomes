@@ -1,2 +1,2 @@
 Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-Alpha crystallin/Hsp20 domain (IPR002068)	27.8	5e-03	5	47	Solyc01g096980.2.1, Solyc06g076520.1.1, Solyc06g076540.1.1, Solyc08g062437.1.1, Solyc09g015000.4.1
+Alpha crystallin/Hsp20 domain (IPR002068)	27.8	5e-03	5	47	Solyc01g096980.2.1,Solyc06g076520.1.1,Solyc06g076540.1.1,Solyc08g062437.1.1,Solyc09g015000.4.1

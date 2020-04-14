@@ -81,7 +81,7 @@ PfamEnrichment <- function(AllGenesFile = "",
   sorted_gene_groups = c()
   for (index in 1:length(indices_by_enrichment)){
     temp_genes = top_genes[as.vector(na.omit(match(domain_grouping[[indices_by_enrichment[index]]], top_genes)))]
-    sorted_gene_groups[index] = paste(temp_genes, sep = ", ", collapse = ", ") 
+    sorted_gene_groups[index] = paste(temp_genes, sep = ",", collapse = ",") 
   }
   output = cbind(Description=sorted_full_descriptions, 
                  Enrichment=round(sorted_enrichment, digits = 1), 
@@ -94,6 +94,9 @@ PfamEnrichment <- function(AllGenesFile = "",
   }
  return(output)
 }
+
+
+# IPR on RNA seq clusters -------------------------------------------------
 
 # Work through the Slyc IH data
 for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_Cluster*"))) {
@@ -136,27 +139,52 @@ for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="Nobt_All_Cl
 }
 
 
-# Try with ChIP binding ---------------------------------------------------
+# ChIP hits on RNA seq clusters ---------------------------------------------------
+
 # this is to test if a given cluster is enriched for genes with promoters bound by FUL1/2
 FULBinding <- read.csv("ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
                        stringsAsFactors = F)
+# Table of transcripts and antibody hits
 write.table(FULBinding[,c("Transcript", "Antibody")],
           file="ChIPAnalysis/ChIP-chip/TomatoFULTargets.csv",
           row.names = F,
           col.names= F,
           quote = F,
           sep="\t")
+# Table of transcripts and binned antibody hits
+write.table(FULBinding[,c("Transcript", "Bins")],
+            file="ChIPAnalysis/ChIP-chip/TomatoFULBinnedTargets.csv",
+            row.names = F,
+            col.names= F,
+            quote = F,
+            sep="\t")
+# Descriptions of the possible hits
 write.table(rbind(c("FUL1.sm", "FUL1_bound"),
-                  c("FUL2.sm", "FUL2_bound")),
+                  c("FUL2.sm", "FUL2_bound"),
+                  c("FUL1_50", "FUL1 binding between 0 and 50bp of TSS"),
+                  c("FUL1_100", "FUL1 binding between 510 and 100bp of TSS"),
+                  c("FUL1_200", "FUL1 binding between 101 and 200bp of TSS"),
+                  c("FUL1_500", "FUL1 binding between 201 and 500bp of TSS"),
+                  c("FUL1_1000", "FUL1 binding between 501 and 1000bp of TSS"),
+                  c("FUL1_1500", "FUL1 binding between 1001 and 1500bp of TSS"),
+                  c("FUL1_2000", "FUL1 binding between 1501 and 2000bp of TSS"),
+                  c("FUL2_50", "FUL2 binding between 0 and 50bp of TSS"),
+                  c("FUL2_100", "FUL2 binding between 510 and 100bp of TSS"),
+                  c("FUL2_200", "FUL2 binding between 101 and 200bp of TSS"),
+                  c("FUL2_500", "FUL2 binding between 201 and 500bp of TSS"),
+                  c("FUL2_1000", "FUL2 binding between 501 and 1000bp of TSS"),
+                  c("FUL2_1500", "FUL2 binding between 1001 and 1500bp of TSS"),
+                  c("FUL2_2000", "FUL2 binding between 1501 and 2000bp of TSS")),
             file="ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
             row.names = F,
             col.names= F,
             quote = F,
             sep="\t")
+# Table of the zero genes to exclude
 write.table(NULL, file="ChIPAnalysis/ChIP-chip/DummyChip.txt")
 
 
-# Slyc IH data
+# Slyc IH data on general antibody binding
 for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_Cluster*"))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULTargets.csv",
@@ -166,7 +194,7 @@ for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_
                  OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Cluster", i, ".txt"))
 }
 
-# Slyc SRA data
+# Slyc SRA data on general antibody binding
 for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All_Cluster*"))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULTargets.csv",
@@ -175,6 +203,29 @@ for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All
                  TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_All_Cluster_", i, ".txt"),
                  OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycSRA_All_Cluster", i, ".txt"))
 }
+
+# Slyc IH data on binned antibody binding
+for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_Cluster*"))) {
+  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
+                 AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULBinnedTargets.csv",
+                 IPRDescFile = "ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
+                 ExcludedGenesFile = "ChIPAnalysis/ChIP-chip/DummyChip.txt",
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_All_Cluster_", i, ".txt"),
+                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster", i, ".txt"))
+}
+
+# Slyc SRA data on binned antibody binding
+for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All_Cluster*"))) {
+  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
+                 AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULBinnedTargets.csv",
+                 IPRDescFile = "ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
+                 ExcludedGenesFile = "ChIPAnalysis/ChIP-chip/DummyChip.txt",
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_All_Cluster_", i, ".txt"),
+                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycSRA_All_Binned_Cluster", i, ".txt"))
+}
+
+
+enriched <- read.table("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster3.txt", sep="\t")
 
 
 
