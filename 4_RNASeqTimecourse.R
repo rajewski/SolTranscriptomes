@@ -242,6 +242,23 @@ tryCatch(NobtAllcluster <- readRDS("DEGAnalysis/RNA-seq/NobtAllcluster.rds"), er
   saveRDS(NobtAllcluster, "DEGAnalysis/RNA-seq/NobtAllcluster.rds")
 })
 
+# Plot Cluster Profiles ---------------------------------------------------
+ClusterforPlotting <- NobtAllcluster
+PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
+                             time="DAP",
+                             boxes=T,
+                             points=F,
+                             #color="Genotype",
+                             #lines=F
+                             )
+PlotCluster + theme_minimal() +
+  theme(legend.position = "none",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+ggsave(filename = "DEGAnalysis/RNA-seq/Plot_Nobt_ClusterProfiles.pdf",
+       width=11,
+       height=9)
+
 
 # Save Cluster genes to a file --------------------------------------------
 X <- split(Nobtcluster$df, Nobtcluster$df$cluster)
