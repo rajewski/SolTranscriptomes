@@ -36,31 +36,28 @@ tryCatch(SL4gff.df <- readRDS("ChIPAnalysis/ChIP-chip/SL4gff.rds"), error=functi
 # All Data
 # The 3rd rep for each is a dye swap, so I simply flipped the file names.
 # I could have written in the actual swap on the cy3 and cy5 channels, but that might complicate things
-tryCatch(TomRG <-readRDS("ChIPAnalysis/ChIP-chip/GSE49125_RG.rds"), error=function(e){
-  TomRG <- readNimblegen("ChIPAnalysis/ChIP-chip/TomDesign.txt","/rhome/arajewski/R/x86_64-pc-linux-gnu-library/3.6/Ringo/exData/spottypes.txt", path=NULL)
-  saveRDS(TomRG, file="ChIPAnalysis/ChIP-chip/GSE49125_RG.rds")
+tryCatch(TomRG <-readRDS("ChIPAnalysis/ChIP-chip/GSE49125_Reduced.RG.rds"), error=function(e){
+  # Ive decided to remove the second rep of FUL1 bc it was very odd and had low binding
+  TomRG <- readNimblegen("ChIPAnalysis/ChIP-chip/TomDesignReduced.txt","/rhome/arajewski/R/x86_64-pc-linux-gnu-library/3.6/Ringo/exData/spottypes.txt", path=NULL)
+  saveRDS(TomRG, file="ChIPAnalysis/ChIP-chip/GSE49125_Reduced.RG.rds")
 })
 
-# Assign one dataset to this variable in case I just multiple datasets
-RG <- TomRG
-
 #check for autocorrelation
-Autocorr <- autocor(RG, probeAnno=SL4Remapping, chrom="SL4.0ch09", lag.max=1000)
+Autocorr <- autocor(TomRG, probeAnno=SL4Remapping, chrom="SL4.0ch09", lag.max=1000)
 plot(Autocorr)
 
 #preprocess the intensities
-ChipEset <- preprocess(RG, method="nimblegen")
-sampleNames(ChipEset) <- with(RG$targets, paste(Cy5,"vs",Cy3, Rep,sep="_"))
+TomRG <- backgroundCorrect(TomRG)
+ChipEset <- preprocess(TomRG, method="vsn")
+sampleNames(ChipEset) <- with(TomRG$targets, paste(Cy5,"vs",Cy3, Rep,sep="_"))
 
 #smooth the peaks in sliding windows
-
-#CONSIDER NOT COMBINING REPS!
 ChipEsetSmooth <- computeRunningMedians(ChipEset, 
                                         probeAnno=SL4Remapping,
                                         modColumn = "Cy5",
                                         winHalfSize = 200,
                                         combineReplicates=TRUE,
-                                        min.probes=2)
+                                        min.probes=3)
 
 #try a plot for TAGL1
 SL4gff.df[grep("Solyc07g055920", SL4gff.df$name),] #TAGL1 then add ~4kb upstream for promoter
@@ -70,7 +67,7 @@ SL4gff.df[grep("Solyc02g086930", SL4gff.df$name),] #HB-1 then add ~4kb upstream 
 chipAlongChrom1(ChipEsetSmooth,
                 SL4Remapping, 
                 gff=SL4gff.df,
-                ylim=c(0,2),
+                ylim=c(0,3),
                 chrom="SL4.0ch07", #TAGL1
                 xlim=c(63756000, 63760000)) #TAGL1
                 #chrom="SL4.0ch02", #CNR or HB-1
@@ -80,6 +77,7 @@ chipAlongChrom1(ChipEsetSmooth,
 
 #make a hisotgram of reporter intensities to get a threshold
 (y0 <- apply(exprs(ChipEsetSmooth),2,upperBoundNull))
+hist(exprs(ChipEsetSmooth)[,2])
 (y0G <- apply(exprs(ChipEsetSmooth),2,twoGaussiansNull))
 
 
@@ -109,24 +107,28 @@ for (i in 1:length(chersX)){
 }
 names(Dist2TSS) <- c("Transcript", "Distance", "Antibody", "Max_Level", "Score")
 Dist2TSS <- Dist2TSS[-1,]
-Dist2TSS <- Dist2TSS[Dist2TSS$Distance<=3000,]
+Dist2TSS <- Dist2TSS[Dist2TSS$Distance<=2000,] #array was only designed w/in 2kb of TSS
+Dist2TSS$Bins <- paste0(strsplit(Dist2TSS$Antibody, ".sm"),
+                        "_",
+                        cut(Dist2TSS$Distance, 
+                            breaks=c(-2,50,100,200,500,1000,1500,2000),
+                            labels=c("50","100","200","500","1000","1500","2000")))
+
 write.csv(Dist2TSS,
           "ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
           row.names = F,
           quote = F)
 
-hist(Dist2TSS$Distance[Dist2TSS$Antibody=="FUL1.sm"], 
-     breaks=50,
-     xlab="Distance from TSS (bp)",
-     main=expression(paste(alpha,"-FUL1 Binding")))
+pdf(file="ChIPAnalysis/ChIP-chip/Plot_FUL1_Dist2TSS.pdf")
+  hist(Dist2TSS$Distance[grep("FUL1",Dist2TSS$Antibody)], 
+       breaks=20,
+       xlab="Distance from TSS (bp)",
+       main=expression(paste(alpha,"-FUL1 Binding")))
+dev.off()
 
-hist(Dist2TSS$Distance[Dist2TSS$Antibody=="FUL2.sm"], 
-     breaks=50,
-     xlab="Distance from TSS (bp)",
-     main=expression(paste(alpha,"-FUL2 Binding")))
-
-hist(Dist2TSS$Distance, 
-     breaks=50,
-     xlab="Distance from TSS (bp)",
-     main=expression(paste(alpha,"-FUL1 and ", alpha, "-FUL2 Binding")))
-
+pdf(file="ChIPAnalysis/ChIP-chip/Plot_FUL2_Dist2TSS.pdf")
+  hist(Dist2TSS$Distance[grep("FUL2",Dist2TSS$Antibody)], 
+       breaks=20,
+       xlab="Distance from TSS (bp)",
+       main=expression(paste(alpha,"-FUL2 Binding")))
+dev.off()

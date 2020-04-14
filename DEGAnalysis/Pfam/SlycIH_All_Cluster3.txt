@@ -1,2 +1,2 @@
 Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-Chloroplast envelope membrane protein, CemA (IPR004282)	58	4e-04	4	4	Solyc00g500020.1.1, Solyc00g500067.1.1, Solyc07g042810.3.1, Solyc07g042820.3.1
+Chloroplast envelope membrane protein, CemA (IPR004282)	58	4e-04	4	4	Solyc00g500020.1.1,Solyc00g500067.1.1,Solyc07g042810.3.1,Solyc07g042820.3.1

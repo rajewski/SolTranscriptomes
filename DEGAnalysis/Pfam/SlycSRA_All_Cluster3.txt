@@ -1,24 +1,24 @@
 Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-Peptidase T1A, proteasome beta-subunit (IPR000243)	20.7	4e-03	4	4	Solyc04g024420.3.1, Solyc05g013820.4.1, Solyc05g056160.3.1, Solyc07g016200.3.1
-Ribosomal protein L22/L17, eukaryotic/archaeal (IPR005721)	20.7	3e-02	3	3	Solyc03g111230.4.1, Solyc06g071870.3.1, Solyc06g071880.4.1
-ATPase, V0 complex, subunit e1/e2 (IPR008389)	20.7	3e-02	3	3	Solyc07g049710.3.1, Solyc09g098440.4.1, Solyc12g098720.3.1
-Ribosomal protein S4e, N-terminal (IPR013843)	20.7	3e-02	3	3	Solyc02g070330.4.1, Solyc02g070340.3.1, Solyc06g007360.3.1
-40S ribosomal protein S4, C-terminal domain (IPR032277)	20.7	3e-02	3	3	Solyc02g070330.4.1, Solyc02g070340.3.1, Solyc06g007360.3.1
-CSN8/PSMD8/EIF3K (IPR033464)	20.7	3e-02	3	3	Solyc01g104600.4.1, Solyc07g042570.3.1, Solyc08g082700.3.1
-Ribosomal protein L22/L17 (IPR001063)	16.5	1e-02	4	5	Solyc03g111230.4.1, Solyc04g017680.3.1, Solyc06g071870.3.1, Solyc06g071880.4.1
-Prefoldin beta-like (IPR002777)	16.5	1e-02	4	5	Solyc01g097300.4.1, Solyc06g053460.3.1, Solyc08g016420.3.1, Solyc08g044345.1.1
-Proteasome B-type subunit (IPR023333)	15.5	4e-04	6	8	Solyc04g024420.3.1, Solyc05g013820.4.1, Solyc05g056160.3.1, Solyc07g016200.3.1, Solyc09g082320.3.1, Solyc11g069150.3.1
-Ribosomal protein S4e, central region (IPR013845)	15.5	9e-02	3	4	Solyc02g070330.4.1, Solyc02g070340.3.1, Solyc06g007360.3.1
-Proteasome alpha-subunit, N-terminal domain (IPR000426)	14.5	2e-04	7	10	Solyc01g111450.3.1, Solyc02g070510.3.1, Solyc02g081700.1.1, Solyc08g016510.3.1, Solyc10g008010.4.1, Solyc10g081130.2.1, Solyc12g009140.3.1
-Proteasome, subunit alpha/beta (IPR001353)	13.4	2e-09	13	20	Solyc01g111450.3.1, Solyc02g070510.3.1, Solyc02g081700.1.1, Solyc04g024420.3.1, Solyc05g013820.4.1, Solyc05g056160.3.1, Solyc07g016200.3.1, Solyc08g016510.3.1, Solyc09g082320.3.1, Solyc10g008010.4.1, Solyc10g081130.2.1, Solyc11g069150.3.1, Solyc12g009140.3.1
-Proteasome alpha-type subunit (IPR023332)	13.2	3e-04	7	11	Solyc01g111450.3.1, Solyc02g070510.3.1, Solyc02g081700.1.1, Solyc08g016510.3.1, Solyc10g008010.4.1, Solyc10g081130.2.1, Solyc12g009140.3.1
-KOW (IPR005824)	11.5	1e-02	5	9	Solyc02g064670.1.1, Solyc02g070330.4.1, Solyc02g070340.3.1, Solyc06g007360.3.1, Solyc08g075850.3.1
-Ataxin-2, C-terminal (IPR009818)	10.3	2e-02	5	10	Solyc04g017690.3.1, Solyc06g053300.3.1, Solyc07g056590.3.1, Solyc10g079820.2.1, Solyc12g011340.2.1
-Carbon-nitrogen hydrolase (IPR003010)	10.3	7e-02	4	8	Solyc05g054940.3.1, Solyc08g062190.3.1, Solyc10g047630.2.1, Solyc11g068540.2.1
-Cytidyltransferase-like domain (IPR004821)	10.3	7e-02	4	8	Solyc02g062640.4.1, Solyc05g008870.3.1, Solyc09g061680.3.1, Solyc10g074700.2.1
-Snf7 family (IPR005024)	9.5	1e-02	6	13	Solyc05g026050.4.1, Solyc06g008280.2.1, Solyc06g062510.3.1, Solyc08g065900.4.1, Solyc11g006500.2.1, Solyc12g009060.2.1
-26S proteasome regulatory subunit P45-like (IPR005937)	9.4	3e-02	5	11	Solyc03g123730.4.1, Solyc05g018570.3.1, Solyc05g018590.3.1, Solyc06g082630.4.1, Solyc06g083620.3.1
-MPN domain (IPR037518)	8.3	2e-02	6	15	Solyc01g060280.4.1, Solyc04g079200.3.1, Solyc06g084440.3.1, Solyc07g009160.3.1, Solyc10g005660.3.1, Solyc11g013440.2.1
-Proteasome component (PCI) domain (IPR000717)	7.1	6e-04	10	29	Solyc01g008840.3.1, Solyc01g090290.4.1, Solyc01g104600.4.1, Solyc02g093920.2.1, Solyc07g039210.4.1, Solyc07g042570.3.1, Solyc08g082700.3.1, Solyc09g090720.3.1, Solyc10g081150.3.1, Solyc11g062430.2.1
-Ubiquitin-conjugating enzyme E2 (IPR000608)	4.2	1e-02	12	59	Solyc01g005840.3.1, Solyc02g084760.3.1, Solyc02g093110.3.1, Solyc03g044260.3.1, Solyc04g078620.3.1, Solyc04g080810.4.1, Solyc07g066080.3.1, Solyc08g081270.3.1, Solyc10g007000.3.1, Solyc10g007260.3.1, Solyc10g011740.3.1, Solyc12g088680.2.1
-Small GTP-binding protein domain (IPR005225)	2.8	5e-02	16	119	Solyc01g086850.3.1, Solyc01g104700.4.1, Solyc02g092330.3.1, Solyc02g093530.4.1, Solyc03g096910.3.1, Solyc03g118820.4.1, Solyc04g064510.3.1, Solyc04g072770.4.1, Solyc06g072800.4.1, Solyc10g086350.2.1, Solyc11g008020.2.1, Solyc11g008430.2.1, Solyc11g011040.2.1, Solyc11g065870.3.1, Solyc12g011130.2.1, Solyc12g049270.3.1
+Peptidase T1A, proteasome beta-subunit (IPR000243)	20.7	4e-03	4	4	Solyc04g024420.3.1,Solyc05g013820.4.1,Solyc05g056160.3.1,Solyc07g016200.3.1
+Ribosomal protein L22/L17, eukaryotic/archaeal (IPR005721)	20.7	3e-02	3	3	Solyc03g111230.4.1,Solyc06g071870.3.1,Solyc06g071880.4.1
+ATPase, V0 complex, subunit e1/e2 (IPR008389)	20.7	3e-02	3	3	Solyc07g049710.3.1,Solyc09g098440.4.1,Solyc12g098720.3.1
+Ribosomal protein S4e, N-terminal (IPR013843)	20.7	3e-02	3	3	Solyc02g070330.4.1,Solyc02g070340.3.1,Solyc06g007360.3.1
+40S ribosomal protein S4, C-terminal domain (IPR032277)	20.7	3e-02	3	3	Solyc02g070330.4.1,Solyc02g070340.3.1,Solyc06g007360.3.1
+CSN8/PSMD8/EIF3K (IPR033464)	20.7	3e-02	3	3	Solyc01g104600.4.1,Solyc07g042570.3.1,Solyc08g082700.3.1
+Ribosomal protein L22/L17 (IPR001063)	16.5	1e-02	4	5	Solyc03g111230.4.1,Solyc04g017680.3.1,Solyc06g071870.3.1,Solyc06g071880.4.1
+Prefoldin beta-like (IPR002777)	16.5	1e-02	4	5	Solyc01g097300.4.1,Solyc06g053460.3.1,Solyc08g016420.3.1,Solyc08g044345.1.1
+Proteasome B-type subunit (IPR023333)	15.5	4e-04	6	8	Solyc04g024420.3.1,Solyc05g013820.4.1,Solyc05g056160.3.1,Solyc07g016200.3.1,Solyc09g082320.3.1,Solyc11g069150.3.1
+Ribosomal protein S4e, central region (IPR013845)	15.5	9e-02	3	4	Solyc02g070330.4.1,Solyc02g070340.3.1,Solyc06g007360.3.1
+Proteasome alpha-subunit, N-terminal domain (IPR000426)	14.5	2e-04	7	10	Solyc01g111450.3.1,Solyc02g070510.3.1,Solyc02g081700.1.1,Solyc08g016510.3.1,Solyc10g008010.4.1,Solyc10g081130.2.1,Solyc12g009140.3.1
+Proteasome, subunit alpha/beta (IPR001353)	13.4	2e-09	13	20	Solyc01g111450.3.1,Solyc02g070510.3.1,Solyc02g081700.1.1,Solyc04g024420.3.1,Solyc05g013820.4.1,Solyc05g056160.3.1,Solyc07g016200.3.1,Solyc08g016510.3.1,Solyc09g082320.3.1,Solyc10g008010.4.1,Solyc10g081130.2.1,Solyc11g069150.3.1,Solyc12g009140.3.1
+Proteasome alpha-type subunit (IPR023332)	13.2	3e-04	7	11	Solyc01g111450.3.1,Solyc02g070510.3.1,Solyc02g081700.1.1,Solyc08g016510.3.1,Solyc10g008010.4.1,Solyc10g081130.2.1,Solyc12g009140.3.1
+KOW (IPR005824)	11.5	1e-02	5	9	Solyc02g064670.1.1,Solyc02g070330.4.1,Solyc02g070340.3.1,Solyc06g007360.3.1,Solyc08g075850.3.1
+Ataxin-2, C-terminal (IPR009818)	10.3	2e-02	5	10	Solyc04g017690.3.1,Solyc06g053300.3.1,Solyc07g056590.3.1,Solyc10g079820.2.1,Solyc12g011340.2.1
+Carbon-nitrogen hydrolase (IPR003010)	10.3	7e-02	4	8	Solyc05g054940.3.1,Solyc08g062190.3.1,Solyc10g047630.2.1,Solyc11g068540.2.1
+Cytidyltransferase-like domain (IPR004821)	10.3	7e-02	4	8	Solyc02g062640.4.1,Solyc05g008870.3.1,Solyc09g061680.3.1,Solyc10g074700.2.1
+Snf7 family (IPR005024)	9.5	1e-02	6	13	Solyc05g026050.4.1,Solyc06g008280.2.1,Solyc06g062510.3.1,Solyc08g065900.4.1,Solyc11g006500.2.1,Solyc12g009060.2.1
+26S proteasome regulatory subunit P45-like (IPR005937)	9.4	3e-02	5	11	Solyc03g123730.4.1,Solyc05g018570.3.1,Solyc05g018590.3.1,Solyc06g082630.4.1,Solyc06g083620.3.1
+MPN domain (IPR037518)	8.3	2e-02	6	15	Solyc01g060280.4.1,Solyc04g079200.3.1,Solyc06g084440.3.1,Solyc07g009160.3.1,Solyc10g005660.3.1,Solyc11g013440.2.1
+Proteasome component (PCI) domain (IPR000717)	7.1	6e-04	10	29	Solyc01g008840.3.1,Solyc01g090290.4.1,Solyc01g104600.4.1,Solyc02g093920.2.1,Solyc07g039210.4.1,Solyc07g042570.3.1,Solyc08g082700.3.1,Solyc09g090720.3.1,Solyc10g081150.3.1,Solyc11g062430.2.1
+Ubiquitin-conjugating enzyme E2 (IPR000608)	4.2	1e-02	12	59	Solyc01g005840.3.1,Solyc02g084760.3.1,Solyc02g093110.3.1,Solyc03g044260.3.1,Solyc04g078620.3.1,Solyc04g080810.4.1,Solyc07g066080.3.1,Solyc08g081270.3.1,Solyc10g007000.3.1,Solyc10g007260.3.1,Solyc10g011740.3.1,Solyc12g088680.2.1
+Small GTP-binding protein domain (IPR005225)	2.8	5e-02	16	119	Solyc01g086850.3.1,Solyc01g104700.4.1,Solyc02g092330.3.1,Solyc02g093530.4.1,Solyc03g096910.3.1,Solyc03g118820.4.1,Solyc04g064510.3.1,Solyc04g072770.4.1,Solyc06g072800.4.1,Solyc10g086350.2.1,Solyc11g008020.2.1,Solyc11g008430.2.1,Solyc11g011040.2.1,Solyc11g065870.3.1,Solyc12g011130.2.1,Solyc12g049270.3.1
