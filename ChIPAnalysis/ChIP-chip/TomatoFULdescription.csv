@@ -1,16 +1,2 @@
 FUL1.sm	FUL1_bound
 FUL2.sm	FUL2_bound
-FUL1_50	FUL1 binding between 0 and 50bp of TSS
-FUL1_100	FUL1 binding between 510 and 100bp of TSS
-FUL1_200	FUL1 binding between 101 and 200bp of TSS
-FUL1_500	FUL1 binding between 201 and 500bp of TSS
-FUL1_1000	FUL1 binding between 501 and 1000bp of TSS
-FUL1_1500	FUL1 binding between 1001 and 1500bp of TSS
-FUL1_2000	FUL1 binding between 1501 and 2000bp of TSS
-FUL2_50	FUL2 binding between 0 and 50bp of TSS
-FUL2_100	FUL2 binding between 510 and 100bp of TSS
-FUL2_200	FUL2 binding between 101 and 200bp of TSS
-FUL2_500	FUL2 binding between 201 and 500bp of TSS
-FUL2_1000	FUL2 binding between 501 and 1000bp of TSS
-FUL2_1500	FUL2 binding between 1001 and 1500bp of TSS
-FUL2_2000	FUL2 binding between 1501 and 2000bp of TSS
