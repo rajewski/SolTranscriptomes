@@ -1,0 +1,89 @@
+INFO  @ Mon, 13 Apr 2020 12:42:54: 
+# Command line: callpeak -t ChIPAnalysis/ChIPseq/STAR/SRR3288009.Aligned.sortedByCoord.out.bam -c ChIPAnalysis/ChIPseq/STAR/SRR3288011.Aligned.sortedByCoord.out.bam -n PRJNA316152_rep1 --outdir ChIPAnalysis/ChIPseq/MACS -g 1.2e8 -B --call-summits -p 1e-3
+# ARGUMENTS LIST:
+# name = PRJNA316152_rep1
+# format = AUTO
+# ChIP-seq file = ['ChIPAnalysis/ChIPseq/STAR/SRR3288009.Aligned.sortedByCoord.out.bam']
+# control file = ['ChIPAnalysis/ChIPseq/STAR/SRR3288011.Aligned.sortedByCoord.out.bam']
+# effective genome size = 1.20e+08
+# band width = 300
+# model fold = [5, 50]
+# pvalue cutoff = 1.00e-03
+# qvalue will not be calculated and reported as -1 in the final output.
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 1000 bps and 10000 bps
+# Broad region calling is off
+# Paired-End mode is off
+# Searching for subpeak summits is on
+ 
+INFO  @ Mon, 13 Apr 2020 12:42:54: #1 read tag files... 
+INFO  @ Mon, 13 Apr 2020 12:42:54: #1 read treatment tags... 
+INFO  @ Mon, 13 Apr 2020 12:42:54: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 12:42:54: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 12:42:57:  1000000 
+INFO  @ Mon, 13 Apr 2020 12:43:01:  2000000 
+INFO  @ Mon, 13 Apr 2020 12:43:04:  3000000 
+INFO  @ Mon, 13 Apr 2020 12:43:06:  4000000 
+INFO  @ Mon, 13 Apr 2020 12:43:10:  5000000 
+INFO  @ Mon, 13 Apr 2020 12:43:14:  6000000 
+INFO  @ Mon, 13 Apr 2020 12:43:16:  7000000 
+INFO  @ Mon, 13 Apr 2020 12:43:19:  8000000 
+INFO  @ Mon, 13 Apr 2020 12:43:21: 8477849 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 12:43:21: #1.2 read input tags... 
+INFO  @ Mon, 13 Apr 2020 12:43:21: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 12:43:21: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 12:43:23:  1000000 
+INFO  @ Mon, 13 Apr 2020 12:43:27:  2000000 
+INFO  @ Mon, 13 Apr 2020 12:43:29:  3000000 
+INFO  @ Mon, 13 Apr 2020 12:43:33:  4000000 
+INFO  @ Mon, 13 Apr 2020 12:43:36:  5000000 
+INFO  @ Mon, 13 Apr 2020 12:43:39:  6000000 
+INFO  @ Mon, 13 Apr 2020 12:43:41:  7000000 
+INFO  @ Mon, 13 Apr 2020 12:43:46:  8000000 
+INFO  @ Mon, 13 Apr 2020 12:43:48:  9000000 
+INFO  @ Mon, 13 Apr 2020 12:43:52:  10000000 
+INFO  @ Mon, 13 Apr 2020 12:43:54:  11000000 
+INFO  @ Mon, 13 Apr 2020 12:43:57:  12000000 
+INFO  @ Mon, 13 Apr 2020 12:44:01:  13000000 
+INFO  @ Mon, 13 Apr 2020 12:44:04:  14000000 
+INFO  @ Mon, 13 Apr 2020 12:44:06:  15000000 
+INFO  @ Mon, 13 Apr 2020 12:44:09: 15640341 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1 tag size is determined as 38 bps 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1 tag size = 38.0 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1  total tags in treatment: 8477849 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1  tags after filtering in treatment: 1785654 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1  Redundant rate of treatment: 0.79 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1  total tags in control: 15640341 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1  tags after filtering in control: 11896010 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1  Redundant rate of control: 0.24 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #1 finished! 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #2 Build Peak Model... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #2 looking for paired plus/minus strand peaks... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #2 number of paired peaks: 972 
+WARNING @ Mon, 13 Apr 2020 12:44:09: Fewer paired peaks (972) than 1000! Model may not be build well! Lower your MFOLD parameter may erase this warning. Now I will use 972 pairs to build model! 
+INFO  @ Mon, 13 Apr 2020 12:44:09: start model_add_line... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: start X-correlation... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: end of X-cor 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #2 finished! 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #2 predicted fragment length is 155 bps 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #2 alternative fragment length(s) may be 45,155,206 bps 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #2.2 Generate R script for model : ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep1_model.r 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #3 Call peaks... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #3 Going to call summits inside each peak ... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #3 Call peaks with given -log10pvalue cutoff: 3.00000 ... 
+INFO  @ Mon, 13 Apr 2020 12:44:09: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Mon, 13 Apr 2020 12:44:53: #3 In the peak calling step, the following will be performed simultaneously: 
+INFO  @ Mon, 13 Apr 2020 12:44:53: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... PRJNA316152_rep1_treat_pileup.bdg 
+INFO  @ Mon, 13 Apr 2020 12:44:53: #3   Write bedGraph files for control lambda (after scaling if necessary)... PRJNA316152_rep1_control_lambda.bdg 
+INFO  @ Mon, 13 Apr 2020 12:44:53: #3   Pileup will be based on sequencing depth in treatment. 
+INFO  @ Mon, 13 Apr 2020 12:44:53: #3 Call peaks for each chromosome... 
+INFO  @ Mon, 13 Apr 2020 12:45:28: #4 Write output xls file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep1_peaks.xls 
+INFO  @ Mon, 13 Apr 2020 12:45:28: #4 Write peak in narrowPeak format file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep1_peaks.narrowPeak 
+INFO  @ Mon, 13 Apr 2020 12:45:28: #4 Write summits bed file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep1_summits.bed 
+INFO  @ Mon, 13 Apr 2020 12:45:28: Done! 
