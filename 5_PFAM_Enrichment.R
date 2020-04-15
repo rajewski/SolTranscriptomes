@@ -230,3 +230,102 @@ enriched <- read.table("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster3.txt", 
 
 
 
+
+
+
+# Plot Enrichments --------------------------------------------------------
+# I want to use the typical schema for plotting GO enrichments as for plotting these various enrichments. I'll start with IPR domains and then generalize to ChIP and GO
+PlotEnrichment <- function(ClusterTable="",
+                           Title="",
+                           TopGenes=15){
+  library(ggplot2)
+  library(stringr)
+  pal <- c("#74A9CF", "#3690C0", "#0570B0", "#045A8D", "#023858")
+  # Read in cluster data file
+  ClusterData <- read.table(ClusterTable,
+                            sep="\t",
+                            header=T,
+                            stringsAsFactors = F)
+  # Sort and filter gene number
+    if(dim(ClusterData)[1]<TopGenes){
+      warning("Fewer categories than selected.")
+    }
+  ClusterData <- na.omit(ClusterData[order(ClusterData$Enrichment_pval)[1:TopGenes],])
+  # Make a shortened description
+  ClusterData$ShortDescr <- paste0(str_trim(strtrim(gsub("\\(IPR[0-9]*\\)","", ClusterData$Description, perl=T), 30)),"...",substr(ClusterData$Description, nchar(ClusterData$Description)-9, nchar(ClusterData$Description)-1))
+  # Make the Plot
+  Plot <- ggplot(ClusterData, 
+                 aes(x=reorder(ShortDescr, -Enrichment_pval), 
+                     y=-log10(Enrichment_pval), 
+                     fill=Hits)) +
+    stat_summary(geom = "bar", fun = mean, position = "dodge") +
+    xlab("Interpro Domain") +
+    ylab("Log Fold Enrichment") +
+    scale_fill_gradientn(colours = pal) +
+    ggtitle(Title) +
+    scale_y_continuous(breaks = round(seq(0, max(-log10(ClusterData$Enrichment_pval)), by = 2), 1)) +
+    theme_bw(base_size=24) +
+    theme(
+      panel.grid = element_blank(),
+      legend.position=c(0.9,0.2),
+      legend.background=element_blank(),
+      legend.key=element_blank(),     #removes the border
+      legend.key.size=unit(1, "cm"),      #Sets overall area/size of the legend
+      legend.text=element_text(size=18),  #Text size
+      legend.title=element_blank(),
+      plot.title=element_text(angle=0, size=24, face="bold", vjust=1),
+      axis.text.x=element_text(angle=0, size=18, face="bold", hjust=1.10),
+      axis.text.y=element_text(angle=0, size=18, face="bold", vjust=0.5),
+      axis.title=element_text(size=24, face="bold"),
+      title=element_text(size=18)) +
+    guides(fill=guide_colorbar(ticks=FALSE, label.position = 'left')) +
+    coord_flip()
+  return(Plot)
+}
+
+# Nobt IPR
+for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="Nobt_All_Cluster*"))) {
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/Nobt_All_Cluster",i,".txt"),
+                 Title=paste0("Tobacco Cluster ",i))
+  ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_Nobt_Cluster",i,"_IPR_Enrichment.pdf"),
+         width=12,
+         height=8)
+}
+
+# TAIR IPR
+for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="TAIR10_All_Cluster*"))) {
+  if(file.size(paste0("DEGAnalysis/Pfam/TAIR10_All_Cluster",i,".txt"))<10){
+    next
+  }
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/TAIR10_All_Cluster",i,".txt"),
+                 Title=paste0("Arabidopsis Cluster ",i))
+  ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_TAIR_Cluster",i,"_IPR_Enrichment.pdf"),
+         width=12,
+         height=8)
+}
+
+# Slyc IH IPR
+for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="SlycIH_All_Cluster*"))) {
+  if(file.size(paste0("DEGAnalysis/Pfam/SlycIH_All_Cluster",i,".txt"))<10){
+    next
+  }
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/SlycIH_All_Cluster",i,".txt"),
+                 Title=paste0("Tomato Cluster ",i))
+  ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_SlycIH_Cluster",i,"_IPR_Enrichment.pdf"),
+         width=12,
+         height=8)
+}
+
+# Slyc SRA IPR
+for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="SlycSRA_All_Cluster*"))) {
+  if(file.size(paste0("DEGAnalysis/Pfam/SlycSRA_All_Cluster",i,".txt"))<10){
+    next
+  }
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/SlycSRA_All_Cluster",i,".txt"),
+                 Title=paste0("Tomato Cluster ",i))
+  ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_SlycSRA_Cluster",i,"_IPR_Enrichment.pdf"),
+         width=12,
+         height=8)
+}
+
+
