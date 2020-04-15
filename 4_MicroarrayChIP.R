@@ -95,29 +95,31 @@ chersToBED(chersX, file="ChIPAnalysis/ChIP-chip/FULchers.bed")
 
 #Find distance from cher to TSS
 library(tidyr)
-Dist2TSS <- data.frame(.id=NA, V1=NA, antibody=NA, maxlevel=NA, score=NA)
-for (i in 1:length(chersX)){
-  if (length(chersX[[i]]@extras$distMid2TSS)>0) {
-    tmpcher <- cbind(plyr::ldply(chersX[[i]]@extras$distMid2TSS),
-                     antibody=chersX[[i]]@antibody,
-                     maxlevel=chersX[[i]]@maxLevel,
-                     score=chersX[[i]]@score)
-    Dist2TSS <- rbind(Dist2TSS, tmpcher)
-  } 
-}
-names(Dist2TSS) <- c("Transcript", "Distance", "Antibody", "Max_Level", "Score")
-Dist2TSS <- Dist2TSS[-1,]
-Dist2TSS <- Dist2TSS[Dist2TSS$Distance<=2000,] #array was only designed w/in 2kb of TSS
-Dist2TSS$Bins <- paste0(strsplit(Dist2TSS$Antibody, ".sm"),
-                        "_",
-                        cut(Dist2TSS$Distance, 
-                            breaks=c(-2,50,100,200,500,1000,1500,2000),
-                            labels=c("50","100","200","500","1000","1500","2000")))
+tryCatch(Dist2TSS <- read.csv("ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv"), error=function(e){
+  Dist2TSS <- data.frame(.id=NA, V1=NA, antibody=NA, maxlevel=NA, score=NA)
+  for (i in 1:length(chersX)){
+    if (length(chersX[[i]]@extras$distMid2TSS)>0) {
+      tmpcher <- cbind(plyr::ldply(chersX[[i]]@extras$distMid2TSS),
+                       antibody=chersX[[i]]@antibody,
+                       maxlevel=chersX[[i]]@maxLevel,
+                       score=chersX[[i]]@score)
+      Dist2TSS <- rbind(Dist2TSS, tmpcher)
+    } 
+  }
+  names(Dist2TSS) <- c("Transcript", "Distance", "Antibody", "Max_Level", "Score")
+  Dist2TSS <- Dist2TSS[-1,]
+  Dist2TSS <- Dist2TSS[Dist2TSS$Distance<=2000,] #array was only designed w/in 2kb of TSS
+  Dist2TSS$Bins <- paste0(strsplit(Dist2TSS$Antibody, ".sm"),
+                          "_",
+                          cut(Dist2TSS$Distance, 
+                              breaks=c(-2,50,100,200,500,1000,1500,2000),
+                              labels=c("50","100","200","500","1000","1500","2000")))
+  write.csv(Dist2TSS,
+            "ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
+            row.names = F,
+            quote = F)
+})
 
-write.csv(Dist2TSS,
-          "ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
-          row.names = F,
-          quote = F)
 
 pdf(file="ChIPAnalysis/ChIP-chip/Plot_FUL1_Dist2TSS.pdf")
   hist(Dist2TSS$Distance[grep("FUL1",Dist2TSS$Antibody)], 
@@ -132,3 +134,10 @@ pdf(file="ChIPAnalysis/ChIP-chip/Plot_FUL2_Dist2TSS.pdf")
        xlab="Distance from TSS (bp)",
        main=expression(paste(alpha,"-FUL2 Binding")))
 dev.off()
+
+
+
+
+
+
+
