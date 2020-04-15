@@ -194,17 +194,18 @@ topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
 colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
 plotCounts(Exampledds, gene=topGene, intgroup=c("Genotype", "DAP"), normalized = T) #plot best fitting gene
 
+# Get a set of FUL genes for each species. Only use one of these
 FULgenes<-c(FUL.1="AT5G60910.1",
             FUL.2="AT5G60910.2",
             AGL79="AT3G30260.1")
-# FULgenes<-c(SlFUL1="Solyc06g069430.3.1",
-#             SlFUL2="Solyc03g114830.3.1",
-#             SlMBP10="Solyc02g065730.2.1",
-#             SlMBP20="Solyc02g089210.4.1" )
-# FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
-#             NoFUL2="NIOBTv3_g39464.t1",
-#             NoMBP10="NIOBTv3_g07845.t1",
-#             NoMBP20="NIOBT_gMBP20.t1" )
+FULgenes<-c(SlFUL1="Solyc06g069430.3.1",
+            SlFUL2="Solyc03g114830.3.1",
+            SlMBP10="Solyc02g065730.2.1",
+            SlMBP20="Solyc02g089210.4.1" )
+FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
+            NoFUL2="NIOBTv3_g39464.t1",
+            NoMBP10="NIOBTv3_g07845.t1",
+            NoMBP20="NIOBT_gMBP20.t1" )
 for (i in 1:length(FULgenes)) {
   pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
       width=6,
@@ -257,8 +258,12 @@ PlotCluster + theme_minimal() +
         panel.grid.minor = element_blank())
 ggsave(filename = "DEGAnalysis/RNA-seq/Plot_Nobt_ClusterProfiles.pdf",
        width=11,
-       height=9)
+       height=7)
 
+# NoFUL2 and NoMBP10 are in cluster 2
+# In SlycIH FUL1 is cluster 3
+# in SlycSRA FUL1 and FUL2 are cluster 1
+# FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
 X <- split(Nobtcluster$df, Nobtcluster$df$cluster)
