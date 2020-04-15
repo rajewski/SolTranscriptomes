@@ -227,6 +227,43 @@ for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All
 
 enriched <- read.table("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster3.txt", sep="\t")
 
+# Plot distance histograms if the cluster is enriched
+PlotChIPHist <- function(DistFile="ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
+                         ClusterFile="") {
+  Dist2TSS <- read.csv(DistFile)
+  Cluster <- read.table(ClusterFile,
+                          sep="\t",
+                          header=T,
+                          stringsAsFactors = F)
+  if (length(grep("FUL",Cluster$Description))>1){
+    par(mfrow=c(1,2))
+  }
+  if (length(grep("FUL1",Cluster$Description))>0){
+    D2T_1 <- Dist2TSS[(Dist2TSS$Transcript %in% strsplit(Cluster[grep("FUL1",Cluster$Description),"Gene_IDs"], split=",")[[1]] & Dist2TSS$Antibody=="FUL1.sm"),]
+    hist(D2T_1$Distance, 
+         xlab="Distance from TSS (bp)",
+         main=expression(paste(alpha,"-FUL1 Binding")))
+  }
+  if (length(grep("FUL2",Cluster$Description))>0){
+    D2T_2 <- Dist2TSS[(Dist2TSS$Transcript %in% strsplit(Cluster[grep("FUL2",Cluster$Description),"Gene_IDs"], split=",")[[1]] & Dist2TSS$Antibody=="FUL2.sm"),]
+    hist(D2T_2$Distance, 
+         xlab="Distance from TSS (bp)",
+         main=expression(paste(alpha,"-FUL2 Binding")))
+  }
+}
+
+for (i in 1:length(list.files(path="ChIPAnalysis/ChIP-chip/", pattern="SlycIH_All_Cluster*"))) {
+  if(file.size(paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Cluster",i, ".txt"))<10){
+    next
+  }
+  pdf(file=paste0("ChIPAnalysis/ChIP-chip/Plot_SlycIH_ChIPHisto_Cluster", i,".pdf"),
+      height=6,
+      width=11)
+  PlotChIPHist(ClusterFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Cluster",i, ".txt"))
+  dev.off()
+}
+
+
 
 
 
@@ -324,6 +361,19 @@ for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="SlycSRA_All_Cl
   PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/SlycSRA_All_Cluster",i,".txt"),
                  Title=paste0("Tomato Cluster ",i))
   ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_SlycSRA_Cluster",i,"_IPR_Enrichment.pdf"),
+         width=12,
+         height=8)
+}
+
+# Try the function with ChIP data of Slyc IH Binned
+#it works but messes up the labels a bit and might not be the best way to plot
+for ( i in 1:length(list.files(path="ChIPAnalysis/ChIP-chip/", pattern="SlycIH_All_Binned_Cluster*"))) {
+  if(file.size(paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster",i,".txt"))<10){
+    next
+  }
+  PlotEnrichment(ClusterTable = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster",i,".txt"),
+                 Title=paste0("Tomato Cluster ",i))
+  ggsave(filename=paste0("ChIPAnalysis/ChIP-chip/Plot_SlycIH_Cluster",i,"_ChIP_Enrichment.pdf"),
          width=12,
          height=8)
 }
