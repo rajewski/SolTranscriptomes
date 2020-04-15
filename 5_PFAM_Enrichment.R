@@ -99,43 +99,55 @@ PfamEnrichment <- function(AllGenesFile = "",
 # IPR on RNA seq clusters -------------------------------------------------
 
 # Work through the Slyc IH data
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_Cluster*"))) {
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/RNA-seq/",
+                                      pattern="^SlycIH_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_All_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/SlycIH_All_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/SlycIH_Cluster", i, ".txt"))
 }
 
 # Work through the Slyc SRA data
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All_Cluster*"))) {
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/RNA-seq/",
+                                      pattern="^SlycSRA_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_All_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/SlycSRA_All_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/SlycSRA_Cluster", i, ".txt"))
 }
 
 # Work through the TAIR data
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="TAIR10_Cluster*"))) {
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/RNA-seq/",
+                                      pattern="^TAIR_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/TAIR10.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/TAIR10.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/TAIR10.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/TAIR10.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/TAIR10_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/TAIR10_All_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/TAIR_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/TAIR_Cluster", i, ".txt"))
 }
 
 # And for Nobt
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="Nobt_All_Cluster*"))) {
+for ( i in as.numeric(gsub("\\D",
+                      "",
+                      list.files(path="DEGAnalysis/RNA-seq/",
+                                 pattern="^Nobt_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Nobt.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Nobt.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Nobt.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Nobt.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Nobt_All_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/Nobt_All_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Nobt_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Nobt_Cluster", i, ".txt"))
 }
 
 
@@ -151,30 +163,11 @@ write.table(FULBinding[,c("Transcript", "Antibody")],
           col.names= F,
           quote = F,
           sep="\t")
-# Table of transcripts and binned antibody hits
-write.table(FULBinding[,c("Transcript", "Bins")],
-            file="ChIPAnalysis/ChIP-chip/TomatoFULBinnedTargets.csv",
-            row.names = F,
-            col.names= F,
-            quote = F,
-            sep="\t")
+
 # Descriptions of the possible hits
 write.table(rbind(c("FUL1.sm", "FUL1_bound"),
                   c("FUL2.sm", "FUL2_bound"),
-                  c("FUL1_50", "FUL1 binding between 0 and 50bp of TSS"),
-                  c("FUL1_100", "FUL1 binding between 510 and 100bp of TSS"),
-                  c("FUL1_200", "FUL1 binding between 101 and 200bp of TSS"),
-                  c("FUL1_500", "FUL1 binding between 201 and 500bp of TSS"),
-                  c("FUL1_1000", "FUL1 binding between 501 and 1000bp of TSS"),
-                  c("FUL1_1500", "FUL1 binding between 1001 and 1500bp of TSS"),
-                  c("FUL1_2000", "FUL1 binding between 1501 and 2000bp of TSS"),
-                  c("FUL2_50", "FUL2 binding between 0 and 50bp of TSS"),
-                  c("FUL2_100", "FUL2 binding between 510 and 100bp of TSS"),
-                  c("FUL2_200", "FUL2 binding between 101 and 200bp of TSS"),
-                  c("FUL2_500", "FUL2 binding between 201 and 500bp of TSS"),
-                  c("FUL2_1000", "FUL2 binding between 501 and 1000bp of TSS"),
-                  c("FUL2_1500", "FUL2 binding between 1001 and 1500bp of TSS"),
-                  c("FUL2_2000", "FUL2 binding between 1501 and 2000bp of TSS")),
+),
             file="ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
             row.names = F,
             col.names= F,
@@ -185,47 +178,31 @@ write.table(NULL, file="ChIPAnalysis/ChIP-chip/DummyChip.txt")
 
 
 # Slyc IH data on general antibody binding
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_Cluster*"))) {
+for (i in as.numeric(gsub("\\D",
+                          "",
+                          list.files(path="DEGAnalysis/RNA-seq/",
+                                     pattern="^SlycIH_Cluster_*")))){
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULTargets.csv",
                  IPRDescFile = "ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
                  ExcludedGenesFile = "ChIPAnalysis/ChIP-chip/DummyChip.txt",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_All_Cluster_", i, ".txt"),
-                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_Cluster_", i, ".txt"),
+                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_Cluster", i, ".txt"))
 }
 
 # Slyc SRA data on general antibody binding
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All_Cluster*"))) {
+for (i in as.numeric(gsub("\\D",
+                          "",
+                          list.files(path="DEGAnalysis/RNA-seq/",
+                                     pattern="^SlycSRA_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULTargets.csv",
                  IPRDescFile = "ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
                  ExcludedGenesFile = "ChIPAnalysis/ChIP-chip/DummyChip.txt",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_All_Cluster_", i, ".txt"),
-                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycSRA_All_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_Cluster_", i, ".txt"),
+                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycSRA_Cluster", i, ".txt"))
 }
 
-# Slyc IH data on binned antibody binding
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycIH_All_Cluster*"))) {
-  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
-                 AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULBinnedTargets.csv",
-                 IPRDescFile = "ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
-                 ExcludedGenesFile = "ChIPAnalysis/ChIP-chip/DummyChip.txt",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_All_Cluster_", i, ".txt"),
-                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster", i, ".txt"))
-}
-
-# Slyc SRA data on binned antibody binding
-for ( i in 1:length(list.files(path="DEGAnalysis/RNA-seq/", pattern="SlycSRA_All_Cluster*"))) {
-  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
-                 AllIPRFile = "ChIPAnalysis/ChIP-chip/TomatoFULBinnedTargets.csv",
-                 IPRDescFile = "ChIPAnalysis/ChIP-chip/TomatoFULdescription.csv",
-                 ExcludedGenesFile = "ChIPAnalysis/ChIP-chip/DummyChip.txt",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_All_Cluster_", i, ".txt"),
-                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/SlycSRA_All_Binned_Cluster", i, ".txt"))
-}
-
-
-enriched <- read.table("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster3.txt", sep="\t")
 
 # Plot distance histograms if the cluster is enriched
 PlotChIPHist <- function(DistFile="ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
@@ -252,20 +229,35 @@ PlotChIPHist <- function(DistFile="ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
   }
 }
 
-for (i in 1:length(list.files(path="ChIPAnalysis/ChIP-chip/", pattern="SlycIH_All_Cluster*"))) {
-  if(file.size(paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Cluster",i, ".txt"))<10){
+#Make Slyc IH Histos
+for (i in as.numeric(gsub("\\D",
+                          "",
+                          list.files(path="ChIPAnalysis/ChIP-chip/",
+                                     pattern="^SlycIH_Cluster*")))) {
+  if(file.size(paste0("ChIPAnalysis/ChIP-chip/SlycIH_Cluster",i, ".txt"))<10){
     next
   }
   pdf(file=paste0("ChIPAnalysis/ChIP-chip/Plot_SlycIH_ChIPHisto_Cluster", i,".pdf"),
       height=6,
       width=11)
-  PlotChIPHist(ClusterFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Cluster",i, ".txt"))
+  PlotChIPHist(ClusterFile = paste0("ChIPAnalysis/ChIP-chip/SlycIH_Cluster",i, ".txt"))
   dev.off()
 }
 
-
-
-
+#Make Slyc SRA Histos
+for (i in as.numeric(gsub("\\D",
+                          "",
+                          list.files(path="ChIPAnalysis/ChIP-chip/",
+                                     pattern="^SlycSRA_Cluster*")))) {
+  if(file.size(paste0("ChIPAnalysis/ChIP-chip/SlycSRA_Cluster",i, ".txt"))<10){
+    next
+  }
+  pdf(file=paste0("ChIPAnalysis/ChIP-chip/Plot_SlycSRA_ChIPHisto_Cluster", i,".pdf"),
+      height=6,
+      width=11)
+  PlotChIPHist(ClusterFile = paste0("ChIPAnalysis/ChIP-chip/SlycSRA_Cluster",i, ".txt"))
+  dev.off()
+}
 
 
 
@@ -321,8 +313,11 @@ PlotEnrichment <- function(ClusterTable="",
 }
 
 # Nobt IPR
-for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="Nobt_All_Cluster*"))) {
-  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/Nobt_All_Cluster",i,".txt"),
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/Pfam/",
+                                      pattern="^Nobt_Cluster_*")))) {
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/Nobt_Cluster",i,".txt"),
                  Title=paste0("Tobacco Cluster ",i))
   ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_Nobt_Cluster",i,"_IPR_Enrichment.pdf"),
          width=12,
@@ -330,11 +325,14 @@ for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="Nobt_All_Clust
 }
 
 # TAIR IPR
-for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="TAIR10_All_Cluster*"))) {
-  if(file.size(paste0("DEGAnalysis/Pfam/TAIR10_All_Cluster",i,".txt"))<10){
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/Pfam/",
+                                      pattern="^TAIR_Cluster_*")))) {
+  if(file.size(paste0("DEGAnalysis/Pfam/TAIR_Cluster",i,".txt"))<10) {
     next
   }
-  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/TAIR10_All_Cluster",i,".txt"),
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/TAIR_Cluster",i,".txt"),
                  Title=paste0("Arabidopsis Cluster ",i))
   ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_TAIR_Cluster",i,"_IPR_Enrichment.pdf"),
          width=12,
@@ -342,11 +340,14 @@ for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="TAIR10_All_Clu
 }
 
 # Slyc IH IPR
-for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="SlycIH_All_Cluster*"))) {
-  if(file.size(paste0("DEGAnalysis/Pfam/SlycIH_All_Cluster",i,".txt"))<10){
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/Pfam/",
+                                      pattern="^SlycIH_Cluster_*")))) {
+  if(file.size(paste0("DEGAnalysis/Pfam/SlycIH_Cluster",i,".txt"))<10){
     next
   }
-  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/SlycIH_All_Cluster",i,".txt"),
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/SlycIH_Cluster",i,".txt"),
                  Title=paste0("Tomato Cluster ",i))
   ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_SlycIH_Cluster",i,"_IPR_Enrichment.pdf"),
          width=12,
@@ -354,28 +355,17 @@ for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="SlycIH_All_Clu
 }
 
 # Slyc SRA IPR
-for ( i in 1:length(list.files(path="DEGAnalysis/Pfam/", pattern="SlycSRA_All_Cluster*"))) {
-  if(file.size(paste0("DEGAnalysis/Pfam/SlycSRA_All_Cluster",i,".txt"))<10){
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/Pfam/",
+                                      pattern="^SlycSRA_Cluster_*")))) {
+  if(file.size(paste0("DEGAnalysis/Pfam/SlycSRA_Cluster",i,".txt"))<10){
     next
   }
-  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/SlycSRA_All_Cluster",i,".txt"),
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/SlycSRA_Cluster",i,".txt"),
                  Title=paste0("Tomato Cluster ",i))
   ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_SlycSRA_Cluster",i,"_IPR_Enrichment.pdf"),
          width=12,
          height=8)
 }
-
-# Try the function with ChIP data of Slyc IH Binned
-#it works but messes up the labels a bit and might not be the best way to plot
-for ( i in 1:length(list.files(path="ChIPAnalysis/ChIP-chip/", pattern="SlycIH_All_Binned_Cluster*"))) {
-  if(file.size(paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster",i,".txt"))<10){
-    next
-  }
-  PlotEnrichment(ClusterTable = paste0("ChIPAnalysis/ChIP-chip/SlycIH_All_Binned_Cluster",i,".txt"),
-                 Title=paste0("Tomato Cluster ",i))
-  ggsave(filename=paste0("ChIPAnalysis/ChIP-chip/Plot_SlycIH_Cluster",i,"_ChIP_Enrichment.pdf"),
-         width=12,
-         height=8)
-}
-
 

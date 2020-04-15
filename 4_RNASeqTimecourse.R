@@ -244,7 +244,7 @@ tryCatch(NobtAllcluster <- readRDS("DEGAnalysis/RNA-seq/NobtAllcluster.rds"), er
 })
 
 # Plot Cluster Profiles ---------------------------------------------------
-ClusterforPlotting <- NobtAllcluster
+ClusterforPlotting <- SlycIHAllcluster
 PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
                              time="DAP",
                              boxes=T,
@@ -266,10 +266,10 @@ ggsave(filename = "DEGAnalysis/RNA-seq/Plot_Nobt_ClusterProfiles.pdf",
 # FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
-X <- split(Nobtcluster$df, Nobtcluster$df$cluster)
+X <- split(NobtAllcluster$df, NobtAllcluster$df$cluster)
 for (i in 1:length(X)) {
   write.table(row.names(X[[i]]), 
-              file=paste0("DEGAnalysis/RNA-seq/Nobt_Cluster_", i, ".txt"),
+              file=paste0("DEGAnalysis/RNA-seq/Nobt_Cluster_", max(X[[i]]$cluster), ".txt"),
               row.names = FALSE,
               quote = FALSE,
               col.names = FALSE)

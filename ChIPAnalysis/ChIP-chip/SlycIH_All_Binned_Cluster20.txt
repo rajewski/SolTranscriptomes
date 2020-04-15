@@ -1,5 +1,0 @@
-Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-FUL2 binding between 201 and 500bp of TSS (FUL2_500)	17.7	1e-03	4	128	Solyc02g069800.1.1,Solyc02g086300.4.1,Solyc02g086970.4.1,Solyc08g082170.4.1
-FUL1 binding between 201 and 500bp of TSS (FUL1_500)	16.2	3e-02	2	70	Solyc02g069800.1.1,Solyc08g082170.4.1
-FUL1 binding between 1001 and 1500bp of TSS (FUL1_1500)	13.2	4e-02	2	86	Solyc02g093280.2.1,Solyc10g081530.2.1
-FUL2 binding between 1001 and 1500bp of TSS (FUL2_1500)	11.4	2e-02	3	149	Solyc08g082170.4.1,Solyc08g082190.3.1,Solyc10g081530.2.1
