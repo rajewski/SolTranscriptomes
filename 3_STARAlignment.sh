@@ -34,6 +34,28 @@ for SRA in ${SRAList[@]}; do
     fi
 done
 
+#Map Arabidopsis ChIP reads
+TAIRCHIPDIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/ChIPseq
+ChIPList=(SRR6412402 SRR6412403 SRR6412404 SRR3288009 SRR3288010 SRR3288011 SRR3288012)
+mkdir -p /rhome/arajewski/bigdata/FULTranscriptomes/ChIPAnalysis/ChIPseq/STAR
+
+for SRA in ${ChIPList[@]}; do
+    if [ ! -s ChIPAnalysis/ChIPseq/STAR/${SRA}.Aligned.sortedByCoord.out.bam ]; then
+        echo Mapping Arabidopsis reads for $SRA...
+        STAR \
+            --runThreadN $SLURM_CPUS_PER_TASK \
+            --genomeDir $TAIRDIR/ \
+            --outFileNamePrefix ChIPAnalysis/ChIPseq/STAR/${SRA}. \
+            --outSAMtype BAM SortedByCoordinate \
+            --readFilesIn $TAIRCHIPDIR/${SRA}_1_trimmed.fq.gz \
+            --readFilesCommand zcat
+        echo Done.
+    else
+        echo Reads for $SRA already mapped.
+    fi
+done
+
+
 #Map Tomato SRA reads comment out to run in parallel with others
 SRALISTTom=( SRR943813 SRR943814 SRR943815 SRR943816 SRR943817 SRR943818 SRR943825 SRR943826 SRR943827 SRR943828 SRR943829 SRR943830 )
 
@@ -90,3 +112,5 @@ for IH in ${IHListNobt[@]}; do
         echo Reads for $IH already mapped.
     fi
 done
+
+# Map TAIR ChIP-seq reads to genome
