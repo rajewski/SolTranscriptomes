@@ -1,0 +1,576 @@
+INFO  @ Mon, 13 Apr 2020 13:15:06: 
+# Command line: callpeak -t ChIPAnalysis/ChIPseq/STAR/SRR3288009.Aligned.sortedByCoord.out.bam -c ChIPAnalysis/ChIPseq/STAR/SRR3288011.Aligned.sortedByCoord.out.bam -n PRJNA316152_rep1 --outdir ChIPAnalysis/ChIPseq/MACS -g 1.2e8 -B --call-summits -p 1e-3
+# ARGUMENTS LIST:
+# name = PRJNA316152_rep1
+# format = AUTO
+# ChIP-seq file = ['ChIPAnalysis/ChIPseq/STAR/SRR3288009.Aligned.sortedByCoord.out.bam']
+# control file = ['ChIPAnalysis/ChIPseq/STAR/SRR3288011.Aligned.sortedByCoord.out.bam']
+# effective genome size = 1.20e+08
+# band width = 300
+# model fold = [5, 50]
+# pvalue cutoff = 1.00e-03
+# qvalue will not be calculated and reported as -1 in the final output.
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 1000 bps and 10000 bps
+# Broad region calling is off
+# Paired-End mode is off
+# Searching for subpeak summits is on
+ 
+INFO  @ Mon, 13 Apr 2020 13:15:06: #1 read tag files... 
+INFO  @ Mon, 13 Apr 2020 13:15:06: #1 read treatment tags... 
+INFO  @ Mon, 13 Apr 2020 13:15:06: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 13:15:06: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 13:15:08:  1000000 
+INFO  @ Mon, 13 Apr 2020 13:15:12:  2000000 
+INFO  @ Mon, 13 Apr 2020 13:15:15:  3000000 
+INFO  @ Mon, 13 Apr 2020 13:15:18:  4000000 
+INFO  @ Mon, 13 Apr 2020 13:15:22:  5000000 
+INFO  @ Mon, 13 Apr 2020 13:15:26:  6000000 
+INFO  @ Mon, 13 Apr 2020 13:15:28:  7000000 
+INFO  @ Mon, 13 Apr 2020 13:15:31:  8000000 
+INFO  @ Mon, 13 Apr 2020 13:15:33: 8477849 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 13:15:33: #1.2 read input tags... 
+INFO  @ Mon, 13 Apr 2020 13:15:33: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 13:15:33: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 13:15:36:  1000000 
+INFO  @ Mon, 13 Apr 2020 13:15:39:  2000000 
+INFO  @ Mon, 13 Apr 2020 13:15:41:  3000000 
+INFO  @ Mon, 13 Apr 2020 13:15:45:  4000000 
+INFO  @ Mon, 13 Apr 2020 13:15:49:  5000000 
+INFO  @ Mon, 13 Apr 2020 13:15:51:  6000000 
+INFO  @ Mon, 13 Apr 2020 13:15:53:  7000000 
+INFO  @ Mon, 13 Apr 2020 13:15:58:  8000000 
+INFO  @ Mon, 13 Apr 2020 13:16:01:  9000000 
+INFO  @ Mon, 13 Apr 2020 13:16:04:  10000000 
+INFO  @ Mon, 13 Apr 2020 13:16:07:  11000000 
+INFO  @ Mon, 13 Apr 2020 13:16:10:  12000000 
+INFO  @ Mon, 13 Apr 2020 13:16:14:  13000000 
+INFO  @ Mon, 13 Apr 2020 13:16:16:  14000000 
+INFO  @ Mon, 13 Apr 2020 13:16:19:  15000000 
+INFO  @ Mon, 13 Apr 2020 13:16:21: 15640341 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1 tag size is determined as 38 bps 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1 tag size = 38.0 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1  total tags in treatment: 8477849 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1  tags after filtering in treatment: 1785654 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1  Redundant rate of treatment: 0.79 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1  total tags in control: 15640341 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1  tags after filtering in control: 11896010 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1  Redundant rate of control: 0.24 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #1 finished! 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #2 Build Peak Model... 
+INFO  @ Mon, 13 Apr 2020 13:16:21: #2 looking for paired plus/minus strand peaks... 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #2 number of paired peaks: 972 
+WARNING @ Mon, 13 Apr 2020 13:16:22: Fewer paired peaks (972) than 1000! Model may not be build well! Lower your MFOLD parameter may erase this warning. Now I will use 972 pairs to build model! 
+INFO  @ Mon, 13 Apr 2020 13:16:22: start model_add_line... 
+INFO  @ Mon, 13 Apr 2020 13:16:22: start X-correlation... 
+INFO  @ Mon, 13 Apr 2020 13:16:22: end of X-cor 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #2 finished! 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #2 predicted fragment length is 155 bps 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #2 alternative fragment length(s) may be 45,155,206 bps 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #2.2 Generate R script for model : ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep1_model.r 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #3 Call peaks... 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #3 Going to call summits inside each peak ... 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #3 Call peaks with given -log10pvalue cutoff: 3.00000 ... 
+INFO  @ Mon, 13 Apr 2020 13:16:22: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Mon, 13 Apr 2020 13:17:07: #3 In the peak calling step, the following will be performed simultaneously: 
+INFO  @ Mon, 13 Apr 2020 13:17:07: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... PRJNA316152_rep1_treat_pileup.bdg 
+INFO  @ Mon, 13 Apr 2020 13:17:07: #3   Write bedGraph files for control lambda (after scaling if necessary)... PRJNA316152_rep1_control_lambda.bdg 
+INFO  @ Mon, 13 Apr 2020 13:17:07: #3   Pileup will be based on sequencing depth in treatment. 
+INFO  @ Mon, 13 Apr 2020 13:17:07: #3 Call peaks for each chromosome... 
+INFO  @ Mon, 13 Apr 2020 13:17:43: #4 Write output xls file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep1_peaks.xls 
+INFO  @ Mon, 13 Apr 2020 13:17:43: #4 Write peak in narrowPeak format file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep1_peaks.narrowPeak 
+INFO  @ Mon, 13 Apr 2020 13:17:43: #4 Write summits bed file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep1_summits.bed 
+INFO  @ Mon, 13 Apr 2020 13:17:43: Done! 
+INFO  @ Mon, 13 Apr 2020 13:17:43: 
+# Command line: callpeak -t ChIPAnalysis/ChIPseq/STAR/SRR3288010.Aligned.sortedByCoord.out.bam -c ChIPAnalysis/ChIPseq/STAR/SRR3288012.Aligned.sortedByCoord.out.bam -n PRJNA316152_rep2 --outdir ChIPAnalysis/ChIPseq/MACS -g 1.2e8 -B --call-summits -p 1e-3
+# ARGUMENTS LIST:
+# name = PRJNA316152_rep2
+# format = AUTO
+# ChIP-seq file = ['ChIPAnalysis/ChIPseq/STAR/SRR3288010.Aligned.sortedByCoord.out.bam']
+# control file = ['ChIPAnalysis/ChIPseq/STAR/SRR3288012.Aligned.sortedByCoord.out.bam']
+# effective genome size = 1.20e+08
+# band width = 300
+# model fold = [5, 50]
+# pvalue cutoff = 1.00e-03
+# qvalue will not be calculated and reported as -1 in the final output.
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 1000 bps and 10000 bps
+# Broad region calling is off
+# Paired-End mode is off
+# Searching for subpeak summits is on
+ 
+INFO  @ Mon, 13 Apr 2020 13:17:43: #1 read tag files... 
+INFO  @ Mon, 13 Apr 2020 13:17:43: #1 read treatment tags... 
+INFO  @ Mon, 13 Apr 2020 13:17:43: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 13:17:43: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 13:17:47:  1000000 
+INFO  @ Mon, 13 Apr 2020 13:17:50:  2000000 
+INFO  @ Mon, 13 Apr 2020 13:17:53:  3000000 
+INFO  @ Mon, 13 Apr 2020 13:17:57:  4000000 
+INFO  @ Mon, 13 Apr 2020 13:17:58: 4493406 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 13:17:58: #1.2 read input tags... 
+INFO  @ Mon, 13 Apr 2020 13:17:58: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 13:17:58: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 13:18:01:  1000000 
+INFO  @ Mon, 13 Apr 2020 13:18:05:  2000000 
+INFO  @ Mon, 13 Apr 2020 13:18:08:  3000000 
+INFO  @ Mon, 13 Apr 2020 13:18:12:  4000000 
+INFO  @ Mon, 13 Apr 2020 13:18:15:  5000000 
+INFO  @ Mon, 13 Apr 2020 13:18:19:  6000000 
+INFO  @ Mon, 13 Apr 2020 13:18:23:  7000000 
+INFO  @ Mon, 13 Apr 2020 13:18:25:  8000000 
+INFO  @ Mon, 13 Apr 2020 13:18:27: 8393448 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1 tag size is determined as 35 bps 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1 tag size = 35.0 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1  total tags in treatment: 4493406 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1  tags after filtering in treatment: 2554753 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1  Redundant rate of treatment: 0.43 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1  total tags in control: 8393448 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1  tags after filtering in control: 6121866 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1  Redundant rate of control: 0.27 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #1 finished! 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #2 Build Peak Model... 
+INFO  @ Mon, 13 Apr 2020 13:18:27: #2 looking for paired plus/minus strand peaks... 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #2 number of paired peaks: 735 
+WARNING @ Mon, 13 Apr 2020 13:18:28: Fewer paired peaks (735) than 1000! Model may not be build well! Lower your MFOLD parameter may erase this warning. Now I will use 735 pairs to build model! 
+INFO  @ Mon, 13 Apr 2020 13:18:28: start model_add_line... 
+INFO  @ Mon, 13 Apr 2020 13:18:28: start X-correlation... 
+INFO  @ Mon, 13 Apr 2020 13:18:28: end of X-cor 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #2 finished! 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #2 predicted fragment length is 35 bps 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #2 alternative fragment length(s) may be 35,114,153,221,563 bps 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #2.2 Generate R script for model : ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep2_model.r 
+WARNING @ Mon, 13 Apr 2020 13:18:28: #2 Since the d (35) calculated from paired-peaks are smaller than 2*tag length, it may be influenced by unknown sequencing problem! 
+WARNING @ Mon, 13 Apr 2020 13:18:28: #2 You may need to consider one of the other alternative d(s): 35,114,153,221,563 
+WARNING @ Mon, 13 Apr 2020 13:18:28: #2 You can restart the process with --nomodel --extsize XXX with your choice or an arbitrary number. Nontheless, MACS will continute computing. 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #3 Call peaks... 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #3 Going to call summits inside each peak ... 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #3 Call peaks with given -log10pvalue cutoff: 3.00000 ... 
+INFO  @ Mon, 13 Apr 2020 13:18:28: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Mon, 13 Apr 2020 13:18:54: #3 In the peak calling step, the following will be performed simultaneously: 
+INFO  @ Mon, 13 Apr 2020 13:18:54: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... PRJNA316152_rep2_treat_pileup.bdg 
+INFO  @ Mon, 13 Apr 2020 13:18:54: #3   Write bedGraph files for control lambda (after scaling if necessary)... PRJNA316152_rep2_control_lambda.bdg 
+INFO  @ Mon, 13 Apr 2020 13:18:54: #3   Pileup will be based on sequencing depth in treatment. 
+INFO  @ Mon, 13 Apr 2020 13:18:54: #3 Call peaks for each chromosome... 
+INFO  @ Mon, 13 Apr 2020 13:19:17: #4 Write output xls file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep2_peaks.xls 
+INFO  @ Mon, 13 Apr 2020 13:19:17: #4 Write peak in narrowPeak format file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep2_peaks.narrowPeak 
+INFO  @ Mon, 13 Apr 2020 13:19:17: #4 Write summits bed file... ChIPAnalysis/ChIPseq/MACS/PRJNA316152_rep2_summits.bed 
+INFO  @ Mon, 13 Apr 2020 13:19:17: Done! 
+INFO  @ Mon, 13 Apr 2020 13:19:18: 
+# Command line: callpeak -t ChIPAnalysis/ChIPseq/STAR/SRR6412402.Aligned.sortedByCoord.out.bam -c ChIPAnalysis/ChIPseq/STAR/SRR6412404.Aligned.sortedByCoord.out.bam -n PRJNA427320_rep1 --outdir ChIPAnalysis/ChIPseq/MACS -g 1.2e8 -B --call-summits -p 1e-3
+# ARGUMENTS LIST:
+# name = PRJNA427320_rep1
+# format = AUTO
+# ChIP-seq file = ['ChIPAnalysis/ChIPseq/STAR/SRR6412402.Aligned.sortedByCoord.out.bam']
+# control file = ['ChIPAnalysis/ChIPseq/STAR/SRR6412404.Aligned.sortedByCoord.out.bam']
+# effective genome size = 1.20e+08
+# band width = 300
+# model fold = [5, 50]
+# pvalue cutoff = 1.00e-03
+# qvalue will not be calculated and reported as -1 in the final output.
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 1000 bps and 10000 bps
+# Broad region calling is off
+# Paired-End mode is off
+# Searching for subpeak summits is on
+ 
+INFO  @ Mon, 13 Apr 2020 13:19:18: #1 read tag files... 
+INFO  @ Mon, 13 Apr 2020 13:19:18: #1 read treatment tags... 
+INFO  @ Mon, 13 Apr 2020 13:19:18: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 13:19:18: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 13:19:20:  1000000 
+INFO  @ Mon, 13 Apr 2020 13:19:22:  2000000 
+INFO  @ Mon, 13 Apr 2020 13:19:25:  3000000 
+INFO  @ Mon, 13 Apr 2020 13:19:29:  4000000 
+INFO  @ Mon, 13 Apr 2020 13:19:31:  5000000 
+INFO  @ Mon, 13 Apr 2020 13:19:33:  6000000 
+INFO  @ Mon, 13 Apr 2020 13:19:37:  7000000 
+INFO  @ Mon, 13 Apr 2020 13:19:41:  8000000 
+INFO  @ Mon, 13 Apr 2020 13:19:44:  9000000 
+INFO  @ Mon, 13 Apr 2020 13:19:46:  10000000 
+INFO  @ Mon, 13 Apr 2020 13:19:48:  11000000 
+INFO  @ Mon, 13 Apr 2020 13:19:50:  12000000 
+INFO  @ Mon, 13 Apr 2020 13:19:53:  13000000 
+INFO  @ Mon, 13 Apr 2020 13:19:55:  14000000 
+INFO  @ Mon, 13 Apr 2020 13:20:02:  15000000 
+INFO  @ Mon, 13 Apr 2020 13:20:06:  16000000 
+INFO  @ Mon, 13 Apr 2020 13:20:09:  17000000 
+INFO  @ Mon, 13 Apr 2020 13:20:11:  18000000 
+INFO  @ Mon, 13 Apr 2020 13:20:16:  19000000 
+INFO  @ Mon, 13 Apr 2020 13:20:18:  20000000 
+INFO  @ Mon, 13 Apr 2020 13:20:20:  21000000 
+INFO  @ Mon, 13 Apr 2020 13:20:22:  22000000 
+INFO  @ Mon, 13 Apr 2020 13:20:25:  23000000 
+INFO  @ Mon, 13 Apr 2020 13:20:27:  24000000 
+INFO  @ Mon, 13 Apr 2020 13:20:33:  25000000 
+INFO  @ Mon, 13 Apr 2020 13:20:35:  26000000 
+INFO  @ Mon, 13 Apr 2020 13:20:37:  27000000 
+INFO  @ Mon, 13 Apr 2020 13:20:40:  28000000 
+INFO  @ Mon, 13 Apr 2020 13:20:42:  29000000 
+INFO  @ Mon, 13 Apr 2020 13:20:43: 29151178 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 13:20:44: #1.2 read input tags... 
+INFO  @ Mon, 13 Apr 2020 13:20:44: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 13:20:44: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 13:20:47:  1000000 
+INFO  @ Mon, 13 Apr 2020 13:20:49:  2000000 
+INFO  @ Mon, 13 Apr 2020 13:20:52:  3000000 
+INFO  @ Mon, 13 Apr 2020 13:20:55:  4000000 
+INFO  @ Mon, 13 Apr 2020 13:20:57:  5000000 
+INFO  @ Mon, 13 Apr 2020 13:21:00:  6000000 
+INFO  @ Mon, 13 Apr 2020 13:21:03:  7000000 
+INFO  @ Mon, 13 Apr 2020 13:21:06:  8000000 
+INFO  @ Mon, 13 Apr 2020 13:21:09:  9000000 
+INFO  @ Mon, 13 Apr 2020 13:21:12:  10000000 
+INFO  @ Mon, 13 Apr 2020 13:21:17:  11000000 
+INFO  @ Mon, 13 Apr 2020 13:21:24:  12000000 
+INFO  @ Mon, 13 Apr 2020 13:21:28:  13000000 
+INFO  @ Mon, 13 Apr 2020 13:21:30:  14000000 
+INFO  @ Mon, 13 Apr 2020 13:21:33:  15000000 
+INFO  @ Mon, 13 Apr 2020 13:21:36:  16000000 
+INFO  @ Mon, 13 Apr 2020 13:21:39:  17000000 
+INFO  @ Mon, 13 Apr 2020 13:21:41:  18000000 
+INFO  @ Mon, 13 Apr 2020 13:21:44:  19000000 
+INFO  @ Mon, 13 Apr 2020 13:21:47:  20000000 
+INFO  @ Mon, 13 Apr 2020 13:21:49:  21000000 
+INFO  @ Mon, 13 Apr 2020 13:21:52:  22000000 
+INFO  @ Mon, 13 Apr 2020 13:21:58:  23000000 
+INFO  @ Mon, 13 Apr 2020 13:22:03:  24000000 
+INFO  @ Mon, 13 Apr 2020 13:22:08:  25000000 
+INFO  @ Mon, 13 Apr 2020 13:22:10:  26000000 
+INFO  @ Mon, 13 Apr 2020 13:22:14:  27000000 
+INFO  @ Mon, 13 Apr 2020 13:22:18:  28000000 
+INFO  @ Mon, 13 Apr 2020 13:22:23:  29000000 
+INFO  @ Mon, 13 Apr 2020 13:22:29:  30000000 
+INFO  @ Mon, 13 Apr 2020 13:22:38:  31000000 
+INFO  @ Mon, 13 Apr 2020 13:22:42:  32000000 
+INFO  @ Mon, 13 Apr 2020 13:22:47:  33000000 
+INFO  @ Mon, 13 Apr 2020 13:22:50:  34000000 
+INFO  @ Mon, 13 Apr 2020 13:22:53:  35000000 
+INFO  @ Mon, 13 Apr 2020 13:22:55:  36000000 
+INFO  @ Mon, 13 Apr 2020 13:22:58:  37000000 
+INFO  @ Mon, 13 Apr 2020 13:23:01:  38000000 
+INFO  @ Mon, 13 Apr 2020 13:23:04:  39000000 
+INFO  @ Mon, 13 Apr 2020 13:23:06:  40000000 
+INFO  @ Mon, 13 Apr 2020 13:23:09:  41000000 
+INFO  @ Mon, 13 Apr 2020 13:23:11:  42000000 
+INFO  @ Mon, 13 Apr 2020 13:23:14:  43000000 
+INFO  @ Mon, 13 Apr 2020 13:23:17:  44000000 
+INFO  @ Mon, 13 Apr 2020 13:23:19:  45000000 
+INFO  @ Mon, 13 Apr 2020 13:23:22:  46000000 
+INFO  @ Mon, 13 Apr 2020 13:23:24:  47000000 
+INFO  @ Mon, 13 Apr 2020 13:23:27:  48000000 
+INFO  @ Mon, 13 Apr 2020 13:23:30:  49000000 
+INFO  @ Mon, 13 Apr 2020 13:23:32:  50000000 
+INFO  @ Mon, 13 Apr 2020 13:23:35:  51000000 
+INFO  @ Mon, 13 Apr 2020 13:23:38:  52000000 
+INFO  @ Mon, 13 Apr 2020 13:23:42:  53000000 
+INFO  @ Mon, 13 Apr 2020 13:23:50:  54000000 
+INFO  @ Mon, 13 Apr 2020 13:23:59:  55000000 
+INFO  @ Mon, 13 Apr 2020 13:24:05:  56000000 
+INFO  @ Mon, 13 Apr 2020 13:24:08:  57000000 
+INFO  @ Mon, 13 Apr 2020 13:24:12:  58000000 
+INFO  @ Mon, 13 Apr 2020 13:24:17:  59000000 
+INFO  @ Mon, 13 Apr 2020 13:24:21:  60000000 
+INFO  @ Mon, 13 Apr 2020 13:24:24:  61000000 
+INFO  @ Mon, 13 Apr 2020 13:24:27:  62000000 
+INFO  @ Mon, 13 Apr 2020 13:24:29:  63000000 
+INFO  @ Mon, 13 Apr 2020 13:24:32:  64000000 
+INFO  @ Mon, 13 Apr 2020 13:24:35:  65000000 
+INFO  @ Mon, 13 Apr 2020 13:24:37:  66000000 
+INFO  @ Mon, 13 Apr 2020 13:24:41:  67000000 
+INFO  @ Mon, 13 Apr 2020 13:24:45:  68000000 
+INFO  @ Mon, 13 Apr 2020 13:24:51:  69000000 
+INFO  @ Mon, 13 Apr 2020 13:24:59:  70000000 
+INFO  @ Mon, 13 Apr 2020 13:25:05:  71000000 
+INFO  @ Mon, 13 Apr 2020 13:25:08:  72000000 
+INFO  @ Mon, 13 Apr 2020 13:25:11:  73000000 
+INFO  @ Mon, 13 Apr 2020 13:25:13:  74000000 
+INFO  @ Mon, 13 Apr 2020 13:25:16:  75000000 
+INFO  @ Mon, 13 Apr 2020 13:25:19:  76000000 
+INFO  @ Mon, 13 Apr 2020 13:25:21:  77000000 
+INFO  @ Mon, 13 Apr 2020 13:25:24:  78000000 
+INFO  @ Mon, 13 Apr 2020 13:25:27:  79000000 
+INFO  @ Mon, 13 Apr 2020 13:25:29:  80000000 
+INFO  @ Mon, 13 Apr 2020 13:25:32:  81000000 
+INFO  @ Mon, 13 Apr 2020 13:25:35:  82000000 
+INFO  @ Mon, 13 Apr 2020 13:25:37:  83000000 
+INFO  @ Mon, 13 Apr 2020 13:25:40:  84000000 
+INFO  @ Mon, 13 Apr 2020 13:25:42:  85000000 
+INFO  @ Mon, 13 Apr 2020 13:25:45:  86000000 
+INFO  @ Mon, 13 Apr 2020 13:25:48:  87000000 
+INFO  @ Mon, 13 Apr 2020 13:25:50:  88000000 
+INFO  @ Mon, 13 Apr 2020 13:25:54:  89000000 
+INFO  @ Mon, 13 Apr 2020 13:26:02:  90000000 
+INFO  @ Mon, 13 Apr 2020 13:26:10:  91000000 
+INFO  @ Mon, 13 Apr 2020 13:26:17:  92000000 
+INFO  @ Mon, 13 Apr 2020 13:26:25:  93000000 
+INFO  @ Mon, 13 Apr 2020 13:26:30:  94000000 
+INFO  @ Mon, 13 Apr 2020 13:26:34:  95000000 
+INFO  @ Mon, 13 Apr 2020 13:26:36:  96000000 
+INFO  @ Mon, 13 Apr 2020 13:26:39:  97000000 
+INFO  @ Mon, 13 Apr 2020 13:26:42:  98000000 
+INFO  @ Mon, 13 Apr 2020 13:26:45:  99000000 
+INFO  @ Mon, 13 Apr 2020 13:26:47:  100000000 
+INFO  @ Mon, 13 Apr 2020 13:26:50:  101000000 
+INFO  @ Mon, 13 Apr 2020 13:26:52:  102000000 
+INFO  @ Mon, 13 Apr 2020 13:26:55:  103000000 
+INFO  @ Mon, 13 Apr 2020 13:26:58:  104000000 
+INFO  @ Mon, 13 Apr 2020 13:27:03:  105000000 
+INFO  @ Mon, 13 Apr 2020 13:27:07:  106000000 
+INFO  @ Mon, 13 Apr 2020 13:27:10:  107000000 
+INFO  @ Mon, 13 Apr 2020 13:27:13:  108000000 
+INFO  @ Mon, 13 Apr 2020 13:27:15:  109000000 
+INFO  @ Mon, 13 Apr 2020 13:27:18:  110000000 
+INFO  @ Mon, 13 Apr 2020 13:27:20:  111000000 
+INFO  @ Mon, 13 Apr 2020 13:27:23:  112000000 
+INFO  @ Mon, 13 Apr 2020 13:27:25:  113000000 
+INFO  @ Mon, 13 Apr 2020 13:27:28:  114000000 
+INFO  @ Mon, 13 Apr 2020 13:27:37: 114664063 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1 tag size is determined as 39 bps 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1 tag size = 39.0 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1  total tags in treatment: 29151178 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1  tags after filtering in treatment: 11546936 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1  Redundant rate of treatment: 0.60 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1  total tags in control: 114664063 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1  tags after filtering in control: 31385631 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1  Redundant rate of control: 0.73 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #1 finished! 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #2 Build Peak Model... 
+INFO  @ Mon, 13 Apr 2020 13:27:40: #2 looking for paired plus/minus strand peaks... 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #2 number of paired peaks: 1381 
+INFO  @ Mon, 13 Apr 2020 13:27:42: start model_add_line... 
+INFO  @ Mon, 13 Apr 2020 13:27:42: start X-correlation... 
+INFO  @ Mon, 13 Apr 2020 13:27:42: end of X-cor 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #2 finished! 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #2 predicted fragment length is 287 bps 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #2 alternative fragment length(s) may be 287 bps 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #2.2 Generate R script for model : ChIPAnalysis/ChIPseq/MACS/PRJNA427320_rep1_model.r 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #3 Call peaks... 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #3 Going to call summits inside each peak ... 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #3 Call peaks with given -log10pvalue cutoff: 3.00000 ... 
+INFO  @ Mon, 13 Apr 2020 13:27:42: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Mon, 13 Apr 2020 13:29:35: #3 In the peak calling step, the following will be performed simultaneously: 
+INFO  @ Mon, 13 Apr 2020 13:29:35: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... PRJNA427320_rep1_treat_pileup.bdg 
+INFO  @ Mon, 13 Apr 2020 13:29:35: #3   Write bedGraph files for control lambda (after scaling if necessary)... PRJNA427320_rep1_control_lambda.bdg 
+INFO  @ Mon, 13 Apr 2020 13:29:35: #3   Pileup will be based on sequencing depth in treatment. 
+INFO  @ Mon, 13 Apr 2020 13:29:35: #3 Call peaks for each chromosome... 
+INFO  @ Mon, 13 Apr 2020 13:31:25: #4 Write output xls file... ChIPAnalysis/ChIPseq/MACS/PRJNA427320_rep1_peaks.xls 
+INFO  @ Mon, 13 Apr 2020 13:31:25: #4 Write peak in narrowPeak format file... ChIPAnalysis/ChIPseq/MACS/PRJNA427320_rep1_peaks.narrowPeak 
+INFO  @ Mon, 13 Apr 2020 13:31:25: #4 Write summits bed file... ChIPAnalysis/ChIPseq/MACS/PRJNA427320_rep1_summits.bed 
+INFO  @ Mon, 13 Apr 2020 13:31:25: Done! 
+INFO  @ Mon, 13 Apr 2020 13:31:26: 
+# Command line: callpeak -t ChIPAnalysis/ChIPseq/STAR/SRR6412403.Aligned.sortedByCoord.out.bam -c ChIPAnalysis/ChIPseq/STAR/SRR6412404.Aligned.sortedByCoord.out.bam -n PRJNA427320_rep2 --outdir ChIPAnalysis/ChIPseq/MACS -g 1.2e8 -B --call-summits -p 1e-3
+# ARGUMENTS LIST:
+# name = PRJNA427320_rep2
+# format = AUTO
+# ChIP-seq file = ['ChIPAnalysis/ChIPseq/STAR/SRR6412403.Aligned.sortedByCoord.out.bam']
+# control file = ['ChIPAnalysis/ChIPseq/STAR/SRR6412404.Aligned.sortedByCoord.out.bam']
+# effective genome size = 1.20e+08
+# band width = 300
+# model fold = [5, 50]
+# pvalue cutoff = 1.00e-03
+# qvalue will not be calculated and reported as -1 in the final output.
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 1000 bps and 10000 bps
+# Broad region calling is off
+# Paired-End mode is off
+# Searching for subpeak summits is on
+ 
+INFO  @ Mon, 13 Apr 2020 13:31:26: #1 read tag files... 
+INFO  @ Mon, 13 Apr 2020 13:31:26: #1 read treatment tags... 
+INFO  @ Mon, 13 Apr 2020 13:31:26: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 13:31:26: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 13:31:28:  1000000 
+INFO  @ Mon, 13 Apr 2020 13:31:32:  2000000 
+INFO  @ Mon, 13 Apr 2020 13:31:35:  3000000 
+INFO  @ Mon, 13 Apr 2020 13:31:39:  4000000 
+INFO  @ Mon, 13 Apr 2020 13:31:43:  5000000 
+INFO  @ Mon, 13 Apr 2020 13:31:46:  6000000 
+INFO  @ Mon, 13 Apr 2020 13:31:48:  7000000 
+INFO  @ Mon, 13 Apr 2020 13:31:51:  8000000 
+INFO  @ Mon, 13 Apr 2020 13:31:58:  9000000 
+INFO  @ Mon, 13 Apr 2020 13:32:02:  10000000 
+INFO  @ Mon, 13 Apr 2020 13:32:05:  11000000 
+INFO  @ Mon, 13 Apr 2020 13:32:09:  12000000 
+INFO  @ Mon, 13 Apr 2020 13:32:11:  13000000 
+INFO  @ Mon, 13 Apr 2020 13:32:14:  14000000 
+INFO  @ Mon, 13 Apr 2020 13:32:19:  15000000 
+INFO  @ Mon, 13 Apr 2020 13:32:22:  16000000 
+INFO  @ Mon, 13 Apr 2020 13:32:25:  17000000 
+INFO  @ Mon, 13 Apr 2020 13:32:27:  18000000 
+INFO  @ Mon, 13 Apr 2020 13:32:29: 18303110 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 13:32:30: #1.2 read input tags... 
+INFO  @ Mon, 13 Apr 2020 13:32:30: Detected format is: BAM 
+INFO  @ Mon, 13 Apr 2020 13:32:30: * Input file is gzipped. 
+INFO  @ Mon, 13 Apr 2020 13:32:32:  1000000 
+INFO  @ Mon, 13 Apr 2020 13:32:35:  2000000 
+INFO  @ Mon, 13 Apr 2020 13:32:38:  3000000 
+INFO  @ Mon, 13 Apr 2020 13:32:40:  4000000 
+INFO  @ Mon, 13 Apr 2020 13:32:43:  5000000 
+INFO  @ Mon, 13 Apr 2020 13:32:46:  6000000 
+INFO  @ Mon, 13 Apr 2020 13:32:49:  7000000 
+INFO  @ Mon, 13 Apr 2020 13:32:52:  8000000 
+INFO  @ Mon, 13 Apr 2020 13:32:55:  9000000 
+INFO  @ Mon, 13 Apr 2020 13:32:58:  10000000 
+INFO  @ Mon, 13 Apr 2020 13:33:04:  11000000 
+INFO  @ Mon, 13 Apr 2020 13:33:10:  12000000 
+INFO  @ Mon, 13 Apr 2020 13:33:14:  13000000 
+INFO  @ Mon, 13 Apr 2020 13:33:17:  14000000 
+INFO  @ Mon, 13 Apr 2020 13:33:19:  15000000 
+INFO  @ Mon, 13 Apr 2020 13:33:22:  16000000 
+INFO  @ Mon, 13 Apr 2020 13:33:25:  17000000 
+INFO  @ Mon, 13 Apr 2020 13:33:28:  18000000 
+INFO  @ Mon, 13 Apr 2020 13:33:30:  19000000 
+INFO  @ Mon, 13 Apr 2020 13:33:33:  20000000 
+INFO  @ Mon, 13 Apr 2020 13:33:36:  21000000 
+INFO  @ Mon, 13 Apr 2020 13:33:38:  22000000 
+INFO  @ Mon, 13 Apr 2020 13:33:45:  23000000 
+INFO  @ Mon, 13 Apr 2020 13:33:49:  24000000 
+INFO  @ Mon, 13 Apr 2020 13:33:54:  25000000 
+INFO  @ Mon, 13 Apr 2020 13:33:57:  26000000 
+INFO  @ Mon, 13 Apr 2020 13:34:01:  27000000 
+INFO  @ Mon, 13 Apr 2020 13:34:05:  28000000 
+INFO  @ Mon, 13 Apr 2020 13:34:10:  29000000 
+INFO  @ Mon, 13 Apr 2020 13:34:16:  30000000 
+INFO  @ Mon, 13 Apr 2020 13:34:25:  31000000 
+INFO  @ Mon, 13 Apr 2020 13:34:30:  32000000 
+INFO  @ Mon, 13 Apr 2020 13:34:34:  33000000 
+INFO  @ Mon, 13 Apr 2020 13:34:37:  34000000 
+INFO  @ Mon, 13 Apr 2020 13:34:40:  35000000 
+INFO  @ Mon, 13 Apr 2020 13:34:43:  36000000 
+INFO  @ Mon, 13 Apr 2020 13:34:46:  37000000 
+INFO  @ Mon, 13 Apr 2020 13:34:48:  38000000 
+INFO  @ Mon, 13 Apr 2020 13:34:51:  39000000 
+INFO  @ Mon, 13 Apr 2020 13:34:54:  40000000 
+INFO  @ Mon, 13 Apr 2020 13:34:56:  41000000 
+INFO  @ Mon, 13 Apr 2020 13:34:59:  42000000 
+INFO  @ Mon, 13 Apr 2020 13:35:02:  43000000 
+INFO  @ Mon, 13 Apr 2020 13:35:04:  44000000 
+INFO  @ Mon, 13 Apr 2020 13:35:07:  45000000 
+INFO  @ Mon, 13 Apr 2020 13:35:09:  46000000 
+INFO  @ Mon, 13 Apr 2020 13:35:12:  47000000 
+INFO  @ Mon, 13 Apr 2020 13:35:14:  48000000 
+INFO  @ Mon, 13 Apr 2020 13:35:17:  49000000 
+INFO  @ Mon, 13 Apr 2020 13:35:20:  50000000 
+INFO  @ Mon, 13 Apr 2020 13:35:23:  51000000 
+INFO  @ Mon, 13 Apr 2020 13:35:26:  52000000 
+INFO  @ Mon, 13 Apr 2020 13:35:30:  53000000 
+INFO  @ Mon, 13 Apr 2020 13:35:38:  54000000 
+INFO  @ Mon, 13 Apr 2020 13:35:47:  55000000 
+INFO  @ Mon, 13 Apr 2020 13:35:53:  56000000 
+INFO  @ Mon, 13 Apr 2020 13:35:56:  57000000 
+INFO  @ Mon, 13 Apr 2020 13:36:00:  58000000 
+INFO  @ Mon, 13 Apr 2020 13:36:05:  59000000 
+INFO  @ Mon, 13 Apr 2020 13:36:09:  60000000 
+INFO  @ Mon, 13 Apr 2020 13:36:12:  61000000 
+INFO  @ Mon, 13 Apr 2020 13:36:15:  62000000 
+INFO  @ Mon, 13 Apr 2020 13:36:18:  63000000 
+INFO  @ Mon, 13 Apr 2020 13:36:20:  64000000 
+INFO  @ Mon, 13 Apr 2020 13:36:23:  65000000 
+INFO  @ Mon, 13 Apr 2020 13:36:26:  66000000 
+INFO  @ Mon, 13 Apr 2020 13:36:29:  67000000 
+INFO  @ Mon, 13 Apr 2020 13:36:34:  68000000 
+INFO  @ Mon, 13 Apr 2020 13:36:39:  69000000 
+INFO  @ Mon, 13 Apr 2020 13:36:48:  70000000 
+INFO  @ Mon, 13 Apr 2020 13:36:53:  71000000 
+INFO  @ Mon, 13 Apr 2020 13:36:56:  72000000 
+INFO  @ Mon, 13 Apr 2020 13:36:59:  73000000 
+INFO  @ Mon, 13 Apr 2020 13:37:02:  74000000 
+INFO  @ Mon, 13 Apr 2020 13:37:04:  75000000 
+INFO  @ Mon, 13 Apr 2020 13:37:07:  76000000 
+INFO  @ Mon, 13 Apr 2020 13:37:10:  77000000 
+INFO  @ Mon, 13 Apr 2020 13:37:12:  78000000 
+INFO  @ Mon, 13 Apr 2020 13:37:15:  79000000 
+INFO  @ Mon, 13 Apr 2020 13:37:17:  80000000 
+INFO  @ Mon, 13 Apr 2020 13:37:20:  81000000 
+INFO  @ Mon, 13 Apr 2020 13:37:23:  82000000 
+INFO  @ Mon, 13 Apr 2020 13:37:25:  83000000 
+INFO  @ Mon, 13 Apr 2020 13:37:28:  84000000 
+INFO  @ Mon, 13 Apr 2020 13:37:31:  85000000 
+INFO  @ Mon, 13 Apr 2020 13:37:33:  86000000 
+INFO  @ Mon, 13 Apr 2020 13:37:36:  87000000 
+INFO  @ Mon, 13 Apr 2020 13:37:39:  88000000 
+INFO  @ Mon, 13 Apr 2020 13:37:42:  89000000 
+INFO  @ Mon, 13 Apr 2020 13:37:50:  90000000 
+INFO  @ Mon, 13 Apr 2020 13:37:58:  91000000 
+INFO  @ Mon, 13 Apr 2020 13:38:05:  92000000 
+INFO  @ Mon, 13 Apr 2020 13:38:13:  93000000 
+INFO  @ Mon, 13 Apr 2020 13:38:18:  94000000 
+INFO  @ Mon, 13 Apr 2020 13:38:21:  95000000 
+INFO  @ Mon, 13 Apr 2020 13:38:24:  96000000 
+INFO  @ Mon, 13 Apr 2020 13:38:27:  97000000 
+INFO  @ Mon, 13 Apr 2020 13:38:30:  98000000 
+INFO  @ Mon, 13 Apr 2020 13:38:33:  99000000 
+INFO  @ Mon, 13 Apr 2020 13:38:35:  100000000 
+INFO  @ Mon, 13 Apr 2020 13:38:38:  101000000 
+INFO  @ Mon, 13 Apr 2020 13:38:40:  102000000 
+INFO  @ Mon, 13 Apr 2020 13:38:43:  103000000 
+INFO  @ Mon, 13 Apr 2020 13:38:46:  104000000 
+INFO  @ Mon, 13 Apr 2020 13:38:50:  105000000 
+INFO  @ Mon, 13 Apr 2020 13:38:55:  106000000 
+INFO  @ Mon, 13 Apr 2020 13:38:58:  107000000 
+INFO  @ Mon, 13 Apr 2020 13:39:00:  108000000 
+INFO  @ Mon, 13 Apr 2020 13:39:03:  109000000 
+INFO  @ Mon, 13 Apr 2020 13:39:05:  110000000 
+INFO  @ Mon, 13 Apr 2020 13:39:08:  111000000 
+INFO  @ Mon, 13 Apr 2020 13:39:10:  112000000 
+INFO  @ Mon, 13 Apr 2020 13:39:13:  113000000 
+INFO  @ Mon, 13 Apr 2020 13:39:15:  114000000 
+INFO  @ Mon, 13 Apr 2020 13:39:25: 114664063 reads have been read. 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1 tag size is determined as 50 bps 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1 tag size = 50.0 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1  total tags in treatment: 18303110 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1  tags after filtering in treatment: 4651812 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1  Redundant rate of treatment: 0.75 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1  total tags in control: 114664063 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1 user defined the maximum tags... 
+INFO  @ Mon, 13 Apr 2020 13:39:27: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Mon, 13 Apr 2020 13:39:28: #1  tags after filtering in control: 31385631 
+INFO  @ Mon, 13 Apr 2020 13:39:28: #1  Redundant rate of control: 0.73 
+INFO  @ Mon, 13 Apr 2020 13:39:28: #1 finished! 
+INFO  @ Mon, 13 Apr 2020 13:39:28: #2 Build Peak Model... 
+INFO  @ Mon, 13 Apr 2020 13:39:28: #2 looking for paired plus/minus strand peaks... 
+INFO  @ Mon, 13 Apr 2020 13:39:28: #2 number of paired peaks: 886 
+WARNING @ Mon, 13 Apr 2020 13:39:28: Fewer paired peaks (886) than 1000! Model may not be build well! Lower your MFOLD parameter may erase this warning. Now I will use 886 pairs to build model! 
+INFO  @ Mon, 13 Apr 2020 13:39:28: start model_add_line... 
+INFO  @ Mon, 13 Apr 2020 13:39:29: start X-correlation... 
+INFO  @ Mon, 13 Apr 2020 13:39:29: end of X-cor 
+INFO  @ Mon, 13 Apr 2020 13:39:29: #2 finished! 
+INFO  @ Mon, 13 Apr 2020 13:39:29: #2 predicted fragment length is 121 bps 
+INFO  @ Mon, 13 Apr 2020 13:39:29: #2 alternative fragment length(s) may be 121,566,573 bps 
+INFO  @ Mon, 13 Apr 2020 13:39:29: #2.2 Generate R script for model : ChIPAnalysis/ChIPseq/MACS/PRJNA427320_rep2_model.r 
+INFO  @ Mon, 13 Apr 2020 13:39:29: #3 Call peaks... 
+INFO  @ Mon, 13 Apr 2020 13:39:29: #3 Going to call summits inside each peak ... 
+INFO  @ Mon, 13 Apr 2020 13:39:29: #3 Call peaks with given -log10pvalue cutoff: 3.00000 ... 
+INFO  @ Mon, 13 Apr 2020 13:39:29: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Mon, 13 Apr 2020 13:41:00: #3 In the peak calling step, the following will be performed simultaneously: 
+INFO  @ Mon, 13 Apr 2020 13:41:00: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... PRJNA427320_rep2_treat_pileup.bdg 
+INFO  @ Mon, 13 Apr 2020 13:41:00: #3   Write bedGraph files for control lambda (after scaling if necessary)... PRJNA427320_rep2_control_lambda.bdg 
+INFO  @ Mon, 13 Apr 2020 13:41:00: #3   Pileup will be based on sequencing depth in treatment. 
+INFO  @ Mon, 13 Apr 2020 13:41:00: #3 Call peaks for each chromosome... 
+INFO  @ Mon, 13 Apr 2020 13:42:10: #4 Write output xls file... ChIPAnalysis/ChIPseq/MACS/PRJNA427320_rep2_peaks.xls 
+INFO  @ Mon, 13 Apr 2020 13:42:10: #4 Write peak in narrowPeak format file... ChIPAnalysis/ChIPseq/MACS/PRJNA427320_rep2_peaks.narrowPeak 
+INFO  @ Mon, 13 Apr 2020 13:42:10: #4 Write summits bed file... ChIPAnalysis/ChIPseq/MACS/PRJNA427320_rep2_summits.bed 
+INFO  @ Mon, 13 Apr 2020 13:42:10: Done! 

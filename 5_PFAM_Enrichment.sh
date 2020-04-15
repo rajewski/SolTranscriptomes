@@ -25,6 +25,7 @@ do
 	    -i ${PEPs[PEP]} \
 	    -f TSV \
 	    -appl Pfam,TIGRFAM,PRINTS,ProSiteProfiles \
+	    --goterms \
 	    -d DEGAnalysis/Pfam \
 	    -cpu $SLURM_CPUS_PER_TASK
    fi

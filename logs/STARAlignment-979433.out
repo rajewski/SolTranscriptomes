@@ -1,0 +1,97 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Mapping Arabidopsis reads for SRR6412402...
+Apr 13 11:51:38 ..... started STAR run
+Apr 13 11:51:38 ..... loading genome
+Apr 13 11:51:40 ..... started mapping
+Apr 13 11:54:41 ..... started sorting BAM
+Apr 13 11:55:04 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for SRR6412403...
+Apr 13 11:55:04 ..... started STAR run
+Apr 13 11:55:04 ..... loading genome
+Apr 13 11:55:06 ..... started mapping
+Apr 13 12:06:44 ..... started sorting BAM
+Apr 13 12:07:01 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for SRR6412404...
+Apr 13 12:07:01 ..... started STAR run
+Apr 13 12:07:01 ..... loading genome
+Apr 13 12:07:03 ..... started mapping
+Apr 13 12:26:53 ..... started sorting BAM
+Apr 13 12:35:53 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for SRR3288009...
+Apr 13 12:35:53 ..... started STAR run
+Apr 13 12:35:53 ..... loading genome
+Apr 13 12:35:55 ..... started mapping
+Apr 13 12:38:01 ..... started sorting BAM
+Apr 13 12:38:07 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for SRR3288010...
+Apr 13 12:38:07 ..... started STAR run
+Apr 13 12:38:07 ..... loading genome
+Apr 13 12:38:09 ..... started mapping
+Apr 13 12:39:34 ..... started sorting BAM
+Apr 13 12:39:37 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for SRR3288011...
+Apr 13 12:39:37 ..... started STAR run
+Apr 13 12:39:37 ..... loading genome
+Apr 13 12:39:39 ..... started mapping
+Apr 13 12:41:19 ..... started sorting BAM
+Apr 13 12:41:32 ..... finished successfully
+Done.
+Mapping Arabidopsis reads for SRR3288012...
+Apr 13 12:41:32 ..... started STAR run
+Apr 13 12:41:32 ..... loading genome
+Apr 13 12:41:34 ..... started mapping
+Apr 13 12:42:39 ..... started sorting BAM
+Apr 13 12:42:46 ..... finished successfully
+Done.
+Reads for SRR943813 already mapped.
+Reads for SRR943814 already mapped.
+Reads for SRR943815 already mapped.
+Reads for SRR943816 already mapped.
+Reads for SRR943817 already mapped.
+Reads for SRR943818 already mapped.
+Reads for SRR943825 already mapped.
+Reads for SRR943826 already mapped.
+Reads for SRR943827 already mapped.
+Reads for SRR943828 already mapped.
+Reads for SRR943829 already mapped.
+Reads for SRR943830 already mapped.
+Reads for AC1DPA1 already mapped.
+Reads for AC1DPA2 already mapped.
+Reads for AC1DPA3 already mapped.
+Reads for AC3DPA1 already mapped.
+Reads for AC3DPA2 already mapped.
+Reads for AC3DPA3 already mapped.
+Reads for AC15DPA1 already mapped.
+Reads for AC15DPA2 already mapped.
+Reads for AC15DPA3 already mapped.
+Reads for ACbreaker1 already mapped.
+Reads for ACbreaker2 already mapped.
+Reads for ACbreaker3 already mapped.
+Reads for ACrr1 already mapped.
+Reads for ACrr2 already mapped.
+Reads for ACrr3 already mapped.
+Reads for NobtPre1 already mapped.
+Reads for NobtPre2 already mapped.
+Reads for NobtPre3 already mapped.
+Reads for Nobt3DPA1 already mapped.
+Reads for Nobt3DPA2 already mapped.
+Reads for Nobt3DPA3 already mapped.
+Reads for Nobt6DPA1 already mapped.
+Reads for Nobt6DPA2 already mapped.
+Reads for Nobt6DPA3 already mapped.
