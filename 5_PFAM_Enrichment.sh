@@ -50,5 +50,23 @@ do
     cut -f12,13 ${PFAMs[$TAB]} > $TAB.ipr2desc.tsv # Descriptions of IPR domains
     comm -1 -3 $TAB.pfamhits.tsv $TAB.protein.names.txt > $TAB.nopfam.tsv # Names of all genes without a pfam hit
 done
+cd ../../
+
+
+#I want to create a bed file of the transcription start sites for each gene in tomato (arabidopsis to follow) so that I can track the distance between the TSS and the nearest FUL ChIP binding site
+cd ChIPAnalysis
+# Make a bed file of just the TSS
+awk 'BEGIN{FS=OFS="\t"}($7=="+" && $3=="mRNA"){print $1,$2,"TSS",$4,$4+2,$6,$7,$8,$9}' ../SlycDNA/ITAG4.0_gene_models.gff > Slyc.TSS.gff
+awk 'BEGIN{FS=OFS="\t"}($7=="-" && $3=="mRNA"){print $1,$2,"TSS",$5-2,$5,$6,$7,$8,$9}' ../SlycDNA/ITAG4.0_gene_models.gff >> Slyc.TSS.gff
+sort -k1,1 -k4,4n Slyc.TSS.gff > Slyc.TSS.sort.gff
+module load bedops/2.4.24
+convert2bed --input=GFF  < Slyc.TSS.sort.gff > Slyc.TSS.sort.bed
+# Get distance from every TSS to nearest upstream FUL binding site
+module load bedtools/2.28.0
+bedtools closest \
+    -a Slyc.TSS.sort.bed \
+    -b ChIP-chip/chers.bed \
+    -D a
+
 
 cd ../../
