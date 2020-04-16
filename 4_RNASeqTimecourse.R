@@ -136,6 +136,8 @@ tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/RNA-seq/TAIR10Expt.rds"), error=func
   colData(TAIR10Expt) <- DataFrame(metadata[metadata$Species=="Arabidopsis",])
   saveRDS(TAIR10Expt, "DEGAnalysis/RNA-seq/TAIR10Expt.rds")
 })
+#Option to subset to stages 1-3
+TAIR10Expt_3stage <- subset(TAIR10Expt, select=DAP<12)
 tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/RNA-seq/SlycSRAExpt.rds"), error=function(e){
   SlycSRAExpt <- summarizeOverlaps(features=Slycgenes,
                                    reads=SlycSRABamFiles,
@@ -179,6 +181,10 @@ tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"), error=function
 tryCatch(TAIR10dds <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds.rds"), error=function(e){
   TAIR10dds <- DESeqSpline(TAIR10Expt)
   saveRDS(TAIR10dds, "DEGAnalysis/RNA-seq/TAIR10dds.rds")
+})
+tryCatch(TAIR10dds_3stage <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds_3stage.rds"), error=function(e){
+  TAIR10dds_3stage <- DESeqSpline(TAIR10Expt_3stage)
+  saveRDS(TAIR10dds_3stage, "DEGAnalysis/RNA-seq/TAIR10dds_3stage.rds")
 })
 tryCatch(SlycSRAdds <- readRDS("DEGAnalysis/RNA-seq/SlycSRAdds.rds"), error=function(e){
   SlycSRAdds <- DESeqSpline(SlycSRAExpt)
