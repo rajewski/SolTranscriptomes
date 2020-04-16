@@ -15,9 +15,16 @@ library("tibble")
 
 DESeqSpline <- function(se=se, 
                         timeVar="DAP",
-                        CaseCtlVar="Genotype") {
+                        CaseCtlVar="Genotype",
+                        SetDF="") {
   #calculate spline df as the number of times -1
-  dfSpline <- (length(unique(colData(se)[,timeVar]))-1)
+  if (is.na(as.numeric(SetDF))){
+    dfSpline <- (length(unique(colData(se)[,timeVar]))-1)
+  } else if (as.numeric(SetDF)>0) {
+    dfSpline <- SetDF
+  } else {
+    stop("Either leave SetDF blank or provide a positive integer for spline degrees of freedom")
+  }
   message("Fitting spline regresion with ", dfSpline, " degrees of freedom")
   design <- ns(colData(se)[,timeVar], df=dfSpline)
   colnames(design) <- paste0("spline", seq(1:dim(design)[2]))
@@ -151,6 +158,9 @@ tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/RNA-seq/SlycIHExpt.rds"), error=func
   colData(SlycIHExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==1,])
   saveRDS(SlycIHExpt, "DEGAnalysis/RNA-seq/SlycIHExpt.rds")
 })
+#Option to subset to stages 1-3
+#SlycIHExpt_3stage <- subset(SlycIHExpt, select=DAP<35)
+
 tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"), error=function(e){
   NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
                                 reads=NobtBamFiles,
@@ -163,10 +173,9 @@ tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"), error=function
   saveRDS(NobtExpt, "DEGAnalysis/RNA-seq/NobtExpt.rds")
 })
 
-# Design and DE Testing ----------------------------------------------------
-# I wrote a function to do what is currently my default analysis uniformly on every expt
 
-# Load (or make and save) DESeq datasets for each experiment
+# Design and DE Testing ----------------------------------------------------
+# With length(DAP)-1 degrees of freedom 
 tryCatch(TAIR10dds <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds.rds"), error=function(e){
   TAIR10dds <- DESeqSpline(TAIR10Expt)
   saveRDS(TAIR10dds, "DEGAnalysis/RNA-seq/TAIR10dds.rds")
@@ -179,13 +188,20 @@ tryCatch(SlycIHdds <- readRDS("DEGAnalysis/RNA-seq/SlycIHdds.rds"), error=functi
   SlycIHdds <- DESeqSpline(SlycIHExpt)
   saveRDS(SlycIHdds, "DEGAnalysis/RNA-seq/SlycIHdds.rds")
 })
+tryCatch(SlycIHdds_3stage <- readRDS("DEGAnalysis/RNA-seq/SlycIHdds_3stage.rds"), error=function(e){
+  SlycIHdds_3stage <- DESeqSpline(SlycIHExpt_3stage)
+  saveRDS(SlycIHdds_3stage, "DEGAnalysis/RNA-seq/SlycIHdds_3stage.rds")
+})
 tryCatch(Nobtdds <- readRDS("DEGAnalysis/RNA-seq/Nobtdds.rds"), error=function(e){
   Nobtdds <- DESeqSpline(NobtExpt)
   saveRDS(Nobtdds, "DEGAnalysis/RNA-seq/Nobtdds.rds")
 })
 
+
+
+
 # Play around with individual genes ---------------------------------------
-Exampledds <- TAIR10dds #assign one dds as the example to streamline code
+Exampledds <- SlycIHdds_3stage #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
@@ -207,7 +223,7 @@ FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
             NoMBP10="NIOBTv3_g07845.t1",
             NoMBP20="NIOBT_gMBP20.t1" )
 for (i in 1:length(FULgenes)) {
-  pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
+  pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_IH_3Stage_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
       width=6,
       height=4)
   plotCounts(Exampledds,
@@ -236,6 +252,11 @@ tryCatch(SlycSRAAllcluster <- readRDS("DEGAnalysis/RNA-seq/SlycSRAAllcluster.rds
 tryCatch(SlycIHAllcluster <- readRDS("DEGAnalysis/RNA-seq/SlycIHAllcluster.rds"), error=function(e){
   SlycIHAllcluster <- DESeqCluster(SlycIHdds, numGenes = "all")
   saveRDS(SlycIHAllcluster, "DEGAnalysis/RNA-seq/SlycIHAllcluster.rds")
+})
+
+tryCatch(SlycIH3Stagecluster <- readRDS("DEGAnalysis/RNA-seq/SlycIH3Stagecluster.rds"), error=function(e){
+  SlycIH3Stagecluster <- DESeqCluster(SlycIHdds_3stage, numGenes = "all")
+  saveRDS(SlycIH3Stagecluster, "DEGAnalysis/RNA-seq/SlycIH3Stagecluster.rds")
 })
 
 tryCatch(NobtAllcluster <- readRDS("DEGAnalysis/RNA-seq/NobtAllcluster.rds"), error=function(e){
