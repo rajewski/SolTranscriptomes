@@ -23,3 +23,7 @@ fi
 if [ $SLURM_ARRAY_TASK_ID == 4 ]; then
     Rscript 4_NoninteractiveClustering.R Nobt
 fi
+
+if [ $SLURM_ARRAY_TASK_ID == 5 ]; then
+    Rscript 4_NoninteractiveClustering.R SlycIH3Stage
+fi
