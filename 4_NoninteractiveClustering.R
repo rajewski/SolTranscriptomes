@@ -106,15 +106,15 @@ if (args=="SlycIH") {
 }
 
 if (args=="SlycIH3Stage") {
-  # Slyc IH
-  SlycIHdds <- readRDS("DEGAnalysis/RNA-seq/SlycIHdds.rds")
-  SlycIHcluster <- DESeqCluster(SlycIHdds, numGenes = "all")
-  saveRDS(SlycIHcluster, "DEGAnalysis/RNA-seq/SlycIHAllcluster.rds")
+  # Slyc IH only three stages
+  SlycIHdds_3stage <- readRDS("DEGAnalysis/RNA-seq/SlycIHdds_3stage.rds")
+  SlycIH3Stagecluster <- DESeqCluster(SlycIHdds_3stage, numGenes = "all")
+  saveRDS(SlycIH3Stagecluster, "DEGAnalysis/RNA-seq/SlycIH3Stagecluster.rds")
   
-  X <- split(SlycIHcluster$df, SlycIHcluster$df$cluster)
+  X <- split(SlycIH3Stagecluster$df, SlycIH3Stagecluster$df$cluster)
   for (i in 1:length(X)) {
     write.table(row.names(X[[i]]), 
-                file=paste0("DEGAnalysis/RNA-seq/SlycIH_All_Cluster_", i, ".txt"),
+                file=paste0("DEGAnalysis/RNA-seq/SlycIH_3Stage_Cluster_", i, ".txt"),
                 row.names = FALSE,
                 quote = FALSE,
                 col.names = FALSE)
