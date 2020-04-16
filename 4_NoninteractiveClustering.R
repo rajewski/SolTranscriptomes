@@ -73,6 +73,22 @@ if (args =="TAIR"){
   }
 }
 
+if (args =="TAIR3stage"){
+  # TAIR only three stages
+  TAIR10dds_3stage <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds_3stage.rds")
+  TAIR103Stagecluster <- DESeqCluster(TAIR10dds_3stage, numGenes = "all")
+  saveRDS(TAIR103Stagecluster, "DEGAnalysis/RNA-seq/TAIR103Stagecluster.rds")
+  
+  X <- split(TAIR103Stagecluster$df, TAIR103Stagecluster$df$cluster)
+  for (i in 1:length(X)) {
+    write.table(row.names(X[[i]]), 
+                file=paste0("DEGAnalysis/RNA-seq/TAIR10_3Stage_Cluster_", i, ".txt"),
+                row.names = FALSE,
+                quote = FALSE,
+                col.names = FALSE)
+  }
+}
+
 if (args=="SlycSRA") {
   # Slyc SRA
   SlycSRAdds <- readRDS("DEGAnalysis/RNA-seq/SlycSRAdds.rds")
