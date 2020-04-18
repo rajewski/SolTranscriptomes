@@ -251,6 +251,10 @@ tryCatch(TAIR10Allcluster <- readRDS("DEGAnalysis/RNA-seq/TAIR10Allcluster.rds")
   TAIR10Allcluster <- DESeqCluster(TAIR10dds, numGenes = "all")
   saveRDS(TAIR10Allcluster, "DEGAnalysis/RNA-seq/TAIR10Allcluster.rds")
 })
+tryCatch(TAIR103Stagecluster <- readRDS("DEGAnalysis/RNA-seq/TAIR103Stagecluster.rds"), error=function(e){
+  TAIR10Allcluster <- DESeqCluster(TAIR10dds_3stage, numGenes = "all")
+  saveRDS(TAIR103Stagecluster, "DEGAnalysis/RNA-seq/TAIR103Stagecluster.rds")
+})
 tryCatch(SlycSRAAllcluster <- readRDS("DEGAnalysis/RNA-seq/SlycSRAAllcluster.rds"), error=function(e){
   SlycSRAAllcluster <- DESeqCluster(SlycSRAdds, numGenes = "all")
   saveRDS(SlycSRAAllcluster, "DEGAnalysis/RNA-seq/SlycSRAAllcluster.rds")
@@ -271,7 +275,7 @@ tryCatch(NobtAllcluster <- readRDS("DEGAnalysis/RNA-seq/NobtAllcluster.rds"), er
 })
 
 # Plot Cluster Profiles ---------------------------------------------------
-ClusterforPlotting <- SlycIHAllcluster
+ClusterforPlotting <- TAIR103Stagecluster
 PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
                              time="DAP",
                              boxes=T,
@@ -283,7 +287,7 @@ PlotCluster + theme_minimal() +
   theme(legend.position = "none",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
-ggsave(filename = "DEGAnalysis/RNA-seq/Plot_Nobt_ClusterProfiles.pdf",
+ggsave(filename = "DEGAnalysis/RNA-seq/Plot_TAIR_3Stage_ClusterProfiles.pdf",
        width=11,
        height=7)
 
