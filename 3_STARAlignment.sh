@@ -13,9 +13,10 @@ TAIRDIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/TAIR10
 SRADIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/RNAseq
 NobtDIR=/rhome/arajewski/shared/Nobtusifolia/Genome_Files
 SlycDIR=/rhome/arajewski/bigdata/Datura/Alkaloids/ExternalData/Slyc
+SpimpDIR=SpimpRNA
 
 module load STAR/2.5.3a
-#Map Arabidopsis Reads
+#Map Arabidopsis RNAseq Reads
 SRAList=( ERR2809815 ERR2809798 ERR2809807 ERR2809799 ERR2809816 ERR2809808 ERR2809817 ERR2809794 ERR2809796 ERR2809806 ERR2809797 ERR2809795 )
 
 for SRA in ${SRAList[@]}; do
@@ -94,6 +95,25 @@ for IH in ${IHList[@]}; do
     fi
 done
 
+#Map Spimp in-house reads to Slyc genome
+SpimpList=(PIMP1DPA1 PIMP1DPA2 PIMP1DPA3 PIMP3DPA1 PIMP3DPA2 PIMP3DPA3 PIMP15DPA1 PIMP15DPA2 PIMP15DPA3 PIMPbreaker1 PIMPbreaker2 PIMPbreaker3 PIMPrr1 PIMPrr2 PIMPrr3 )
+for IH in ${SpimpList[@]}; do
+    if [ ! -s DEGAnalysis/STAR/Spimp/${IH}.Aligned.sortedByCoord.out.bam ]; then
+        echo Mapping Tomato reads for $IH...
+        STAR \
+            --runThreadN $SLURM_CPUS_PER_TASK \
+            --genomeDir $SlycDIR/ \
+            --outFileNamePrefix DEGAnalysis/STAR/Spimp/$IH. \
+            --outSAMtype BAM SortedByCoordinate \
+            --readFilesIn SpimpRNA/${IH}_val_*.fq.gz \
+	    --readFilesCommand zcat
+        echo Done.
+    else
+        echo Reads for $IH already mapped.
+    fi
+done
+
+
 #Map Tobacco in house reads
 IHListNobt=(NobtPre1 NobtPre2 NobtPre3 Nobt3DPA1 Nobt3DPA2 Nobt3DPA3 Nobt6DPA1 Nobt6DPA2 Nobt6DPA3 )
 
@@ -113,4 +133,3 @@ for IH in ${IHListNobt[@]}; do
     fi
 done
 
-# Map TAIR ChIP-seq reads to genome
