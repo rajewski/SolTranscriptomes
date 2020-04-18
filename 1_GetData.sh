@@ -159,8 +159,7 @@ if [ "$SLURM_ARRAY_TASK_ID" == 3 ]; then
   cd ../../../
 fi
 
-####### Download SRA RNAseq and ChIP Data
-
+####### Download SRA RNAseq Data
 if [ "$SLURM_ARRAY_TASK_ID" -ge 4 ] && [ "$SLURM_ARRAY_TASK_ID" -le 27 ]; then
   mkdir -p ExternalData/RNAseq
   cd ExternalData/RNAseq
@@ -182,9 +181,21 @@ if [ "$SLURM_ARRAY_TASK_ID" -ge 4 ] && [ "$SLURM_ARRAY_TASK_ID" -le 27 ]; then
   else
       echo Fastq data for ${AllSRA[$SLURM_ARRAY_TASK_ID]} already present.
   fi
+  #Trim Reads
+  if [ ! -e ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1_trimmed.fq.gz ]; then
+      echo Running Trim Galore on ${AllSRA[$SLURM_ARRAY_TASK_ID]}...
+      module load trim_galore/0.4.2
+      trim_galore \
+          --no_report_file \
+          ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz
+      echo Done.
+  else
+      echo ${AllSRA[$SLURM_ARRAY_TASK_ID]} RNA seq already trimmed.
+  fi
   cd ../../
 fi
 
+####### Download SRA ChIP-seq Data
 if [ "$SLURM_ARRAY_TASK_ID" -ge 28 ] && [ "$SLURM_ARRAY_TASK_ID" -le 34 ]; then
   mkdir -p ExternalData/ChIPseq
   cd ExternalData/ChIPseq
@@ -197,7 +208,6 @@ if [ "$SLURM_ARRAY_TASK_ID" -ge 28 ] && [ "$SLURM_ARRAY_TASK_ID" -le 34 ]; then
   else
       echo ${AllSRA[$SLURM_ARRAY_TASK_ID]} data already present.
   fi
-  
   #Dump Fastq files 
   if [ ! -e ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz ]; then
       echo Dumping fastq data for ${AllSRA[$SLURM_ARRAY_TASK_ID]}...
@@ -206,6 +216,17 @@ if [ "$SLURM_ARRAY_TASK_ID" -ge 28 ] && [ "$SLURM_ARRAY_TASK_ID" -le 34 ]; then
       echo Done.
   else
       echo Fastq data for ${AllSRA[$SLURM_ARRAY_TASK_ID]} already present.
+  fi
+  #Trim Reads                                                                                                                                                                      
+  if [ ! -e ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1_trimmed.fq.gz ]; then
+      echo Running Trim Galore on ${AllSRA[$SLURM_ARRAY_TASK_ID]}...
+      module load trim_galore/0.4.2
+      trim_galore \
+          --no_report_file \
+          ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz
+      echo Done.
+  else
+      echo ${AllSRA[$SLURM_ARRAY_TASK_ID]} RNA seq already trimmed.
   fi
   cd ../../
 fi
