@@ -152,7 +152,6 @@ for ( i in as.numeric(gsub("\\D",
 
 
 # ChIP hits on RNA seq clusters ---------------------------------------------------
-
 # this is to test if a given cluster is enriched for genes with promoters bound by FUL1/2
 FULBinding <- read.csv("ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv",
                        stringsAsFactors = F)
@@ -262,6 +261,33 @@ for (i in as.numeric(gsub("\\D",
 
 
 
+
+# IPR on ChIP hits --------------------------------------------------------
+
+# Try to find the enrichment of promoters bound by FUL
+
+chiphits <- read.csv("ChIPAnalysis/ChIP-chip/TomatoFULBinding.tsv")
+chiphits <- chiphits[chiphits$Distance<100,]
+chiphits$Transcript <- as.character(chiphits$Transcript)
+chiphits <- split(chiphits$Transcript, chiphits$Antibody)
+write.table(chiphits[[1]], 
+            file="ChIPAnalysis/ChIP-chip/FUL1hits.tsv",
+            col.names=F,
+            row.names=F,
+            quote=F)
+write.table(chiphits[[2]], 
+            file="ChIPAnalysis/ChIP-chip/FUL2hits.tsv",
+            col.names=F,
+            row.names=F,
+            quote=F)
+
+PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
+                 AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
+                 IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
+                 ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
+                 TopGenesFile = "ChIPAnalysis/ChIP-chip/FUL1hits.tsv",
+                 OutputFile = paste0("ChIPAnalysis/ChIP-chip/FUL1-bound_IPREnrichment.txt"))
+
 # Plot Enrichments --------------------------------------------------------
 # I want to use the typical schema for plotting GO enrichments as for plotting these various enrichments. I'll start with IPR domains and then generalize to ChIP and GO
 PlotEnrichment <- function(ClusterTable="",
@@ -368,4 +394,6 @@ for ( i in as.numeric(gsub("\\D",
          width=12,
          height=8)
 }
+
+
 
