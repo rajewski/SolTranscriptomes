@@ -1,0 +1,312 @@
+Running Trim Galore on PIMP3DPA2...
+No quality encoding type selected. Assuming that the data provided uses Sanger encoded Phred scores (default)
+
+Path to Cutadapt set as: 'cutadapt' (default)
+1.14
+Cutadapt seems to be working fine (tested command 'cutadapt --version')
+
+
+AUTO-DETECTING ADAPTER TYPE
+===========================
+Attempting to auto-detect adapter type from the first 1 million sequences of the first file (>> PIMP3DPA2LEFT.gz <<)
+
+Found perfect matches for the following adapter sequences:
+Adapter type	Count	Sequence	Sequences analysed	Percentage
+Illumina	7	AGATCGGAAGAGC	1000000	0.00
+smallRNA	0	TGGAATTCTCGG	1000000	0.00
+Nextera	0	CTGTCTCTTATA	1000000	0.00
+Using Illumina adapter for trimming (count: 7). Second best hit was smallRNA (count: 0)
+
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: PIMP3DPA2LEFT.gz
+Trimming mode: paired-end
+Trim Galore version: 0.4.2
+Cutadapt version: 1.14
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Output file(s) will be GZIP compressed
+
+Writing final adapter and quality trimmed output to PIMP3DPA2LEFT.gz_trimmed.fq.gz
+
+
+  >>> Now performing quality (cutoff 20) and adapter trimming in a single pass for the adapter sequence: 'AGATCGGAAGAGC' from file PIMP3DPA2LEFT.gz <<< 
+10000000 sequences processed
+20000000 sequences processed
+30000000 sequences processed
+40000000 sequences processed
+This is cutadapt 1.14 with Python 2.7.5
+Command line parameters: -f fastq -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC PIMP3DPA2LEFT.gz
+Trimming 1 adapter with at most 10.0% errors in single-end mode ...
+Finished in 682.94 s (15 us/read; 4.07 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              46,288,266
+Reads with adapters:                 6,831,762 (14.8%)
+Reads written (passing filters):    46,288,266 (100.0%)
+
+Total basepairs processed: 3,492,582,908 bp
+Quality-trimmed:              10,212,595 bp (0.3%)
+Total written (filtered):  3,473,748,910 bp (99.5%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 6831762 times.
+
+No. of allowed errors:
+0-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 36.1%
+  C: 30.4%
+  G: 14.8%
+  T: 18.7%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	5842355	11572066.5	0	5842355
+2	437222	2893016.6	0	437222
+3	443328	723254.2	0	443328
+4	73868	180813.5	0	73868
+5	27637	45203.4	0	27637
+6	2869	11300.8	0	2869
+7	189	2825.2	0	189
+8	57	706.3	0	57
+9	85	176.6	0	55 30
+10	199	44.1	1	17 182
+11	326	11.0	1	20 306
+12	207	2.8	1	12 195
+13	102	0.7	1	15 87
+14	61	0.7	1	6 55
+15	96	0.7	1	6 90
+16	82	0.7	1	7 75
+17	119	0.7	1	16 103
+18	89	0.7	1	12 77
+19	117	0.7	1	14 103
+20	77	0.7	1	8 69
+21	108	0.7	1	15 93
+22	86	0.7	1	10 76
+23	68	0.7	1	12 56
+24	73	0.7	1	4 69
+25	124	0.7	1	20 104
+26	124	0.7	1	18 106
+27	128	0.7	1	20 108
+28	129	0.7	1	19 110
+29	48	0.7	1	6 42
+30	56	0.7	1	5 51
+31	111	0.7	1	12 99
+32	89	0.7	1	14 75
+33	95	0.7	1	12 83
+34	144	0.7	1	16 128
+35	73	0.7	1	19 54
+36	103	0.7	1	23 80
+37	72	0.7	1	6 66
+38	59	0.7	1	9 50
+39	74	0.7	1	13 61
+40	69	0.7	1	16 53
+41	37	0.7	1	9 28
+42	50	0.7	1	10 40
+43	32	0.7	1	5 27
+44	63	0.7	1	10 53
+45	50	0.7	1	8 42
+46	44	0.7	1	5 39
+47	39	0.7	1	6 33
+48	34	0.7	1	2 32
+49	31	0.7	1	8 23
+50	35	0.7	1	4 31
+51	33	0.7	1	0 33
+52	30	0.7	1	2 28
+53	13	0.7	1	0 13
+54	15	0.7	1	0 15
+55	14	0.7	1	1 13
+56	8	0.7	1	0 8
+57	15	0.7	1	0 15
+58	13	0.7	1	0 13
+59	8	0.7	1	0 8
+60	11	0.7	1	0 11
+61	10	0.7	1	0 10
+62	12	0.7	1	0 12
+63	18	0.7	1	0 18
+64	17	0.7	1	0 17
+65	22	0.7	1	0 22
+66	16	0.7	1	1 15
+67	40	0.7	1	0 40
+68	29	0.7	1	0 29
+69	17	0.7	1	0 17
+70	20	0.7	1	0 20
+71	8	0.7	1	0 8
+72	6	0.7	1	0 6
+73	30	0.7	1	0 30
+74	6	0.7	1	0 6
+75	13	0.7	1	0 13
+76	5	0.7	1	0 5
+
+
+RUN STATISTICS FOR INPUT FILE: PIMP3DPA2LEFT.gz
+=============================================
+46288266 sequences processed in total
+The length threshold of paired-end sequences gets evaluated later on (in the validation step)
+
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: PIMP3DPA2RIGHT.gz
+Trimming mode: paired-end
+Trim Galore version: 0.4.2
+Cutadapt version: 1.14
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Output file(s) will be GZIP compressed
+
+Writing final adapter and quality trimmed output to PIMP3DPA2RIGHT.gz_trimmed.fq.gz
+
+
+  >>> Now performing quality (cutoff 20) and adapter trimming in a single pass for the adapter sequence: 'AGATCGGAAGAGC' from file PIMP3DPA2RIGHT.gz <<< 
+10000000 sequences processed
+20000000 sequences processed
+30000000 sequences processed
+40000000 sequences processed
+This is cutadapt 1.14 with Python 2.7.5
+Command line parameters: -f fastq -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC PIMP3DPA2RIGHT.gz
+Trimming 1 adapter with at most 10.0% errors in single-end mode ...
+Finished in 687.33 s (15 us/read; 4.04 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              46,288,266
+Reads with adapters:                 7,225,723 (15.6%)
+Reads written (passing filters):    46,288,266 (100.0%)
+
+Total basepairs processed: 3,493,934,099 bp
+Quality-trimmed:              22,467,673 bp (0.6%)
+Total written (filtered):  3,461,665,689 bp (99.1%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 7225723 times.
+
+No. of allowed errors:
+0-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 37.6%
+  C: 24.8%
+  G: 21.9%
+  T: 15.7%
+  none/other: 0.1%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	5817899	11572066.5	0	5817899
+2	645429	2893016.6	0	645429
+3	636940	723254.2	0	636940
+4	82130	180813.5	0	82130
+5	31549	45203.4	0	31549
+6	2750	11300.8	0	2750
+7	154	2825.2	0	154
+8	56	706.3	0	56
+9	160	176.6	0	57 103
+10	751	44.1	1	45 706
+11	589	11.0	1	68 521
+12	275	2.8	1	42 233
+13	106	0.7	1	20 86
+14	116	0.7	1	7 109
+15	189	0.7	1	12 177
+16	135	0.7	1	19 116
+17	145	0.7	1	21 124
+18	178	0.7	1	17 161
+19	143	0.7	1	12 131
+20	135	0.7	1	8 127
+21	162	0.7	1	17 145
+22	144	0.7	1	16 128
+23	217	0.7	1	23 194
+24	214	0.7	1	33 181
+25	177	0.7	1	30 147
+26	246	0.7	1	51 195
+27	259	0.7	1	56 203
+28	167	0.7	1	26 141
+29	168	0.7	1	39 129
+30	173	0.7	1	26 147
+31	153	0.7	1	28 125
+32	190	0.7	1	40 150
+33	246	0.7	1	32 214
+34	138	0.7	1	17 121
+35	102	0.7	1	14 88
+36	101	0.7	1	27 74
+37	177	0.7	1	32 145
+38	118	0.7	1	15 103
+39	156	0.7	1	30 126
+40	105	0.7	1	18 87
+41	108	0.7	1	14 94
+42	140	0.7	1	24 116
+43	90	0.7	1	12 78
+44	139	0.7	1	19 120
+45	133	0.7	1	28 105
+46	144	0.7	1	25 119
+47	65	0.7	1	9 56
+48	99	0.7	1	7 92
+49	105	0.7	1	6 99
+50	115	0.7	1	8 107
+51	66	0.7	1	2 64
+52	50	0.7	1	7 43
+53	61	0.7	1	0 61
+54	29	0.7	1	0 29
+55	37	0.7	1	0 37
+56	83	0.7	1	0 83
+57	40	0.7	1	0 40
+58	51	0.7	1	0 51
+59	47	0.7	1	0 47
+60	42	0.7	1	0 42
+61	47	0.7	1	0 47
+62	51	0.7	1	0 51
+63	21	0.7	1	0 21
+64	22	0.7	1	0 22
+65	29	0.7	1	0 29
+66	40	0.7	1	0 40
+67	64	0.7	1	2 62
+68	40	0.7	1	1 39
+69	29	0.7	1	0 29
+70	51	0.7	1	0 51
+71	119	0.7	1	0 119
+72	104	0.7	1	0 104
+73	86	0.7	1	1 85
+74	82	0.7	1	0 82
+75	31	0.7	1	1 30
+76	21	0.7	1	1 20
+
+
+RUN STATISTICS FOR INPUT FILE: PIMP3DPA2RIGHT.gz
+=============================================
+46288266 sequences processed in total
+The length threshold of paired-end sequences gets evaluated later on (in the validation step)
+
+Validate paired-end files PIMP3DPA2LEFT.gz_trimmed.fq.gz and PIMP3DPA2RIGHT.gz_trimmed.fq.gz
+file_1: PIMP3DPA2LEFT.gz_trimmed.fq.gz, file_2: PIMP3DPA2RIGHT.gz_trimmed.fq.gz
+
+
+>>>>> Now validing the length of the 2 paired-end infiles: PIMP3DPA2LEFT.gz_trimmed.fq.gz and PIMP3DPA2RIGHT.gz_trimmed.fq.gz <<<<<
+Writing validated paired-end read 1 reads to PIMP3DPA2LEFT.gz_val_1.fq.gz
+Writing validated paired-end read 2 reads to PIMP3DPA2RIGHT.gz_val_2.fq.gz
+
+Total number of sequences analysed: 46288266
+
+Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 217243 (0.47%)
+
+Deleting both intermediate output files PIMP3DPA2LEFT.gz_trimmed.fq.gz and PIMP3DPA2RIGHT.gz_trimmed.fq.gz
+
+====================================================================================================
+
+Done.
+Renaming to make it more standard...
+mv: cannot stat 'PIMP3DPA2LEFT.gz_val_1.fq.gz': No such file or directory

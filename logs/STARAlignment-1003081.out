@@ -1,0 +1,85 @@
+Reads for ERR2809815 already mapped.
+Reads for ERR2809798 already mapped.
+Reads for ERR2809807 already mapped.
+Reads for ERR2809799 already mapped.
+Reads for ERR2809816 already mapped.
+Reads for ERR2809808 already mapped.
+Reads for ERR2809817 already mapped.
+Reads for ERR2809794 already mapped.
+Reads for ERR2809796 already mapped.
+Reads for ERR2809806 already mapped.
+Reads for ERR2809797 already mapped.
+Reads for ERR2809795 already mapped.
+Reads for SRR6412402 already mapped.
+Reads for SRR6412403 already mapped.
+Reads for SRR6412404 already mapped.
+Reads for SRR3288009 already mapped.
+Reads for SRR3288010 already mapped.
+Reads for SRR3288011 already mapped.
+Reads for SRR3288012 already mapped.
+Reads for SRR943813 already mapped.
+Reads for SRR943814 already mapped.
+Reads for SRR943815 already mapped.
+Reads for SRR943816 already mapped.
+Reads for SRR943817 already mapped.
+Reads for SRR943818 already mapped.
+Reads for SRR943825 already mapped.
+Reads for SRR943826 already mapped.
+Reads for SRR943827 already mapped.
+Reads for SRR943828 already mapped.
+Reads for SRR943829 already mapped.
+Reads for SRR943830 already mapped.
+Reads for AC1DPA1 already mapped.
+Reads for AC1DPA2 already mapped.
+Reads for AC1DPA3 already mapped.
+Reads for AC3DPA1 already mapped.
+Reads for AC3DPA2 already mapped.
+Reads for AC3DPA3 already mapped.
+Reads for AC15DPA1 already mapped.
+Reads for AC15DPA2 already mapped.
+Reads for AC15DPA3 already mapped.
+Reads for ACbreaker1 already mapped.
+Reads for ACbreaker2 already mapped.
+Reads for ACbreaker3 already mapped.
+Reads for ACrr1 already mapped.
+Reads for ACrr2 already mapped.
+Reads for ACrr3 already mapped.
+Mapping Tomato reads for PIMP1DPA1...
+Apr 17 17:43:59 ..... started STAR run
+Apr 17 17:43:59 ..... loading genome
+Apr 17 17:44:08 ..... started mapping
+Apr 17 17:51:57 ..... started sorting BAM
+Apr 17 17:53:29 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMP1DPA2...
+Apr 17 17:53:29 ..... started STAR run
+Apr 17 17:53:30 ..... loading genome
+Apr 17 17:53:36 ..... started mapping
+Apr 17 18:01:39 ..... started sorting BAM
+Apr 17 18:03:13 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMP1DPA3...
+Apr 17 18:03:13 ..... started STAR run
+Apr 17 18:03:14 ..... loading genome
+Apr 17 18:03:22 ..... started mapping
+Apr 17 18:12:01 ..... started sorting BAM
+Apr 17 18:13:32 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMP3DPA1...
+Apr 17 18:13:32 ..... started STAR run
+Apr 17 18:13:32 ..... loading genome
+Apr 17 18:13:41 ..... started mapping
+Apr 17 18:23:07 ..... started sorting BAM
+Apr 17 18:24:52 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMP3DPA2...
+Apr 17 18:24:52 ..... started STAR run
+Apr 17 18:24:53 ..... loading genome
+Apr 17 18:25:01 ..... started mapping
+Apr 17 18:33:13 ..... started sorting BAM
+Apr 17 18:34:50 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMP3DPA3...
+Apr 17 18:34:50 ..... started STAR run
+Apr 17 18:34:50 ..... loading genome
+Apr 17 18:34:58 ..... started mapping

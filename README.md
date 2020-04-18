@@ -11,13 +11,13 @@ For RNA-seq, this will consist of STAR as the read aligner and DEseq2 as the dif
 ### In-House Data
  - I am working on uploading these to NCBI so that the whole thing will be with publicly available data
 
-Our lab has generated several transcriptome libraries that will be used for this analysis. They are symlinked to in the `SlycRNA` and `NobtRNA` for tomato and tobacco, respecitively
+Our lab has generated several transcriptome libraries that will be used for this analysis. They are symlinked to in the `SlycRNA`, `SpimpRNA`, and `NobtRNA` for tomato and tobacco, respecitively
 
 ### Public Data
 
 #### Gene Expression Data
 
-The RNA seq files are downloaded from SRA with the `1_GetExternalSRA_RNAseq.sh` script and placed in the `ExternalData/RNAseq` directory. The microarray data files and probe mappings are downloaded with the 1_GetMicroarrays.sh script and placed in the `ExternalData/Microarray` directory.
+The RNAseq and Microarray files were all downloaded with the `1_GetData.sh` and placed in the `ExternalData` folder.
 
 | Species | NCBI BioProject ID | Description |
 | ------- | ------------------ | ----------- |
@@ -30,15 +30,11 @@ The RNA seq files are downloaded from SRA with the `1_GetExternalSRA_RNAseq.sh` 
 
 I am currently using the [SL4.0 genome and the ITAG4.0 annotation for tomato](https://solgenomics.net/organism/Solanum_lycopersicum/genome). For tobacco (*N. obtusifolia*) I am using the publicly available [genome and annotation](http://nadh.ice.mpg.de/NaDH/download/overview) but with a slight modification to add in the the MBP20 gene, which was missed in the original annotation. For *Arabidopsis* I'll be using the TAIR10 genome and annotation. In the case of tomato and tobacco these files are symlinked to copies we already have using the `SlyDNA` and `NobtDNA` directories, respecitively. 
 
-For Arabidopsis, the data is downloaded with the `1_GetExternalGenome.sh` to `ExternalData/TAIR10`, but I have excluded those files from the git to save space.
+For Arabidopsis, the data is downloaded with the `1_GetData.sh` to `ExternalData/TAIR10`, but I have excluded those files from the git to save space.
 
 # ChIP Analysis
 
-The ChIP-seq files are downloaded to `ExternalData/ChIPseq` and the microarray file is downloaded to `ExternalData/Microarray` with `1_GetExternalSRA_ChIP.sh` and `1_GetExternalMicroarray.sh`, respectively. As a preprocessing step for the microarray study, array probe sequences were mapped to the SL4.0 genome, and probe locations were updated. Nonmapping or multimapping probes were excluded from the analysis.
-
-
-- How tf am I going to do a chip analysis from raw data?
-- How to integrate chipseq with chip-chip? a simple list of enriched regions/promoters
+The ChIP-seq files are downloaded to `ExternalData/ChIPseq` and the microarray file is downloaded to `ExternalData/Microarray` both with `1_GetData.sh`. As a preprocessing step for the microarray study, array probe sequences were mapped to the SL4.0 genome, and probe locations were updated. Nonmapping or multimapping probes were excluded from the analysis.
 
 ### Public Data
 
