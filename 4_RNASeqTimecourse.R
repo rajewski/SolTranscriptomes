@@ -175,6 +175,8 @@ tryCatch(SpimpExpt <- readRDS("DEGAnalysis/RNA-seq/SpimpExpt.rds"), error=functi
   colData(SpimpExpt) <- DataFrame(metadata[metadata$Species=="Pimpinellifolium",])
   saveRDS(SpimpExpt, "DEGAnalysis/RNA-seq/SpimpExpt.rds")
 })
+#Option to subset to stages 1-3
+SpimpExpt_3stage <- subset(SpimpExpt, select=DAP<35)
 
 
 tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"), error=function(e){
@@ -212,12 +214,19 @@ tryCatch(SlycIHdds_3stage <- readRDS("DEGAnalysis/RNA-seq/SlycIHdds_3stage.rds")
   SlycIHdds_3stage <- DESeqSpline(SlycIHExpt_3stage)
   saveRDS(SlycIHdds_3stage, "DEGAnalysis/RNA-seq/SlycIHdds_3stage.rds")
 })
+tryCatch(Spimpdds <- readRDS("DEGAnalysis/RNA-seq/Spimpdds.rds"), error=function(e){
+  Spimpdds <- DESeqSpline(SpimpExpt)
+  saveRDS(Spimpdds, "DEGAnalysis/RNA-seq/Spimpdds.rds")
+})
+tryCatch(Spimpdds_3stage <- readRDS("DEGAnalysis/RNA-seq/Spimpdds_3stage.rds"), error=function(e){
+  Spimpdds_3stage <- DESeqSpline(SpimpExpt_3stage)
+  saveRDS(Spimpdds_3stage, "DEGAnalysis/RNA-seq/Spimpdds_3stage.rds")
+})
+
 tryCatch(Nobtdds <- readRDS("DEGAnalysis/RNA-seq/Nobtdds.rds"), error=function(e){
   Nobtdds <- DESeqSpline(NobtExpt)
   saveRDS(Nobtdds, "DEGAnalysis/RNA-seq/Nobtdds.rds")
 })
-
-
 
 
 # Play around with individual genes ---------------------------------------
@@ -277,12 +286,18 @@ tryCatch(SlycIHAllcluster <- readRDS("DEGAnalysis/RNA-seq/SlycIHAllcluster.rds")
   SlycIHAllcluster <- DESeqCluster(SlycIHdds, numGenes = "all")
   saveRDS(SlycIHAllcluster, "DEGAnalysis/RNA-seq/SlycIHAllcluster.rds")
 })
-
 tryCatch(SlycIH3Stagecluster <- readRDS("DEGAnalysis/RNA-seq/SlycIH3Stagecluster.rds"), error=function(e){
   SlycIH3Stagecluster <- DESeqCluster(SlycIHdds_3stage, numGenes = "all")
   saveRDS(SlycIH3Stagecluster, "DEGAnalysis/RNA-seq/SlycIH3Stagecluster.rds")
 })
-
+tryCatch(Spimpcluster <- readRDS("DEGAnalysis/RNA-seq/Spimpcluster.rds"), error=function(e){
+  Spimpcluster <- DESeqCluster(Spimpdds, numGenes = "all")
+  saveRDS(Spimpcluster, "DEGAnalysis/RNA-seq/Spimpcluster.rds")
+})
+tryCatch(Spimp3Stagecluster <- readRDS("DEGAnalysis/RNA-seq/Spimp3Stagecluster.rds"), error=function(e){
+  Spimp3Stagecluster <- DESeqCluster(Spimpdds_3stage, numGenes = "all")
+  saveRDS(Spimp3Stagecluster, "DEGAnalysis/RNA-seq/Spimp3Stagecluster.rds")
+})
 tryCatch(NobtAllcluster <- readRDS("DEGAnalysis/RNA-seq/NobtAllcluster.rds"), error=function(e){
   NobtAllcluster <- DESeqCluster(Nobtdds, numGenes = "all")
   saveRDS(NobtAllcluster, "DEGAnalysis/RNA-seq/NobtAllcluster.rds")
