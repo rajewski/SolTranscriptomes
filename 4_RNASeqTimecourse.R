@@ -120,7 +120,7 @@ NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco"], yieldSiz
 TAIR10BamFiles <- BamFileList(metadata$Path[metadata$Species=="Arabidopsis"], yieldSize=2000000)
 SlycSRABamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0], yieldSize=2000000)
 SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1], yieldSize=50000)
-PimpBAMFiles <- BamFileList(metadata$Path[metadata$Species=="Pimpinellifolium"], yieldSize=2000000)
+SpimpBamFiles <- BamFileList(metadata$Path[metadata$Species=="Pimpinellifolium"], yieldSize=2000000)
 seqinfo(TAIR10BamFiles[1]) #check that it worked
 
 # Count Reads -------------------------------------------------------------
