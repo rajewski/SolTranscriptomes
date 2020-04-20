@@ -25,7 +25,7 @@ DESeqSpline <- function(se=se,
   } else {
     stop("Either leave SetDF blank or provide a positive integer for spline degrees of freedom")
   }
-  message("Fitting spline regresion with ", dfSpline, " degrees of freedom")
+  message("Fitting spline regression with ", dfSpline, " degrees of freedom")
   design <- ns(colData(se)[,timeVar], df=dfSpline)
   colnames(design) <- paste0("spline", seq(1:dim(design)[2]))
   colData(se) <- cbind(colData(se), design)
@@ -113,16 +113,14 @@ tryCatch(Nobtgenes <- readRDS("DEGAnalysis/RNA-seq/Nobtgenes.rds"), error=functi
 })
 
 # Read in the Sample list
-metadata <- read.table("DEGAnalysis//RNA-seq/SampleList.txt", header=T, sep="\t")
-metadata$Path <- NA # Add Paths to BAM file
-metadata$Path[metadata$Species=="Arabidopsis"] <- paste0("DEGAnalysis/STAR/TAIR10/",metadata$Accession[metadata$Species=="Arabidopsis"],".Aligned.sortedByCoord.out.bam")
-metadata$Path[metadata$Species=="Tomato"] <- paste0("DEGAnalysis/STAR/Slyc/",metadata$Accession[metadata$Species=="Tomato"],".Aligned.sortedByCoord.out.bam")
-metadata$Path[metadata$Species=="Tobacco"] <- paste0("DEGAnalysis/STAR/Nobt/",metadata$Accession[metadata$Species=="Tobacco"],".Aligned.sortedByCoord.out.bam")
+metadata <- read.table("DEGAnalysis//RNA-seq/metadata.tsv", header=T, sep="")
+metadata$Path <- as.character(metadata$Path)
 # Get list of BAMs for each expt
 NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco"], yieldSize=2000000)
 TAIR10BamFiles <- BamFileList(metadata$Path[metadata$Species=="Arabidopsis"], yieldSize=2000000)
 SlycSRABamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0], yieldSize=2000000)
-SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1], yieldSize=50000) #lower yield size?
+SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1], yieldSize=50000)
+PimpBAMFiles <- BamFileList(metadata$Path[metadata$Species=="Pimpinellifolium"], yieldSize=2000000)
 seqinfo(TAIR10BamFiles[1]) #check that it worked
 
 # Count Reads -------------------------------------------------------------
@@ -138,6 +136,7 @@ tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/RNA-seq/TAIR10Expt.rds"), error=func
 })
 #Option to subset to stages 1-3
 TAIR10Expt_3stage <- subset(TAIR10Expt, select=DAP<12)
+
 tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/RNA-seq/SlycSRAExpt.rds"), error=function(e){
   SlycSRAExpt <- summarizeOverlaps(features=Slycgenes,
                                    reads=SlycSRABamFiles,
@@ -161,7 +160,22 @@ tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/RNA-seq/SlycIHExpt.rds"), error=func
   saveRDS(SlycIHExpt, "DEGAnalysis/RNA-seq/SlycIHExpt.rds")
 })
 #Option to subset to stages 1-3
-#SlycIHExpt_3stage <- subset(SlycIHExpt, select=DAP<35)
+SlycIHExpt_3stage <- subset(SlycIHExpt, select=DAP<35)
+
+tryCatch(SpimpExpt <- readRDS("DEGAnalysis/RNA-seq/SpimpExpt.rds"), error=function(e){
+  SpimpPart<-list()
+  for (i in 1:length(metadata$Accession[metadata$Species=="Pimpinellifolium"])) {
+    SpimpPart[[i]] <- summarizeOverlaps(feature=Slycgenes,
+                                         reads=SpimpBamFiles[i],
+                                         mode="Union",
+                                         singleEnd=FALSE,
+                                         ignore.strand=FALSE)
+  }
+  SpimpExpt <- do.call(cbind,SpimpPart)
+  colData(SpimpExpt) <- DataFrame(metadata[metadata$Species=="Pimpinellifolium",])
+  saveRDS(SpimpExpt, "DEGAnalysis/RNA-seq/SpimpExpt.rds")
+})
+
 
 tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"), error=function(e){
   NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
