@@ -37,6 +37,16 @@ DESeqSpline <- function(se=se,
     dds <- DESeqDataSet(se, design = as.formula(paste0("~",paste(colnames(design), collapse = "+"))))
   }
   dds <- estimateSizeFactors(dds)
+  # in case of a Slyc vs Spimp comparision, make sure the DEGs aren't ones where Spimp has no counts. This could represent a mapping problem to the Slyc genome
+  if(CaseCtlVar=="Species"){
+    nc1 <- counts(subset(dds, select=Species==levels(dds$Species)[1]), normalized=TRUE)
+    nc2 <- counts(subset(dds, select=Species==levels(dds$Species)[2]), normalized=TRUE)
+    filter1 <- rowSums(nc1 >=10) >= (dim(nc1)[[2]]*0.2)
+    filter2 <- rowSums(nc2 >=10) >= (dim(nc2)[[2]]*0.2)
+    filter <- filter1 & filter2
+    dds <- dds[filter,]
+  }
+  
   if (length(unique(colData(se)[,CaseCtlVar]))>1) {
     dds <- DESeq(dds,test="LRT", reduced = as.formula(paste0("~",paste(colnames(design), collapse = "+"))))
   } else {
@@ -136,6 +146,17 @@ tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/RNA-seq/TAIR10Expt.rds"), error=func
 })
 #Option to subset to stages 1-3
 TAIR10Expt_3stage <- subset(TAIR10Expt, select=DAP<12)
+tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"), error=function(e){
+  NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
+                                reads=NobtBamFiles,
+                                mode="Union",
+                                singleEnd=FALSE,
+                                ignore.strand=FALSE,
+                                fragments=TRUE,
+                                BPPARAM=SerialParam())
+  colData(NobtExpt) <- DataFrame(metadata[metadata$Species=="Tobacco",])
+  saveRDS(NobtExpt, "DEGAnalysis/RNA-seq/NobtExpt.rds")
+})
 
 tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/RNA-seq/SlycSRAExpt.rds"), error=function(e){
   SlycSRAExpt <- summarizeOverlaps(features=Slycgenes,
@@ -177,19 +198,10 @@ tryCatch(SpimpExpt <- readRDS("DEGAnalysis/RNA-seq/SpimpExpt.rds"), error=functi
 })
 #Option to subset to stages 1-3
 SpimpExpt_3stage <- subset(SpimpExpt, select=DAP<35)
-
-
-tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"), error=function(e){
-  NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
-                                reads=NobtBamFiles,
-                                mode="Union",
-                                singleEnd=FALSE,
-                                ignore.strand=FALSE,
-                                fragments=TRUE,
-                                BPPARAM=SerialParam())
-  colData(NobtExpt) <- DataFrame(metadata[metadata$Species=="Tobacco",])
-  saveRDS(NobtExpt, "DEGAnalysis/RNA-seq/NobtExpt.rds")
-})
+#Combine Spimp and Slyc as genotypes and look for genes that are different between them
+tmpList <- list(SlycIHExpt, SpimpExpt)
+SolanumExpt <- do.call(cbind, tmpList)
+rm(tmpList)
 
 
 # Design and DE Testing ----------------------------------------------------
@@ -201,6 +213,10 @@ tryCatch(TAIR10dds <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds.rds"), error=functi
 tryCatch(TAIR10dds_3stage <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds_3stage.rds"), error=function(e){
   TAIR10dds_3stage <- DESeqSpline(TAIR10Expt_3stage)
   saveRDS(TAIR10dds_3stage, "DEGAnalysis/RNA-seq/TAIR10dds_3stage.rds")
+})
+tryCatch(Nobtdds <- readRDS("DEGAnalysis/RNA-seq/Nobtdds.rds"), error=function(e){
+  Nobtdds <- DESeqSpline(NobtExpt)
+  saveRDS(Nobtdds, "DEGAnalysis/RNA-seq/Nobtdds.rds")
 })
 tryCatch(SlycSRAdds <- readRDS("DEGAnalysis/RNA-seq/SlycSRAdds.rds"), error=function(e){
   SlycSRAdds <- DESeqSpline(SlycSRAExpt)
@@ -222,22 +238,20 @@ tryCatch(Spimpdds_3stage <- readRDS("DEGAnalysis/RNA-seq/Spimpdds_3stage.rds"), 
   Spimpdds_3stage <- DESeqSpline(SpimpExpt_3stage)
   saveRDS(Spimpdds_3stage, "DEGAnalysis/RNA-seq/Spimpdds_3stage.rds")
 })
+Solanumdds <- DESeqSpline(se=SolanumExpt,
+                          CaseCtlVar = "Species")
 
-tryCatch(Nobtdds <- readRDS("DEGAnalysis/RNA-seq/Nobtdds.rds"), error=function(e){
-  Nobtdds <- DESeqSpline(NobtExpt)
-  saveRDS(Nobtdds, "DEGAnalysis/RNA-seq/Nobtdds.rds")
-})
 
 
 # Play around with individual genes ---------------------------------------
-Exampledds <- SlycIHdds_3stage #assign one dds as the example to streamline code
+Exampledds <- dds #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
 #Examine an individual Gene
 topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
 colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
-plotCounts(Exampledds, gene=topGene, intgroup=c("Genotype", "DAP"), normalized = T) #plot best fitting gene
+plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "DAP"), normalized = T) #plot best fitting gene
 
 # Get a set of FUL genes for each species. Only use one of these
 FULgenes<-c(FUL.1="AT5G60910.1",
@@ -247,12 +261,16 @@ FULgenes<-c(SlFUL1="Solyc06g069430.3.1",
             SlFUL2="Solyc03g114830.3.1",
             SlMBP10="Solyc02g065730.2.1",
             SlMBP20="Solyc02g089210.4.1" )
+FULgenes<-c(SpFUL1="Solyc06g069430.3.1",
+            SpFUL2="Solyc03g114830.3.1",
+            SpMBP10="Solyc02g065730.2.1",
+            SpMBP20="Solyc02g089210.4.1" )
 FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
             NoFUL2="NIOBTv3_g39464.t1",
             NoMBP10="NIOBTv3_g07845.t1",
             NoMBP20="NIOBT_gMBP20.t1" )
 for (i in 1:length(FULgenes)) {
-  pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_IH_3Stage_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
+  pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_Spimp_3Stage_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
       width=6,
       height=4)
   plotCounts(Exampledds,
