@@ -1,0 +1,5 @@
+Mapping PIMP1DPA1
+Apr 18 07:28:03 ..... started STAR run
+Apr 18 07:28:03 ..... loading genome
+Apr 18 07:28:11 ..... started mapping
+slurmstepd-i22: error: *** JOB 1004038 ON i22 CANCELLED AT 2020-04-18T07:28:22 ***

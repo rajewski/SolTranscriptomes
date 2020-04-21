@@ -1,0 +1,45 @@
+PIMP1DPA1 already mapped.
+PIMP1DPA2 already mapped.
+PIMP1DPA3 already mapped.
+PIMP3DPA1 already mapped.
+PIMP3DPA2 already mapped.
+PIMP3DPA3 already mapped.
+PIMP15DPA1 already mapped.
+PIMP15DPA2 already mapped.
+PIMP15DPA3 already mapped.
+PIMPbreaker1 already mapped.
+Mapping PIMPbreaker2
+Apr 18 07:30:36 ..... started STAR run
+Apr 18 07:30:36 ..... loading genome
+Apr 18 07:30:43 ..... started mapping
+Apr 18 07:36:55 ..... started sorting BAM
+Apr 18 07:38:08 ..... finished successfully
+Done.
+Mapping PIMPbreaker3
+Apr 18 07:38:08 ..... started STAR run
+Apr 18 07:38:08 ..... loading genome
+Apr 18 07:38:13 ..... started mapping
+Apr 18 07:44:14 ..... started sorting BAM
+Apr 18 07:45:27 ..... finished successfully
+Done.
+Mapping PIMPrr1
+Apr 18 07:45:28 ..... started STAR run
+Apr 18 07:45:28 ..... loading genome
+Apr 18 07:45:36 ..... started mapping
+Apr 18 07:52:24 ..... started sorting BAM
+Apr 18 07:53:59 ..... finished successfully
+Done.
+Mapping PIMPrr2
+Apr 18 07:54:00 ..... started STAR run
+Apr 18 07:54:00 ..... loading genome
+Apr 18 07:54:06 ..... started mapping
+Apr 18 07:59:24 ..... started sorting BAM
+Apr 18 08:00:29 ..... finished successfully
+Done.
+Mapping PIMPrr3
+Apr 18 08:00:29 ..... started STAR run
+Apr 18 08:00:29 ..... loading genome
+Apr 18 08:00:34 ..... started mapping
+Apr 18 08:12:09 ..... started sorting BAM
+Apr 18 08:15:56 ..... finished successfully
+Done.

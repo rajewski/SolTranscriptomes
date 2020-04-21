@@ -83,3 +83,39 @@ Mapping Tomato reads for PIMP3DPA3...
 Apr 17 18:34:50 ..... started STAR run
 Apr 17 18:34:50 ..... loading genome
 Apr 17 18:34:58 ..... started mapping
+Apr 17 18:54:34 ..... started sorting BAM
+Apr 17 19:00:29 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMP15DPA1...
+Apr 17 19:00:29 ..... started STAR run
+Apr 17 19:00:30 ..... loading genome
+Apr 17 19:00:37 ..... started mapping
+Apr 17 19:15:04 ..... started sorting BAM
+Apr 17 19:20:09 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMP15DPA2...
+Apr 17 19:20:10 ..... started STAR run
+Apr 17 19:20:10 ..... loading genome
+Apr 17 19:20:17 ..... started mapping
+Apr 17 19:28:52 ..... started sorting BAM
+Apr 17 19:30:38 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMP15DPA3...
+Apr 17 19:30:38 ..... started STAR run
+Apr 17 19:30:38 ..... loading genome
+Apr 17 19:30:45 ..... started mapping
+Apr 17 19:31:38 ..... started sorting BAM
+Apr 17 19:31:47 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMPbreaker1...
+Apr 17 19:31:47 ..... started STAR run
+Apr 17 19:31:48 ..... loading genome
+Apr 17 19:31:53 ..... started mapping
+Apr 17 19:39:12 ..... started sorting BAM
+Apr 17 19:40:43 ..... finished successfully
+Done.
+Mapping Tomato reads for PIMPbreaker2...
+Apr 17 19:40:44 ..... started STAR run
+Apr 17 19:40:44 ..... loading genome
+Apr 17 19:40:51 ..... started mapping
+slurmstepd-c32: error: *** JOB 1003081 ON c32 CANCELLED AT 2020-04-17T19:44:07 DUE TO TIME LIMIT ***
