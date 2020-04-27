@@ -26,6 +26,7 @@ do
 	    -f TSV \
 	    -appl Pfam,TIGRFAM,PRINTS,ProSiteProfiles \
 	    --goterms \
+	    -dra \
 	    -d DEGAnalysis/Pfam \
 	    -cpu $SLURM_CPUS_PER_TASK
    fi
