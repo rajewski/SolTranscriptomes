@@ -8,6 +8,7 @@ library("magrittr")
 library("DEGreport")
 library("dplyr")
 library("tibble")
+library("tidyr")
 
 # New Functions -----------------------------------------------------------
 
@@ -31,14 +32,36 @@ DESeqSpline <- function(se=se,
   colData(se) <- cbind(colData(se), design)
   if (length(unique(colData(se)[,CaseCtlVar]))>1) {
     message("Two entries detected for ", CaseCtlVar,". Incorporating this into the model")
-    dds <- DESeqDataSet(se, design = as.formula(paste0("~", CaseCtlVar, "+" ,paste(paste0(CaseCtlVar,":",colnames(design)), collapse = "+"))))
+    if (is(se, "RangedSummarizedExperiment")) {
+      dds <- DESeqDataSet(se,
+                        design = as.formula(paste0("~",
+                                                   CaseCtlVar,
+                                                   "+",
+                                                   paste(paste0(CaseCtlVar,":",colnames(design)), collapse = "+"))))
+    } else if (is(se, "SummarizedExperiment")) {
+      dds <- DESeqDataSetFromMatrix(countData = assays(se)$counts,
+                                    colData = colData(se),
+                                    design = as.formula(paste0("~",
+                                                               CaseCtlVar,
+                                                               "+",
+                                                               paste(paste0(CaseCtlVar,":",colnames(design)), collapse = "+"))))
+    }
   } else {
     message("Only one entry detected for ", CaseCtlVar,". Ignoring this variable for model building")
-    dds <- DESeqDataSet(se, design = as.formula(paste0("~",paste(colnames(design), collapse = "+"))))
+    if (is(se, "RangedSummarizedExperiment")) {
+      dds <- DESeqDataSet(se,
+                        design = as.formula(paste0("~",
+                                                   paste(colnames(design), collapse = "+"))))
+    } else if (is(se, "SummarizedExperiment")) {
+      dds <- DESeqDataSetFromMatrix(countData = assays(se)$counts,
+                                    colData = colData(se),
+                                    design = as.formula(paste0("~",
+                                                               paste(colnames(design), collapse = "+"))))
+    }
   }
   dds <- estimateSizeFactors(dds)
   # in case of a Slyc vs Spimp comparision, make sure the DEGs aren't ones where Spimp has no counts. This could represent a mapping problem to the Slyc genome
-  if(CaseCtlVar=="Species"){
+  if(CaseCtlVar=="Species" && length(levels(dds$Species))) {
     nc1 <- counts(subset(dds, select=Species==levels(dds$Species)[1]), normalized=TRUE)
     nc2 <- counts(subset(dds, select=Species==levels(dds$Species)[2]), normalized=TRUE)
     filter1 <- rowSums(nc1 >=10) >= (dim(nc1)[[2]]*0.2)
@@ -65,7 +88,11 @@ DESeqCluster <- function(dds=dds,
   #https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   numGenes=match.arg(numGenes)
   message("Normalizing counts")
-  rld <- rlog(dds)
+  if (CaseCtlVar=="Species") {
+    rld <- rlog(dds, blind=FALSE)
+  } else {
+    rld <- rlog(dds)
+  }
   message("Done.")
   message("Now for some diagnostic plots:")
   plot( assay(rld)[ , 1:2], col=rgb(0,0,0,.2), pch=16, cex=0.3, )
@@ -100,6 +127,43 @@ DESeqCluster <- function(dds=dds,
     clusters <- degPatterns(assay(cluster_rlog), metadata = colData(cluster_rlog), time = timeVar, col=NULL, reduce = T)
   }
   return(clusters)
+}
+
+`%notin%` <- Negate(`%in%`)
+
+ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
+                                GeneWiseExpt="",
+                                SingleCopyOrthoOnly=FALSE) {
+  Orthogroups <- read.table(OrthogroupMappingFile,
+                            sep="\t",
+                            stringsAsFactors = F,
+                            header=T)
+  if (SingleCopyOrthoOnly) {
+    Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
+    Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
+  }
+  Orthogroups$Concatenated <- paste(Orthogroups$Arabidopsis, Orthogroups$Nicotiana, Orthogroups$Solanum, sep=", ") 
+  Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c(1,5)]), 2, sep=", ")
+  # Rename columns just in case
+  colnames(Orthogroups) <- c("V1", "V2")
+  # Extract, subset, and aggregate count matrix from SummarizedExperiment
+  Counts <- assay(GeneWiseExpt)
+  Counts <- Counts[rownames(Counts) %in% as.character(Orthogroups$V2),]
+  rownames(Counts) <- as.character(Orthogroups$V1[match(rownames(Counts), Orthogroups$V2)])
+  Counts <- as.data.frame(cbind(rownames(Counts), Counts), row.names = F)
+  Counts <- aggregate(.~Counts$V1,data=Counts[,2:dim(Counts)[2]], FUN=mean)
+  rownames(Counts) <- Counts$`Counts$V1`
+  Counts <- Counts[,-1]
+  if (!SingleCopyOrthoOnly) {
+    # Include orthogroups that have no data
+    Counts <- rbind(Counts,
+                    setNames(data.frame(matrix(0L,ncol = length(colnames(Counts)), nrow = length(levels(as.factor(Orthogroups$V1))[levels(as.factor(Orthogroups$V1)) %notin% rownames(Counts)])),
+                                        row.names = levels(as.factor(Orthogroups$V1))[levels(as.factor(Orthogroups$V1)) %notin% rownames(Counts)]),
+                             colnames(Counts)))
+  }
+  OrthoExpt <- SummarizedExperiment(assays = list("counts"=Counts),
+                                    colData = colData(GeneWiseExpt))
+  return(OrthoExpt)
 }
 
 # Prep Inputs -------------------------------------------------------------
@@ -147,6 +211,7 @@ tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/RNA-seq/TAIR10Expt.rds"),
 })
 #Option to subset to stages 1-3
 TAIR10Expt_3stage <- subset(TAIR10Expt, select=DAP<12)
+
 tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"),
          error=function(e){
   NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
@@ -206,6 +271,27 @@ SpimpExpt_3stage <- subset(SpimpExpt, select=DAP<35)
 SolanumExpt <- do.call(cbind, list(SlycIHExpt, SpimpExpt))
 Solanum3StageExpt <- do.call(cbind, list(SlycIHExpt_3stage, SpimpExpt_3stage))
 
+# Orthogroups -------------------------------------------------------------
+# This section is an attempt to do a cross-species comparison using the orthogroups assigned to the 4 species by Orthofinder.
+NobtOrthoExpt <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthogroups.tsv",
+                                     GeneWiseExpt = NobtExpt,
+                                     SingleCopyOrthoOnly = TRUE)
+SlycOrthoExpt <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthogroups.tsv",
+                                     GeneWiseExpt = SlycIHExpt_3stage,
+                                     SingleCopyOrthoOnly = TRUE)
+SpimpOrthoExpt <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthogroups.tsv",
+                                      GeneWiseExpt = SpimpExpt_3stage,
+                                      SingleCopyOrthoOnly = TRUE)
+TAIROrthoExpt <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthogroups.tsv",
+                                     GeneWiseExpt = TAIR10Expt_3stage,
+                                     SingleCopyOrthoOnly = TRUE)
+AllSpeciesOrthoExpt <- do.call(cbind, list(NobtOrthoExpt, SlycOrthoExpt, SpimpOrthoExpt, TAIROrthoExpt))
+#Add Stage variable to normalize DAP across species
+AllSpeciesOrthoExpt$Stage <- c(1,1,1,2,2,3,2,3,3,
+                               1,1,1,2,2,2,3,3,3,
+                               1,1,1,2,2,2,3,3,3,
+                               1,1,1,2,2,2,3,3,3)
+
 # Design and DE Testing ----------------------------------------------------
 tryCatch(TAIR10dds <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds.rds"),
          error=function(e){
@@ -259,16 +345,26 @@ tryCatch(Solanum3Stagedds <- readRDS("DEGAnalysis/RNA-seq/Solanum3Stagedds.rds")
                                            CaseCtlVar = "Species")
            saveRDS(Solanum3Stagedds, "DEGAnalysis/RNA-seq/Solanum3Stagedds.rds")
          })
+tryCatch(AllSpeciesOrthoDDS <- readRDS("DEGAnalysis/RNA-seq/AllSpeciesOrthoDDS.rds"),
+         error=function(e){
+           AllSpeciesOrthoDDS <- DESeqSpline(AllSpeciesOrthoExpt,
+                                             CaseCtlVar = "Species",
+                                             timeVar = "Stage")
+           # columns have duplicate names, which would be changed and mess up metadata mapping
+           colnames(AllSpeciesOrthoDDS) <- NULL 
+           saveRDS(AllSpeciesOrthoDDS, "DEGAnalysis/RNA-seq/AllSpeciesOrthoDDS.rds")
+         })
 
 # Play around with individual genes ---------------------------------------
-Exampledds <- Solanum3Stagedds #assign one dds as the example to streamline code
+Exampledds <- AllSpeciesOrthoDDS #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
 #Examine an individual Gene
 topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
 colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
-plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "DAP"), normalized = T) #plot best fitting gene
+colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
+plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "Stage"), normalized = T) #plot best fitting gene
 
 # Get a set of FUL genes for each species. Only use one of these
 FULgenes<-c(FUL.1="AT5G60910.1",
@@ -286,8 +382,10 @@ FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
             NoFUL2="NIOBTv3_g39464.t1",
             NoMBP10="NIOBTv3_g07845.t1",
             NoMBP20="NIOBT_gMBP20.t1" )
+FULgenes<-c(euFULI="OG0003276",
+            euFULII="OG0008754")
 for (i in 1:length(FULgenes)) {
-  pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_Solanum_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
+  pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_NobtOrtho_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
       width=6,
       height=4)
   plotCounts(Exampledds,
@@ -359,22 +457,33 @@ tryCatch(Solanum3Stagecluster <- readRDS("DEGAnalysis/RNA-seq/Solanum3Stageclust
                                           CaseCtlVar = "Species")
            saveRDS(Solanum3Stagecluster, "DEGAnalysis/RNA-seq/Solanum3Stagecluster.rds")
          })
+tryCatch(AllSpeciesOrthoCluster <- readRDS("DEGAnalysis/RNA-seq/AllSpeciesCluster.rds"),
+         error=function(e){
+           AllSpeciesOrthoCluster <- DESeqCluster(AllSpeciesOrthoDDS,
+                                                  numGenes = "all",
+                                                  CaseCtlVar = "Species",
+                                                  timeVar = "Stage")
+           saveRDS(AllSpeciesOrthoCluster, "DEGAnalysis/RNA-seq/AllSpeciesCluster.rds")
+         })
+
 
 
 # Plot Cluster Profiles ---------------------------------------------------
-ClusterforPlotting <- Solanumcluster
+ClusterforPlotting <- AllSpeciesOrthoCluster
 PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
-                             time="DAP",
+                             time="Stage",
                              boxes=T,
                              points=F,
                              color="Species",
-                             #lines=F
+                             lines=F
                              )
 PlotCluster + theme_minimal() +
-  theme(legend.position = "none",
+  theme(legend.position = c(.8, -.03),
+        legend.justification = c(1, 0),
+        #legend.position = "none",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
-ggsave(filename = "DEGAnalysis/RNA-seq/Plot_Solanum_ClusterProfiles.pdf",
+ggsave(filename = "DEGAnalysis/RNA-seq/Plot_AllSpecies_ClusterProfiles.pdf",
        width=11,
        height=7)
 
@@ -384,10 +493,10 @@ ggsave(filename = "DEGAnalysis/RNA-seq/Plot_Solanum_ClusterProfiles.pdf",
 # FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
-X <- split(Solanum3Stagecluster$df, Solanum3Stagecluster$df$cluster)
+X <- split(AllSpeciesOrthoCluster$df, AllSpeciesOrthoCluster$df$cluster)
 for (i in 1:length(X)) {
   write.table(row.names(X[[i]]), 
-              file=paste0("DEGAnalysis/RNA-seq/Solanum_3Stage_Cluster_", max(X[[i]]$cluster), ".txt"),
+              file=paste0("DEGAnalysis/RNA-seq/AllSpecies_3Stage_Cluster_", max(X[[i]]$cluster), ".txt"),
               row.names = FALSE,
               quote = FALSE,
               col.names = FALSE)
