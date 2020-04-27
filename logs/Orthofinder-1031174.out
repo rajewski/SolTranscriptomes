@@ -1,0 +1,24 @@
+
+OrthoFinder version 2.3.7 Copyright (C) 2014 David Emms
+
+2020-04-23 12:13:01 : Starting OrthoFinder
+60 thread(s) for highly parallel tasks (BLAST searches etc.)
+1 thread(s) for OrthoFinder algorithm
+
+Checking required programs are installed
+----------------------------------------
+Test can run "mcl -h" - ok
+Test can run "mafft /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/proteomes/OrthoFinder/Results_Apr23/WorkingDirectory//_dependencies_check/SimpleTest.fa" - failed
+
+stdout:
+
+stderr:
+/bin/sh: mafft: command not found
+
+ERROR: Cannot run mafft
+Please check MAFFT is installed and that the executables are in the system path
+
+Dependencies have been met for inference of orthogroups but not for the subsequent orthologue inference.
+Either install the required dependencies or use the option '-og' to stop the analysis after the inference of orthogroups.
+
+ERROR: An error occurred, please review error messages for more information.

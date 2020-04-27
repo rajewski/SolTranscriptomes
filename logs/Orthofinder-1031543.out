@@ -1,0 +1,119 @@
+
+OrthoFinder version 2.3.7 Copyright (C) 2014 David Emms
+
+2020-04-23 15:24:03 : Starting OrthoFinder
+30 thread(s) for highly parallel tasks (BLAST searches etc.)
+1 thread(s) for OrthoFinder algorithm
+
+Checking required programs are installed
+----------------------------------------
+Test can run "mcl -h" - ok
+Test can run "mafft /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Apr23/WorkingDirectory//_dependencies_check/SimpleTest.fa" - ok
+Test can run "iqtree" - ok
+
+WARNING: Files have been ignored as they don't appear to be FASTA files:
+1_Orthofinder.sh
+1_Orthofinder.sh~
+OrthoFinder expects FASTA files to have one of the following extensions: fas, fasta, faa, fa
+
+Dividing up work for BLAST for parallel processing
+--------------------------------------------------
+2020-04-23 15:24:06 : Creating diamond database 1 of 3
+2020-04-23 15:24:07 : Creating diamond database 2 of 3
+2020-04-23 15:24:07 : Creating diamond database 3 of 3
+
+Running diamond all-versus-all
+------------------------------
+Using 30 thread(s)
+2020-04-23 15:24:08 : This may take some time....
+2020-04-23 15:31:14 : Done all-versus-all sequence search
+
+Running OrthoFinder algorithm
+-----------------------------
+2020-04-23 15:31:14 : Initial processing of each species
+2020-04-23 15:31:42 : Initial processing of species 0 complete
+2020-04-23 15:32:05 : Initial processing of species 1 complete
+2020-04-23 15:32:30 : Initial processing of species 2 complete
+2020-04-23 15:32:39 : Connected putative homologues
+2020-04-23 15:33:18 : Ran MCL
+
+Writing orthogroups to file
+---------------------------
+OrthoFinder assigned 85513 genes (87.5% of total) to 19800
+orthogroups. Fifty percent of all genes were in orthogroups
+with 4 or more genes (G50 was 4) and were contained in the
+largest 6753 orthogroups (O50 was 6753). There were 11189
+orthogroups with all species present and 4304 of these
+consisted entirely of single-copy genes.
+
+2020-04-23 15:33:58 : Done orthogroups
+
+Analysing Orthogroups
+=====================
+2020-04-23 15:33:58 : Starting MSA/Trees
+
+Inferring multiple sequence alignments and gene trees
+-----------------------------------------------------
+slurmstepd-i38: error: _is_a_lwp: open() /proc/174763/status failed: No such file or directory
+2020-04-23 19:38:56 : Done 12000 of 19800
+2020-04-23 19:40:59 : Done 13000 of 19800
+2020-04-23 18:56:21 : Done 3000 of 19800
+2020-04-23 19:13:01 : Done 5000 of 19800
+2020-04-23 19:47:10 : Done 19000 of 19800
+2020-04-23 15:34:31 : Done 0 of 19800
+2020-04-23 19:43:04 : Done 14000 of 19800
+2020-04-23 19:36:53 : Done 11000 of 19800
+2020-04-23 18:44:29 : Done 2000 of 19800
+2020-04-23 19:05:35 : Done 4000 of 19800
+2020-04-23 19:28:12 : Done 8000 of 19800
+2020-04-23 18:25:50 : Done 1000 of 19800
+2020-04-23 19:23:51 : Done 7000 of 19800
+2020-04-23 19:19:20 : Done 6000 of 19800
+2020-04-23 19:34:48 : Done 10000 of 19800
+2020-04-23 19:45:59 : Done 17000 of 19800
+2020-04-23 19:46:34 : Done 18000 of 19800
+2020-04-23 19:32:32 : Done 9000 of 19800
+2020-04-23 19:44:45 : Done 15000 of 19800
+2020-04-23 19:45:22 : Done 16000 of 19800
+2020-04-23 23:52:46 : Done MSA/Trees
+
+Best outgroup(s) for species tree
+---------------------------------
+2020-04-23 23:52:46 : Starting STRIDE
+2020-04-23 23:52:50 : Done STRIDE
+Observed 1403 well-supported, non-terminal duplications. 1401 support the best root and 2 contradict it.
+Best outgroup for species tree:
+  Arabidopsis
+
+Reconciling gene trees and species tree
+---------------------------------------
+Outgroup: Arabidopsis
+2020-04-23 23:52:50 : Starting Recon and orthologues
+2020-04-23 23:52:50 : Starting OF Orthologues
+2020-04-23 23:52:51 : Done 0 of 9117
+2020-04-23 23:53:04 : Done 1000 of 9117
+2020-04-23 23:53:09 : Done 2000 of 9117
+2020-04-23 23:53:14 : Done 3000 of 9117
+2020-04-23 23:53:19 : Done 4000 of 9117
+2020-04-23 23:53:23 : Done 5000 of 9117
+2020-04-23 23:53:28 : Done 6000 of 9117
+2020-04-23 23:53:31 : Done 7000 of 9117
+2020-04-23 23:53:35 : Done 8000 of 9117
+2020-04-23 23:53:39 : Done 9000 of 9117
+2020-04-23 23:53:40 : Done OF Orthologues
+2020-04-23 23:53:40 : Done Recon
+
+Writing results files
+=====================
+2020-04-23 23:53:40 : Done orthologues
+
+Results:
+    /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Apr23/
+
+CITATION:
+ When publishing work that uses OrthoFinder please cite:
+ Emms D.M. & Kelly S. (2015), Genome Biology 16:157
+
+ If you use the species tree in your work then please also cite:
+ Emms D.M. & Kelly S. (2017), MBE 34(12): 3267-3278
+ Emms D.M. & Kelly S. (2018), bioRxiv https://doi.org/10.1101/267914

@@ -1,0 +1,22 @@
+
+OrthoFinder version 2.3.7 Copyright (C) 2014 David Emms
+
+2020-04-23 12:15:22 : Starting OrthoFinder
+60 thread(s) for highly parallel tasks (BLAST searches etc.)
+1 thread(s) for OrthoFinder algorithm
+
+Checking required programs are installed
+----------------------------------------
+Test can run "mcl -h" - ok
+Test can run "mafft /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/proteomes/OrthoFinder/Results_Apr23/WorkingDirectory//_dependencies_check/SimpleTest.fa" - ok
+Test can run "iqtree" - failed
+
+/bin/sh: iqtree: command not found
+
+ERROR: Cannot run user-configured tree method 'iqtree'
+Please check program is installed and that it is correctly configured in the orthofinder/config.json file
+
+Dependencies have been met for inference of orthogroups but not for the subsequent orthologue inference.
+Either install the required dependencies or use the option '-og' to stop the analysis after the inference of orthogroups.
+
+ERROR: An error occurred, please review error messages for more information.

@@ -1,0 +1,21 @@
+
+OrthoFinder version 2.3.7 Copyright (C) 2014 David Emms
+
+2020-04-23 12:33:20 : Starting OrthoFinder
+60 thread(s) for highly parallel tasks (BLAST searches etc.)
+1 thread(s) for OrthoFinder algorithm
+
+Checking required programs are installed
+----------------------------------------
+Test can run "mcl -h" - ok
+Test can run "mafft /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/proteomes/OrthoFinder/Results_Apr23_1/WorkingDirectory//_dependencies_check/SimpleTest.fa" - ok
+Test can run "iqtree" - ok
+
+WARNING: Files have been ignored as they don't appear to be FASTA files:
+Aquilegia.pfa
+Arabidopsis.pfa
+Nicotiana.pfa
+Solanum.pfa
+OrthoFinder expects FASTA files to have one of the following extensions: fas, fasta, faa, fa
+ERROR: At least two species are required
+ERROR: An error occurred, please review error messages for more information.
