@@ -50,6 +50,7 @@ do
     cut -f1,12 ${PFAMs[$TAB]} |sort |uniq |grep "IPR" > $TAB.gene2ipr.tsv # Association of all genes and their IPR domains
     #cut -f5,6 ${PFAMs[$TAB]} > $TAB.pfam2desc.tsv # Descriptions of pfam domains
     cut -f12,13 ${PFAMs[$TAB]} > $TAB.ipr2desc.tsv # Descriptions of IPR domains
+    cut -f1,14 ${PFAMs[$TAB]} | sort |uniq | grep "GO" > $TAB.genes2go.tsv # Get the genes to go mapping
     comm -1 -3 $TAB.pfamhits.tsv $TAB.protein.names.txt > $TAB.nopfam.tsv # Names of all genes without a pfam hit
 done
 cd ../../
