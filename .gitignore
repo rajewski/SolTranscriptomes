@@ -1,3 +1,4 @@
 ExternalData/TAIR10/*
 ExternalData/Microarray/**/*.gz
+Orthofinder/OrthoFinder/
 .Rproj.user
