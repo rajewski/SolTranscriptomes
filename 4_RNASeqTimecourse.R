@@ -201,43 +201,43 @@ seqinfo(TAIR10BamFiles[1]) #check that it worked
 
 # Count Reads -------------------------------------------------------------
 #To my knowledge the SRA experiments were not strand-specific
-tryCatch(TAIR10Expt <- readRDS("DEGAnalysis/RNA-seq/TAIR10Expt.rds"),
+tryCatch(Expt_TAIR <- readRDS("DEGAnalysis/RNA-seq/Expt_TAIR.rds"),
          error=function(e){
-  TAIR10Expt <- summarizeOverlaps(features=TAIR10genes,
+           Expt_TAIR <- summarizeOverlaps(features=TAIR10genes,
                                   reads=TAIR10BamFiles,
                                   mode="Union",
                                   singleEnd=TRUE,
                                   ignore.strand=TRUE)
-  colData(TAIR10Expt) <- DataFrame(metadata[metadata$Species=="Arabidopsis",])
-  saveRDS(TAIR10Expt, "DEGAnalysis/RNA-seq/TAIR10Expt.rds")
+  colData(Expt_TAIR) <- DataFrame(metadata[metadata$Species=="Arabidopsis",])
+  saveRDS(Expt_TAIR, "DEGAnalysis/RNA-seq/Expt_TAIR.rds")
 })
 #Option to subset to stages 1-3
-TAIR10Expt_3stage <- subset(TAIR10Expt, select=DAP<12)
+Expt_TAIR_3Stage <- subset(Expt_TAIR, select=DAP<12)
 
-tryCatch(NobtExpt <- readRDS("DEGAnalysis/RNA-seq/NobtExpt.rds"),
+tryCatch(Expt_Nobt <- readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"),
          error=function(e){
-  NobtExpt <- summarizeOverlaps(feature=Nobtgenes,
+           Expt_Nobt <- summarizeOverlaps(feature=Nobtgenes,
                                 reads=NobtBamFiles,
                                 mode="Union",
                                 singleEnd=FALSE,
                                 ignore.strand=FALSE,
                                 fragments=TRUE,
                                 BPPARAM=SerialParam())
-  colData(NobtExpt) <- DataFrame(metadata[metadata$Species=="Tobacco",])
-  saveRDS(NobtExpt, "DEGAnalysis/RNA-seq/NobtExpt.rds")
+  colData(Expt_Nobt) <- DataFrame(metadata[metadata$Species=="Tobacco",])
+  saveRDS(Expt_Nobt, "DEGAnalysis/RNA-seq/Expt_Nobt.rds")
 })
 
-tryCatch(SlycSRAExpt <- readRDS("DEGAnalysis/RNA-seq/SlycSRAExpt.rds"),
+tryCatch(Expt_SlycSRA <- readRDS("DEGAnalysis/RNA-seq/Expt_SlycSRA.rds"),
          error=function(e){
-  SlycSRAExpt <- summarizeOverlaps(features=Slycgenes,
+           Expt_SlycSRA <- summarizeOverlaps(features=Slycgenes,
                                    reads=SlycSRABamFiles,
                                    mode="Union",
                                    singleEnd=TRUE,
                                    ignore.strand=TRUE)
-  colData(SlycSRAExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==0,])
-  saveRDS(SlycSRAExpt, "DEGAnalysis/RNA-seq/SlycSRAExpt.rds")
+  colData(Expt_SlycSRA) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==0,])
+  saveRDS(Expt_SlycSRA, "DEGAnalysis/RNA-seq/Expt_SlycSRA.rds")
 })
-tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/RNA-seq/SlycIHExpt.rds"),
+tryCatch(Expt_Slyc <- readRDS("DEGAnalysis/RNA-seq/Expt_Slyc.rds"),
          error=function(e){
   SlycIHPart<-list()
   for (i in 1:length(metadata$Accession[metadata$Species=="Tomato" & metadata$PE==1])) {
@@ -247,13 +247,13 @@ tryCatch(SlycIHExpt <- readRDS("DEGAnalysis/RNA-seq/SlycIHExpt.rds"),
                                          singleEnd=FALSE,
                                          ignore.strand=FALSE)
   }
-  SlycIHExpt <- do.call(cbind,SlycIHPart)
-  colData(SlycIHExpt) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==1,])
-  saveRDS(SlycIHExpt, "DEGAnalysis/RNA-seq/SlycIHExpt.rds")
+  Expt_Slyc <- do.call(cbind,SlycIHPart)
+  colData(Expt_Slyc) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==1,])
+  saveRDS(Expt_Slyc, "DEGAnalysis/RNA-seq/Expt_Slyc.rds")
 })
 #Option to subset to stages 1-3
-SlycIHExpt_3stage <- subset(SlycIHExpt, select=DAP<35)
-tryCatch(SpimpExpt <- readRDS("DEGAnalysis/RNA-seq/SpimpExpt.rds"),
+Expt_Slyc_3Stage <- subset(Expt_Slyc, select=DAP<35)
+tryCatch(Expt_Spimp <- readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds"),
          error=function(e){
   SpimpPart<-list()
   for (i in 1:length(metadata$Accession[metadata$Species=="Pimpinellifolium"])) {
@@ -263,113 +263,113 @@ tryCatch(SpimpExpt <- readRDS("DEGAnalysis/RNA-seq/SpimpExpt.rds"),
                                          singleEnd=FALSE,
                                          ignore.strand=FALSE)
   }
-  SpimpExpt <- do.call(cbind,SpimpPart)
-  colData(SpimpExpt) <- DataFrame(metadata[metadata$Species=="Pimpinellifolium",])
-  saveRDS(SpimpExpt, "DEGAnalysis/RNA-seq/SpimpExpt.rds")
+  Expt_Spimp <- do.call(cbind,SpimpPart)
+  colData(Expt_Spimp) <- DataFrame(metadata[metadata$Species=="Pimpinellifolium",])
+  saveRDS(Expt_Spimp, "DEGAnalysis/RNA-seq/Expt_Spimp.rds")
 })
 #Option to subset to stages 1-3
-SpimpExpt_3stage <- subset(SpimpExpt, select=DAP<35)
+Expt_Spimp_3Stage <- subset(Expt_Spimp, select=DAP<35)
 #Combine Spimp and Slyc to look for genes that are different between them
-SolanumExpt <- do.call(cbind, list(SlycIHExpt, SpimpExpt))
-Solanum3StageExpt <- do.call(cbind, list(SlycIHExpt_3stage, SpimpExpt_3stage))
+Expt_Solanum <- do.call(cbind, list(Expt_Slyc, Expt_Spimp))
+Expt_Solanum_3Stage <- do.call(cbind, list(Expt_Slyc_3Stage, Expt_Spimp_3Stage))
 
 # Orthogroups -------------------------------------------------------------
 # This section is an attempt to do a cross-species comparison using the orthogroups assigned to the 4 species by Orthofinder.
-NobtOrthoExpt <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
-                                     GeneWiseExpt = NobtExpt,
+Expt_Nobt_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
+                                     GeneWiseExpt = Expt_Nobt,
                                      SingleCopyOrthoOnly = TRUE)
-SlycOrthoExpt <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
-                                     GeneWiseExpt = SlycIHExpt_3stage,
+Expt_Slyc_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
+                                     GeneWiseExpt = Expt_Slyc_3Stage,
                                      SingleCopyOrthoOnly = TRUE)
-SpimpOrthoExpt <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
-                                      GeneWiseExpt = SpimpExpt_3stage,
+Expt_Spimp_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
+                                      GeneWiseExpt = Expt_Spimp_3Stage,
                                       SingleCopyOrthoOnly = TRUE)
-TAIROrthoExpt <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
-                                     GeneWiseExpt = TAIR10Expt_3stage,
+Expt_TAIR_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
+                                     GeneWiseExpt = Expt_TAIR_3Stage,
                                      SingleCopyOrthoOnly = TRUE)
-AllSpeciesOrthoExpt <- do.call(cbind, list(NobtOrthoExpt, SlycOrthoExpt, SpimpOrthoExpt, TAIROrthoExpt))
+Expt_All_Ortho <- do.call(cbind, list(Expt_Nobt_Ortho,
+                                      Expt_Slyc_Ortho,
+                                      Expt_Spimp_Ortho,
+                                      Expt_TAIR_Ortho))
 #Add Stage variable to normalize DAP across species
 # I could do this in the metadata, but then I would have to recount everything and that would take forever
-AllSpeciesOrthoExpt$Stage <- c(1,1,1,2,2,3,2,3,3,
-                               1,1,1,2,2,2,3,3,3,
-                               1,1,1,2,2,2,3,3,3,
-                               1,1,1,2,2,2,3,3,3)
-AllSpeciesOrthoExpt$Fruit <- c(rep("Dry",9),
-                               rep("Fleshy",18),
-                               rep("Dry",9))
+Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,
+                          1,1,1,2,2,2,3,3,3,
+                          1,1,1,2,2,2,3,3,3,
+                          1,1,1,2,2,2,3,3,3)
 
 # Design and DE Testing ----------------------------------------------------
-tryCatch(TAIR10dds <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds.rds"),
+tryCatch(DDS_TAIR <- readRDS("DEGAnalysis/RNA-seq/DDS_TAIR.rds"),
          error=function(e){
-  TAIR10dds <- DESeqSpline(TAIR10Expt)
-  saveRDS(TAIR10dds, "DEGAnalysis/RNA-seq/TAIR10dds.rds")
+           DDS_TAIR <- DESeqSpline(Expt_TAIR)
+  saveRDS(DDS_TAIR, "DEGAnalysis/RNA-seq/DDS_TAIR.rds")
 })
-tryCatch(TAIR10dds_3stage <- readRDS("DEGAnalysis/RNA-seq/TAIR10dds_3stage.rds"),
+tryCatch(DDS_TAIR_3Stage <- readRDS("DEGAnalysis/RNA-seq/DDS_TAIR_3Stage.rds"),
          error=function(e){
-  TAIR10dds_3stage <- DESeqSpline(TAIR10Expt_3stage)
-  saveRDS(TAIR10dds_3stage, "DEGAnalysis/RNA-seq/TAIR10dds_3stage.rds")
+           DDS_TAIR_3Stage <- DESeqSpline(Expt_TAIR_3Stage)
+  saveRDS(DDS_TAIR_3Stage, "DEGAnalysis/RNA-seq/DDS_TAIR_3Stage.rds")
 })
-tryCatch(Nobtdds <- readRDS("DEGAnalysis/RNA-seq/Nobtdds.rds"),
+tryCatch(DDS_Nobt <- readRDS("DEGAnalysis/RNA-seq/DDS_Nobt.rds"),
          error=function(e){
-  Nobtdds <- DESeqSpline(NobtExpt)
-  saveRDS(Nobtdds, "DEGAnalysis/RNA-seq/Nobtdds.rds")
+           DDS_Nobt <- DESeqSpline(Expt_Nobt)
+  saveRDS(DDS_Nobt, "DEGAnalysis/RNA-seq/DDS_Nobt.rds")
 })
-tryCatch(SlycSRAdds <- readRDS("DEGAnalysis/RNA-seq/SlycSRAdds.rds"),
+tryCatch(DDS_SlycSRA <- readRDS("DEGAnalysis/RNA-seq/DDS_SlycSRA.rds"),
          error=function(e){
-           SlycSRAdds <- DESeqSpline(SlycSRAExpt)
-           saveRDS(SlycSRAdds, "DEGAnalysis/RNA-seq/SlycSRAdds.rds")
+           DDS_SlycSRA <- DESeqSpline(Expt_SlycSRA)
+           saveRDS(DDS_SlycSRA, "DEGAnalysis/RNA-seq/DDS_SlycSRA.rds")
 })
-tryCatch(SlycIHdds <- readRDS("DEGAnalysis/RNA-seq/SlycIHdds.rds"),
+tryCatch(DDS_Slyc <- readRDS("DEGAnalysis/RNA-seq/DDS_Slyc.rds"),
          error=function(e){
-  SlycIHdds <- DESeqSpline(SlycIHExpt)
-  saveRDS(SlycIHdds, "DEGAnalysis/RNA-seq/SlycIHdds.rds")
+           DDS_Slyc <- DESeqSpline(Expt_Slyc)
+  saveRDS(DDS_Slyc, "DEGAnalysis/RNA-seq/DDS_Slyc.rds")
 })
-tryCatch(SlycIHdds_3stage <- readRDS("DEGAnalysis/RNA-seq/SlycIHdds_3stage.rds"),
+tryCatch(DDS_Slyc_3Stage <- readRDS("DEGAnalysis/RNA-seq/DDS_Slyc_3Stage.rds"),
          error=function(e){
-  SlycIHdds_3stage <- DESeqSpline(SlycIHExpt_3stage)
-  saveRDS(SlycIHdds_3stage, "DEGAnalysis/RNA-seq/SlycIHdds_3stage.rds")
+           DDS_Slyc_3Stage <- DESeqSpline(Expt_Slyc_3Stage)
+  saveRDS(DDS_Slyc_3Stage, "DEGAnalysis/RNA-seq/DDS_Slyc_3Stage.rds")
 })
-tryCatch(Spimpdds <- readRDS("DEGAnalysis/RNA-seq/Spimpdds.rds"),
+tryCatch(DDS_Spimp <- readRDS("DEGAnalysis/RNA-seq/DDS_Spimp.rds"),
          error=function(e){
-  Spimpdds <- DESeqSpline(SpimpExpt)
-  saveRDS(Spimpdds, "DEGAnalysis/RNA-seq/Spimpdds.rds")
+           DDS_Spimp <- DESeqSpline(Expt_Spimp)
+  saveRDS(DDS_Spimp, "DEGAnalysis/RNA-seq/DDS_Spimp.rds")
 })
-tryCatch(Spimpdds_3stage <- readRDS("DEGAnalysis/RNA-seq/Spimpdds_3stage.rds"),
+tryCatch(DDS_Spimp_3Stage <- readRDS("DEGAnalysis/RNA-seq/DDS_Spimp_3Stage.rds"),
          error=function(e){
-           Spimpdds_3stage <- DESeqSpline(SpimpExpt_3stage)
-           saveRDS(Spimpdds_3stage, "DEGAnalysis/RNA-seq/Spimpdds_3stage.rds")
+           DDS_Spimp_3Stage <- DESeqSpline(Expt_Spimp_3Stage)
+           saveRDS(DDS_Spimp_3Stage, "DEGAnalysis/RNA-seq/DDS_Spimp_3Stage.rds")
 })
-tryCatch(Solanumdds <- readRDS("DEGAnalysis/RNA-seq/Solanumdds.rds"),
+tryCatch(DDS_Solanum <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum.rds"),
          error=function(e){
-           Solanumdds <- DESeqSpline(se=SolanumExpt,
+           DDS_Solanum <- DESeqSpline(se=Expt_Solanum,
                                      CaseCtlVar = "Species")
-           saveRDS(Solanumdds, "DEGAnalysis/RNA-seq/Solanumdds.rds")
+           saveRDS(DDS_Solanum, "DEGAnalysis/RNA-seq/DDS_Solanum.rds")
          })
-tryCatch(Solanum3Stagedds <- readRDS("DEGAnalysis/RNA-seq/Solanum3Stagedds.rds"),
+tryCatch(DDS_Solanum_3Stage <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3Stage.rds"),
          error=function(e){
-           Solanum3Stagedds <- DESeqSpline(se=Solanum3StageExpt,
+           DDS_Solanum_3Stage <- DESeqSpline(se=Expt_Solanum_3Stage,
                                            CaseCtlVar = "Species")
-           saveRDS(Solanum3Stagedds, "DEGAnalysis/RNA-seq/Solanum3Stagedds.rds")
+           saveRDS(DDS_Solanum_3Stage, "DEGAnalysis/RNA-seq/DDS_Solanum_3Stage.rds")
          })
 # Test for DEGs with diff patterns by species
-tryCatch(AllOrthoDEGBySpeciesDDS <- readRDS("DEGAnalysis/RNA-seq/AllOrthoDEGBySpeciesDDS.rds"),
+tryCatch(DDS_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGBySpecies.rds"),
          error=function(e){
-           AllOrthoDEGBySpeciesDDS <- DESeqSpline(AllSpeciesOrthoExpt,
+           DDS_AllOrtho_DEGBySpecies <- DESeqSpline(Expt_All_Ortho,
                                              CaseCtlVar = "Species",
                                              timeVar = "Stage")
            # columns have duplicate names, which would be changed and mess up metadata mapping
-           colnames(AllOrthoDEGBySpeciesDDS) <- NULL 
-           saveRDS(AllOrthoDEGBySpeciesDDS, "DEGAnalysis/RNA-seq/AllOrthoDEGBySpeciesDDS.rds")
+           colnames(DDS_AllOrtho_DEGBySpecies) <- NULL 
+           saveRDS(DDS_AllOrtho_DEGBySpecies, "DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGBySpecies.rds")
          })
 # Test for DEGs with diff patterns by fruit type
-tryCatch(AllOrthoDEGByFruitDDS <- readRDS("DEGAnalysis/RNA-seq/AllOrthoDEGByFruitDDS.rds"),
+tryCatch(DDS_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGByFruit.rds"),
          error=function(e){
-           AllOrthoDEGByFruitDDS <- DESeqSpline(AllSpeciesOrthoExpt,
+           DDS_AllOrtho_DEGByFruit <- DESeqSpline(AllSpeciesOrthoExpt,
                                                   CaseCtlVar = "Fruit",
                                                   timeVar = "Stage")
            # columns have duplicate names, which would be changed and mess up metadata mapping
-           colnames(AllOrthoDEGByFruitDDS) <- NULL 
-           saveRDS(AllOrthoDEGByFruitDDS, "DEGAnalysis/RNA-seq/AllOrthoDEGByFruitDDS.rds")
+           colnames(DDS_AllOrtho_DEGByFruit) <- NULL 
+           saveRDS(DDS_AllOrtho_DEGByFruit, "DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGByFruit.rds")
          })
 
 # Play around with individual genes ---------------------------------------
@@ -401,6 +401,7 @@ FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
             NoMBP20="NIOBT_gMBP20.t1" )
 FULgenes<-c(euFULI="OG0003276",
             euFULII="OG0008754")
+# Plot FUL Genes
 for (i in 1:length(FULgenes)) {
   pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_NobtOrtho_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
       width=6,
@@ -420,94 +421,94 @@ for (i in 1:length(FULgenes)) {
 
 # Clustering --------------------------------------------------------------
 # For all genes, this is best run noninteractively with the 4_NoninteractiveClustering.sh script
-tryCatch(TAIR10Allcluster <- readRDS("DEGAnalysis/RNA-seq/TAIR10Allcluster.rds"),
+tryCatch(Cluster_TAIR <- readRDS("DEGAnalysis/RNA-seq/Cluster_TAIR.rds"),
          error=function(e){
-  TAIR10Allcluster <- DESeqCluster(TAIR10dds, numGenes = "all")
-  saveRDS(TAIR10Allcluster, "DEGAnalysis/RNA-seq/TAIR10Allcluster.rds")
+           Cluster_TAIR <- DESeqCluster(DDS_TAIR, numGenes = "all")
+  saveRDS(Cluster_TAIR, "DEGAnalysis/RNA-seq/Cluster_TAIR.rds")
 })
-tryCatch(TAIR103Stagecluster <- readRDS("DEGAnalysis/RNA-seq/TAIR103Stagecluster.rds"),
+tryCatch(Cluster_TAIR_3Stage <- readRDS("DEGAnalysis/RNA-seq/Cluster_TAIR_3Stage.rds"),
          error=function(e){
-  TAIR10Allcluster <- DESeqCluster(TAIR10dds_3stage, numGenes = "all")
-  saveRDS(TAIR103Stagecluster, "DEGAnalysis/RNA-seq/TAIR103Stagecluster.rds")
+           Cluster_TAIR_3Stage <- DESeqCluster(DDS_TAIR_3Stage, numGenes = "all")
+  saveRDS(Cluster_TAIR_3Stage, "DEGAnalysis/RNA-seq/Cluster_TAIR_3Stage.rds")
 })
-tryCatch(NobtAllcluster <- readRDS("DEGAnalysis/RNA-seq/NobtAllcluster.rds"),
+tryCatch(Cluster_Nobt <- readRDS("DEGAnalysis/RNA-seq/Cluster_Nobt.rds"),
          error=function(e){
-           NobtAllcluster <- DESeqCluster(Nobtdds, numGenes = "all")
-           saveRDS(NobtAllcluster, "DEGAnalysis/RNA-seq/NobtAllcluster.rds")
+           Cluster_Nobt <- DESeqCluster(DDS_Nobt, numGenes = "all")
+           saveRDS(Cluster_Nobt, "DEGAnalysis/RNA-seq/Cluster_Nobt.rds")
          })
-tryCatch(SlycSRAAllcluster <- readRDS("DEGAnalysis/RNA-seq/SlycSRAAllcluster.rds"),
+tryCatch(Cluster_SlycSRA <- readRDS("DEGAnalysis/RNA-seq/Cluster_SlycSRA.rds"),
          error=function(e){
-  SlycSRAAllcluster <- DESeqCluster(SlycSRAdds, numGenes = "all")
-  saveRDS(SlycSRAAllcluster, "DEGAnalysis/RNA-seq/SlycSRAAllcluster.rds")
+           Cluster_SlycSRA <- DESeqCluster(DDS_SlycSRA, numGenes = "all")
+  saveRDS(Cluster_SlycSRA, "DEGAnalysis/RNA-seq/Cluster_SlycSRA.rds")
 })
-tryCatch(SlycIHAllcluster <- readRDS("DEGAnalysis/RNA-seq/SlycIHAllcluster.rds"),
+tryCatch(Cluster_Slyc <- readRDS("DEGAnalysis/RNA-seq/Cluster_Slyc.rds"),
          error=function(e){
-  SlycIHAllcluster <- DESeqCluster(SlycIHdds, numGenes = "all")
-  saveRDS(SlycIHAllcluster, "DEGAnalysis/RNA-seq/SlycIHAllcluster.rds")
+           Cluster_Slyc <- DESeqCluster(DDS_Slyc, numGenes = "all")
+  saveRDS(Cluster_Slyc, "DEGAnalysis/RNA-seq/Cluster_Slyc.rds")
 })
-tryCatch(SlycIH3Stagecluster <- readRDS("DEGAnalysis/RNA-seq/SlycIH3Stagecluster.rds"),
+tryCatch(Cluster_Slyc_3Stage <- readRDS("DEGAnalysis/RNA-seq/Cluster_Slyc_3Stage.rds"),
          error=function(e){
-  SlycIH3Stagecluster <- DESeqCluster(SlycIHdds_3stage, numGenes = "all")
-  saveRDS(SlycIH3Stagecluster, "DEGAnalysis/RNA-seq/SlycIH3Stagecluster.rds")
+           Cluster_Slyc_3Stage <- DESeqCluster(DDS_Slyc_3Stage, numGenes = "all")
+  saveRDS(Cluster_Slyc_3Stage, "DEGAnalysis/RNA-seq/Cluster_Slyc_3Stage.rds")
 })
-tryCatch(Spimpcluster <- readRDS("DEGAnalysis/RNA-seq/Spimpcluster.rds"),
+tryCatch(Cluster_Spimp <- readRDS("DEGAnalysis/RNA-seq/Cluster_Spimp.rds"),
          error=function(e){
-  Spimpcluster <- DESeqCluster(Spimpdds, numGenes = "all")
-  saveRDS(Spimpcluster, "DEGAnalysis/RNA-seq/Spimpcluster.rds")
+           Cluster_Spimp <- DESeqCluster(DDS_Spimp, numGenes = "all")
+  saveRDS(Cluster_Spimp, "DEGAnalysis/RNA-seq/Cluster_Spimp.rds")
 })
-tryCatch(Spimp3Stagecluster <- readRDS("DEGAnalysis/RNA-seq/Spimp3Stagecluster.rds"),
+tryCatch(Cluster_Spimp_3Stage <- readRDS("DEGAnalysis/RNA-seq/Cluster_Spimp_3Stage.rds"),
          error=function(e){
-  Spimp3Stagecluster <- DESeqCluster(Spimpdds_3stage, numGenes = "all")
-  saveRDS(Spimp3Stagecluster, "DEGAnalysis/RNA-seq/Spimp3Stagecluster.rds")
+           Cluster_Spimp_3Stage <- DESeqCluster(DDS_Spimp_3Stage, numGenes = "all")
+  saveRDS(Cluster_Spimp_3Stage, "DEGAnalysis/RNA-seq/Cluster_Spimp_3Stage.rds")
 })
-tryCatch(Solanumcluster <- readRDS("DEGAnalysis/RNA-seq/Solanumcluster.rds"),
+tryCatch(Cluster_Solanum <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum.rds"),
          error=function(e){
-           Solanumcluster <- DESeqCluster(Solanumdds,
+           Cluster_Solanum <- DESeqCluster(DDS_Solanum,
                                           numGenes = "all",
                                           CaseCtlVar = "Species")
-           saveRDS(Solanumcluster, "DEGAnalysis/RNA-seq/Solanumcluster.rds")
+           saveRDS(Cluster_Solanum, "DEGAnalysis/RNA-seq/Cluster_Solanum.rds")
          })
-tryCatch(Solanum3Stagecluster <- readRDS("DEGAnalysis/RNA-seq/Solanum3Stagecluster.rds"),
+tryCatch(Cluster_Solanum_3Stage <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3Stage.rds"),
          error=function(e){
-           Solanum3Stagecluster <- DESeqCluster(Solanum3Stagedds,
+           Cluster_Solanum_3Stage <- DESeqCluster(DDS_Solanum_3Stage,
                                           numGenes = "all",
                                           CaseCtlVar = "Species")
-           saveRDS(Solanum3Stagecluster, "DEGAnalysis/RNA-seq/Solanum3Stagecluster.rds")
+           saveRDS(Cluster_Solanum_3Stage, "DEGAnalysis/RNA-seq/Cluster_Solanum_3Stage.rds")
          })
-tryCatch(AllOrthoDEGBySpeciesCluster <- readRDS("DEGAnalysis/RNA-seq/AllOrthoDEGBySpeciesCluster.rds"),
+tryCatch(Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds"),
          error=function(e){
-           AllOrthoDEGBySpeciesCluster <- DESeqCluster(AllOrthoDEGBySpeciesDDS,
+           Cluster_AllOrtho_DEGBySpecies <- DESeqCluster(DDS_AllOrtho_DEGBySpecies,
                                                   numGenes = "all",
                                                   CaseCtlVar = "Species",
                                                   timeVar = "Stage")
-           saveRDS(AllOrthoDEGBySpeciesCluster, "DEGAnalysis/RNA-seq/AllOrthoDEGBySpeciesCluster.rds")
+           saveRDS(Cluster_AllOrtho_DEGBySpecies, "DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds")
          })
-tryCatch(AllOrthoDEGByFruitCluster <- readRDS("DEGAnalysis/RNA-seq/AllOrthoDEGByFruitCluster.rds"),
+tryCatch(Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGByFruit.rds"),
          error=function(e){
-           AllOrthoDEGByFruitCluster <- DESeqCluster(AllOrthoDEGByFruitDDS,
+           Cluster_AllOrtho_DEGByFruit <- DESeqCluster(DDS_AllOrtho_DEGByFruit,
                                                        numGenes = "all",
                                                        CaseCtlVar = "Fruit",
                                                        timeVar = "Stage")
-           saveRDS(AllOrthoDEGByFruitCluster, "DEGAnalysis/RNA-seq/AllOrthoDEGByFruitCluster.rds")
+           saveRDS(Cluster_AllOrtho_DEGByFruit, "DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGByFruit.rds")
          })
 
 
 # Plot Cluster Profiles ---------------------------------------------------
-ClusterforPlotting <- AllOrthoDEGBySpeciesCluster
+ClusterforPlotting <- Cluster_
 PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
-                             time="Stage",
+                             time="DAP",
                              boxes=T,
                              points=F,
-                             color="Species",
+                             #color="Fruit",
                              lines=F
                              )
 PlotCluster + theme_minimal() +
-  theme(legend.position = c(.8, -.03),
+  theme(#legend.position = c(.8, -.03),
         legend.justification = c(1, 0),
-        #legend.position = "none",
+        legend.position = "none",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
-ggsave(filename = "DEGAnalysis/RNA-seq/Plot_ClusterProfiles_OrthoBySpecies.pdf",
+ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_TAIR_3Stage.pdf",
        width=11,
        height=7)
 
@@ -517,10 +518,10 @@ ggsave(filename = "DEGAnalysis/RNA-seq/Plot_ClusterProfiles_OrthoBySpecies.pdf",
 # FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
-X <- split(AllOrthoDEGBySpeciesCluster$df, AllOrthoDEGBySpeciesCluster$df$cluster)
+X <- split(Cluster_Slyc$df, Cluster_Slyc$df$cluster)
 for (i in 1:length(X)) {
   write.table(row.names(X[[i]]), 
-              file=paste0("DEGAnalysis/RNA-seq/AllOrthoBySpecies_3Stage_Cluster_", max(X[[i]]$cluster), ".txt"),
+              file=paste0("DEGAnalysis/RNA-seq/Lists/Slyc_Cluster_", max(X[[i]]$cluster), ".txt"),
               row.names = FALSE,
               quote = FALSE,
               col.names = FALSE)
