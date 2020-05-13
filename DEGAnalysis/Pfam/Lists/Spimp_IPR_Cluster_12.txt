@@ -1,0 +1,3 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+CENP-T/Histone H4, histone fold (IPR035425)	113.2	9e-03	3	12	Solyc04g011390.1.1,Solyc05g054610.1.1,Solyc11g072860.2.1
+Histone H4 (IPR001951)	97.1	9e-03	3	14	Solyc04g011390.1.1,Solyc05g054610.1.1,Solyc11g072860.2.1
