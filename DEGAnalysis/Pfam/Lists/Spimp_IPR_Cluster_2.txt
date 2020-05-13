@@ -1,0 +1,5 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Glycoside hydrolase family 9 (IPR001701)	20.1	2e-03	6	25	Solyc04g081300.4.1,Solyc05g005080.3.1,Solyc07g049300.3.1,Solyc08g082250.3.1,Solyc08g083210.3.1,Solyc11g008820.2.1
+Tubulin (IPR000217)	19.7	5e-02	4	17	Solyc04g077020.3.1,Solyc08g006890.3.1,Solyc10g080940.3.1,Solyc10g086760.2.1
+Tubulin/FtsZ, 2-layer sandwich domain (IPR018316)	19.7	5e-02	4	17	Solyc04g077020.3.1,Solyc08g006890.3.1,Solyc10g080940.3.1,Solyc10g086760.2.1
+UDP-glucuronosyl/UDP-glucosyltransferase (IPR002213)	6	2e-03	12	167	Solyc04g008310.3.1,Solyc04g008330.1.1,Solyc04g016220.4.1,Solyc04g074360.3.1,Solyc05g053890.3.1,Solyc07g043110.2.1,Solyc07g043120.1.1,Solyc07g043500.1.1,Solyc11g010790.1.1,Solyc11g010810.1.1,Solyc12g009930.3.1,Solyc12g096870.1.1

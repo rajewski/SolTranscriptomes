@@ -1,0 +1,2 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Ribosomal Proteins L2, RNA binding domain (IPR022666)	71.9	4e-02	3	13	Solyc00g500036.1.1,Solyc00g500298.1.1,Solyc10g012217.1.1

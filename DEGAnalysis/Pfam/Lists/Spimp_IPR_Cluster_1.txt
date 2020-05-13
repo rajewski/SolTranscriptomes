@@ -1,0 +1,10 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Photosystem I PsaB (IPR006244)	89.9	2e-03	3	3	Solyc00g500056.1.1,Solyc00g500138.1.1,Solyc00g500208.1.1
+RNA polymerase Rpb1, domain 4 (IPR007083)	50	1e-04	5	9	Solyc00g500052.1.1,Solyc00g500135.1.1,Solyc00g500205.1.1,Solyc00g500290.1.1,Solyc00g500319.1.1
+RNA polymerase Rpb1, domain 5 (IPR007081)	34.6	5e-04	5	13	Solyc00g500052.1.1,Solyc00g500135.1.1,Solyc00g500205.1.1,Solyc00g500290.1.1,Solyc00g500319.1.1
+RNA polymerase Rpb1, domain 1 (IPR007080)	32.7	6e-03	4	11	Solyc00g500052.1.1,Solyc00g500135.1.1,Solyc00g500205.1.1,Solyc00g500319.1.1
+RNA polymerase, alpha subunit (IPR000722)	30	7e-03	4	12	Solyc00g500052.1.1,Solyc00g500135.1.1,Solyc00g500205.1.1,Solyc00g500319.1.1
+Beta-galactosidase, beta-sandwich domain (IPR041392)	21.2	3e-02	4	17	Solyc01g111540.4.1,Solyc03g121540.3.1,Solyc07g038120.1.1,Solyc12g008840.2.1
+Glycoside hydrolase, family 35 (IPR001944)	18.9	3e-02	4	19	Solyc01g111540.4.1,Solyc03g121540.3.1,Solyc07g038120.1.1,Solyc12g008840.2.1
+Glycoside hydrolase 35, catalytic domain (IPR031330)	18.9	3e-02	4	19	Solyc01g111540.4.1,Solyc03g121540.3.1,Solyc07g038120.1.1,Solyc12g008840.2.1
+Photosystem I PsaA/PsaB (IPR001280)	11.8	3e-02	5	38	Solyc00g500056.1.1,Solyc00g500138.1.1,Solyc00g500139.1.1,Solyc00g500208.1.1,Solyc00g500209.1.1
