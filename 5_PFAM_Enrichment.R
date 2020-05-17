@@ -388,11 +388,11 @@ PlotEnrichment <- function(ClusterTable="",
 # Nobt IPR
 for ( i in as.numeric(gsub("\\D",
                            "",
-                           list.files(path="DEGAnalysis/Pfam/",
-                                      pattern="^Nobt_Cluster_*")))) {
-  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/Nobt_Cluster",i,".txt"),
+                           list.files(path="DEGAnalysis/Pfam/Lists",
+                                      pattern="^Nobt_IPR_Cluster_*")))) {
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/Lists/Nobt_IPR_Cluster_",i,".txt"),
                  Title=paste0("Tobacco Cluster ",i))
-  ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_Nobt_Cluster",i,"_IPR_Enrichment.pdf"),
+  ggsave(filename=paste0("DEGAnalysis/Pfam/Plots/Nobt_IPR_Cluster_",i,".pdf"),
          width=12,
          height=8)
 }
@@ -415,14 +415,14 @@ for ( i in as.numeric(gsub("\\D",
 # Slyc IH IPR
 for ( i in as.numeric(gsub("\\D",
                            "",
-                           list.files(path="DEGAnalysis/Pfam/",
-                                      pattern="^SlycIH_Cluster_*")))) {
-  if(file.size(paste0("DEGAnalysis/Pfam/SlycIH_Cluster",i,".txt"))<10){
+                           list.files(path="DEGAnalysis/Pfam/Lists",
+                                      pattern="^Slyc_IPR_Cluster_*")))) {
+  if(file.size(paste0("DEGAnalysis/Pfam/Lists/Slyc_IPR_Cluster_",i,".txt"))<10){
     next
   }
-  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/SlycIH_Cluster",i,".txt"),
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/Lists/Slyc_IPR_Cluster_",i,".txt"),
                  Title=paste0("Tomato Cluster ",i))
-  ggsave(filename=paste0("DEGAnalysis/Pfam/Plot_SlycIH_Cluster",i,"_IPR_Enrichment.pdf"),
+  ggsave(filename=paste0("DEGAnalysis/Pfam/Plots/Slyc_IPR_Cluster_",i,".pdf"),
          width=12,
          height=8)
 }
