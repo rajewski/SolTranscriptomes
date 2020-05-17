@@ -1,0 +1,5 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Photosystem II protein D1 (IPR005867)	156.9	8e-06	4	4	Solyc00g500130.1.1,Solyc00g500200.1.1,Solyc00g500296.1.1,Solyc00g500329.1.1
+Photosynthetic reaction centre, L/M (IPR000484)	31.4	9e-03	4	20	Solyc00g500130.1.1,Solyc00g500200.1.1,Solyc00g500296.1.1,Solyc00g500329.1.1
+Uncharacterised protein family Ycf2 (IPR008543)	14.5	6e-03	6	65	Solyc00g500037.1.1,Solyc00g500046.1.1,Solyc00g500081.1.1,Solyc00g500128.1.1,Solyc00g500198.1.1,Solyc00g500327.1.1
+ATPase, AAA-type, core (IPR003959)	11	3e-04	9	128	Solyc00g500037.1.1,Solyc00g500046.1.1,Solyc00g500081.1.1,Solyc00g500128.1.1,Solyc00g500198.1.1,Solyc00g500327.1.1,Solyc02g081550.3.1,Solyc03g110900.4.1,Solyc09g010950.3.1

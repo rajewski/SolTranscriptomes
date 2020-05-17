@@ -1,0 +1,2 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+UDP-glucuronosyl/UDP-glucosyltransferase (IPR002213)	28.7	4e-03	5	167	Solyc01g105360.3.1,Solyc03g078780.3.1,Solyc04g008310.3.1,Solyc11g010740.3.1,Solyc11g010760.1.1
