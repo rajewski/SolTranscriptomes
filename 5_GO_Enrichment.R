@@ -33,7 +33,7 @@ GOEnrich <- function(gene2go="",
                 gene2GO=GO)
   # Do the enrichment test
   GOResults <- runTest(GOData,
-                       algorithm="parentchild",
+                       algorithm="weight01",
                        statistic = "fisher")
   # Summarize the test with a table
   GOTable <- GenTable(GOData,
@@ -49,7 +49,11 @@ GOPlot <- function(GenTable=X,
                    Title="") 
   {
   # Summarize with a prettier graph from https://www.biostars.org/p/350710/
+  GenTable$Fisher <- gsub("^< ", "", GenTable$Fisher) #remove too low pvals
   GoGraph <- GenTable[as.numeric(GenTable$Fisher)<0.05, c("GO.ID", "Term", "Fisher", "Significant")]
+  if(dim(GoGraph)[1]==0){
+    return(NULL) #stop empty graphs
+  }
   GoGraph$Term <- gsub(" [a-z]*\\.\\.\\.$", "", GoGraph$Term) #clean elipses
   GoGraph$Term <- gsub("\\.\\.\\.$", "", GoGraph$Term)
   GoGraph$Term <- paste(GoGraph$GO.ID, GoGraph$Term, sep=", ")
@@ -63,7 +67,7 @@ GOPlot <- function(GenTable=X,
     ylab("Log Fold Enrichment") +
     scale_fill_gradientn(colours = pal) +
     ggtitle(Title) +
-    scale_y_continuous(breaks = round(seq(0, max(-log10(GoGraph$Fisher)), by = 2), 1)) +
+    scale_y_continuous(breaks = round(seq(0, max(-log10(GoGraph$Fisher),2), by = 2), 1)) +
     theme_bw(base_size=24) +
     theme(
       panel.grid = element_blank(),
@@ -83,10 +87,22 @@ GOPlot <- function(GenTable=X,
   print(GoPlot)
 }
 
+for (i in as.numeric(gsub("\\D",
+                          "",
+                          list.files(path="DEGAnalysis/RNA-seq/Lists/",
+                                     pattern="^Solanum_Cluster_*")))) {
+Table <- GOEnrich(gene2go="DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                      GOIs=paste0("DEGAnalysis/RNA-seq/Lists/Solanum_Cluster_",i,".txt"))
+Plot <- GOPlot(Table, Title=paste0("Solanum spp.  Cluster ", i))
+if(is.null(Plot)) {
+  next
+}
+ggsave(paste0("DEGAnalysis/Pfam/Plots/Solanum_GO_Cluster_", i, ".pdf"), height=8, width=14)
+}
 
-SlycTable <- GOEnrich(gene2go="DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                      GOIs="DEGAnalysis/RNA-seq/SlycIH_3Stage_Cluster_1.txt")
-SlycPlot <- GOPlot(SlycTable, Title="Tomato Cluster 1")
+Table <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                  GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies_Cluster_1.txt")
+Plot <- GOPlot(OrthoTable, Title="DEGs by Fruit Type Cluster 1")
 
 
 
@@ -94,3 +110,21 @@ SlycPlot <- GOPlot(SlycTable, Title="Tomato Cluster 1")
 # Summarize the test with a hierarchical graph
 dev.off()
 showSigOfNodes(SlycGOData, score(SlycGOResults), firstSigNodes = 10, useInfo = "all")
+
+# Make a file of orthogroups to GO terms, via tomato
+Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
+                          sep="\t",
+                          stringsAsFactors = F,
+                          header=T)
+Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
+Orthogroups <- Orthogroups[,c(1,4)]
+Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
+GO <- read.table("DEGAnalysis/Pfam/Slyc.gene2go.tsv", stringsAsFactors = F)
+GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
+GO <- GO %>% 
+  distinct() %>% 
+  group_by(V1) %>% 
+  mutate(V2 = paste0(V2, collapse = "|")) %>%
+  distinct()
+Ortho2Go <- merge(GO, Orthogroups, by.x="V1", by.y="Solanum")[,c(3,2)]
+write.table(Ortho2Go, "DEGAnalysis/Pfam/Ortho.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
