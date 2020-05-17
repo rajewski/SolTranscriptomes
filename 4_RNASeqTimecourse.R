@@ -298,6 +298,37 @@ Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,
                           1,1,1,2,2,2,3,3,3,
                           1,1,1,2,2,2,3,3,3)
 
+
+# Orthogroup Venn Diagram -------------------------------------------------
+library("VennDiagram")
+library("wesanderson")
+Orthos <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
+                     sep="\t",
+                     stringsAsFactors = F,
+                     header=T)
+Orthos <- Orthos %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
+Set1 <- Orthos[,c(1:2)] %>% filter_all(all_vars(!grepl("^$",.)))
+Set2 <- Orthos[,c(1,3)] %>% filter_all(all_vars(!grepl("^$",.)))
+Set3 <- Orthos[,c(1,4)] %>% filter_all(all_vars(!grepl("^$",.)))
+venn.diagram(
+  x = list(Set1[,1], Set2[,1], Set3[,1]),
+  category.names = c("Arabidopsis", "Nicotiana", "Solanum"),
+  filename = "Figures/SingleCopyOrthogroups.png",
+  imagetype = "png",
+  main="Shared Single-Copy Orthogenes",
+  cat.fontface="italic",
+  cat.fontfamily="sans",
+  main.fontfamily = "sans",
+  main.fontface = "bold",
+  fontfamily="sans",
+  scaled=T,
+  euler.d=T,
+  output=F,
+  lwd=2,
+  lty="blank",
+  fill=wes_palette("GrandBudapest2", 3, "continuous")
+)
+
 # Design and DE Testing ----------------------------------------------------
 tryCatch(DDS_TAIR <- readRDS("DEGAnalysis/RNA-seq/DDS_TAIR.rds"),
          error=function(e){
@@ -373,7 +404,7 @@ tryCatch(DDS_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_DE
          })
 
 # Play around with individual genes ---------------------------------------
-Exampledds <- AllOrthoDEGByFruitDDS #assign one dds as the example to streamline code
+Exampledds <- DDS_Slyc #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
@@ -381,7 +412,7 @@ head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for sp
 topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
 colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
 colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
-plotCounts(Exampledds, gene="OG0012331", intgroup=c("Fruit", "Stage"), normalized = T) #plot best fitting gene
+plotCounts(Exampledds, gene=topGene, intgroup=c("DAP"), normalized = T) #plot best fitting gene
 
 # Get a set of FUL genes for each species. Only use one of these
 FULgenes<-c(FUL.1="AT5G60910.1",
@@ -403,7 +434,7 @@ FULgenes<-c(euFULI="OG0003276",
             euFULII="OG0008754")
 # Plot FUL Genes
 for (i in 1:length(FULgenes)) {
-  pdf(file=paste0("DEGAnalysis/RNA-seq/Plot_NobtOrtho_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
+  pdf(file=paste0("DEGAnalysis/RNA-seq/Plots/Slyc_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
       width=6,
       height=4)
   plotCounts(Exampledds,
@@ -494,12 +525,12 @@ tryCatch(Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_All
 
 
 # Plot Cluster Profiles ---------------------------------------------------
-ClusterforPlotting <- Cluster_
+ClusterforPlotting <- Cluster_Slyc_3Stage
 PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
                              time="DAP",
                              boxes=T,
                              points=F,
-                             #color="Fruit",
+                             #color="Species",
                              lines=F
                              )
 PlotCluster + theme_minimal() +
@@ -508,7 +539,7 @@ PlotCluster + theme_minimal() +
         legend.position = "none",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
-ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_TAIR_3Stage.pdf",
+ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_Slyc_3Stage.pdf",
        width=11,
        height=7)
 
@@ -518,10 +549,10 @@ ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_TAIR_3Stage.pdf",
 # FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
-X <- split(Cluster_Slyc$df, Cluster_Slyc$df$cluster)
+X <- split(Cluster_AllOrtho_DEGBySpecies$df, Cluster_AllOrtho_DEGBySpecies$df$cluster)
 for (i in 1:length(X)) {
   write.table(row.names(X[[i]]), 
-              file=paste0("DEGAnalysis/RNA-seq/Lists/Slyc_Cluster_", max(X[[i]]$cluster), ".txt"),
+              file=paste0("DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies_Cluster_", max(X[[i]]$cluster), ".txt"),
               row.names = FALSE,
               quote = FALSE,
               col.names = FALSE)
