@@ -64,9 +64,6 @@ PfamEnrichment <- function(AllGenesFile = "",
   significant_indices = adjusted_p$index[adjusted_p$adjp[,2] < p_cut_off]
   if (length(significant_indices) == 0 ) {
     warning("No significantly enriched domains in this group. Skipping")
-    if (WriteToFile){
-        write.table(NULL, file = output_file, sep = "\t", quote=FALSE, row.names = FALSE)
-    }
     return(NULL)
   }
   significant_enrichments = enrichment_vector[significant_indices] 
@@ -101,54 +98,104 @@ PfamEnrichment <- function(AllGenesFile = "",
 # Work through the Slyc IH data
 for ( i in as.numeric(gsub("\\D",
                            "",
-                           list.files(path="DEGAnalysis/RNA-seq/",
-                                      pattern="^SlycIH_Cluster_*")))) {
+                           list.files(path="DEGAnalysis/RNA-seq/Lists/",
+                                      pattern="^Slyc_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycIH_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/SlycIH_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/Slyc_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/Slyc_IPR_Cluster_", i, ".txt"))
 }
 
-# Work through the Slyc SRA data
+# Work through the Spimp IH data
 for ( i in as.numeric(gsub("\\D",
                            "",
-                           list.files(path="DEGAnalysis/RNA-seq/",
-                                      pattern="^SlycSRA_Cluster_*")))) {
+                           list.files(path="DEGAnalysis/RNA-seq/Lists/",
+                                      pattern="^Spimp_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/SlycSRA_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/SlycSRA_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/Spimp_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/Spimp_IPR_Cluster_", i, ".txt"))
 }
+
+# Work through the Spimp vs Slyc interaction data
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/RNA-seq/Lists/",
+                                      pattern="^Solanum_Cluster_*")))) {
+  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
+                 AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
+                 IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
+                 ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/Solanum_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/Solanum_IPR_Cluster_", i, ".txt"))
+}
+
 
 # Work through the TAIR data
 for ( i in as.numeric(gsub("\\D",
                            "",
-                           list.files(path="DEGAnalysis/RNA-seq/",
+                           list.files(path="DEGAnalysis/RNA-seq/Lists/",
                                       pattern="^TAIR_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/TAIR10.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/TAIR10.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/TAIR10.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/TAIR10.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/TAIR_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/TAIR_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/TAIR_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/TAIR_IPR_Cluster_", i, ".txt"))
 }
 
 # And for Nobt
 for ( i in as.numeric(gsub("\\D",
                       "",
-                      list.files(path="DEGAnalysis/RNA-seq/",
+                      list.files(path="DEGAnalysis/RNA-seq/Lists/",
                                  pattern="^Nobt_Cluster_*")))) {
   PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Nobt.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Nobt.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Nobt.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Nobt.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Nobt_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/Nobt_Cluster", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/Nobt_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/Nobt_IPR_Cluster_", i, ".txt"))
 }
+
+# How to deal with the orthogroup data?
+library("tidyr")
+library("tibble")
+library("dplyr")
+Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
+                          sep="\t",
+                          stringsAsFactors = F,
+                          header=T)
+Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
+Orthogroups <- Orthogroups[,c(1,4)]
+Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
+write.table(Orthogroups[,1], "DEGAnalysis/Pfam/Ortho.protein.names.txt", sep="\t", quote=F, row.names = F, col.names = F) #List the gene universe in orthogene format
+# Just map the orthogroups to Slyc IPR hits because it is the most complete
+SlycIPR <- read.table(file="DEGAnalysis/Pfam/Slyc.gene2ipr.tsv")
+OrthoIPR <- merge(SlycIPR, Orthogroups, by.x="V1", by.y="Solanum")[,c(3,2)]
+write.table(OrthoIPR, "DEGAnalysis/Pfam/Ortho.gene2ipr.tsv", sep="\t", quote=F, row.names = F, col.names = F)
+SlycNoIPR <- read.table(file="DEGAnalysis/Pfam/Slyc.nopfam.tsv")
+OrthoNoIPR <- merge(SlycNoIPR, Orthogroups, by.x="V1", by.y="Solanum")
+write.table(OrthoNoIPR$Orthogroup, "DEGAnalysis/Pfam/Ortho.nopfam.tsv", quote=F, row.names = F, col.names = F)
+
+# And for Orthos
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/RNA-seq/Lists/",
+                                      pattern="^AllOrtho_DEGBySpecies_Cluster_*")))) {
+  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Ortho.protein.names.txt",
+                 AllIPRFile = "DEGAnalysis/Pfam/Ortho.gene2ipr.tsv",
+                 IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
+                 ExcludedGenesFile = "DEGAnalysis/Pfam/Ortho.nopfam.tsv",
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/AllOrtho_DEGBySpecies_IPR_Cluster_", i, ".txt"))
+}
+
+
+
 
 
 # ChIP hits on RNA seq clusters ---------------------------------------------------
