@@ -39,7 +39,7 @@ if [ "$SLURM_ARRAY_TASK_ID" == 0 ]; then
   # Get protein fasta
   if [ ! -e ${AllExternal[$SLURM_ARRAY_TASK_ID]}.proteins.fa ]; then
       echo Downloading ${AllExternal[$SLURM_ARRAY_TASK_ID]} proteins...
-      curl https://www.arabidopsis.org/download_files/Proteins/TAIR10_protein_lists/TAIR10_pep_20101214 > ${AllExternal[$SLURM_ARRAY_TASK_ID]}.proteins.fa
+      curl https://www.arabidopsis.org/download_files/Proteins/TAIR10_protein_lists/TAIR10_pep_20110103_representative_gene_model > ${AllExternal[$SLURM_ARRAY_TASK_ID]}.proteins.fa
       echo Done.
   else
       echo ${AllExternal[$SLURM_ARRAY_TASK_ID]} proteins already present.
