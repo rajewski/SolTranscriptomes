@@ -165,14 +165,15 @@ for ( i in as.numeric(gsub("\\D",
 library("tidyr")
 library("tibble")
 library("dplyr")
-Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
+Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
                           sep="\t",
                           stringsAsFactors = F,
                           header=T)
 Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
-Orthogroups <- Orthogroups[,c(1,4)]
+Orthogroups <- Orthogroups[,c(1,4)] 
 Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
 write.table(Orthogroups[,1], "DEGAnalysis/Pfam/Ortho.protein.names.txt", sep="\t", quote=F, row.names = F, col.names = F) #List the gene universe in orthogene format
+
 # Just map the orthogroups to Slyc IPR hits because it is the most complete
 SlycIPR <- read.table(file="DEGAnalysis/Pfam/Slyc.gene2ipr.tsv")
 OrthoIPR <- merge(SlycIPR, Orthogroups, by.x="V1", by.y="Solanum")[,c(3,2)]
@@ -180,6 +181,23 @@ write.table(OrthoIPR, "DEGAnalysis/Pfam/Ortho.gene2ipr.tsv", sep="\t", quote=F, 
 SlycNoIPR <- read.table(file="DEGAnalysis/Pfam/Slyc.nopfam.tsv")
 OrthoNoIPR <- merge(SlycNoIPR, Orthogroups, by.x="V1", by.y="Solanum")
 write.table(OrthoNoIPR$Orthogroup, "DEGAnalysis/Pfam/Ortho.nopfam.tsv", quote=F, row.names = F, col.names = F)
+
+# Map tdry fruited orthos to TAIR
+Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
+                          sep="\t",
+                          stringsAsFactors = F,
+                          header=T)
+Orthogroups <- Orthogroups[,1:3] 
+Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
+Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
+write.table(Orthogroups[,1], "DEGAnalysis/Pfam/DryOrtho.protein.names.txt", sep="\t", quote=F,row.names = F, col.names = F) 
+
+TAIRIPR <- read.table(file="DEGAnalysis/Pfam/TAIR10.gene2ipr.tsv")
+OrthoIPR <- merge(TAIRIPR, Orthogroups, by.x="V1", by.y="Arabidopsis")[,c(3,2)]
+write.table(OrthoIPR, "DEGAnalysis/Pfam/DryOrtho.gene2ipr.tsv", sep="\t", quote=F, row.names = F, col.names = F)
+TAIRNoIPR <- read.table(file="DEGAnalysis/Pfam/TAIR10.nopfam.tsv")
+OrthoNoIPR <- merge(TAIRNoIPR, Orthogroups, by.x="V1", by.y="Arabidopsis")
+write.table(OrthoNoIPR$Orthogroup, "DEGAnalysis/Pfam/DryOrtho.nopfam.tsv", quote=F, row.names = F, col.names = F)
 
 # And for Orthos
 for ( i in as.numeric(gsub("\\D",
@@ -194,6 +212,18 @@ for ( i in as.numeric(gsub("\\D",
                  OutputFile = paste0("DEGAnalysis/Pfam/Lists/AllOrtho_DEGBySpecies_IPR_Cluster_", i, ".txt"))
 }
 
+#For Dry orthos
+for ( i in as.numeric(gsub("\\D",
+                           "",
+                           list.files(path="DEGAnalysis/RNA-seq/Lists/",
+                                      pattern="^DryOrtho_Cluster_*")))) {
+  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/DryOrtho.protein.names.txt",
+                 AllIPRFile = "DEGAnalysis/Pfam/DryOrtho.gene2ipr.tsv",
+                 IPRDescFile = "DEGAnalysis/Pfam/TAIR10.ipr2desc.tsv",
+                 ExcludedGenesFile = "DEGAnalysis/Pfam/DryOrtho.nopfam.tsv",
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/DryOrtho_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/DryOrtho_IPR_Cluster_", i, ".txt"))
+}
 
 
 

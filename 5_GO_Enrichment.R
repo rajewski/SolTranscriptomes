@@ -90,18 +90,18 @@ GOPlot <- function(GenTable=X,
 for (i in as.numeric(gsub("\\D",
                           "",
                           list.files(path="DEGAnalysis/RNA-seq/Lists/",
-                                     pattern="^Solanum_Cluster_*")))) {
-Table <- GOEnrich(gene2go="DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                      GOIs=paste0("DEGAnalysis/RNA-seq/Lists/Solanum_Cluster_",i,".txt"))
-Plot <- GOPlot(Table, Title=paste0("Solanum spp.  Cluster ", i))
+                                     pattern="^DryOrtho_Cluster_*")))) {
+Table <- GOEnrich(gene2go="DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                      GOIs=paste0("DEGAnalysis/RNA-seq/Lists/DryOrtho_Cluster_",i,".txt"))
+Plot <- GOPlot(Table, Title=paste0("Dry Fruit Cluster ", i))
 if(is.null(Plot)) {
   next
 }
-ggsave(paste0("DEGAnalysis/Pfam/Plots/Solanum_GO_Cluster_", i, ".pdf"), height=8, width=14)
+ggsave(paste0("DEGAnalysis/Pfam/Plots/DryOrtho_GO_Cluster_", i, ".pdf"), height=8, width=14)
 }
 
 Table <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                  GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies_Cluster_1.txt")
+                  GOIs="DEGAnalysis/RNA-seq/Lists/DryOrtho_Cluster_1.txt")
 Plot <- GOPlot(OrthoTable, Title="DEGs by Fruit Type Cluster 1")
 
 
