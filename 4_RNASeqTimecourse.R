@@ -291,11 +291,15 @@ Expt_All_Ortho <- do.call(cbind, list(Expt_Nobt_Ortho,
                                       Expt_Slyc_Ortho,
                                       Expt_Spimp_Ortho,
                                       Expt_TAIR_Ortho))
+Expt_Dry_Ortho <- do.call(cbind, list(Expt_Nobt_Ortho,
+                                      Expt_TAIR_Ortho))
 #Add Stage variable to normalize DAP across species
 # I could do this in the metadata, but then I would have to recount everything and that would take forever
 Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,
                           1,1,1,2,2,2,3,3,3,
                           1,1,1,2,2,2,3,3,3,
+                          1,1,1,2,2,2,3,3,3)
+Expt_Dry_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,
                           1,1,1,2,2,2,3,3,3)
 
 
@@ -306,6 +310,7 @@ Orthos <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogro
                      sep="\t",
                      stringsAsFactors = F,
                      header=T)
+#Orthos <- Orthos[,1:3] #For just Dry Species
 Orthos <- Orthos %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
 Set1 <- Orthos[,c(1:2)] %>% filter_all(all_vars(!grepl("^$",.)))
 Set2 <- Orthos[,c(1,3)] %>% filter_all(all_vars(!grepl("^$",.)))
@@ -402,9 +407,19 @@ tryCatch(DDS_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_DE
            colnames(DDS_AllOrtho_DEGByFruit) <- NULL 
            saveRDS(DDS_AllOrtho_DEGByFruit, "DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGByFruit.rds")
          })
+# Test for DEGs in Dry Fruited only
+tryCatch(DDS_DryOrtho <- readRDS("DEGAnalysis/RNA-seq/DDS_DryOrtho.rds"),
+         error=function(e){
+           DDS_DryOrtho <- DESeqSpline(Expt_Dry_Ortho,
+                                       CaseCtlVar = "Species",
+                                       timeVar = "Stage")
+           # columns have duplicate names, which would be changed and mess up metadata mapping
+           colnames(DDS_DryOrtho) <- NULL 
+           saveRDS(DDS_DryOrtho, "DEGAnalysis/RNA-seq/DDS_DryOrtho.rds")
+         })
 
 # Play around with individual genes ---------------------------------------
-Exampledds <- DDS_Slyc #assign one dds as the example to streamline code
+Exampledds <- DDS_DryOrtho #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
@@ -412,7 +427,7 @@ head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for sp
 topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
 colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
 colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
-plotCounts(Exampledds, gene=topGene, intgroup=c("DAP"), normalized = T) #plot best fitting gene
+plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "Stage"), normalized = T) #plot best fitting gene
 
 # Get a set of FUL genes for each species. Only use one of these
 FULgenes<-c(FUL.1="AT5G60910.1",
@@ -523,23 +538,32 @@ tryCatch(Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_All
            saveRDS(Cluster_AllOrtho_DEGByFruit, "DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGByFruit.rds")
          })
 
+tryCatch(Cluster_DryOrtho <- readRDS("DEGAnalysis/RNA-seq/Cluster_DryOrtho.rds"),
+         error=function(e){
+           Cluster_DryOrtho <- DESeqCluster(DDS_DryOrtho,
+                                            numGenes = "all",
+                                            CaseCtlVar = "Species",
+                                            timeVar = "Stage")
+           saveRDS(Cluster_DryOrtho, "DEGAnalysis/RNA-seq/Cluster_DryOrtho.rds")
+         })
+
 
 # Plot Cluster Profiles ---------------------------------------------------
-ClusterforPlotting <- Cluster_Slyc_3Stage
+ClusterforPlotting <- Cluster_DryOrtho
 PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
-                             time="DAP",
+                             time="Stage",
                              boxes=T,
                              points=F,
-                             #color="Species",
+                             color="Species",
                              lines=F
                              )
 PlotCluster + theme_minimal() +
-  theme(#legend.position = c(.8, -.03),
+  theme(legend.position = c(.8, 0.0),
         legend.justification = c(1, 0),
-        legend.position = "none",
+        #legend.position = "none",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
-ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_Slyc_3Stage.pdf",
+ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_DryOrtho.pdf",
        width=11,
        height=7)
 
@@ -549,10 +573,10 @@ ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_Slyc_3Stage.pdf",
 # FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
-X <- split(Cluster_AllOrtho_DEGBySpecies$df, Cluster_AllOrtho_DEGBySpecies$df$cluster)
+X <- split(Cluster_DryOrtho$df, Cluster_DryOrtho$df$cluster)
 for (i in 1:length(X)) {
   write.table(row.names(X[[i]]), 
-              file=paste0("DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies_Cluster_", max(X[[i]]$cluster), ".txt"),
+              file=paste0("DEGAnalysis/RNA-seq/Lists/DryOrtho_Cluster_", max(X[[i]]$cluster), ".txt"),
               row.names = FALSE,
               quote = FALSE,
               col.names = FALSE)
