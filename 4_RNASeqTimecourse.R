@@ -271,7 +271,7 @@ tryCatch(Expt_Spimp <- readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds"),
 Expt_Spimp_3Stage <- subset(Expt_Spimp, select=DAP<35)
 #Combine Spimp and Slyc to look for genes that are different between them
 Expt_Solanum <- do.call(cbind, list(Expt_Slyc, Expt_Spimp))
-Expt_Solanum_3Stage <- do.call(cbind, list(Expt_Slyc_3Stage, Expt_Spimp_3Stage))
+#Expt_Solanum_3Stage <- do.call(cbind, list(Expt_Slyc_3Stage, Expt_Spimp_3Stage))
 
 # Orthogroups -------------------------------------------------------------
 # This section is an attempt to do a cross-species comparison using the orthogroups assigned to the 4 species by Orthofinder.
@@ -316,23 +316,29 @@ Set1 <- Orthos[,c(1:2)] %>% filter_all(all_vars(!grepl("^$",.)))
 Set2 <- Orthos[,c(1,3)] %>% filter_all(all_vars(!grepl("^$",.)))
 Set3 <- Orthos[,c(1,4)] %>% filter_all(all_vars(!grepl("^$",.)))
 venn.diagram(
+  #x = list(Set1[,1], Set2[,1]),
   x = list(Set1[,1], Set2[,1], Set3[,1]),
+  #category.names = c("  Arabidopsis", "Nicotiana  "),
   category.names = c("Arabidopsis", "Nicotiana", "Solanum"),
   filename = "Figures/SingleCopyOrthogroups.png",
   imagetype = "png",
   main="Shared Single-Copy Orthogenes",
-  cat.fontface="italic",
-  cat.fontfamily="sans",
   main.fontfamily = "sans",
   main.fontface = "bold",
+  #sub="Dry-Fruited Species",
+  #sub.fontfamily = "sans",
+  #sub.fontface = "plain",
+  cat.fontface="italic",
+  cat.fontfamily="sans",
   fontfamily="sans",
   scaled=T,
   euler.d=T,
   output=F,
   lwd=2,
-  lty="blank",
-  fill=wes_palette("GrandBudapest2", 3, "continuous")
-)
+  lty=1,
+  #fill=wes_palette("Zissou1", 3, "continuous"))
+  fill=wes_palette("Zissou1", 3, "continuous")[1:2])
+
 
 # Design and DE Testing ----------------------------------------------------
 tryCatch(DDS_TAIR <- readRDS("DEGAnalysis/RNA-seq/DDS_TAIR.rds"),
@@ -381,6 +387,10 @@ tryCatch(DDS_Solanum <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum.rds"),
                                      CaseCtlVar = "Species")
            saveRDS(DDS_Solanum, "DEGAnalysis/RNA-seq/DDS_Solanum.rds")
          })
+DDS_Solanum_3DF <- DESeqSpline(se=Expt_Solanum,
+                              CaseCtlVar = "Species",
+                              SetDF = 3)
+saveRDS(DDS_Solanum_3DF, "DEGAnalysis/RNA-seq/DDS_Solanum_3DF.rds")
 tryCatch(DDS_Solanum_3Stage <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3Stage.rds"),
          error=function(e){
            DDS_Solanum_3Stage <- DESeqSpline(se=Expt_Solanum_3Stage,
