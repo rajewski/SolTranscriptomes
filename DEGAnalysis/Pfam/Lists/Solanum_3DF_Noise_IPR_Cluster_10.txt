@@ -1,0 +1,6 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Beta tubulin (IPR002453)	27	1e-02	4	12	Solyc04g081490.3.1,Solyc10g080940.3.1,Solyc10g085020.3.1,Solyc10g086760.2.1
+Tubulin (IPR000217)	23.9	4e-03	5	17	Solyc04g081490.3.1,Solyc08g006890.3.1,Solyc10g080940.3.1,Solyc10g085020.3.1,Solyc10g086760.2.1
+Tubulin/FtsZ, 2-layer sandwich domain (IPR018316)	23.9	4e-03	5	17	Solyc04g081490.3.1,Solyc08g006890.3.1,Solyc10g080940.3.1,Solyc10g085020.3.1,Solyc10g086760.2.1
+Tubulin/FtsZ, GTPase domain (IPR003008)	18.4	1e-02	5	22	Solyc04g081490.3.1,Solyc08g006890.3.1,Solyc10g080940.3.1,Solyc10g085020.3.1,Solyc10g086760.2.1
+UDP-glucuronosyl/UDP-glucosyltransferase (IPR002213)	4.9	4e-02	10	167	Solyc04g008330.1.1,Solyc04g074350.3.1,Solyc05g053890.3.1,Solyc07g043150.1.1,Solyc07g043500.1.1,Solyc10g083440.2.1,Solyc11g010790.1.1,Solyc11g010810.1.1,Solyc12g096870.1.1,Solyc12g098600.1.1

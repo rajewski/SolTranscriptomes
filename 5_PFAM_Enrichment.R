@@ -126,12 +126,13 @@ for ( i in as.numeric(gsub("\\D",
                            "",
                            list.files(path="DEGAnalysis/RNA-seq/Lists/",
                                       pattern="^Solanum_Cluster_*")))) {
-  PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
+for (i in c(1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21)){
+    PfamEnrichment(AllGenesFile = "DEGAnalysis/Pfam/Slyc.protein.names.txt",
                  AllIPRFile = "DEGAnalysis/Pfam/Slyc.gene2ipr.tsv",
                  IPRDescFile = "DEGAnalysis/Pfam/Slyc.ipr2desc.tsv",
                  ExcludedGenesFile = "DEGAnalysis/Pfam/Slyc.nopfam.tsv",
-                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/Solanum_Cluster_", i, ".txt"),
-                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/Solanum_IPR_Cluster_", i, ".txt"))
+                 TopGenesFile = paste0("DEGAnalysis/RNA-seq/Lists/Solanum_3DF_Noise_Cluster_", i, ".txt"),
+                 OutputFile = paste0("DEGAnalysis/Pfam/Lists/Solanum_3DF_Noise_IPR_Cluster_", i, ".txt"))
 }
 
 
@@ -472,5 +473,13 @@ for ( i in as.numeric(gsub("\\D",
          height=8)
 }
 
+# Solanum IPR
+for (i in c(1,5,7,8,10,12)) {
+  PlotEnrichment(ClusterTable = paste0("DEGAnalysis/Pfam/Lists/Solanum_3DF_Noise_IPR_Cluster_",i,".txt"),
+                 Title=paste0("Solanum Cluster ",i))
+ggsave(filename=paste0("DEGAnalysis/Pfam/Plots/Solanum_3DF_Noise_Cluster_",i,"_IPR_Enrichment.pdf"),
+         width=12,
+         height=8)
+}
 
 

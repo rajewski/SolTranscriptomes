@@ -1,0 +1,4 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Peptidase S8, subtilisin-related (IPR015500)	26	5e-02	4	77	Solyc02g092680.1.1,Solyc08g079870.3.1,Solyc10g084320.3.1,Solyc10g084560.3.1
+Peptidase S8 propeptide/proteinase inhibitor I9 (IPR010259)	25.3	5e-02	4	79	Solyc02g092680.1.1,Solyc08g079870.3.1,Solyc10g084320.3.1,Solyc10g084560.3.1
+Peptidase S8/S53 domain (IPR000209)	22.7	5e-02	4	88	Solyc02g092680.1.1,Solyc08g079870.3.1,Solyc10g084320.3.1,Solyc10g084560.3.1

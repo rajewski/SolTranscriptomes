@@ -1,0 +1,4 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Aspartate/other aminotransferase (IPR000796)	39.7	1e-03	4	4	Solyc07g032740.4.1,Solyc07g055210.3.1,Solyc08g041870.3.1,Solyc08g068330.3.1
+Heat shock protein 70 family (IPR013126)	9.9	4e-02	6	24	Solyc01g106210.3.1,Solyc03g117630.1.1,Solyc09g075950.1.1,Solyc11g020040.2.1,Solyc11g066100.2.1,Solyc12g043110.2.1
+Alpha crystallin/Hsp20 domain (IPR002068)	9.3	9e-05	11	47	Solyc02g093600.3.1,Solyc03g113930.3.1,Solyc04g014480.3.1,Solyc05g014280.4.1,Solyc06g076570.4.1,Solyc08g062340.3.1,Solyc09g011710.4.1,Solyc09g015000.4.1,Solyc09g015020.1.1,Solyc11g020330.1.1,Solyc12g042830.3.1

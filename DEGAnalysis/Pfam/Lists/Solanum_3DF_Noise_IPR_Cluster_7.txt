@@ -1,0 +1,13 @@
+Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
+Glucose-6-phosphate dehydrogenase (IPR001282)	32.9	2e-02	3	4	Solyc01g100960.3.1,Solyc02g093830.4.1,Solyc05g015950.3.1
+Protein CHAPERONE-LIKE PROTEIN OF POR1-like (IPR021788)	32.9	2e-02	3	4	Solyc01g111750.4.1,Solyc02g062350.3.1,Solyc03g114470.2.1
+Glucose-6-phosphate dehydrogenase, NAD-binding (IPR022674)	32.9	2e-02	3	4	Solyc01g100960.3.1,Solyc02g093830.4.1,Solyc05g015950.3.1
+Glucose-6-phosphate dehydrogenase, C-terminal (IPR022675)	32.9	2e-02	3	4	Solyc01g100960.3.1,Solyc02g093830.4.1,Solyc05g015950.3.1
+RNA polymerase Rpb1, domain 4 (IPR007083)	24.4	3e-03	5	9	Solyc00g500052.1.1,Solyc00g500135.1.1,Solyc00g500205.1.1,Solyc00g500290.1.1,Solyc10g080350.3.1
+ClpA/B family (IPR001270)	21.9	2e-02	4	8	Solyc03g117950.3.1,Solyc03g118340.3.1,Solyc09g055230.3.1,Solyc12g042060.3.1
+UVR domain (IPR001943)	21.9	9e-02	3	6	Solyc03g118340.3.1,Solyc06g071430.3.1,Solyc12g042060.3.1
+RNA polymerase Rpb1, domain 5 (IPR007081)	16.9	1e-02	5	13	Solyc00g500052.1.1,Solyc00g500135.1.1,Solyc00g500205.1.1,Solyc00g500290.1.1,Solyc10g080350.3.1
+RNA polymerase Rpb1, domain 1 (IPR007080)	16	4e-02	4	11	Solyc00g500052.1.1,Solyc00g500135.1.1,Solyc00g500205.1.1,Solyc10g080350.3.1
+RNA polymerase, alpha subunit (IPR000722)	14.6	5e-02	4	12	Solyc00g500052.1.1,Solyc00g500135.1.1,Solyc00g500205.1.1,Solyc10g080350.3.1
+Protein TIC214 (IPR008896)	9.8	3e-03	8	36	Solyc00g500040.1.1,Solyc00g500043.1.1,Solyc00g500084.1.1,Solyc00g500088.1.1,Solyc00g500126.1.1,Solyc00g500196.1.1,Solyc00g500278.1.1,Solyc00g500324.1.1
+DEAD/DEAH box helicase domain (IPR011545)	5	2e-02	10	88	Solyc01g006970.4.1,Solyc05g006530.4.1,Solyc05g047520.4.1,Solyc06g069480.3.1,Solyc08g042050.3.1,Solyc08g076200.4.1,Solyc11g033280.2.1,Solyc12g006320.3.1,Solyc12g044860.3.1,Solyc12g056740.2.1
