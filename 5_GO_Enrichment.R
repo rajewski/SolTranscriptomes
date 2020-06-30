@@ -91,13 +91,13 @@ for (i in as.numeric(gsub("\\D",
                           "",
                           list.files(path="DEGAnalysis/RNA-seq/Lists/",
                                      pattern="^DryOrtho_Cluster_*")))) {
-Table <- GOEnrich(gene2go="DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                      GOIs=paste0("DEGAnalysis/RNA-seq/Lists/DryOrtho_Cluster_",i,".txt"))
-Plot <- GOPlot(Table, Title=paste0("Dry Fruit Cluster ", i))
+Table <- GOEnrich(gene2go="DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                      GOIs=paste0("DEGAnalysis/RNA-seq/Lists/Solanum_3DF_Noise_Cluster_",i,".txt"))
+Plot <- GOPlot(Table, Title=paste0("Solanum Conserved Cluster ", i))
 if(is.null(Plot)) {
   next
 }
-ggsave(paste0("DEGAnalysis/Pfam/Plots/DryOrtho_GO_Cluster_", i, ".pdf"), height=8, width=14)
+ggsave(paste0("DEGAnalysis/Pfam/Plots/Solanum_3DF_Noise_GO_Cluster_", i, ".pdf"), height=8, width=14)
 }
 
 Table <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",

@@ -85,7 +85,8 @@ DESeqCluster <- function(dds=dds,
                          numGenes=c("1000", "3000", "all"),
                          FDRthreshold=0.01,
                          timeVar="DAP",
-                         CaseCtlVar="Genotype"){
+                         CaseCtlVar="Genotype",
+                         Diagnostic=FALSE){
   #this section is HEAVILY borrowed from:
   #https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   numGenes=match.arg(numGenes)
@@ -96,10 +97,12 @@ DESeqCluster <- function(dds=dds,
     rld <- rlog(dds)
   }
   message("Done.")
-  message("Now for some diagnostic plots:")
-  plot( assay(rld)[ , 1:2], col=rgb(0,0,0,.2), pch=16, cex=0.3, )
-  plot <- plotPCA(rld, intgroup = c(CaseCtlVar, timeVar))
-  print(plot)
+  if (Diagnostic) {
+    message("Now for some diagnostic plots:")
+    plot( assay(rld)[ , 1:2], col=rgb(0,0,0,.2), pch=16, cex=0.3, )
+    plot <- plotPCA(rld, intgroup = c(CaseCtlVar, timeVar))
+    print(plot)
+  }
   message("Filtering DEGs to FDR threshold less than ", FDRthreshold)
   res_LRT <- results(dds)
   sig_res <- res_LRT %>%
@@ -299,6 +302,7 @@ Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,
                           1,1,1,2,2,2,3,3,3,
                           1,1,1,2,2,2,3,3,3,
                           1,1,1,2,2,2,3,3,3)
+saveRDS(Expt_All_Ortho, file="DEGAnalysis/RNA-seq/Expt_All_Ortho.rds")
 Expt_Dry_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,
                           1,1,1,2,2,2,3,3,3)
 
@@ -429,15 +433,15 @@ tryCatch(DDS_DryOrtho <- readRDS("DEGAnalysis/RNA-seq/DDS_DryOrtho.rds"),
          })
 
 # Play around with individual genes ---------------------------------------
-Exampledds <- DDS_DryOrtho #assign one dds as the example to streamline code
+Exampledds <- DDS_Solanum_3DF #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
 #Examine an individual Gene
 topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
 colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
-colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
-plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "Stage"), normalized = T) #plot best fitting gene
+#colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
+plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "DAP"), normalized = T) #plot best fitting gene
 
 # Get a set of FUL genes for each species. Only use one of these
 FULgenes<-c(FUL.1="AT5G60910.1",
@@ -531,6 +535,13 @@ tryCatch(Cluster_Solanum_3Stage <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_
                                           CaseCtlVar = "Species")
            saveRDS(Cluster_Solanum_3Stage, "DEGAnalysis/RNA-seq/Cluster_Solanum_3Stage.rds")
          })
+tryCatch(Cluster_Solanum_3DF <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF.rds"),
+         error=function(e){
+           Cluster_Solanum_3DF <- DESeqCluster(DDS_Solanum_3DF,
+                                                  numGenes = "all",
+                                                  CaseCtlVar = "Species")
+           saveRDS(Cluster_Solanum_3DF, "DEGAnalysis/RNA-seq/Cluster_Solanum_3DF.rds")
+         })
 tryCatch(Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds"),
          error=function(e){
            Cluster_AllOrtho_DEGBySpecies <- DESeqCluster(DDS_AllOrtho_DEGBySpecies,
@@ -559,21 +570,21 @@ tryCatch(Cluster_DryOrtho <- readRDS("DEGAnalysis/RNA-seq/Cluster_DryOrtho.rds")
 
 
 # Plot Cluster Profiles ---------------------------------------------------
-ClusterforPlotting <- Cluster_DryOrtho
+ClusterforPlotting <- Cluster_AllOrtho_Noise
 PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
                              time="Stage",
                              boxes=T,
                              points=F,
-                             color="Species",
+                             #color="Species",
                              lines=F
                              )
 PlotCluster + theme_minimal() +
-  theme(legend.position = c(.8, 0.0),
-        legend.justification = c(1, 0),
-        #legend.position = "none",
+  theme(#legend.position = c(1, 0.0),
+        #legend.justification = c(1, 0),
+        legend.position = "none",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
-ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_DryOrtho.pdf",
+ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Noise.pdf",
        width=11,
        height=7)
 
@@ -583,11 +594,31 @@ ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_DryOrtho.pdf",
 # FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
-X <- split(Cluster_DryOrtho$df, Cluster_DryOrtho$df$cluster)
+X <- split(Cluster_Solanum_3DF_Noise$df, Cluster_Solanum_3DF_Noise$df$cluster)
 for (i in 1:length(X)) {
   write.table(row.names(X[[i]]), 
-              file=paste0("DEGAnalysis/RNA-seq/Lists/DryOrtho_Cluster_", max(X[[i]]$cluster), ".txt"),
+              file=paste0("DEGAnalysis/RNA-seq/Lists/Solanum_3DF_Noise_Cluster_", max(X[[i]]$cluster), ".txt"),
               row.names = FALSE,
               quote = FALSE,
               col.names = FALSE)
 }
+
+
+# NonDE Genes -------------------------------------------------------------
+
+# I want to look at the genes that show the same expression pattern in some interspecific comparison. I'll start with SP and AC together using the vsNoise setting
+DDS_Solanum_3DF_Noise <- DESeqSpline(Expt_Solanum,
+                                    vsNoise = TRUE,
+                                    SetDF = 3)
+Cluster_Solanum_3DF_Noise <- DESeqCluster(DDS_Solanum_3DF_Noise,
+                                    numGenes = "all")
+saveRDS(Cluster_Solanum_3DF_Noise, "DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
+
+# Do it with the pre-ripening data set
+DDS_AllOrtho_Noise <- DESeqSpline(Expt_All_Ortho,
+                                  vsNoise = TRUE)
+colnames(DDS_AllOrtho_Noise) <- NULL 
+saveRDS(DDS_AllOrtho_Noise, "DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.rds")
+Cluster_AllOrtho_Noise <- DESeqCluster(DDS_AllOrtho_Noise,
+                                       numGenes = "all",
+                                       timeVar = "Stage")
