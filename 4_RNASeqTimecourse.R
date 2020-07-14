@@ -306,44 +306,6 @@ saveRDS(Expt_All_Ortho, file="DEGAnalysis/RNA-seq/Expt_All_Ortho.rds")
 Expt_Dry_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,
                           1,1,1,2,2,2,3,3,3)
 
-
-# Orthogroup Venn Diagram -------------------------------------------------
-library("VennDiagram")
-library("wesanderson")
-Orthos <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
-                     sep="\t",
-                     stringsAsFactors = F,
-                     header=T)
-#Orthos <- Orthos[,1:3] #For just Dry Species
-Orthos <- Orthos %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
-Set1 <- Orthos[,c(1:2)] %>% filter_all(all_vars(!grepl("^$",.)))
-Set2 <- Orthos[,c(1,3)] %>% filter_all(all_vars(!grepl("^$",.)))
-Set3 <- Orthos[,c(1,4)] %>% filter_all(all_vars(!grepl("^$",.)))
-venn.diagram(
-  #x = list(Set1[,1], Set2[,1]),
-  x = list(Set1[,1], Set2[,1], Set3[,1]),
-  #category.names = c("  Arabidopsis", "Nicotiana  "),
-  category.names = c("Arabidopsis", "Nicotiana", "Solanum"),
-  filename = "Figures/SingleCopyOrthogroups.png",
-  imagetype = "png",
-  main="Shared Single-Copy Orthogenes",
-  main.fontfamily = "sans",
-  main.fontface = "bold",
-  #sub="Dry-Fruited Species",
-  #sub.fontfamily = "sans",
-  #sub.fontface = "plain",
-  cat.fontface="italic",
-  cat.fontfamily="sans",
-  fontfamily="sans",
-  scaled=T,
-  euler.d=T,
-  output=F,
-  lwd=2,
-  lty=1,
-  #fill=wes_palette("Zissou1", 3, "continuous"))
-  fill=wes_palette("Zissou1", 3, "continuous")[1:2])
-
-
 # Design and DE Testing ----------------------------------------------------
 tryCatch(DDS_TAIR <- readRDS("DEGAnalysis/RNA-seq/DDS_TAIR.rds"),
          error=function(e){
@@ -433,7 +395,7 @@ tryCatch(DDS_DryOrtho <- readRDS("DEGAnalysis/RNA-seq/DDS_DryOrtho.rds"),
          })
 
 # Play around with individual genes ---------------------------------------
-Exampledds <- DDS_Solanum_3DF #assign one dds as the example to streamline code
+Exampledds <- DDS_AllOrtho_DEGByFruit #assign one dds as the example to streamline code
 ExampleRes <- results(Exampledds) #get results
 ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
 head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
@@ -571,7 +533,7 @@ tryCatch(Cluster_DryOrtho <- readRDS("DEGAnalysis/RNA-seq/Cluster_DryOrtho.rds")
 
 # Plot Cluster Profiles ---------------------------------------------------
 ClusterforPlotting <- Cluster_AllOrtho_Noise
-PlotCluster <-degPlotCluster(ClusterforPlotting$normalized,
+PlotCluster <-degPlotCluster(ClusterforPlotting$normalized[ClusterforPlotting$normalized$cluster==2,],
                              time="Stage",
                              boxes=T,
                              points=F,
@@ -594,10 +556,10 @@ ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Noise.pdf"
 # FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
-X <- split(Cluster_Solanum_3DF_Noise$df, Cluster_Solanum_3DF_Noise$df$cluster)
+X <- split(Cluster_AllOrtho_Noise$df, Cluster_AllOrtho_Noise$df$cluster)
 for (i in 1:length(X)) {
   write.table(row.names(X[[i]]), 
-              file=paste0("DEGAnalysis/RNA-seq/Lists/Solanum_3DF_Noise_Cluster_", max(X[[i]]$cluster), ".txt"),
+              file=paste0("DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise_Cluster_", max(X[[i]]$cluster), ".txt"),
               row.names = FALSE,
               quote = FALSE,
               col.names = FALSE)
@@ -608,11 +570,15 @@ for (i in 1:length(X)) {
 
 # I want to look at the genes that show the same expression pattern in some interspecific comparison. I'll start with SP and AC together using the vsNoise setting
 DDS_Solanum_3DF_Noise <- DESeqSpline(Expt_Solanum,
-                                    vsNoise = TRUE,
-                                    SetDF = 3)
-Cluster_Solanum_3DF_Noise <- DESeqCluster(DDS_Solanum_3DF_Noise,
-                                    numGenes = "all")
-saveRDS(Cluster_Solanum_3DF_Noise, "DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
+                                     vsNoise = TRUE,
+                                     SetDF = 3)
+tryCatch(Cluster_Solanum_3DF_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds"),
+         error=function(e){
+           Cluster_Solanum_3DF_Noise <- DESeqCluster(DDS_Solanum_3DF_Noise,
+                                                     numGenes = "all")
+           saveRDS(Cluster_Solanum_3DF_Noise, "DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
+         })
+
 
 # Do it with the pre-ripening data set
 DDS_AllOrtho_Noise <- DESeqSpline(Expt_All_Ortho,
@@ -622,3 +588,4 @@ saveRDS(DDS_AllOrtho_Noise, "DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.rds")
 Cluster_AllOrtho_Noise <- DESeqCluster(DDS_AllOrtho_Noise,
                                        numGenes = "all",
                                        timeVar = "Stage")
+saveRDS(Cluster_AllOrtho_Noise, "DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
