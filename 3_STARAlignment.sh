@@ -9,8 +9,8 @@
 #SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/STARAlignment-%A_%a.out
 set -e
 
-# This is meant to be run as an array job with IDs between 0 and 5 to specify the experiment to map
-Expt=(SlycIH SlycSRA Spimp Nobt TAIRRNA TAIRChIP)
+# This is meant to be run as an array job with IDs between 0 and 6 to specify the experiment to map
+Expt=(SlycIH SlycSRA Spimp Nobt TAIRRNA TAIRChIP Nobt)
 OUTDIR=STAR/${Expt[$SLURM_ARRAY_TASK_ID]}
 mkdir -p $OUTDIR
 
