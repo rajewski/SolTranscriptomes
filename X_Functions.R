@@ -15,7 +15,13 @@ DESeqSpline <- function(se=se,
     stop("Either leave SetDF blank or provide a positive integer for spline degrees of freedom")
   }
   message("Fitting spline regression with ", dfSpline, " degrees of freedom")
-  design <- ns(colData(se)[,timeVar], df=dfSpline)
+  desing <- tryCatch(ns(colData(se)[,timeVar], df=dfSpline),
+           error=function(e){
+             message("There was an error with the design matrix.\nNo internal knots included, which is maybe ok, but check this.")
+             design <- ns(colData(se)[,timeVar], df=dfSpline, knots=numeric(0))
+             return(design)
+           })
+  
   colnames(design) <- paste0("spline", seq(1:dim(design)[2]))
   colData(se) <- cbind(colData(se), design)
   if (length(unique(colData(se)[,CaseCtlVar]))>1) {
