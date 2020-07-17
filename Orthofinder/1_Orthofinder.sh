@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=30
-#SBATCH --mem-per-cpu=4G
+#SBATCH --cpus-per-task=60
+#SBATCH --mem-per-cpu=7G
 #SBATCH --nodes=1
 #SBATCH --time=1-00:00:00
 #SBATCH --mail-user=araje002@ucr.edu
@@ -10,9 +10,9 @@
 set -e
 
 # Make symlinks for all the protein fasta files
-ln -s ../ExternalData/TAIR10/TAIR10.proteins.fa Arabidopsis.fa
-ln -s ../SlycDNA/Slyc.proteins.fa Solanum.fa
-ln -s ../NobtDNA/NIOBT_r1.0.proteins.fa Nicotiana.fa
+ln -sf ../ExternalData/TAIR10/TAIR10.proteins.fa Arabidopsis.fa
+ln -sf ../SlycDNA/Slyc.proteins.fa Solanum.fa
+ln -sf ../NobtDNA/NIOBT_r1.0.proteins.fa Nicotiana.fa
 
 module load orthofinder/2.3.7
 module load mafft/7.427
