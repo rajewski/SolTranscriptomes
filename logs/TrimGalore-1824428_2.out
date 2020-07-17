@@ -1,0 +1,164 @@
+ModuleCmd_Switch.c(172):ERROR:152: Module 'python/2.7.5' is currently not loaded
+Running Trim Galore on Nobtbr3...
+Using an excessive number of cores has a diminishing return! It is recommended not to exceed 8 cores per trimming process (you asked for 16 cores). Please consider re-specifying
+Path to Cutadapt set as: 'cutadapt' (default)
+Cutadapt seems to be working fine (tested command 'cutadapt --version')
+Cutadapt version: 2.10
+Could not detect version of Python used by Cutadapt from the first line of Cutadapt (but found this: >>>#!/bin/sh<<<)
+Letting the (modified) Cutadapt deal with the Python version instead
+Parallel gzip (pigz) detected. Proceeding with multicore (de)compression using 16 cores
+
+No quality encoding type selected. Assuming that the data provided uses Sanger encoded Phred scores (default)
+
+Output will be written into the directory: /bigdata/littlab/shared/Nobtusifolia/RNA-seq/Data/flowcell1285/Trim_Galore/
+
+
+AUTO-DETECTING ADAPTER TYPE
+===========================
+Attempting to auto-detect adapter type from the first 1 million sequences of the first file (>> Nobtbr3_1.fq.gz <<)
+
+Found perfect matches for the following adapter sequences:
+Adapter type	Count	Sequence	Sequences analysed	Percentage
+Illumina	361	AGATCGGAAGAGC	1000000	0.04
+Nextera	3	CTGTCTCTTATA	1000000	0.00
+smallRNA	0	TGGAATTCTCGG	1000000	0.00
+Using Illumina adapter for trimming (count: 361). Second best hit was Nextera (count: 3)
+
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: Nobtbr3_1.fq.gz
+Trimming mode: single-end
+Trim Galore version: 0.6.4_dev
+Cutadapt version: 2.10
+Python version: could not detect
+Number of cores used for trimming: 16
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length before a sequence gets removed: 20 bp
+Output file(s) will be GZIP compressed
+
+Cutadapt seems to be fairly up-to-date (version 2.10). Setting -j 16
+Writing final adapter and quality trimmed output to Nobtbr3_1_trimmed.fq.gz
+
+
+  >>> Now performing quality (cutoff '-q 20') and adapter trimming in a single pass for the adapter sequence: 'AGATCGGAAGAGC' from file Nobtbr3_1.fq.gz <<< 
+10000000 sequences processed
+20000000 sequences processed
+This is cutadapt 2.10 with Python 3.7.6
+Command line parameters: -j 16 -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC Nobtbr3_1.fq.gz
+Processing reads on 16 cores in single-end mode ...
+Finished in 175.40 s (7 us/read; 8.01 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              23,421,594
+Reads with adapters:                 8,319,887 (35.5%)
+Reads written (passing filters):    23,421,594 (100.0%)
+
+Total basepairs processed: 1,780,041,144 bp
+Quality-trimmed:               4,814,162 bp (0.3%)
+Total written (filtered):  1,733,150,249 bp (97.4%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 8319887 times
+
+No. of allowed errors:
+0-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 36.6%
+  C: 29.9%
+  G: 14.9%
+  T: 18.5%
+  none/other: 0.2%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	5864935	5855398.5	0	5864935
+2	1492542	1463849.6	0	1492542
+3	385504	365962.4	0	385504
+4	113061	91490.6	0	113061
+5	26510	22872.7	0	26510
+6	2469	5718.2	0	2469
+7	663	1429.5	0	663
+8	301	357.4	0	301
+9	643	89.3	0	239 404
+10	808	22.3	1	198 610
+11	490	5.6	1	142 348
+12	171	1.4	1	118 53
+13	162	0.3	1	139 23
+14	167	0.3	1	148 19
+15	181	0.3	1	164 17
+16	130	0.3	1	119 11
+17	140	0.3	1	128 12
+18	120	0.3	1	103 17
+19	121	0.3	1	97 24
+20	104	0.3	1	91 13
+21	104	0.3	1	81 23
+22	91	0.3	1	76 15
+23	99	0.3	1	79 20
+24	89	0.3	1	82 7
+25	95	0.3	1	80 15
+26	87	0.3	1	74 13
+27	110	0.3	1	90 20
+28	101	0.3	1	78 23
+29	76	0.3	1	65 11
+30	65	0.3	1	51 14
+31	79	0.3	1	57 22
+32	60	0.3	1	49 11
+33	57	0.3	1	47 10
+34	55	0.3	1	45 10
+35	64	0.3	1	50 14
+36	46	0.3	1	37 9
+37	66	0.3	1	37 29
+38	61	0.3	1	32 29
+39	54	0.3	1	27 27
+40	47	0.3	1	18 29
+41	57	0.3	1	29 28
+42	97	0.3	1	64 33
+43	91	0.3	1	55 36
+44	70	0.3	1	56 14
+45	13	0.3	1	1 12
+46	45	0.3	1	28 17
+47	141	0.3	1	101 40
+48	34	0.3	1	13 21
+49	69	0.3	1	4 65
+50	37	0.3	1	4 33
+51	59	0.3	1	0 59
+52	59	0.3	1	5 54
+53	83	0.3	1	3 80
+54	142	0.3	1	6 136
+55	109	0.3	1	17 92
+56	83	0.3	1	13 70
+57	81	0.3	1	4 77
+58	139	0.3	1	8 131
+59	98	0.3	1	22 76
+60	80	0.3	1	6 74
+61	130	0.3	1	10 120
+62	127	0.3	1	24 103
+63	89	0.3	1	5 84
+64	208	0.3	1	9 199
+65	242	0.3	1	21 221
+66	246	0.3	1	29 217
+67	418	0.3	1	37 381
+68	766	0.3	1	42 724
+69	1981	0.3	1	45 1936
+70	7434	0.3	1	65 7369
+71	49779	0.3	1	181 49598
+72	73685	0.3	1	837 72848
+73	103218	0.3	1	1079 102139
+74	121512	0.3	1	1366 120146
+75	19764	0.3	1	1404 18360
+76	47973	0.3	1	248 47725
+
+RUN STATISTICS FOR INPUT FILE: Nobtbr3_1.fq.gz
+=============================================
+23421594 sequences processed in total
+Sequences removed because they became shorter than the length cutoff of 20 bp:	428708 (1.8%)
+
+Done.

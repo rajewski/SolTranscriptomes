@@ -1,0 +1,18 @@
+ModuleCmd_Switch.c(172):ERROR:152: Module 'python/2.7.5' is currently not loaded
+Running Trim Galore on Nobtbr3.1...
+Using an excessive number of cores has a diminishing return! It is recommended not to exceed 8 cores per trimming process (you asked for 16 cores). Please consider re-specifying
+Path to Cutadapt set as: 'cutadapt' (default)
+Cutadapt seems to be working fine (tested command 'cutadapt --version')
+Cutadapt version: 2.10
+Could not detect version of Python used by Cutadapt from the first line of Cutadapt (but found this: >>>#!/bin/sh<<<)
+Letting the (modified) Cutadapt deal with the Python version instead
+Parallel gzip (pigz) detected. Proceeding with multicore (de)compression using 16 cores
+
+No quality encoding type selected. Assuming that the data provided uses Sanger encoded Phred scores (default)
+
+Output directory flowcellUNKN_20200626/Trim_Galore/ doesn't exist, creating it for you...
+
+Output will be written into the directory: /bigdata/littlab/shared/Nobtusifolia/RNA-seq/Data/flowcellUNKN_20200626/Trim_Galore/
+pigz: skipping: Nobtbr3.1_1.fq.gz does not exist
+Input file 'Nobtbr3.1_1.fq.gz' seems to be completely empty. Consider respecifying!
+
