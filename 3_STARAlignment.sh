@@ -52,6 +52,12 @@ case "$SLURM_ARRAY_TASK_ID" in
     INDIR=ExternalData/ChIPseq
     ISPE=0
     ;;
+  "6")
+    SampleList=( Nobtbr1 Nobtbr2 Nobtbr3 Nobtbr1.1 Nobtbr2.1 Nobtbr3.1 )
+    INDEXDIR=NobtDNA
+    INDIR=NobtRNA
+    ISPE=0
+    ;;
 esac
 
 # General STAR commands
