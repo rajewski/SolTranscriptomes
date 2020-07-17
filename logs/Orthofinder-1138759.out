@@ -1,0 +1,80 @@
+
+OrthoFinder version 2.3.7 Copyright (C) 2014 David Emms
+
+2020-05-17 13:09:29 : Starting OrthoFinder
+60 thread(s) for highly parallel tasks (BLAST searches etc.)
+1 thread(s) for OrthoFinder algorithm
+
+Checking required programs are installed
+----------------------------------------
+Test can run "mcl -h" - ok
+Test can run "mafft /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_May17/WorkingDirectory//_dependencies_check/SimpleTest.fa" - ok
+Test can run "iqtree" - ok
+
+WARNING: Files have been ignored as they don't appear to be FASTA files:
+1_Orthofinder.sh
+1_Orthofinder.sh~
+OrthoFinder expects FASTA files to have one of the following extensions: fas, fasta, faa, fa
+
+Dividing up work for BLAST for parallel processing
+--------------------------------------------------
+2020-05-17 13:09:34 : Creating diamond database 1 of 3
+2020-05-17 13:09:34 : Creating diamond database 2 of 3
+2020-05-17 13:09:35 : Creating diamond database 3 of 3
+
+Running diamond all-versus-all
+------------------------------
+Using 60 thread(s)
+2020-05-17 13:09:35 : This may take some time....
+2020-05-17 13:19:36 : Done all-versus-all sequence search
+
+Running OrthoFinder algorithm
+-----------------------------
+2020-05-17 13:19:37 : Initial processing of each species
+2020-05-17 13:20:19 : Initial processing of species 0 complete
+2020-05-17 13:21:05 : Initial processing of species 1 complete
+2020-05-17 13:21:55 : Initial processing of species 2 complete
+2020-05-17 13:22:07 : Connected putative homologues
+2020-05-17 13:22:13 : Written final scores for species 0 to graph file
+2020-05-17 13:22:19 : Written final scores for species 1 to graph file
+2020-05-17 13:22:26 : Written final scores for species 2 to graph file
+2020-05-17 13:22:53 : Ran MCL
+
+Writing orthogroups to file
+---------------------------
+OrthoFinder assigned 78797 genes (87.8% of total) to 18742
+orthogroups. Fifty percent of all genes were in orthogroups
+with 4 or more genes (G50 was 4) and were contained in the
+largest 6362 orthogroups (O50 was 6362). There were 11215
+orthogroups with all species present and 5390 of these
+consisted entirely of single-copy genes.
+
+2020-05-17 13:23:58 : Done orthogroups
+
+Analysing Orthogroups
+=====================
+2020-05-17 13:23:58 : Starting MSA/Trees
+
+Inferring multiple sequence alignments and gene trees
+-----------------------------------------------------
+slurmstepd-c40: error: _is_a_lwp: open() /proc/9981/status failed: No such file or directory
+2020-05-17 16:21:40 : Done 1000 of 18742
+2020-05-17 17:41:59 : Done 9000 of 18742
+2020-05-17 16:46:54 : Done 2000 of 18742
+2020-05-17 17:55:09 : Done 14000 of 18742
+2020-05-17 17:39:22 : Done 8000 of 18742
+2020-05-17 17:57:54 : Done 15000 of 18742
+2020-05-17 18:07:36 : Done 18000 of 18742
+2020-05-17 17:35:11 : Done 7000 of 18742
+2020-05-17 17:52:48 : Done 13000 of 18742
+2020-05-17 18:04:17 : Done 17000 of 18742
+2020-05-17 13:24:53 : Done 0 of 18742
+2020-05-17 17:29:30 : Done 6000 of 18742
+2020-05-17 17:03:22 : Done 3000 of 18742
+2020-05-17 17:47:21 : Done 11000 of 18742
+2020-05-17 17:14:31 : Done 4000 of 18742
+2020-05-17 17:23:33 : Done 5000 of 18742
+2020-05-17 18:01:07 : Done 16000 of 18742
+2020-05-17 17:44:42 : Done 10000 of 18742
+2020-05-17 17:50:04 : Done 12000 of 18742
+slurmstepd-c40: error: *** JOB 1138759 ON c40 CANCELLED AT 2020-05-18T13:09:49 DUE TO TIME LIMIT ***
