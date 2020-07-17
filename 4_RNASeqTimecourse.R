@@ -12,7 +12,7 @@ library("tidyr")
 source("X_Functions.R")
 
 # Prep Inputs -------------------------------------------------------------
-# Borrorwed heavily from https://www.bioconductor.org/help/course-materials/2015/LearnBioconductorFeb2015/B02.1.1_RNASeqLab.html#construct
+# Borrowed heavily from https://www.bioconductor.org/help/course-materials/2015/LearnBioconductorFeb2015/B02.1.1_RNASeqLab.html#construct
 
 # Load a gene list by exon for counting (or make and save one)
 tryCatch(Slycgenes <- readRDS("DEGAnalysis/RNA-seq/Slycgenes.rds"), error=function(e){
@@ -32,10 +32,11 @@ tryCatch(Nobtgenes <- readRDS("DEGAnalysis/RNA-seq/Nobtgenes.rds"), error=functi
 })
 
 # Read in the Sample list
-metadata <- read.table("DEGAnalysis//RNA-seq/metadata.tsv", header=T, sep="")
+metadata <- read.table("DEGAnalysis/RNA-seq/metadata.tsv", header=T, sep="")
 metadata$Path <- as.character(metadata$Path)
 # Get list of BAMs for each expt
 NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco"], yieldSize=2000000)
+NobtSEBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==0], yieldSize = 2000000)
 TAIR10BamFiles <- BamFileList(metadata$Path[metadata$Species=="Arabidopsis"], yieldSize=2000000)
 SlycSRABamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0], yieldSize=2000000)
 SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1], yieldSize=50000)
@@ -70,6 +71,19 @@ tryCatch(Expt_Nobt <- readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"),
   saveRDS(Expt_Nobt, "DEGAnalysis/RNA-seq/Expt_Nobt.rds")
 })
 
+tryCatch(Expt_NobtSE <- readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds"),
+         error=function(e){
+           Expt_NobtSE <- summarizeOverlaps(features=Nobtgenes,
+                                            reads=NobtSEBamFiles,
+                                            mode="Union",
+                                            singleEnd=TRUE,
+                                            ignore.strand=FALSE) 
+           colData(Expt_NobtSE) <- DataFrame(metadata[metadata$Species=="Tobacco" & metadata$PE==0,])
+           saveRDS(Expt_NobtSE, "DEGAnalysis/RNA-seq/Expt_NobtSE.rds")
+         })
+#Combine the two Nobt datasets
+Expt_Nobt_All <- do.call(cbind, list(Expt_Nobt, Expt_NobtSE))
+saveRDS(Expt_Nobt_All, "DEGAnalysis/RNA-seq/Expt_Nobt_All.rds")
 tryCatch(Expt_SlycSRA <- readRDS("DEGAnalysis/RNA-seq/Expt_SlycSRA.rds"),
          error=function(e){
            Expt_SlycSRA <- summarizeOverlaps(features=Slycgenes,
@@ -162,6 +176,12 @@ tryCatch(DDS_Nobt <- readRDS("DEGAnalysis/RNA-seq/DDS_Nobt.rds"),
            DDS_Nobt <- DESeqSpline(Expt_Nobt)
   saveRDS(DDS_Nobt, "DEGAnalysis/RNA-seq/DDS_Nobt.rds")
 })
+
+tryCatch(DDS_Nobt_All <- read.RDS("DEGAnalysis/RNA-seq/DDS_Nobt_All.rds"),
+         error=function(e){
+           DDS_Nobt_All <- DESeqSpline(Expt_Nobt_All)
+           saveRDS(DDS_Nobt_All, "DEGAnalysis/RNA-seq/DDS_Nobt_All.rds")
+         })
 tryCatch(DDS_SlycSRA <- readRDS("DEGAnalysis/RNA-seq/DDS_SlycSRA.rds"),
          error=function(e){
            DDS_SlycSRA <- DESeqSpline(Expt_SlycSRA)
