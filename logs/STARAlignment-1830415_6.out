@@ -1,0 +1,42 @@
+Mapping Nobtbr1
+Jul 17 09:31:34 ..... started STAR run
+Jul 17 09:31:34 ..... loading genome
+Jul 17 09:31:46 ..... started mapping
+Jul 17 09:33:49 ..... started sorting BAM
+Jul 17 09:34:12 ..... finished successfully
+Done.
+Mapping Nobtbr2
+Jul 17 09:34:12 ..... started STAR run
+Jul 17 09:34:13 ..... loading genome
+Jul 17 09:34:23 ..... started mapping
+Jul 17 09:40:55 ..... started sorting BAM
+Jul 17 09:41:57 ..... finished successfully
+Done.
+Mapping Nobtbr3
+Jul 17 09:41:58 ..... started STAR run
+Jul 17 09:41:58 ..... loading genome
+Jul 17 09:42:09 ..... started mapping
+Jul 17 09:44:45 ..... started sorting BAM
+Jul 17 09:45:12 ..... finished successfully
+Done.
+Mapping Nobtbr1.1
+Jul 17 09:45:12 ..... started STAR run
+Jul 17 09:45:13 ..... loading genome
+Jul 17 09:45:24 ..... started mapping
+Jul 17 09:46:36 ..... started sorting BAM
+Jul 17 09:46:47 ..... finished successfully
+Done.
+Mapping Nobtbr2.1
+Jul 17 09:46:48 ..... started STAR run
+Jul 17 09:46:48 ..... loading genome
+Jul 17 09:46:59 ..... started mapping
+Jul 17 09:50:38 ..... started sorting BAM
+Jul 17 09:51:11 ..... finished successfully
+Done.
+Mapping Nobtbr3.1
+Jul 17 09:51:11 ..... started STAR run
+Jul 17 09:51:11 ..... loading genome
+Jul 17 09:51:23 ..... started mapping
+Jul 17 09:52:53 ..... started sorting BAM
+Jul 17 09:53:07 ..... finished successfully
+Done.

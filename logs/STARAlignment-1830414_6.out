@@ -1,0 +1,5 @@
+Mapping Nobtbr1
+Jul 17 09:29:33 ..... started STAR run
+Jul 17 09:29:33 ..... loading genome
+Jul 17 09:29:45 ..... started mapping
+slurmstepd-c27: error: *** JOB 1830414 ON c27 CANCELLED AT 2020-07-17T09:30:26 ***
