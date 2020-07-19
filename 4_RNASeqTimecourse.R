@@ -180,8 +180,10 @@ Expt_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho
 
 Expt_SlycRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds"),
                                 error=function(e){
+                                  tmp <- subset(Expt_Slyc, select=DAP>11)
+                                  tmp <- subset(tmp, select=DAP<45)
                                   Expt_SlycRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
-                                                                             GeneWiseExpt = subset(Expt_Slyc, select=DAP>15),
+                                                                             GeneWiseExpt = tmp,
                                                                              SingleCopyOrthoOnly = TRUE)
                                   Expt_SlycRipe_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5)
                                   saveRDS(Expt_SlycRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds")
