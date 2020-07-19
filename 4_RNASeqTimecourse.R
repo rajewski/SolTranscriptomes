@@ -138,8 +138,7 @@ Expt_Spimp <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds"),
            return(Expt_Spimp)})
 
 # Combine Spimp and Slyc to look for genes that are different between them
-Expt_Solanum <- do.call(cbind, 
-                        list(Expt_Slyc, Expt_Spimp))
+Expt_Solanum <- do.call(cbind, list(Expt_Slyc, Expt_Spimp))
 
 # Orthogroups -------------------------------------------------------------
 # This section is an attempt to do a cross-species comparison using the orthogroups assigned to the 4 species by Orthofinder.
@@ -168,6 +167,31 @@ Expt_All_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_All_Ortho.rds"),
                                                        1,1,1,2,2,2,3,3,3)
                              saveRDS(Expt_All_Ortho, file="DEGAnalysis/RNA-seq/Expt_All_Ortho.rds")
                              return(Expt_All_Ortho)})
+
+Expt_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds"),
+                                error=function(e){
+                                  Expt_NobtRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
+                                                                         GeneWiseExpt = subset(Expt_Nobt_All, select=DAP>3),
+                                                                         SingleCopyOrthoOnly = TRUE)
+                                  Expt_NobtRipe_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5,3.5,3.5,3.5)
+                                  saveRDS(Expt_NobtRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds")
+                                  return(Expt_NobtRipe_Ortho)})
+Expt_SlycRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds"),
+                                error=function(e){
+                                  Expt_SlycRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
+                                                                             GeneWiseExpt = subset(Expt_Slyc, select=DAP>15),
+                                                                             SingleCopyOrthoOnly = TRUE)
+                                  Expt_SlycRipe_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5)
+                                  saveRDS(Expt_SlycRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds")
+                                  return(Expt_SlycRipe_Ortho)})
+Expt_Ripe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Ripe_Ortho.rds"),
+                            error=function(e){
+                              Expt_Nobt_Ortho <- readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds")
+                              Expt_Slyc_Ortho <- readRDS("DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds")
+                              Expt_Ripe_Ortho <- do.call(cbind, list(Expt_Nobt_Ortho,
+                                                                     Expt_Slyc_Ortho))
+                              saveRDS(Expt_Ripe_Ortho, "DEGAnalysis/RNA-seq/Expt_Ripe_Ortho.rds")
+                              return(Expt_Ripe_Ortho)})
 
 # Design and DE Testing ----------------------------------------------------
 DDS_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_TAIR.rds"),
@@ -271,6 +295,31 @@ DDS_DryOrtho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_DryOrtho.rds"),
                            colnames(DDS_DryOrtho) <- NULL 
                            saveRDS(DDS_DryOrtho, "DEGAnalysis/RNA-seq/DDS_DryOrtho.rds")
                            return(DDS_DryOrtho)})
+
+# Test for DE orthogenes at Ripening for Nobt only
+DDS_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_NobtRipe_Ortho.rds"),
+                               error=function(e){
+                                 DDS_NobtRipe_Ortho <- DESeqDataSetFromMatrix(countData = assays(Expt_NobtRipe_Ortho)$counts,
+                                                        colData = colData(Expt_NobtRipe_Ortho),
+                                                        design = ~ Stage)
+                                 DDS_NobtRipe_Ortho <- estimateSizeFactors(DDS_NobtRipe_Ortho)
+                                 DDS_NobtRipe_Ortho <- DESeq(DDS_NobtRipe_Ortho,
+                                                             test="LRT",
+                                                             reduced = ~1)
+                                 saveRDS(DDS_NobtRipe_Ortho, "DEGAnalysis/RNA-seq/DDS_NobtRipe_Ortho.rds")
+                                 return(DDS_NobtRipe_Ortho)})
+# Test for DE orthogenes at Ripening for Slyc Only
+DDS_SlycRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_SlycRipe_Ortho.rds"),
+                               error=function(e){
+                                 DDS_SlycRipe_Ortho <- DESeqDataSetFromMatrix(countData = assays(Expt_SlycRipe_Ortho)$counts,
+                                                        colData = colData(Expt_SlycRipe_Ortho),
+                                                        design = ~ Stage)
+                                 DDS_SlycRipe_Ortho <- estimateSizeFactors(DDS_SlycRipe_Ortho)
+                                 DDS_SlycRipe_Ortho <- DESeq(DDS_SlycRipe_Ortho,
+                                                             test="LRT",
+                                                             reduced = ~1)
+                                 saveRDS(DDS_SlycRipe_Ortho, "DEGAnalysis/RNA-seq/DDS_SlycRipe_Ortho.rds")
+                                 return(DDS_SlycRipe_Ortho)})
 
 # Play around with individual genes ---------------------------------------
 Exampledds <- DDS_AllOrtho_DEGByFruit #assign one dds as the example to streamline code
