@@ -1,7 +1,7 @@
 # Make an upset plot with the Nobt and Slyc Ripening orthogenes
 library("DESeq2")
-library(UpSetR)
-library(readr)
+library("UpSetR")
+library("readr")
 
 #Read in the data and filter
 DDS_NobtRipe_Ortho <- readRDS("DEGAnalysis/RNA-seq/DDS_NobtRipe_Ortho.rds")
