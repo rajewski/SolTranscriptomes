@@ -176,6 +176,8 @@ Expt_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho
                                   Expt_NobtRipe_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5,3.5,3.5,3.5)
                                   saveRDS(Expt_NobtRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds")
                                   return(Expt_NobtRipe_Ortho)})
+
+
 Expt_SlycRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds"),
                                 error=function(e){
                                   Expt_SlycRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
@@ -302,6 +304,11 @@ DDS_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_NobtRipe_Ortho.r
                                  DDS_NobtRipe_Ortho <- DESeqDataSetFromMatrix(countData = assays(Expt_NobtRipe_Ortho)$counts,
                                                         colData = colData(Expt_NobtRipe_Ortho),
                                                         design = ~ Stage)
+                                 # Collapse technical reps
+                                 DDS_NobtRipe_Ortho$Accession <- sub("\\.\\d", "", DDS_NobtRipe_Ortho$Accession) #converted to char FYI
+                                 DDS_NobtRipe_Ortho <- collapseReplicates(DDS_NobtRipe_Ortho,
+                                                                DDS_NobtRipe_Ortho$Accession)
+                                 # Carry On
                                  DDS_NobtRipe_Ortho <- estimateSizeFactors(DDS_NobtRipe_Ortho)
                                  DDS_NobtRipe_Ortho <- DESeq(DDS_NobtRipe_Ortho,
                                                              test="LRT",
