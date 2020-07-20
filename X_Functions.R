@@ -136,7 +136,8 @@ DESeqCluster <- function(dds=dds,
 # Converting Gene names to Orthogene names --------------------------------
 ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
                                 GeneWiseExpt="",
-                                SingleCopyOrthoOnly=FALSE) {
+                                SingleCopyOrthoOnly=FALSE,
+                                Arabidopsis=TRUE) {
   Orthogroups <- read.table(OrthogroupMappingFile,
                             sep="\t",
                             stringsAsFactors = F,
@@ -145,8 +146,13 @@ ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
     Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
     Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
   }
-  Orthogroups$Concatenated <- paste(Orthogroups$Arabidopsis, Orthogroups$Nicotiana, Orthogroups$Solanum, sep=", ") 
-  Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c(1,5)]), 2, sep=", ")
+  if(Arabidopsis) {
+    Orthogroups$Concatenated <- paste(Orthogroups$Arabidopsis, Orthogroups$Nicotiana, Orthogroups$Solanum, sep=", ") 
+    Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c(1,5)]), 2, sep=", ")
+  } else {
+    Orthogroups$Concatenated <- paste(Orthogroups$Nicotiana, Orthogroups$Solanum, sep=", ") 
+    Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c(1,4)]), 2, sep=", ")
+  }
   # Rename columns just in case
   colnames(Orthogroups) <- c("V1", "V2")
   # Extract, subset, and aggregate count matrix from SummarizedExperiment
