@@ -178,7 +178,18 @@ Expt_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho
                                   return(Expt_NobtRipe_Ortho)})
 
 
-Expt_SlycRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds"),
+Expt_Slyc1545_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc1545_Ortho.rds"),
+                                error=function(e){
+                                  tmp <- subset(Expt_Slyc, select=DAP>11)
+                                  tmp <- subset(tmp, select=DAP!=35)
+                                  Expt_SlycRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
+                                                                             GeneWiseExpt = tmp,
+                                                                             SingleCopyOrthoOnly = TRUE)
+                                  Expt_SlycRipe_Ortho$Stage <- c(3,3,3,4,4,4)
+                                  saveRDS(Expt_SlycRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_Slyc1545_Ortho.rds")
+                                  rm(tmp)
+                                  return(Expt_SlycRipe_Ortho)})
+Expt_Slyc1535_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc1535_Ortho.rds"),
                                 error=function(e){
                                   tmp <- subset(Expt_Slyc, select=DAP>11)
                                   tmp <- subset(tmp, select=DAP<45)
@@ -186,16 +197,11 @@ Expt_SlycRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho
                                                                              GeneWiseExpt = tmp,
                                                                              SingleCopyOrthoOnly = TRUE)
                                   Expt_SlycRipe_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5)
-                                  saveRDS(Expt_SlycRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds")
+                                  saveRDS(Expt_SlycRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_Slyc1535_Ortho.rds")
+                                  rm(tmp)
                                   return(Expt_SlycRipe_Ortho)})
-Expt_Ripe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Ripe_Ortho.rds"),
-                            error=function(e){
-                              Expt_Nobt_Ortho <- readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds")
-                              Expt_Slyc_Ortho <- readRDS("DEGAnalysis/RNA-seq/Expt_SlycRipe_Ortho.rds")
-                              Expt_Ripe_Ortho <- do.call(cbind, list(Expt_Nobt_Ortho,
-                                                                     Expt_Slyc_Ortho))
-                              saveRDS(Expt_Ripe_Ortho, "DEGAnalysis/RNA-seq/Expt_Ripe_Ortho.rds")
-                              return(Expt_Ripe_Ortho)})
+
+
 
 # Design and DE Testing ----------------------------------------------------
 DDS_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_TAIR.rds"),
@@ -318,17 +324,28 @@ DDS_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_NobtRipe_Ortho.r
                                  saveRDS(DDS_NobtRipe_Ortho, "DEGAnalysis/RNA-seq/DDS_NobtRipe_Ortho.rds")
                                  return(DDS_NobtRipe_Ortho)})
 # Test for DE orthogenes at Ripening for Slyc Only
-DDS_SlycRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_SlycRipe_Ortho.rds"),
+DDS_Slyc1545_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Slyc1545_Ortho.rds"),
                                error=function(e){
-                                 DDS_SlycRipe_Ortho <- DESeqDataSetFromMatrix(countData = assays(Expt_SlycRipe_Ortho)$counts,
-                                                        colData = colData(Expt_SlycRipe_Ortho),
+                                 DDS_Slyc1545_Ortho <- DESeqDataSetFromMatrix(countData = assays(Expt_Slyc1545_Ortho)$counts,
+                                                        colData = colData(Expt_Slyc1545_Ortho),
                                                         design = ~ Stage)
-                                 DDS_SlycRipe_Ortho <- estimateSizeFactors(DDS_SlycRipe_Ortho)
-                                 DDS_SlycRipe_Ortho <- DESeq(DDS_SlycRipe_Ortho,
+                                 DDS_Slyc1545_Ortho <- estimateSizeFactors(DDS_Slyc1545_Ortho)
+                                 DDS_Slyc1545_Ortho <- DESeq(DDS_Slyc1545_Ortho,
                                                              test="LRT",
                                                              reduced = ~1)
-                                 saveRDS(DDS_SlycRipe_Ortho, "DEGAnalysis/RNA-seq/DDS_SlycRipe_Ortho.rds")
-                                 return(DDS_SlycRipe_Ortho)})
+                                 saveRDS(DDS_Slyc1545_Ortho, "DEGAnalysis/RNA-seq/DDS_Slyc1545_Ortho.rds")
+                                 return(DDS_Slyc1545_Ortho)})
+DDS_Slyc1535_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Slyc1535_Ortho.rds"),
+                               error=function(e){
+                                 DDS_Slyc1535_Ortho <- DESeqDataSetFromMatrix(countData = assays(Expt_Slyc1535_Ortho)$counts,
+                                                                              colData = colData(Expt_Slyc1535_Ortho),
+                                                                              design = ~ Stage)
+                                 DDS_Slyc1535_Ortho <- estimateSizeFactors(DDS_Slyc1535_Ortho)
+                                 DDS_Slyc1535_Ortho <- DESeq(DDS_Slyc1535_Ortho,
+                                                             test="LRT",
+                                                             reduced = ~1)
+                                 saveRDS(DDS_Slyc1535_Ortho, "DEGAnalysis/RNA-seq/DDS_Slyc1535_Ortho.rds")
+                                 return(DDS_Slyc1535_Ortho)})
 
 # Play around with individual genes ---------------------------------------
 Exampledds <- DDS_AllOrtho_DEGByFruit #assign one dds as the example to streamline code
