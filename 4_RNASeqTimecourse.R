@@ -168,11 +168,20 @@ Expt_All_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_All_Ortho.rds"),
                              saveRDS(Expt_All_Ortho, file="DEGAnalysis/RNA-seq/Expt_All_Ortho.rds")
                              return(Expt_All_Ortho)})
 
+# Make a new orthogroup file that leaves out arabidopsis to get more genes
+# tmp <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv", stringsAsFactors = F, sep="\t", header=T)[,-c(2)]
+# write.table(tmp, file="Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups_NoArabidopsis.tsv",
+#             row.names = F,
+#             quote=F,
+#             sep="\t")
+# rm(tmp)
+
 Expt_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds"),
                                 error=function(e){
-                                  Expt_NobtRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
+                                  Expt_NobtRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups_NoArabidopsis.tsv",
                                                                          GeneWiseExpt = subset(Expt_Nobt_All, select=DAP>3),
-                                                                         SingleCopyOrthoOnly = TRUE)
+                                                                         SingleCopyOrthoOnly = TRUE,
+                                                                         Arabidopsis = FALSE)
                                   Expt_NobtRipe_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5,3.5,3.5,3.5)
                                   saveRDS(Expt_NobtRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds")
                                   return(Expt_NobtRipe_Ortho)})
@@ -184,7 +193,8 @@ Expt_Slyc1545_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc1545_Ortho
                                   tmp <- subset(tmp, select=DAP!=35)
                                   Expt_Slyc1545_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
                                                                              GeneWiseExpt = tmp,
-                                                                             SingleCopyOrthoOnly = TRUE)
+                                                                             SingleCopyOrthoOnly = TRUE,
+                                                                             Arabidopsis = FALSE)
                                   Expt_Slyc1545_Ortho$Stage <- c(3,3,3,4,4,4)
                                   saveRDS(Expt_Slyc1545_Ortho, "DEGAnalysis/RNA-seq/Expt_Slyc1545_Ortho.rds")
                                   rm(tmp)
@@ -195,7 +205,8 @@ Expt_Slyc1535_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc1535_Ortho
                                   tmp <- subset(tmp, select=DAP<45)
                                   Expt_Slyc1535_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
                                                                              GeneWiseExpt = tmp,
-                                                                             SingleCopyOrthoOnly = TRUE)
+                                                                             SingleCopyOrthoOnly = TRUE,
+                                                                             Arabidopsis = FALSE)
                                   Expt_Slyc1535_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5)
                                   saveRDS(Expt_Slyc1535_Ortho, "DEGAnalysis/RNA-seq/Expt_Slyc1535_Ortho.rds")
                                   rm(tmp)
@@ -205,7 +216,8 @@ Expt_Slyc3545_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc3545_Ortho
                                   tmp <- subset(Expt_Slyc, select=DAP>15)
                                   Expt_Slyc3545_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
                                                                              GeneWiseExpt = tmp,
-                                                                             SingleCopyOrthoOnly = TRUE)
+                                                                             SingleCopyOrthoOnly = TRUE,
+                                                                             Arabidopsis = FALSE)
                                   Expt_Slyc3545_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5)
                                   saveRDS(Expt_Slyc3545_Ortho, "DEGAnalysis/RNA-seq/Expt_Slyc3545_Ortho.rds")
                                   rm(tmp)
