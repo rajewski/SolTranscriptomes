@@ -176,6 +176,8 @@ GOEnrich <- function(gene2go="",
                      GOIs="",
                      GOCategory="BP",
                      NumCategories=20) {
+  require(topGO)
+  require(Rgraphviz)
   # Clean the lists of GO terms from the bash script and convert to a named list object
   GO <- read.table(gene2go, stringsAsFactors = F)
   GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
@@ -186,10 +188,16 @@ GOEnrich <- function(gene2go="",
     distinct()
   GO <- setNames(strsplit(x = unlist(GO$V2), split = "\\|"), GO$V1)
   # Read in the genes of interest to be tested for GO enrichment
-  GOI <- scan(file=GOIs,
-              what = list(""))[[1]]
-  GOI <- factor(as.integer(names(GO) %in% GOI))
-  names(GOI) <- names(GO)
+  # create if to handle if the gene list is passed from a named factor object
+  if (is(GOIs, "factor")){
+    message("You passed a named factor list for genes. Make sure that's correct.")
+    GOI <- GOIs
+  } else {
+    GOI <- scan(file=GOIs,
+                what = list(""))[[1]]
+    GOI <- factor(as.integer(names(GO) %in% GOI))
+    names(GOI) <- names(GO)
+  }
   # Create a TopGO object with the necessary data, also get a summary with
   GOData <- new("topGOdata",
                 description = "Slyc Cluster 1",
