@@ -70,9 +70,9 @@ Gene_List_Intersect$`Tomato 3-Breaker Up` <- Gene_List_Ripening[,4]*!apply(Gene_
 Gene_List_Intersect$`Tomato 3-Breaker Down` <- Gene_List_Ripening[,5]*!apply(Gene_List_Ripening[,-c(1,5)],1,FUN = max)
 # Two-Set
 Gene_List_Intersect$`Tobacco Down v Tomato 3-Ripe Up` <- Gene_List_Ripening[,3]*Gene_List_Ripening[,6]*!apply(Gene_List_Ripening[,-c(1,3,6)],1,FUN = max)
-Gene_List_Intersect$`Tobacco Down v Tomato 3-Ripe Down` <- Gene_List_Ripening[,3]*Gene_List_Ripening[,7]*!apply(Gene_List_Ripening[,-c(-1,3,7)],1,FUN = max)
+Gene_List_Intersect$`Tobacco Down v Tomato 3-Ripe Down` <- Gene_List_Ripening[,3]*Gene_List_Ripening[,7]*!apply(Gene_List_Ripening[,-c(1,3,7)],1,FUN = max)
 Gene_List_Intersect$`Tobacco Down v Tomato 3-Breaker Up` <- Gene_List_Ripening[,3]*Gene_List_Ripening[,4]*!apply(Gene_List_Ripening[,-c(1,3,4)],1,FUN = max)
-Gene_List_Intersect$`Tobacco Down v Tomato 3-Breaker Down` <- Gene_List_Ripening[,3]*Gene_List_Ripening[,5]*!apply(Gene_List_Ripening[,-c(-1,3,5)],1,FUN = max)
+Gene_List_Intersect$`Tobacco Down v Tomato 3-Breaker Down` <- Gene_List_Ripening[,3]*Gene_List_Ripening[,5]*!apply(Gene_List_Ripening[,-c(1,3,5)],1,FUN = max)
 Gene_List_Intersect$`Tobacco Up v Tomato 3-Ripe Up` <- Gene_List_Ripening[,2]*Gene_List_Ripening[,6]*!apply(Gene_List_Ripening[,-c(1,2,6)],1,FUN = max)
 Gene_List_Intersect$`Tobacco Up v Tomato 3-Ripe Down` <- Gene_List_Ripening[,2]*Gene_List_Ripening[,7]*!apply(Gene_List_Ripening[,-c(1,2,7)],1,FUN = max)
 Gene_List_Intersect$`Tobacco Up v Tomato 3-Breaker Down` <- Gene_List_Ripening[,2]*Gene_List_Ripening[,5]*!apply(Gene_List_Ripening[,-c(1,2,5)],1,FUN = max)
@@ -93,3 +93,11 @@ for (i in 2:dim(Gene_List_Intersect)[2]) {
 }
 names(GO_Tables) <- names(Gene_List_Intersect)[-1]
 
+# Find some key genes
+impt_genes <- c("CNR","NOR","RIN","MC","J","FUL1","FUL2","MBP10","MBP20","NR","TAGL1", "ACS2", "ACS4", "ACO1", "ACO2", "ACO3", "ACO4", "ACO5", "ACO6", "ACO7", "TAG1", "AGL11", "MBP3", "PSY1", "PL1", "Cel2", "PGA2A", "EXP1", "GAD1", "GAD2", "GAD3", "CHS-1", "CHS-2", "GRAS38", "CTOMT1", "TOMLOXC" )
+names(impt_genes) <- c("Solyc02g077920.4.1","Solyc10g006880.3.1","Solyc05g012020.4.1","Solyc05g056620.2.1","Solyc11g010570.2.1","Solyc06g069430.3.1","Solyc03g114830.3.1","Solyc02g065730.2.1","Solyc02g089210.4.1","Solyc09g075440.4.1","Solyc07g055920.4.1", "Solyc01g095080.3.1", "Solyc05g050010.3.1", "Solyc07g049530.3.1", "Solyc12g005940.2.1", "Solyc07g049550.3.1", "Solyc02g081190.4.1", "Solyc07g026650.3.1", "Solyc02g036350.3.1", "Solyc06g060070.3.1", "Solyc02g071730.4.1", "Solyc11g028020.3.1", "Solyc06g064840.4.1" ,"Solyc03g031860.3.1", "Solyc03g111690.4.1", "Solyc09g010210.3.1", "Solyc10g080210.2.1", "Solyc06g051800.3.1", "Solyc03g098240.3.1", "Solyc11g011920.2.1", "Solyc01g005000.3.1", "Solyc09g091510.3.1", "Solyc05g053550.3.1", "Solyc07g052960.3.1", "Solyc10g005060.4.1", "Solyc01g006540.4.1")
+orthomapping <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv", stringsAsFactors = F, sep="\t", header=T)[,c(1,4)]
+orthomapping <- orthomapping[orthomapping$Solanum %in% names(impt_genes),]
+orthomapping$Abbr <- impt_genes[names(impt_genes) %in% orthomapping$Solanum]
+# Find presence of orthogroups of important genes in sets
+Gene_List_Ripening[Gene_List_Ripening$ID %in% orthomapping$Orthogroup,]
