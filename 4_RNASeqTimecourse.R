@@ -144,27 +144,28 @@ Expt_Solanum <- do.call(cbind, list(Expt_Slyc, Expt_Spimp))
 # This section is an attempt to do a cross-species comparison using the orthogroups assigned to the 4 species by Orthofinder.
 Expt_All_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_All_Ortho.rds"),
                            error=function(e){
-                             Expt_Nobt_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
-                                                                    GeneWiseExpt = Expt_Nobt,
+                             mapping <- "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv"
+                             Expt_Nobt_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                                                    GeneWiseExpt = Expt_Nobt_All,
                                                                     SingleCopyOrthoOnly = TRUE)
-                             Expt_Slyc_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
-                                                                    GeneWiseExpt = subset(Expt_Slyc, select=DAP<35),
+                             Expt_Slyc_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                                                    GeneWiseExpt = subset(Expt_Slyc, select=DAP<45),
                                                                     SingleCopyOrthoOnly = TRUE)
-                             Expt_Spimp_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
-                                                                     GeneWiseExpt = subset(Expt_Spimp, select=DAP<35),
+                             Expt_Spimp_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                                                     GeneWiseExpt = subset(Expt_Spimp, select=DAP<45),
                                                                      SingleCopyOrthoOnly = TRUE)
-                             Expt_TAIR_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
-                                                                    GeneWiseExpt = subset(Expt_TAIR, select=DAP<12),
+                             Expt_TAIR_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                                                    GeneWiseExpt = Expt_TAIR,
                                                                     SingleCopyOrthoOnly = TRUE)
-                             do.call(cbind, list(Expt_Nobt_Ortho,
+                             Expt_All_Ortho <- do.call(cbind, list(Expt_Nobt_Ortho,
                                                  Expt_Slyc_Ortho,
                                                  Expt_Spimp_Ortho,
                                                  Expt_TAIR_Ortho))
                              #Add Stage variable to normalize DAP across species
-                             Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,
-                                                       1,1,1,2,2,2,3,3,3,
-                                                       1,1,1,2,2,2,3,3,3,
-                                                       1,1,1,2,2,2,3,3,3)
+                             Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,3.5,3.5,3.5,3.5,3.5,3.5,
+                                                       1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
+                                                       1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
+                                                       1,1,1,2,2,2,3,3,3,3.5,3.5,3.5)
                              saveRDS(Expt_All_Ortho, file="DEGAnalysis/RNA-seq/Expt_All_Ortho.rds")
                              return(Expt_All_Ortho)})
 
@@ -310,23 +311,23 @@ DDS_AllOrtho_DEGByFruit <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_DE
 # Find the genes with a common pattern across species
 DDS_AllOrtho_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.rds"),
                                error=function(e){
-                                 DESeqSpline(Expt_All_Ortho,
-                                             vsNoise = TRUE,
-                                             timeVar="Stage")
+                                 DDS_AllOrtho_Noise <- DESeqSpline(Expt_All_Ortho,
+                                                                   vsNoise = TRUE,
+                                                                   timeVar="Stage")
                                  colnames(DDS_AllOrtho_Noise) <- NULL 
                                  saveRDS(DDS_AllOrtho_Noise, "DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.rds")
                                  return(DDS_AllOrtho_Noise)})
 
 # Test for DEGs in Dry Fruited only
-DDS_DryOrtho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_DryOrtho.rds"),
-                         error=function(e){
-                           DDS_DryOrtho <- DESeqSpline(Expt_Dry_Ortho,
-                                                       CaseCtlVar = "Species",
-                                                       timeVar = "Stage")
-                           # columns have duplicate names, which would be changed and mess up metadata mapping
-                           colnames(DDS_DryOrtho) <- NULL 
-                           saveRDS(DDS_DryOrtho, "DEGAnalysis/RNA-seq/DDS_DryOrtho.rds")
-                           return(DDS_DryOrtho)})
+# DDS_DryOrtho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_DryOrtho.rds"),
+#                          error=function(e){
+#                            DDS_DryOrtho <- DESeqSpline(Expt_Dry_Ortho,
+#                                                        CaseCtlVar = "Species",
+#                                                        timeVar = "Stage")
+#                            # columns have duplicate names, which would be changed and mess up metadata mapping
+#                            colnames(DDS_DryOrtho) <- NULL 
+#                            saveRDS(DDS_DryOrtho, "DEGAnalysis/RNA-seq/DDS_DryOrtho.rds")
+#                            return(DDS_DryOrtho)})
 
 # Test for DE orthogenes at Ripening for Nobt only
 DDS_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_NobtRipe_Ortho.rds"),
@@ -388,8 +389,8 @@ head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for sp
 #Examine an individual Gene
 topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
 colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
-#colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
-plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "DAP"), normalized = T) #plot best fitting gene
+colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
+plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "Stage"), normalized = T) #plot best fitting gene
 
 # Get a set of FUL genes for each species. Only use one of these
 FULgenes<-c(FUL.1="AT5G60910.1",
@@ -407,8 +408,8 @@ FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
             NoFUL2="NIOBTv3_g39464.t1",
             NoMBP10="NIOBTv3_g07845.t1",
             NoMBP20="NIOBT_gMBP20.t1" )
-FULgenes<-c(euFULI="OG0003276",
-            euFULII="OG0008754")
+FULgenes<-c(euFULI="OG0004494",
+            euFULII="OG0007327")
 # Plot FUL Genes
 for (i in 1:length(FULgenes)) {
   pdf(file=paste0("DEGAnalysis/RNA-seq/Plots/Slyc_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
@@ -416,11 +417,11 @@ for (i in 1:length(FULgenes)) {
       height=4)
   plotCounts(Exampledds,
              gene=FULgenes[i],
-             intgroup=c("DAP"), # Remove Genotype for nonSlycSRA
+             intgroup=c("Stage"), # Remove Genotype for nonSlycSRA
              main=paste0(names(FULgenes[i]), 
                          " p=",
                          formatC(ExampleRes$padj[rownames(ExampleRes)==FULgenes[i]], format = "e", digits = 1)),
-             xlab="Days Post Anthesis",
+             xlab="Stae",
              normalized=T,
              replace=T)
   dev.off()
