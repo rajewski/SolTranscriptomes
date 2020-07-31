@@ -10,15 +10,15 @@ library("dplyr")
 library("Rgraphviz")
 library("scales")
 library("lemon")
+source("X_Functions.R")
 
 #Need the plotting functions from the other figure script 6_Figures
 Cluster_Solanum <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF.rds")
 Cluster_Solanum_Noise <-readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
-Solanum <- Cluster_Solanum$normalized
 palsol <- wes_palette("Zissou1", 2, type="continuous")
 
 # Plot all clusters for the pimp vs AC model
-SolanumAll_plot <- ggplot(Solanum, aes(x=DAP, y=value, col=Species, fill=Species)) +
+SolanumAll_plot <- ggplot(Cluster_Solanum$normalized, aes(x=DAP, y=value, col=Species, fill=Species)) +
   labs(y="Z-score") +
   scale_fill_manual(values=palsol) +
   scale_color_manual(values=palsol) +
@@ -53,6 +53,20 @@ SolanumNoise_plot <- ggplot(Cluster_Solanum_Noise$normalized,
   stat_summary(fun=mean, geom="line", aes(group=Species))
 
 ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_Solanum_3DF_Noise.pdf", height=8, width=20)
+
+SolNoiseGO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                         GOIs="DEGAnalysis/RNA-seq/Lists/Solanum_3DF_Noise_AllGenes.txt"),
+                Title = "Overall GO Enrichment") +
+  theme(legend.position = "none")
+
+SolNoiseTables <- list()
+for (i in levels(as.factor(Cluster_Solanum_Noise$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% Cluster_Solanum_Noise$normalized$genes[Cluster_Solanum_Noise$normalized$cluster==i]))
+  names(tmpList) <- Cluster_Solanum_Noise$normalized$genes
+  SolNoiseTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                               GOIs=tmpList)
+}
+capture.output(SolNoiseTables, file="DEGAnalysis/RNA-seq/Solanum_3DF_Noise_GOTables.txt")
 
 # Individual Genes --------------------------------------------------------
 # named vector of important genes

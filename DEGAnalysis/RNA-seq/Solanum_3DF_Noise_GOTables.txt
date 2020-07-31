@@ -1,0 +1,378 @@
+$`1`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055085    GO:0055085, transmembrane transport 8.7e-29          56
+2  GO:0055114 GO:0055114, oxidation-reduction proces 9.6e-29          69
+3  GO:0006468    GO:0006468, protein phosphorylation 1.7e-24          54
+4  GO:0006355 GO:0006355, regulation of transcriptio 2.9e-23          45
+5  GO:0009611       GO:0009611, response to wounding 3.4e-13          10
+6  GO:0006508                GO:0006508, proteolysis 5.1e-10          23
+7  GO:0005975 GO:0005975, carbohydrate metabolic pro 9.2e-10          33
+8  GO:0030244 GO:0030244, cellulose biosynthetic pro 3.9e-08           8
+9  GO:0006629    GO:0006629, lipid metabolic process 9.1e-07          25
+10 GO:0051128 GO:0051128, regulation of cellular com 2.0e-05           4
+11 GO:0007018 GO:0007018, microtubule-based movement 2.9e-05           6
+12 GO:0006952           GO:0006952, defense response 3.9e-05           5
+13 GO:0006559 GO:0006559, L-phenylalanine catabolic  5.8e-05           4
+14 GO:0065008 GO:0065008, regulation of biological q 1.2e-04          11
+15 GO:0006996     GO:0006996, organelle organization 1.7e-04          10
+16 GO:0042545     GO:0042545, cell wall modification 1.8e-04           5
+17 GO:0006979 GO:0006979, response to oxidative stre 3.8e-04           5
+18 GO:0030001        GO:0030001, metal ion transport 5.1e-04          14
+19 GO:0000160 GO:0000160, phosphorelay signal transd 7.0e-04           4
+20 GO:0048544      GO:0048544, recognition of pollen 7.3e-04           5
+
+$`2`
+        GO.ID                                   Term    Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 1.600e-14          20
+2  GO:0055085    GO:0055085, transmembrane transport 3.000e-04           7
+3  GO:0045454     GO:0045454, cell redox homeostasis 8.300e-04           3
+4  GO:0006576 GO:0006576, cellular biogenic amine me 1.540e-03           2
+5  GO:0005975 GO:0005975, carbohydrate metabolic pro 2.990e-03           6
+6  GO:0019752 GO:0019752, carboxylic acid metabolic  5.860e-03           5
+7  GO:0071704 GO:0071704, organic substance metaboli 8.990e-03          27
+8  GO:0046483 GO:0046483, heterocycle metabolic proc 1.877e-02           7
+9  GO:0006468    GO:0006468, protein phosphorylation 1.887e-02           5
+10 GO:0051641      GO:0051641, cellular localization 1.938e-02           3
+11 GO:0006629    GO:0006629, lipid metabolic process 2.056e-02           4
+12 GO:0006355 GO:0006355, regulation of transcriptio 2.528e-02           4
+13 GO:0005976 GO:0005976, polysaccharide metabolic p 2.617e-02           2
+14 GO:0016226 GO:0016226, iron-sulfur cluster assemb 3.300e-02           1
+15 GO:0006810                  GO:0006810, transport 3.377e-02          12
+16 GO:0006888 GO:0006888, ER to Golgi vesicle-mediat 3.947e-02           1
+17 GO:0009605 GO:0009605, response to external stimu 3.947e-02           1
+18 GO:0009074 GO:0009074, aromatic amino acid family 4.590e-02           1
+
+$`3`
+        GO.ID                                   Term    Fisher Significant
+1  GO:0006468    GO:0006468, protein phosphorylation 8.100e-12          20
+2  GO:0055114 GO:0055114, oxidation-reduction proces 2.300e-10          23
+3  GO:0042545     GO:0042545, cell wall modification 3.500e-07           5
+4  GO:0055085    GO:0055085, transmembrane transport 2.700e-06          12
+5  GO:0006355 GO:0006355, regulation of transcriptio 8.000e-06          11
+6  GO:0006508                GO:0006508, proteolysis 7.200e-05           8
+7  GO:0006629    GO:0006629, lipid metabolic process 7.400e-04           9
+8  GO:0031323 GO:0031323, regulation of cellular met 8.000e-04          13
+9  GO:0006979 GO:0006979, response to oxidative stre 8.000e-04           3
+10 GO:0005975 GO:0005975, carbohydrate metabolic pro 2.380e-03           7
+11 GO:0006099   GO:0006099, tricarboxylic acid cycle 5.390e-03           2
+12 GO:0009733          GO:0009733, response to auxin 6.680e-03           2
+13 GO:0071704 GO:0071704, organic substance metaboli 1.229e-02          70
+14 GO:0007018 GO:0007018, microtubule-based movement 1.495e-02           2
+15 GO:0006633 GO:0006633, fatty acid biosynthetic pr 1.495e-02           2
+16 GO:0007165        GO:0007165, signal transduction 1.685e-02           3
+17 GO:0048544      GO:0048544, recognition of pollen 1.905e-02           2
+18 GO:0016999 GO:0016999, antibiotic metabolic proce 2.474e-02           3
+19 GO:0042221       GO:0042221, response to chemical 2.476e-02           3
+20 GO:0060255 GO:0060255, regulation of macromolecul 3.440e-02          13
+
+$`4`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0055085    GO:0055085, transmembrane transport 0.000015          14
+2  GO:0055114 GO:0055114, oxidation-reduction proces 0.000016          14
+3  GO:0006468    GO:0006468, protein phosphorylation 0.000023          11
+4  GO:1902600 GO:1902600, proton transmembrane trans 0.000081           4
+5  GO:0005975 GO:0005975, carbohydrate metabolic pro 0.000290          10
+6  GO:0006090 GO:0006090, pyruvate metabolic process 0.000300           4
+7  GO:0006508                GO:0006508, proteolysis 0.000900           6
+8  GO:0017004 GO:0017004, cytochrome complex assembl 0.001020           2
+9  GO:0030001        GO:0030001, metal ion transport 0.001660           6
+10 GO:0016567     GO:0016567, protein ubiquitination 0.004430           2
+11 GO:0006412                GO:0006412, translation 0.004940           5
+12 GO:0009108 GO:0009108, coenzyme biosynthetic proc 0.006180           4
+13 GO:0042545     GO:0042545, cell wall modification 0.007520           2
+14 GO:0006813    GO:0006813, potassium ion transport 0.009990           2
+15 GO:0008299 GO:0008299, isoprenoid biosynthetic pr 0.009990           2
+16 GO:0006633 GO:0006633, fatty acid biosynthetic pr 0.009990           2
+17 GO:0072525 GO:0072525, pyridine-containing compou 0.010050           3
+18 GO:0006096         GO:0006096, glycolytic process 0.011340           2
+19 GO:0046034      GO:0046034, ATP metabolic process 0.029580           4
+20 GO:0060255 GO:0060255, regulation of macromolecul 0.030030           4
+
+$`5`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 7.70e-22          49
+2  GO:0006457            GO:0006457, protein folding 8.20e-12          10
+3  GO:0006355 GO:0006355, regulation of transcriptio 1.70e-09          21
+4  GO:0009058       GO:0009058, biosynthetic process 3.00e-09          66
+5  GO:0005975 GO:0005975, carbohydrate metabolic pro 6.30e-09          27
+6  GO:0006508                GO:0006508, proteolysis 2.30e-06          17
+7  GO:0006520 GO:0006520, cellular amino acid metabo 2.40e-05          16
+8  GO:1901362 GO:1901362, organic cyclic compound bi 2.80e-05          41
+9  GO:0045454     GO:0045454, cell redox homeostasis 6.50e-05           6
+10 GO:0006468    GO:0006468, protein phosphorylation 9.80e-05          17
+11 GO:0055085    GO:0055085, transmembrane transport 9.80e-05          21
+12 GO:0046488 GO:0046488, phosphatidylinositol metab 1.20e-04           4
+13 GO:0016226 GO:0016226, iron-sulfur cluster assemb 1.60e-04           3
+14 GO:0006511 GO:0006511, ubiquitin-dependent protei 1.80e-04           4
+15 GO:0015986 GO:0015986, ATP synthesis coupled prot 3.50e-04           4
+16 GO:0016310            GO:0016310, phosphorylation 4.60e-04          24
+17 GO:0046907    GO:0046907, intracellular transport 5.40e-04           5
+18 GO:0018130 GO:0018130, heterocycle biosynthetic p 5.90e-04          39
+19 GO:0006096         GO:0006096, glycolytic process 6.20e-04           4
+20 GO:1902600 GO:1902600, proton transmembrane trans 1.22e-03           7
+
+$`6`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 0.00026          10
+2  GO:0045333       GO:0045333, cellular respiration 0.00252           2
+3  GO:0009058       GO:0009058, biosynthetic process 0.00356          17
+4  GO:0006508                GO:0006508, proteolysis 0.00383           4
+5  GO:0022900   GO:0022900, electron transport chain 0.00432           2
+6  GO:0016310            GO:0016310, phosphorylation 0.00714           6
+7  GO:0006412                GO:0006412, translation 0.01023           3
+8  GO:0098655 GO:0098655, cation transmembrane trans 0.01130           3
+9  GO:0046034      GO:0046034, ATP metabolic process 0.01581           2
+10 GO:0006355 GO:0006355, regulation of transcriptio 0.01625           4
+11 GO:0007165        GO:0007165, signal transduction 0.02605           2
+12 GO:0006816      GO:0006816, calcium ion transport 0.02892           1
+13 GO:0006596 GO:0006596, polyamine biosynthetic pro 0.02892           1
+14 GO:0007275 GO:0007275, multicellular organism dev 0.02892           1
+15 GO:0006820            GO:0006820, anion transport 0.03403           2
+16 GO:0006559 GO:0006559, L-phenylalanine catabolic  0.03461           1
+17 GO:0019751   GO:0019751, polyol metabolic process 0.03461           1
+18 GO:0008272          GO:0008272, sulfate transport 0.03461           1
+19 GO:0043604 GO:0043604, amide biosynthetic process 0.03845           4
+20 GO:0006779 GO:0006779, porphyrin-containing compo 0.04026           1
+
+$`7`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0006468    GO:0006468, protein phosphorylation 3.4e-13          29
+2  GO:0006412                GO:0006412, translation 2.8e-08          20
+3  GO:0055114 GO:0055114, oxidation-reduction proces 8.4e-08          27
+4  GO:0006351 GO:0006351, transcription, DNA-templat 8.9e-08          23
+5  GO:0015031          GO:0015031, protein transport 4.0e-07          12
+6  GO:0006886 GO:0006886, intracellular protein tran 1.2e-06           7
+7  GO:0006355 GO:0006355, regulation of transcriptio 3.4e-06          16
+8  GO:0006006  GO:0006006, glucose metabolic process 6.0e-06           5
+9  GO:0006511 GO:0006511, ubiquitin-dependent protei 6.0e-06           5
+10 GO:0006464 GO:0006464, cellular protein modificat 7.5e-06          41
+11 GO:0051603 GO:0051603, proteolysis involved in ce 1.4e-05           8
+12 GO:1901566 GO:1901566, organonitrogen compound bi 1.6e-05          38
+13 GO:0006413   GO:0006413, translational initiation 4.1e-05           4
+14 GO:0009628 GO:0009628, response to abiotic stimul 4.1e-05           4
+15 GO:0009451           GO:0009451, RNA modification 5.8e-05           4
+16 GO:0006397            GO:0006397, mRNA processing 5.8e-05           4
+17 GO:0006396             GO:0006396, RNA processing 6.1e-05          11
+18 GO:0006457            GO:0006457, protein folding 7.7e-05           5
+19 GO:0016052 GO:0016052, carbohydrate catabolic pro 1.4e-04           5
+20 GO:0031047      GO:0031047, gene silencing by RNA 1.4e-04           3
+
+$`8`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0006355 GO:0006355, regulation of transcriptio 1.30e-16          27
+2  GO:0006468    GO:0006468, protein phosphorylation 5.00e-13          27
+3  GO:0009772 GO:0009772, photosynthetic electron tr 2.60e-08           5
+4  GO:0015979             GO:0015979, photosynthesis 3.20e-08          17
+5  GO:0055114 GO:0055114, oxidation-reduction proces 2.00e-06          29
+6  GO:0055085    GO:0055085, transmembrane transport 3.40e-06          18
+7  GO:0006412                GO:0006412, translation 4.70e-06          13
+8  GO:0009767 GO:0009767, photosynthetic electron tr 3.60e-05           8
+9  GO:0006886 GO:0006886, intracellular protein tran 1.30e-04           5
+10 GO:0044248 GO:0044248, cellular catabolic process 1.70e-04           9
+11 GO:0006508                GO:0006508, proteolysis 5.50e-04          13
+12 GO:0000398 GO:0000398, mRNA splicing, via spliceo 1.05e-03           3
+13 GO:0006511 GO:0006511, ubiquitin-dependent protei 1.87e-03           3
+14 GO:0080090 GO:0080090, regulation of primary meta 2.11e-03          29
+15 GO:0051171 GO:0051171, regulation of nitrogen com 2.11e-03          29
+16 GO:0006351 GO:0006351, transcription, DNA-templat 3.17e-03          30
+17 GO:0030001        GO:0030001, metal ion transport 3.24e-03           5
+18 GO:0030163  GO:0030163, protein catabolic process 4.31e-03           5
+19 GO:0006534 GO:0006534, cysteine metabolic process 4.42e-03           2
+20 GO:0048544      GO:0048544, recognition of pollen 5.35e-03           3
+
+$`9`
+        GO.ID                                   Term    Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 0.0000010          12
+2  GO:0006468    GO:0006468, protein phosphorylation 0.0000015           9
+3  GO:0006508                GO:0006508, proteolysis 0.0001900           5
+4  GO:0043648 GO:0043648, dicarboxylic acid metaboli 0.0006500           2
+5  GO:0006355 GO:0006355, regulation of transcriptio 0.0012900           5
+6  GO:0055085    GO:0055085, transmembrane transport 0.0057700           5
+7  GO:0010467            GO:0010467, gene expression 0.0167500           9
+8  GO:0009152 GO:0009152, purine ribonucleotide bios 0.0238800           2
+9  GO:0018205 GO:0018205, peptidyl-lysine modificati 0.0243200           1
+10 GO:0034030 GO:0034030, ribonucleoside bisphosphat 0.0243200           1
+11 GO:0006479        GO:0006479, protein methylation 0.0243200           1
+12 GO:0034033 GO:0034033, purine nucleoside bisphosp 0.0243200           1
+13 GO:0009772 GO:0009772, photosynthetic electron tr 0.0291200           1
+14 GO:0006888 GO:0006888, ER to Golgi vesicle-mediat 0.0291200           1
+15 GO:0006518  GO:0006518, peptide metabolic process 0.0327300           3
+16 GO:0006415  GO:0006415, translational termination 0.0338900           1
+17 GO:0006631 GO:0006631, fatty acid metabolic proce 0.0378800           2
+18 GO:0006099   GO:0006099, tricarboxylic acid cycle 0.0433600           1
+19 GO:0016570       GO:0016570, histone modification 0.0433600           1
+20 GO:0000398 GO:0000398, mRNA splicing, via spliceo 0.0480600           1
+
+$`10`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0005975 GO:0005975, carbohydrate metabolic pro 1.50e-10          26
+2  GO:0006468    GO:0006468, protein phosphorylation 2.20e-10          19
+3  GO:0055114 GO:0055114, oxidation-reduction proces 8.00e-10          23
+4  GO:0007017  GO:0007017, microtubule-based process 2.10e-09           8
+5  GO:0009664 GO:0009664, plant-type cell wall organ 1.20e-04           4
+6  GO:0055085    GO:0055085, transmembrane transport 1.70e-04          11
+7  GO:0034404 GO:0034404, nucleobase-containing smal 1.80e-04           3
+8  GO:0009250 GO:0009250, glucan biosynthetic proces 5.10e-04           5
+9  GO:0006073 GO:0006073, cellular glucan metabolic  7.00e-04           8
+10 GO:0030244 GO:0030244, cellulose biosynthetic pro 7.80e-04           3
+11 GO:0009058       GO:0009058, biosynthetic process 1.27e-03          32
+12 GO:0006139 GO:0006139, nucleobase-containing comp 1.35e-03          22
+13 GO:0006221 GO:0006221, pyrimidine nucleotide bios 1.76e-03           2
+14 GO:0046112 GO:0046112, nucleobase biosynthetic pr 1.76e-03           2
+15 GO:0006400          GO:0006400, tRNA modification 1.76e-03           2
+16 GO:1901137 GO:1901137, carbohydrate derivative bi 3.49e-03           5
+17 GO:1901135 GO:1901135, carbohydrate derivative me 4.42e-03           8
+18 GO:0009116 GO:0009116, nucleoside metabolic proce 4.79e-03           2
+19 GO:0006260            GO:0006260, DNA replication 6.10e-03           2
+20 GO:0006355 GO:0006355, regulation of transcriptio 7.33e-03           7
+
+$`11`
+        GO.ID                                   Term    Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 1.700e-07           9
+2  GO:0006888 GO:0006888, ER to Golgi vesicle-mediat 1.100e-04           2
+3  GO:0006886 GO:0006886, intracellular protein tran 2.040e-03           2
+4  GO:0006355 GO:0006355, regulation of transcriptio 1.123e-02           3
+5  GO:0006812           GO:0006812, cation transport 1.901e-02           2
+6  GO:0000413 GO:0000413, protein peptidyl-prolyl is 1.959e-02           1
+7  GO:0009116 GO:0009116, nucleoside metabolic proce 2.236e-02           1
+8  GO:0072527 GO:0072527, pyrimidine-containing comp 2.236e-02           1
+9  GO:0006887                 GO:0006887, exocytosis 2.236e-02           1
+10 GO:0046488 GO:0046488, phosphatidylinositol metab 3.062e-02           1
+11 GO:0071805 GO:0071805, potassium ion transmembran 3.335e-02           1
+12 GO:0005975 GO:0005975, carbohydrate metabolic pro 3.473e-02           3
+13 GO:0051274 GO:0051274, beta-glucan biosynthetic p 4.423e-02           1
+14 GO:0044282 GO:0044282, small molecule catabolic p 4.423e-02           1
+15 GO:0034655 GO:0034655, nucleobase-containing comp 4.693e-02           1
+
+$`12`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0006508                GO:0006508, proteolysis 0.000012           5
+2  GO:0006468    GO:0006468, protein phosphorylation 0.000036           6
+3  GO:0055114 GO:0055114, oxidation-reduction proces 0.001400           6
+4  GO:0019318   GO:0019318, hexose metabolic process 0.005400           2
+5  GO:1901617 GO:1901617, organic hydroxy compound b 0.014000           1
+6  GO:0019751   GO:0019751, polyol metabolic process 0.016800           1
+7  GO:0009073 GO:0009073, aromatic amino acid family 0.016800           1
+8  GO:1901135 GO:1901135, carbohydrate derivative me 0.016900           2
+9  GO:0006558 GO:0006558, L-phenylalanine metabolic  0.019600           1
+10 GO:0006099   GO:0006099, tricarboxylic acid cycle 0.025100           1
+11 GO:0042737     GO:0042737, drug catabolic process 0.025100           1
+12 GO:0008654 GO:0008654, phospholipid biosynthetic  0.025100           1
+13 GO:0044283 GO:0044283, small molecule biosyntheti 0.027000           2
+14 GO:0006952           GO:0006952, defense response 0.027900           1
+15 GO:0006006  GO:0006006, glucose metabolic process 0.033400           1
+16 GO:0009725        GO:0009725, response to hormone 0.046900           1
+
+$`14`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0006869            GO:0006869, lipid transport 0.00014           2
+2  GO:0006486      GO:0006486, protein glycosylation 0.00833           1
+3  GO:0032787 GO:0032787, monocarboxylic acid metabo 0.01097           2
+4  GO:0006081 GO:0006081, cellular aldehyde metaboli 0.01165           1
+5  GO:0006364            GO:0006364, rRNA processing 0.01330           1
+6  GO:0000160 GO:0000160, phosphorelay signal transd 0.01660           1
+7  GO:0071805 GO:0071805, potassium ion transmembran 0.01989           1
+8  GO:0055085    GO:0055085, transmembrane transport 0.02261           3
+9  GO:0007018 GO:0007018, microtubule-based movement 0.02480           1
+10 GO:0006820            GO:0006820, anion transport 0.02480           1
+11 GO:0006633 GO:0006633, fatty acid biosynthetic pr 0.02480           1
+12 GO:0006355 GO:0006355, regulation of transcriptio 0.03094           2
+
+$`15`
+        GO.ID                                   Term    Fisher Significant
+1  GO:0006355 GO:0006355, regulation of transcriptio 1.200e-09          13
+2  GO:0055114 GO:0055114, oxidation-reduction proces 1.400e-07          16
+3  GO:0055085    GO:0055085, transmembrane transport 2.700e-07          15
+4  GO:0006468    GO:0006468, protein phosphorylation 7.200e-04           8
+5  GO:0006811              GO:0006811, ion transport 8.100e-04          12
+6  GO:0043604 GO:0043604, amide biosynthetic process 1.360e-03           5
+7  GO:0009108 GO:0009108, coenzyme biosynthetic proc 4.330e-03           3
+8  GO:0071805 GO:0071805, potassium ion transmembran 4.420e-03           2
+9  GO:0018130 GO:0018130, heterocycle biosynthetic p 5.890e-03          19
+10 GO:0015986 GO:0015986, ATP synthesis coupled prot 6.030e-03           2
+11 GO:1901362 GO:1901362, organic cyclic compound bi 7.880e-03          20
+12 GO:0046394 GO:0046394, carboxylic acid biosynthet 8.200e-03           4
+13 GO:0071702 GO:0071702, organic substance transpor 9.510e-03           4
+14 GO:1901566 GO:1901566, organonitrogen compound bi 1.504e-02          12
+15 GO:0042592        GO:0042592, homeostatic process 1.670e-02           2
+16 GO:0006813    GO:0006813, potassium ion transport 2.459e-02           3
+17 GO:0016192 GO:0016192, vesicle-mediated transport 2.478e-02           2
+18 GO:0009064 GO:0009064, glutamine family amino aci 2.489e-02           2
+19 GO:0006412                GO:0006412, translation 2.730e-02           3
+20 GO:0008033            GO:0008033, tRNA processing 4.113e-02           2
+
+$`16`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0006468    GO:0006468, protein phosphorylation 0.000067           7
+2  GO:0006749 GO:0006749, glutathione metabolic proc 0.000290           2
+3  GO:0006418 GO:0006418, tRNA aminoacylation for pr 0.000700           2
+4  GO:0000398 GO:0000398, mRNA splicing, via spliceo 0.000870           2
+5  GO:0006412                GO:0006412, translation 0.001880           6
+6  GO:1901565 GO:1901565, organonitrogen compound ca 0.002460           3
+7  GO:0016192 GO:0016192, vesicle-mediated transport 0.003400           3
+8  GO:0044248 GO:0044248, cellular catabolic process 0.005750           3
+9  GO:0022613 GO:0022613, ribonucleoprotein complex  0.008770           2
+10 GO:0006397            GO:0006397, mRNA processing 0.017050           3
+11 GO:0048583 GO:0048583, regulation of response to  0.022270           1
+12 GO:0051276    GO:0051276, chromosome organization 0.030380           2
+13 GO:0000413 GO:0000413, protein peptidyl-prolyl is 0.031040           1
+14 GO:0006355 GO:0006355, regulation of transcriptio 0.038720           3
+15 GO:0048193    GO:0048193, Golgi vesicle transport 0.039740           1
+16 GO:0016570       GO:0016570, histone modification 0.039740           1
+17 GO:0006413   GO:0006413, translational initiation 0.039740           1
+18 GO:0006396             GO:0006396, RNA processing 0.040170           5
+19 GO:0008033            GO:0008033, tRNA processing 0.044050           1
+20 GO:0042254        GO:0042254, ribosome biogenesis 0.044050           1
+
+$`17`
+        GO.ID                                   Term    Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 1.500e-07          13
+2  GO:0006096         GO:0006096, glycolytic process 1.800e-06           4
+3  GO:0006468    GO:0006468, protein phosphorylation 5.300e-05           8
+4  GO:0007165        GO:0007165, signal transduction 4.300e-04           4
+5  GO:0006629    GO:0006629, lipid metabolic process 7.300e-04           9
+6  GO:0008033            GO:0008033, tRNA processing 1.470e-03           2
+7  GO:0046488 GO:0046488, phosphatidylinositol metab 1.790e-03           2
+8  GO:0006281                 GO:0006281, DNA repair 3.360e-03           2
+9  GO:0043436  GO:0043436, oxoacid metabolic process 5.090e-03           9
+10 GO:0006631 GO:0006631, fatty acid metabolic proce 7.860e-03           2
+11 GO:0006886 GO:0006886, intracellular protein tran 8.550e-03           2
+12 GO:0006807 GO:0006807, nitrogen compound metaboli 1.032e-02          27
+13 GO:0006464 GO:0006464, cellular protein modificat 1.481e-02          11
+14 GO:0006090 GO:0006090, pyruvate metabolic process 1.624e-02           5
+15 GO:0032787 GO:0032787, monocarboxylic acid metabo 2.042e-02           8
+16 GO:0010467            GO:0010467, gene expression 2.058e-02           9
+17 GO:0008654 GO:0008654, phospholipid biosynthetic  2.281e-02           2
+18 GO:0009152 GO:0009152, purine ribonucleotide bios 2.696e-02           5
+19 GO:0006352 GO:0006352, DNA-templated transcriptio 2.892e-02           1
+20 GO:0048583 GO:0048583, regulation of response to  2.892e-02           1
+
+$`18`
+       GO.ID                          Term Fisher Significant
+1 GO:0006508       GO:0006508, proteolysis 0.0019           2
+2 GO:0009733 GO:0009733, response to auxin 0.0063           1
+
+$`19`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006534 GO:0006534, cysteine metabolic process 0.0026           1
+2 GO:0055114 GO:0055114, oxidation-reduction proces 0.0111           2
+3 GO:0045454     GO:0045454, cell redox homeostasis 0.0145           1
+
+$`20`
+       GO.ID                                   Term Fisher Significant
+1 GO:0051726   GO:0051726, regulation of cell cycle 0.0037           1
+2 GO:0006816      GO:0006816, calcium ion transport 0.0037           1
+3 GO:0048519 GO:0048519, negative regulation of bio 0.0058           1
+4 GO:0055085    GO:0055085, transmembrane transport 0.0080           2
+5 GO:0006281                 GO:0006281, DNA repair 0.0109           1
+6 GO:0006468    GO:0006468, protein phosphorylation 0.0112           2
+
+$`21`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006596 GO:0006596, polyamine biosynthetic pro 0.0047           1
+2 GO:0006352 GO:0006352, DNA-templated transcriptio 0.0047           1
+3 GO:0006887                 GO:0006887, exocytosis 0.0075           1
+4 GO:0006952           GO:0006952, defense response 0.0094           1
+5 GO:0045454     GO:0045454, cell redox homeostasis 0.0260           1
+6 GO:0051641      GO:0051641, cellular localization 0.0334           1
+

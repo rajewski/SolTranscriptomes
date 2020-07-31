@@ -92,6 +92,7 @@ for (i in 2:dim(Gene_List_Intersect)[2]) {
                              GOIs=tmpList)
 }
 names(GO_Tables) <- names(Gene_List_Intersect)[-1]
+capture.output(GO_Tables, file="DEGAnalysis/RNA-seq/RipeningGOTables.txt")
 
 # Find some key genes
 impt_genes <- c("CNR","NOR","RIN","MC","J","FUL1","FUL2","MBP10","MBP20","NR","TAGL1", "ACS2", "ACS4", "ACO1", "ACO2", "ACO3", "ACO4", "ACO5", "ACO6", "ACO7", "TAG1", "AGL11", "MBP3", "PSY1", "PL1", "Cel2", "PGA2A", "EXP1", "GAD1", "GAD2", "GAD3", "CHS-1", "CHS-2", "GRAS38", "CTOMT1", "TOMLOXC" )
