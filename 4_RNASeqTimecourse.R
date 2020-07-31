@@ -502,7 +502,7 @@ Cluster_AllOrtho_DEGByFruit <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_All
 
 Cluster_AllOrtho_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds"), 
                                    error=function(e){
-                                     DESeqCluster(DDS_AllOrtho_Noise,
+                                     Cluster_AllOrtho_Noise <- DESeqCluster(DDS_AllOrtho_Noise,
                                                   numGenes = "all",
                                                   timeVar = "Stage")
                                      saveRDS(Cluster_AllOrtho_Noise, "DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
