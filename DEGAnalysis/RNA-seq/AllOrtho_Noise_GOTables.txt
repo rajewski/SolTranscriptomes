@@ -1,0 +1,40 @@
+$`1`
+       GO.ID                                   Term Fisher Significant
+1 GO:0044271 GO:0044271, cellular nitrogen compound 0.0035           3
+2 GO:0006396             GO:0006396, RNA processing 0.0038           2
+3 GO:0008152          GO:0008152, metabolic process 0.0196          13
+4 GO:1901566 GO:1901566, organonitrogen compound bi 0.0211           2
+5 GO:0071704 GO:0071704, organic substance metaboli 0.0364           9
+6 GO:0044238  GO:0044238, primary metabolic process 0.0407           8
+
+$`2`
+       GO.ID                                   Term Fisher Significant
+1 GO:0055085    GO:0055085, transmembrane transport 0.0033           3
+2 GO:0055114 GO:0055114, oxidation-reduction proces 0.0055           4
+3 GO:0006468    GO:0006468, protein phosphorylation 0.0471           2
+4 GO:0005975 GO:0005975, carbohydrate metabolic pro 0.0471           2
+
+$`3`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006139 GO:0006139, nucleobase-containing comp  0.029           2
+2 GO:0055114 GO:0055114, oxidation-reduction proces  0.042           2
+
+$`4`
+       GO.ID                                   Term Fisher Significant
+1 GO:0016043 GO:0016043, cellular component organiz  0.024           2
+2 GO:0043412 GO:0043412, macromolecule modification  0.024           2
+3 GO:0044237 GO:0044237, cellular metabolic process  0.026           5
+4 GO:0044267 GO:0044267, cellular protein metabolic  0.048           2
+
+$`5`
+       GO.ID                                   Term Fisher Significant
+1 GO:0055114 GO:0055114, oxidation-reduction proces 0.0031           3
+
+$`6`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006807 GO:0006807, nitrogen compound metaboli  0.013           3
+2 GO:0007154         GO:0007154, cell communication  0.016           2
+3 GO:0009987           GO:0009987, cellular process  0.027           4
+4 GO:0044265 GO:0044265, cellular macromolecule cat  0.039           1
+5 GO:0045454     GO:0045454, cell redox homeostasis  0.039           1
+
