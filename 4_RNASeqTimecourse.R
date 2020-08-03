@@ -519,6 +519,7 @@ Cluster_DryOrtho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_DryOrtho.rds")
 
 
 # Plot Cluster Profiles ---------------------------------------------------
+# Use the ggplot plotting scripts for figures. Use this for exploring
 ClusterforPlotting <- Cluster_AllOrtho_Noise
 PlotCluster <-degPlotCluster(ClusterforPlotting$normalized[ClusterforPlotting$normalized$cluster==2,],
                              time="Stage",
@@ -533,9 +534,7 @@ PlotCluster + theme_minimal() +
         legend.position = "none",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
-ggsave(filename = "DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Noise.pdf",
-       width=11,
-       height=7)
+
 
 # NoFUL2 and NoMBP10 are in cluster 2
 # In SlycIH FUL1 is cluster 3
