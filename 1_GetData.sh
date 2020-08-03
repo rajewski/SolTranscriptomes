@@ -1,21 +1,21 @@
 #!/bin/bash -l
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu=1G
+#SBATCH --mem-per-cpu=4G
 #SBATCH --nodes=1
 #SBATCH --time=1:00:00
 #SBATCH --mail-user=araje002@ucr.edu
 #SBATCH --mail-type=ALL
-#SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/GetExternalData-%A.out
+#SBATCH -o ./logs/GetExternalData-%A_%a.out
 set -e
 
 # Define a list of necessary external data sources
 # This  should be run as an array job with indices specified below
 # Index 0 for Arabidopsis data
 # Index 1-3 for microarray data
-# Index 4-27 are RNAseq 
-# Index  28-34 are for ChIP data
-AllExternal=(TAIR10 GSE41560 GSE49125 GSE79553 SRR943813 SRR943814 SRR943815 SRR943816 SRR943817 SRR943818 SRR943825 SRR943826 SRR943827 SRR943828 SRR943829 SRR943830 ERR2809794 ERR2809795 ERR2809796 ERR2809797 ERR2809798 ERR2809799 ERR2809806 ERR2809807 ERR2809808 ERR2809815 ERR2809816 ERR2809817 SRR6412402 SRR6412403 SRR6412404 SRR3288009 SRR3288010 SRR3288011 SRR3288012)
+# Index 4-39 are RNAseq 
+# Index  40-46 are for ChIP data
+AllExternal=(TAIR10 GSE41560 GSE49125 GSE79553 SRR943813 SRR943814 SRR943815 SRR943816 SRR943817 SRR943818 SRR943825 SRR943826 SRR943827 SRR943828 SRR943829 SRR943830 ERR2809794 ERR2809795 ERR2809796 ERR2809797 ERR2809798 ERR2809799 ERR2809800 ERR2809801 ERR2809802 ERR2809803 ERR2809804 ERR2809805 ERR2809806 ERR2809807 ERR2809808 ERR2809809 ERR2809810 ERR2809811 ERR2809812 ERR2809813 ERR2809814 ERR2809815 ERR2809816 ERR2809817 SRR6412402 SRR6412403 SRR6412404 SRR3288009 SRR3288010 SRR3288011 SRR3288012)
 
 ####### Download Arabidopsis Data
 if [ "$SLURM_ARRAY_TASK_ID" == 0 ]; then
@@ -107,7 +107,7 @@ if [ "$SLURM_ARRAY_TASK_ID" == 2 ]; then
       #get a list of duplicates from the exonerate output
       tail -n +3 GPL15968-24228.exonerate.out | cut -f2 -d " " |sort |uniq -d > GPL15968-24228.exonerate.dups.txt
       grep -Fwf GPL15968-24228.exonerate.dups.txt GPL15968-24228.exonerate.out | less #Print multimappers with targets for personal entertainment
-      tail -n +3 GPL15968-24228.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less#Show how many matches each multimapper has (between 2 and 80)
+      tail -n +3 GPL15968-24228.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less #Show how many matches each multimapper has (between 2 and 80)
       #Remove multimappers from the output
       grep -vFwf GPL15968-24228.exonerate.dups.txt GPL15968-24228.exonerate.out > GPL15968-24228.exonerate.nodups.txt
       #Create a final list of just the single mapping and another with data suitable for import into Ringo
@@ -160,73 +160,73 @@ if [ "$SLURM_ARRAY_TASK_ID" == 3 ]; then
 fi
 
 ####### Download SRA RNAseq Data
-if [ "$SLURM_ARRAY_TASK_ID" -ge 4 ] && [ "$SLURM_ARRAY_TASK_ID" -le 27 ]; then
+if [ "$SLURM_ARRAY_TASK_ID" -ge 4 ] && [ "$SLURM_ARRAY_TASK_ID" -le 39 ]; then
   mkdir -p ExternalData/RNAseq
   cd ExternalData/RNAseq
   # Prefetch Data
-  if [ ! -d ${AllSRA[$SLURM_ARRAY_TASK_ID]} ]; then
-      echo Downloading ${AllSRA[$SLURM_ARRAY_TASK_ID]} data from SRA...
+  if [ ! -d ${AllExternal[$SLURM_ARRAY_TASK_ID]} ]; then
+      echo Downloading ${AllExternal[$SLURM_ARRAY_TASK_ID]} data from SRA...
       module load sratoolkit/2.10.0
-      prefetch ${AllSRA[$SLURM_ARRAY_TASK_ID]}
+      prefetch ${AllExternal[$SLURM_ARRAY_TASK_ID]}
       echo Done.
   else
-      echo ${AllSRA[$SLURM_ARRAY_TASK_ID]} data already present.
+      echo ${AllExternal[$SLURM_ARRAY_TASK_ID]} data already present.
   fi
   # Dump Fastq files for data
-  if [ ! -e ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz ]; then
-      echo Dumping fastq data for ${AllSRA[$SLURM_ARRAY_TASK_ID]}...
+  if [ ! -e ${AllExternal[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz ]; then
+      echo Dumping fastq data for ${AllExternal[$SLURM_ARRAY_TASK_ID]}...
       module load sratoolkit/2.10.0
-      fastq-dump --defline-seq '@$sn[_$rn]/$ri' --defline-qual '+$sn[_$rn]/$ri' --split-files --gzip -B ${AllSRA[$SLURM_ARRAY_TASK_ID]}
+      fastq-dump --defline-seq '@$sn[_$rn]/$ri' --defline-qual '+$sn[_$rn]/$ri' --split-files --gzip -B ${AllExternal[$SLURM_ARRAY_TASK_ID]}
       echo Done.
   else
-      echo Fastq data for ${AllSRA[$SLURM_ARRAY_TASK_ID]} already present.
+      echo Fastq data for ${AllExternal[$SLURM_ARRAY_TASK_ID]} already present.
   fi
   #Trim Reads
-  if [ ! -e ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1_trimmed.fq.gz ]; then
-      echo Running Trim Galore on ${AllSRA[$SLURM_ARRAY_TASK_ID]}...
+  if [ ! -e ${AllExternal[$SLURM_ARRAY_TASK_ID]}_1_trimmed.fq.gz ]; then
+      echo Running Trim Galore on ${AllExternal[$SLURM_ARRAY_TASK_ID]}...
       module load trim_galore/0.4.2
       trim_galore \
           --no_report_file \
-          ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz
+          ${AllExternal[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz
       echo Done.
   else
-      echo ${AllSRA[$SLURM_ARRAY_TASK_ID]} RNA seq already trimmed.
+      echo ${AllExternal[$SLURM_ARRAY_TASK_ID]} RNA seq already trimmed.
   fi
   cd ../../
 fi
 
 ####### Download SRA ChIP-seq Data
-if [ "$SLURM_ARRAY_TASK_ID" -ge 28 ] && [ "$SLURM_ARRAY_TASK_ID" -le 34 ]; then
+if [ "$SLURM_ARRAY_TASK_ID" -ge 40 ] && [ "$SLURM_ARRAY_TASK_ID" -le 46 ]; then
   mkdir -p ExternalData/ChIPseq
   cd ExternalData/ChIPseq
   # Prefetch Data
-  if [ ! -d ${AllSRA[$SLURM_ARRAY_TASK_ID]} ]; then
-      echo Downloading ${AllSRA[$SLURM_ARRAY_TASK_ID]} data from SRA...
+  if [ ! -d ${AllExternal[$SLURM_ARRAY_TASK_ID]} ]; then
+      echo Downloading ${AllExternal[$SLURM_ARRAY_TASK_ID]} data from SRA...
       module load sratoolkit/2.10.0
-      prefetch ${AllSRA[$SLURM_ARRAY_TASK_ID]}
+      prefetch ${AllExternal[$SLURM_ARRAY_TASK_ID]}
       echo Done.
   else
-      echo ${AllSRA[$SLURM_ARRAY_TASK_ID]} data already present.
+      echo ${AllExternal[$SLURM_ARRAY_TASK_ID]} data already present.
   fi
   #Dump Fastq files 
-  if [ ! -e ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz ]; then
-      echo Dumping fastq data for ${AllSRA[$SLURM_ARRAY_TASK_ID]}...
+  if [ ! -e ${AllExternal[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz ]; then
+      echo Dumping fastq data for ${AllExternal[$SLURM_ARRAY_TASK_ID]}...
       module load sratoolkit/2.10.0
-      fastq-dump --defline-seq '@$sn[_$rn]/$ri' --defline-qual '+$sn[_$rn]/$ri' --split-files --gzip -B ${AllSRA[$SLURM_ARRAY_TASK_ID]}
+      fastq-dump --defline-seq '@$sn[_$rn]/$ri' --defline-qual '+$sn[_$rn]/$ri' --split-files --gzip -B ${AllExternal[$SLURM_ARRAY_TASK_ID]}
       echo Done.
   else
-      echo Fastq data for ${AllSRA[$SLURM_ARRAY_TASK_ID]} already present.
+      echo Fastq data for ${AllExternal[$SLURM_ARRAY_TASK_ID]} already present.
   fi
   #Trim Reads                                                                                                                                                                      
-  if [ ! -e ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1_trimmed.fq.gz ]; then
-      echo Running Trim Galore on ${AllSRA[$SLURM_ARRAY_TASK_ID]}...
+  if [ ! -e ${AllExternal[$SLURM_ARRAY_TASK_ID]}_1_trimmed.fq.gz ]; then
+      echo Running Trim Galore on ${AllExternal[$SLURM_ARRAY_TASK_ID]}...
       module load trim_galore/0.4.2
       trim_galore \
           --no_report_file \
-          ${AllSRA[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz
+          ${AllExternal[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz
       echo Done.
   else
-      echo ${AllSRA[$SLURM_ARRAY_TASK_ID]} RNA seq already trimmed.
+      echo ${AllExternal[$SLURM_ARRAY_TASK_ID]} RNA seq already trimmed.
   fi
   cd ../../
 fi
