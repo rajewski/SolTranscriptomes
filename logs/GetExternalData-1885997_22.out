@@ -1,0 +1,2 @@
+/var/spool/slurmd/job1885997/slurm_script: line 109: syntax error near unexpected token `('
+/var/spool/slurmd/job1885997/slurm_script: line 109: `      tail -n +3 GPL15968-24228.exonerate.out | cut -f2 -d " " |sort |uniq -dc | less#Show how many matches each multimapper has (between 2 and 80)'

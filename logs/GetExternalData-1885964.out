@@ -1,0 +1,5 @@
+/var/spool/slurmd/job1885967/slurm_script: line 110: syntax error near unexpected token `('
+/var/spool/slurmd/job1885969/slurm_script: line 110: syntax error near unexpected token `('
+/var/spool/slurmd/job1885970/slurm_script: line 110: syntax error near unexpected token `('
+/var/spool/slurmd/job1885968/slurm_script: line 110: syntax error near unexpected token `('
+/var/spool/slurmd/job1885971/slurm_script: line 110: syntax error near unexpected token `('
