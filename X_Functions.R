@@ -5,7 +5,8 @@ DESeqSpline <- function(se=se,
                         timeVar="DAP",
                         CaseCtlVar="Genotype",
                         SetDF="",
-                        vsNoise=FALSE) {
+                        vsNoise=FALSE,
+                        CollapseTechRep=FALSE) {
   #calculate spline df as the number of times -1
   if (is.na(as.numeric(SetDF))){
     dfSpline <- (length(unique(colData(se)[,timeVar]))-1)
@@ -53,6 +54,12 @@ DESeqSpline <- function(se=se,
                                                                paste(colnames(design), collapse = "+"))))
     }
   }
+  if (CollapseTechRep) {
+    #Collapse Nobt technical replicates
+    dds$Accession <- sub("\\.\\d", "", dds$Accession) #converted to char FYI
+    dds <- collapseReplicates(dds, dds$Accession)
+  }
+  
   dds <- estimateSizeFactors(dds)
   # in case of a Slyc vs Spimp comparision, make sure the DEGs aren't ones where Spimp has no counts. This could represent a mapping problem to the Slyc genome
   if(CaseCtlVar=="Species" && length(levels(dds$Species))) {
@@ -85,11 +92,7 @@ DESeqCluster <- function(dds=dds,
   #https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   numGenes=match.arg(numGenes)
   message("Normalizing counts")
-  if (CaseCtlVar=="Species") {
-    rld <- rlog(dds, blind=FALSE)
-  } else {
-    rld <- rlog(dds)
-  }
+  rld <- rlog(dds, blind=FALSE)
   message("Done.")
   if (Diagnostic) {
     message("Now for some diagnostic plots:")
@@ -211,7 +214,7 @@ GOEnrich <- function(gene2go="",
                 description = "Slyc Cluster 1",
                 ontology = GOCategory,
                 allGenes = GOI,
-                nodeSize = 5,
+                nodeSize = 2,
                 annot = annFUN.gene2GO,
                 gene2GO=GO)
   # Do the enrichment test
