@@ -5,18 +5,96 @@ library("cowplot")
 theme_set(theme_cowplot())
 library("topGO")
 library("wesanderson")
+library("viridis")
 library("tidyr")
 library("dplyr")
 library("Rgraphviz")
 library("scales")
 source("X_Functions.R")
 
-# Cluster Plots -----------------------------------------------------------
+# Full Model All Cluster Plots -----------------------------------------------------------
 Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
 Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGByFruit.rds")
-Cluster_AllOrtho_DEBbySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds")
+Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds")
 
-pal <- wes_palette("Royal1", 2, type="discrete")
+pal <- viridis(4, option="D")
+
+Model1_plot <- ggplot(Cluster_AllOrtho_Noise$normalized, 
+                            aes(x=Stage, y=value, col=Species, fill=Species)) +
+  labs(y="Z-score") +
+  scale_fill_manual(values=pal[2]) +
+  scale_color_manual(values=pal[2]) +
+  facet_rep_wrap(~cluster,
+                 nrow = 4) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF"),
+        legend.position = "none") +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Species))
+
+Model2_plot <- ggplot(Cluster_AllOrtho_DEGByFruit$normalized, 
+                     aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
+  labs(y="Z-score") +
+  scale_fill_manual(values=pal[1:2]) +
+  scale_color_manual(values=pal[1:2]) +
+  facet_rep_wrap(~cluster,
+                 nrow = 4) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF")) +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Fruit))
+
+Model3_plot <- ggplot(Cluster_AllOrtho_DEGBySpecies$normalized, 
+                     aes(x=Stage, y=value, col=Species, fill=Species)) +
+  labs(y="Z-score") +
+  scale_fill_manual(values=pal) +
+  scale_color_manual(values=pal) +
+  facet_rep_wrap(~cluster,
+                 nrow = 4) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF")) +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Species))
+
+
+# GO Tables to Pick Clusters ----------------------------------------------
+
+# Make a list of the GO Tables
+Model1Tables <- list()
+for (i in levels(as.factor(Cluster_AllOrtho_Noise$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_Noise$normalized$genes %in% Cluster_AllOrtho_Noise$normalized$genes[Cluster_AllOrtho_Noise$normalized$cluster==i]))
+  names(tmpList) <- Cluster_AllOrtho_Noise$normalized$genes
+  Model1Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                                  GOIs=tmpList)
+}
+capture.output(Model1Tables, file="DEGAnalysis/RNA-seq/AllOrtho_Noise_GOTables.txt")
+
+Model2Tables <- list()
+for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_DEGByFruit$normalized$genes %in% Cluster_AllOrtho_DEGByFruit$normalized$genes[Cluster_AllOrtho_DEGByFruit$normalized$cluster==i]))
+  names(tmpList) <- Cluster_AllOrtho_DEGByFruit$normalized$genes
+  Model2Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                                GOIs=tmpList)
+}
+capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_GOTables.txt")
+
+Model3Tables <- list()
+for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_DEGBySpecies$normalized$genes %in% Cluster_AllOrtho_DEGBySpecies$normalized$genes[Cluster_AllOrtho_DEGByFruit$normalized$cluster==i]))
+  if (length(levels(tmpList))==1) {
+    next
+  }
+  names(tmpList) <- Cluster_AllOrtho_DEGBySpecies$normalized$genes
+  Model3Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                                GOIs=tmpList)
+}
+capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_GOTables.txt")
+
+# Needs update after cluster re-org ---------------------------------------
+
 
 # Make Model 1 Cluster 1 and 2 plots
 M1 <- Cluster_AllOrtho_Noise$normalized
