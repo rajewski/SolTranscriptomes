@@ -184,9 +184,15 @@ if [ "$SLURM_ARRAY_TASK_ID" -ge 4 ] && [ "$SLURM_ARRAY_TASK_ID" -le 39 ]; then
   #Trim Reads
   if [ ! -e ${AllExternal[$SLURM_ARRAY_TASK_ID]}_1_trimmed.fq.gz ]; then
       echo Running Trim Galore on ${AllExternal[$SLURM_ARRAY_TASK_ID]}...
-      module load trim_galore/0.4.2
+      module unload perl
+      module swap miniconda2 miniconda3
+      module swap python/2.7.5 python/3.6.0
+      module load fastqc
+      conda activate cutadaptenv
+      export PATH=/bigdata/littlab/arajewski/Datura/software/TrimGalore-0.6.5:$PATH
       trim_galore \
-          --no_report_file \
+	  --no_report_file \
+	  -j $SLURM_CPUS_PER_TASK \
           ${AllExternal[$SLURM_ARRAY_TASK_ID]}_1.fastq.gz
       echo Done.
   else
