@@ -1,0 +1,45 @@
+Mapping NobtPre1
+Aug 03 15:44:33 ..... started STAR run
+gzip: NobtRNA/NobtPre1_1_trimmed.fq.gz: No such file or directory
+Aug 03 15:44:33 ..... loading genome
+Aug 03 15:44:45 ..... started mapping
+Aug 03 15:44:47 ..... started sorting BAM
+Aug 03 15:44:47 ..... finished successfully
+Done.
+Mapping NobtPre2
+Aug 03 15:44:47 ..... started STAR run
+Aug 03 15:44:47 ..... loading genome
+gzip: NobtRNA/NobtPre2_1_trimmed.fq.gz: No such file or directory
+Aug 03 15:44:58 ..... started mapping
+Aug 03 15:44:59 ..... started sorting BAM
+Aug 03 15:44:59 ..... finished successfully
+Done.
+Mapping NobtPre3
+Aug 03 15:45:00 ..... started STAR run
+Aug 03 15:45:00 ..... loading genome
+gzip: NobtRNA/NobtPre3_1_trimmed.fq.gz: No such file or directory
+Aug 03 15:45:12 ..... started mapping
+Aug 03 15:45:13 ..... started sorting BAM
+Aug 03 15:45:13 ..... finished successfully
+Done.
+Mapping Nobt3DPA1
+Aug 03 15:45:13 ..... started STAR run
+Aug 03 15:45:13 ..... loading genome
+gzip: NobtRNA/Nobt3DPA1_1_trimmed.fq.gz: No such file or directory
+Aug 03 15:45:25 ..... started mapping
+Aug 03 15:45:26 ..... started sorting BAM
+Aug 03 15:45:26 ..... finished successfully
+Done.
+Mapping Nobt3DPA2
+Aug 03 15:45:26 ..... started STAR run
+Aug 03 15:45:26 ..... loading genome
+gzip: NobtRNA/Nobt3DPA2_1_trimmed.fq.gz: No such file or directory
+Aug 03 15:45:38 ..... started mapping
+Aug 03 15:45:39 ..... started sorting BAM
+Aug 03 15:45:39 ..... finished successfully
+Done.
+Mapping Nobt3DPA3
+Aug 03 15:45:39 ..... started STAR run
+Aug 03 15:45:39 ..... loading genome
+gzip: NobtRNA/Nobt3DPA3_1_trimmed.fq.gz: No such file or directory
+slurmstepd-c11: error: *** JOB 1886424 ON c11 CANCELLED AT 2020-08-03T15:45:46 ***

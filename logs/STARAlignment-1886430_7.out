@@ -1,0 +1,27 @@
+NobtPre1 already mapped.
+NobtPre2 already mapped.
+NobtPre3 already mapped.
+Nobt3DPA1 already mapped.
+Nobt3DPA2 already mapped.
+Nobt3DPA3 already mapped.
+Mapping Nobt6DPA1
+Aug 03 15:50:11 ..... started STAR run
+Aug 03 15:50:11 ..... loading genome
+Aug 03 15:50:23 ..... started mapping
+Aug 03 15:58:05 ..... started sorting BAM
+Aug 03 15:59:24 ..... finished successfully
+Done.
+Mapping Nobt6DPA2
+Aug 03 15:59:24 ..... started STAR run
+Aug 03 15:59:24 ..... loading genome
+Aug 03 15:59:36 ..... started mapping
+Aug 03 16:05:31 ..... started sorting BAM
+Aug 03 16:06:29 ..... finished successfully
+Done.
+Mapping Nobt6DPA3
+Aug 03 16:06:29 ..... started STAR run
+Aug 03 16:06:29 ..... loading genome
+Aug 03 16:06:41 ..... started mapping
+Aug 03 16:12:33 ..... started sorting BAM
+Aug 03 16:13:29 ..... finished successfully
+Done.
