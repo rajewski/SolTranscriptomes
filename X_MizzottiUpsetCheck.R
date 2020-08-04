@@ -251,15 +251,15 @@ SUp115 <- list(as.data.frame(rownames(SRes_DAP_115)[SRes_DAP_115$log2FoldChange>
 SDown115 <- list(as.data.frame(rownames(SRes_DAP_115)[SRes_DAP_115$log2FoldChange<=2]))
 
 # 0 v 11 DPA
-SRes_DAP_112 <- results(DDS_SlycPairwise, 
-                        contrast=c("DAP", "1", "12"), 
+SRes_DAP_135 <- results(DDS_SlycPairwise, 
+                        contrast=c("DAP", "1", "35"), 
                         alpha=0.05)
-SRes_DAP_112 <- lfcShrink(DDS_SlycPairwise, 
-                          contrast=c("DAP", "1", "12"), 
-                          res=SRes_DAP_112)
-SResSig_DAP_112 <- subset(SRes_DAP_112, padj<=0.05)
-SUp112 <- list(as.data.frame(rownames(SResSig_DAP_112)[SResSig_DAP_112$log2FoldChange>=2]))
-SDown112 <- list(as.data.frame(rownames(SResSig_DAP_112)[SResSig_DAP_112$log2FoldChange<=2]))
+SRes_DAP_135 <- lfcShrink(DDS_SlycPairwise, 
+                          contrast=c("DAP", "1", "35"), 
+                          res=SRes_DAP_135)
+SResSig_DAP_135 <- subset(SRes_DAP_135, padj<=0.05)
+SUp135 <- list(as.data.frame(rownames(SResSig_DAP_135)[SResSig_DAP_135$log2FoldChange>=2]))
+SDown135 <- list(as.data.frame(rownames(SResSig_DAP_135)[SResSig_DAP_135$log2FoldChange<=2]))
 
 # 3 v 15 DPA
 SRes_DAP_315 <- results(DDS_SlycPairwise, 
@@ -272,44 +272,44 @@ SResSig_DAP_315 <- subset(SRes_DAP_315, padj<=0.05)
 SUp315 <- list(as.data.frame(rownames(SResSig_DAP_315)[SResSig_DAP_315$log2FoldChange>=2]))
 SDown315 <- list(as.data.frame(rownames(SResSig_DAP_315)[SResSig_DAP_315$log2FoldChange<=2]))
 
-# 3 v 11 DPA
-SRes_DAP_312 <- results(DDS_SlycPairwise, 
-                        contrast=c("DAP", "3", "12"), 
+# 3 v 35 DPA
+SRes_DAP_335 <- results(DDS_SlycPairwise, 
+                        contrast=c("DAP", "3", "35"), 
                         alpha=0.05)
-SRes_DAP_312 <- lfcShrink(DDS_SlycPairwise, 
-                          contrast=c("DAP", "3", "12"), 
-                          res=SRes_DAP_312)
-SResSig_DAP_312 <- subset(SRes_DAP_312, padj<=0.05)
-SUp312 <- list(as.data.frame(rownames(SResSig_DAP_312)[SResSig_DAP_312$log2FoldChange>=2]))
-SDown312 <- list(as.data.frame(rownames(SResSig_DAP_312)[SResSig_DAP_312$log2FoldChange<=2]))
+SRes_DAP_335 <- lfcShrink(DDS_SlycPairwise, 
+                          contrast=c("DAP", "3", "35"), 
+                          res=SRes_DAP_335)
+SResSig_DAP_335 <- subset(SRes_DAP_335, padj<=0.05)
+SUp335 <- list(as.data.frame(rownames(SResSig_DAP_335)[SResSig_DAP_335$log2FoldChange>=2]))
+SDown335 <- list(as.data.frame(rownames(SResSig_DAP_335)[SResSig_DAP_335$log2FoldChange<=2]))
 
-# 15 v 11 DPA
-SRes_DAP_1512 <- results(DDS_SlycPairwise,
-                        contrast=c("DAP", "15", "12"),
+# 15 v 35 DPA
+SRes_DAP_1535 <- results(DDS_SlycPairwise,
+                        contrast=c("DAP", "15", "35"),
                         alpha=0.05)
-SRes_DAP_1512 <- lfcShrink(DDS_SlycPairwise, 
-                          contrast=c("DAP", "15", "12"), 
-                          res=SRes_DAP_1512)
-SResSig_DAP_1512 <- subset(SRes_DAP_1512, padj<=0.05)
-SUp1512 <- list(as.data.frame(rownames(SResSig_DAP_1512)[SResSig_DAP_1512$log2FoldChange>=2]))
-SDown1512 <- list(as.data.frame(rownames(SResSig_DAP_1512)[SResSig_DAP_1512$log2FoldChange<=2]))
+SRes_DAP_1535 <- lfcShrink(DDS_SlycPairwise, 
+                          contrast=c("DAP", "15", "35"), 
+                          res=SRes_DAP_1535)
+SResSig_DAP_1535 <- subset(SRes_DAP_1535, padj<=0.05)
+SUp1535 <- list(as.data.frame(rownames(SResSig_DAP_1535)[SResSig_DAP_1535$log2FoldChange>=2]))
+SDown1535 <- list(as.data.frame(rownames(SResSig_DAP_1535)[SResSig_DAP_1535$log2FoldChange<=2]))
 
 List_Slyc <- Map(list,
-                 SUp13,SUp115,SUp112,SUp315,SUp312,SUp1512,
-                 SDown13,SDown115,SDown112,SDown315,SDown312,SDown1512)
+                 SUp13,SUp115,SUp135,SUp315,SUp335,SUp1535,
+                 SDown13,SDown115,SDown135,SDown315,SDown335,SDown1535)
 Gene_List_Slyc <- as.data.frame(unique(unlist(List_Slyc)))
 
 
 # Make a table of orthogenes and their presence/absence in a datas --------
-for (GeneTable in c(SUp13,SUp115,SUp112,SUp315,SUp312,SUp1512,
-                    SDown13,SDown115,SDown112,SDown315,SDown312,SDown1512)) {
+for (GeneTable in c(SUp13,SUp115,SUp135,SUp315,SUp335,SUp1535,
+                    SDown13,SDown115,SDown135,SDown315,SDown335,SDown1535)) {
   Common_Slyc<-as.data.frame(Gene_List_Slyc[,1] %in% as.data.frame(GeneTable)[,1])
   Common_Slyc[,1][Common_Slyc[,1]==TRUE]<- 1
   Gene_List_Slyc<-cbind(Gene_List_Slyc,Common_Slyc)
 }
 # Rename the columns for easier ID later
-colnames(Gene_List_Slyc) <- c("ID","Up13","Up115","Up112","Up315","Up312","Up1512",
-                              'Down13',"Down115","Down112","Down315","Down312","Down1512")
+colnames(Gene_List_Slyc) <- c("ID","Up13","Up115","Up135","Up315","Up335","Up1535",
+                              'Down13',"Down115","Down135","Down315","Down335","Down1535")
 
 
 # Make the plot with Upset ------------------------------------------------

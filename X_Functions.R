@@ -55,8 +55,9 @@ DESeqSpline <- function(se=se,
     }
   }
   if (CollapseTechRep) {
-    #Collapse Nobt technical replicates
-    dds$Accession <- sub("\\.\\d", "", dds$Accession) #converted to char FYI
+    #Collapse technical replicates
+    #Assumes tech reps share an accession name with ".1" or ".2" to differentiate them
+    dds$Accession <- sub("\\.\\d", "", dds$Accession) #converted to char, FYI
     dds <- collapseReplicates(dds, dds$Accession)
   }
   
