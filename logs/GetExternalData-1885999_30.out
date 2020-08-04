@@ -6,3 +6,7 @@ Downloading ERR2809808 data from SRA...
 2020-08-03T18:36:09 prefetch.2.10.0: 1) 'ERR2809808' was downloaded successfully
 Done.
 Dumping fastq data for ERR2809808...
+Read 25254843 spots for ERR2809808
+Written 25254843 spots for ERR2809808
+Done.
+ERR2809808 RNA seq already trimmed.
