@@ -9,8 +9,8 @@
 #SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/STARAlignment-%A_%a.out
 set -e
 
-# This is meant to be run as an array job with IDs between 0 and 6 to specify the experiment to map
-Expt=(SlycIH SlycSRA Spimp Nobt TAIRRNA TAIRChIP Nobt)
+# This is meant to be run as an array job with IDs between 0 and 7 to specify the experiment to map
+Expt=(SlycIH SlycSRA Spimp Nobt TAIRRNA TAIRChIP Nobt Nobt_All_SE)
 OUTDIR=STAR/${Expt[$SLURM_ARRAY_TASK_ID]}
 mkdir -p $OUTDIR
 
@@ -41,7 +41,7 @@ case "$SLURM_ARRAY_TASK_ID" in
     ISPE=1
     ;;
   "4")
-    SampleList=( ERR2809815 ERR2809798 ERR2809807 ERR2809799 ERR2809816 ERR2809808 ERR2809817 ERR2809794 ERR2809796 ERR2809806 ERR2809797 ERR2809795 )
+    SampleList=( ERR2809794 ERR2809795 ERR2809796 ERR2809797 ERR2809798 ERR2809799 ERR2809800 ERR2809801 ERR2809802 ERR2809803 ERR2809804 ERR2809805 ERR2809806 ERR2809807 ERR2809808 ERR2809809 ERR2809810 ERR2809811 ERR2809812 ERR2809813 ERR2809814 ERR2809815 ERR2809816 ERR2809817 )
     INDEXDIR=ExternalData/TAIR10
     INDIR=ExternalData/RNAseq
     ISPE=0
@@ -54,6 +54,12 @@ case "$SLURM_ARRAY_TASK_ID" in
     ;;
   "6")
     SampleList=( Nobtbr1 Nobtbr2 Nobtbr3 Nobtbr1.1 Nobtbr2.1 Nobtbr3.1 )
+    INDEXDIR=NobtDNA
+    INDIR=NobtRNA
+    ISPE=0
+    ;;
+  "7")
+    SampleList=( NobtPre1 NobtPre2 NobtPre3 Nobt3DPA1 Nobt3DPA2 Nobt3DPA3 Nobt6DPA1 Nobt6DPA2 Nobt6DPA3 )
     INDEXDIR=NobtDNA
     INDIR=NobtRNA
     ISPE=0
