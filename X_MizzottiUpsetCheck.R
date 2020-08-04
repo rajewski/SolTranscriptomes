@@ -7,14 +7,15 @@ library("magrittr")
 library("dplyr")
 library("tibble")
 library("tidyr")
-library("VennDiagram")
+library("UpSetR")
 source("X_Functions.R")
 
 #Based on the upsetting upset plot of ripening genes, I wanted to confirm that our data lined up a bit with the Mizzotti data, so I made a corresponding upset plot of each one to compare. This will not be in the manuscript, but is a useful quality check so I don't kill myself.
 
 
 #Do it for Nobt
-Expt_Nobt_All <- readRDS("DEGAnalysis/RNA-seq/Expt_Nobt_All.rds")
+Expt_Nobt_All <- readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds") #try with everything as SE
+
 colData(Expt_Nobt_All)$DAP <- as.factor(colData(Expt_Nobt_All)$DAP)
 DDS_NobtPairwise <- DESeqDataSet(Expt_Nobt_All,
                                  design= ~ DAP)
