@@ -56,9 +56,9 @@ Expt_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_TAIR.rds"),
                         saveRDS(Expt_TAIR, "DEGAnalysis/RNA-seq/Expt_TAIR.rds")
                         return(Expt_TAIR)})
 
-Expt_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"),
+Expt_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"), #PE Data
                       error=function(e){
-                        NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco"],
+                        NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==1],
                                                     yieldSize=2000000)
                         Expt_Nobt <- summarizeOverlaps(feature=Nobtgenes,
                                                        reads=NobtBamFiles,
@@ -72,8 +72,7 @@ Expt_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"),
 
 Expt_NobtSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds"),
                         error=function(e){
-                          NobtSEBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==0],
-                                                        yieldSize = 2000000)
+                          NobtSEBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==0], yieldSize = 2000000)
                           Expt_NobtSE <- summarizeOverlaps(features=Nobtgenes,
                                                            reads=NobtSEBamFiles,
                                                            mode="Union",
@@ -83,14 +82,15 @@ Expt_NobtSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds"),
                           saveRDS(Expt_NobtSE, "DEGAnalysis/RNA-seq/Expt_NobtSE.rds")
                           return(Expt_NobtSE)})
 
-# Combine the two Nobt datasets
-Expt_Nobt_All <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt_All.rds"),
-                          error=function(e){
-                            Expt_Nobt <- readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds")
-                            Expt_NobtSE <- readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds")
-                            Expt_Nobt_All <- do.call(cbind, list(Expt_Nobt, Expt_NobtSE))
-                            saveRDS(Expt_Nobt_All, "DEGAnalysis/RNA-seq/Expt_Nobt_All.rds")
-                            return(Expt_Nobt_All)})
+# Reconsider combining PE and SE dta this way...
+# # Combine the two Nobt datasets
+# Expt_Nobt_All <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt_All.rds"),
+#                           error=function(e){
+#                             Expt_Nobt <- readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds")
+#                             Expt_NobtSE <- readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds")
+#                             Expt_Nobt_All <- do.call(cbind, list(Expt_Nobt, Expt_NobtSE))
+#                             saveRDS(Expt_Nobt_All, "DEGAnalysis/RNA-seq/Expt_Nobt_All.rds")
+#                             return(Expt_Nobt_All)})
 
 Expt_SlycSRA <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycSRA.rds"),
                          error=function(e){
