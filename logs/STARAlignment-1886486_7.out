@@ -1,0 +1,45 @@
+Mapping NobtPre1
+Aug 03 16:23:25 ..... started STAR run
+Aug 03 16:23:25 ..... loading genome
+Aug 03 16:23:38 ..... started mapping
+Aug 03 16:29:13 ..... started sorting BAM
+Aug 03 16:30:19 ..... finished successfully
+Done.
+Mapping NobtPre2
+Aug 03 16:30:20 ..... started STAR run
+Aug 03 16:30:20 ..... loading genome
+Aug 03 16:30:32 ..... started mapping
+Aug 03 16:36:50 ..... started sorting BAM
+Aug 03 16:37:53 ..... finished successfully
+Done.
+Mapping NobtPre3
+Aug 03 16:37:53 ..... started STAR run
+Aug 03 16:37:53 ..... loading genome
+Aug 03 16:38:06 ..... started mapping
+Aug 03 16:44:25 ..... started sorting BAM
+Aug 03 16:45:27 ..... finished successfully
+Done.
+Mapping Nobt3DPA1
+Aug 03 16:45:27 ..... started STAR run
+Aug 03 16:45:28 ..... loading genome
+Aug 03 16:45:40 ..... started mapping
+Aug 03 16:53:19 ..... started sorting BAM
+Aug 03 16:55:35 ..... finished successfully
+Done.
+Mapping Nobt3DPA2
+Aug 03 16:55:35 ..... started STAR run
+Aug 03 16:55:36 ..... loading genome
+Aug 03 16:55:47 ..... started mapping
+Aug 03 17:01:43 ..... started sorting BAM
+Aug 03 17:02:38 ..... finished successfully
+Done.
+Mapping Nobt3DPA3
+Aug 03 17:02:38 ..... started STAR run
+Aug 03 17:02:38 ..... loading genome
+Aug 03 17:02:51 ..... started mapping
+Aug 03 17:08:58 ..... started sorting BAM
+Aug 03 17:09:57 ..... finished successfully
+Done.
+Nobt6DPA1 already mapped.
+Nobt6DPA2 already mapped.
+Nobt6DPA3 already mapped.
