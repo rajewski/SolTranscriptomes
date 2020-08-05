@@ -10,7 +10,7 @@
 set -e
 
 # This is meant to be run as an array job with IDs between 0 and 7 to specify the experiment to map
-Expt=(SlycIH SlycSRA Spimp Nobt TAIRRNA TAIRChIP Nobt Nobt_All_SE)
+Expt=(SlycIH SlycSRA Spimp Nobt TAIRRNA TAIRChIP Nobt Nobt_All_SE Slyc_SE Spimp_SE)
 OUTDIR=STAR/${Expt[$SLURM_ARRAY_TASK_ID]}
 mkdir -p $OUTDIR
 
@@ -62,6 +62,18 @@ case "$SLURM_ARRAY_TASK_ID" in
     SampleList=( NobtPre1 NobtPre2 NobtPre3 Nobt3DPA1 Nobt3DPA2 Nobt3DPA3 Nobt6DPA1 Nobt6DPA2 Nobt6DPA3 )
     INDEXDIR=NobtDNA
     INDIR=NobtRNA
+    ISPE=0
+    ;;
+  "8")
+    SampleList=( AC1DPA1 AC1DPA2 AC1DPA3 AC3DPA1 AC3DPA2 AC3DPA3 AC15DPA1 AC15DPA2 AC15DPA3 ACbreaker1 ACbreaker2 ACbreaker3 ACrr1 ACrr2 ACrr3 )
+    INDEXDIR=SlycDNA
+    INDIR=SlycRNA
+    ISPE=0
+    ;;
+  "9")
+    SampleList=( PIMP1DPA1 PIMP1DPA2 PIMP1DPA3 PIMP3DPA1 PIMP3DPA2 PIMP3DPA3 PIMP15DPA1 PIMP15DPA2 PIMP15DPA3 PIMPbreaker1 PIMPbreaker2 PIMPbreaker3 PIMPrr1 PIMPrr2 PIMPrr3 )
+    INDEXDIR=SlycDNA
+    INDIR=SpimpRNA
     ISPE=0
     ;;
 esac
