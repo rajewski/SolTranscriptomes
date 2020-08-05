@@ -58,15 +58,14 @@ Expt_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_TAIR.rds"),
 
 Expt_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"), #PE Data
                       error=function(e){
-                        NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==1],
-                                                    yieldSize=2000000)
+                        NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==1], yieldSize=2000000)
                         Expt_Nobt <- summarizeOverlaps(feature=Nobtgenes,
-                                                       reads=NobtBamFiles,
-                                                       mode="Union",
-                                                       singleEnd=FALSE,
-                                                       ignore.strand=FALSE,
-                                                       BPPARAM=SerialParam())
-                        colData(Expt_Nobt) <- DataFrame(metadata[metadata$Species=="Tobacco",])
+                                        reads=NobtBamFiles,
+                                        mode="Union",
+                                        singleEnd=FALSE,
+                                        ignore.strand=FALSE,
+                                        BPPARAM=SerialParam()) 
+                        colData(Expt_Nobt) <- DataFrame(metadata[metadata$Species=="Tobacco" & metadata$PE==1,])
                         saveRDS(Expt_Nobt, "DEGAnalysis/RNA-seq/Expt_Nobt.rds")
                         return(Expt_Nobt)})
 
