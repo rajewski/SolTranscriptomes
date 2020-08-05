@@ -56,7 +56,7 @@ Expt_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_TAIR.rds"),
                         saveRDS(Expt_TAIR, "DEGAnalysis/RNA-seq/Expt_TAIR.rds")
                         return(Expt_TAIR)})
 
-Expt_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"), #PE Data
+Expt_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"), #PE stage 1-3 data
                       error=function(e){
                         NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==1], yieldSize=2000000)
                         Expt_Nobt <- summarizeOverlaps(feature=Nobtgenes,
@@ -69,7 +69,7 @@ Expt_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"), #PE Data
                         saveRDS(Expt_Nobt, "DEGAnalysis/RNA-seq/Expt_Nobt.rds")
                         return(Expt_Nobt)})
 
-Expt_NobtSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds"),
+Expt_NobtSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds"), #All data as SE
                         error=function(e){
                           NobtSEBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==0], yieldSize = 2000000)
                           Expt_NobtSE <- summarizeOverlaps(features=Nobtgenes,
@@ -80,16 +80,6 @@ Expt_NobtSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds"),
                           colData(Expt_NobtSE) <- DataFrame(metadata[metadata$Species=="Tobacco" & metadata$PE==0,])
                           saveRDS(Expt_NobtSE, "DEGAnalysis/RNA-seq/Expt_NobtSE.rds")
                           return(Expt_NobtSE)})
-
-# Reconsider combining PE and SE dta this way...
-# # Combine the two Nobt datasets
-# Expt_Nobt_All <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt_All.rds"),
-#                           error=function(e){
-#                             Expt_Nobt <- readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds")
-#                             Expt_NobtSE <- readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds")
-#                             Expt_Nobt_All <- do.call(cbind, list(Expt_Nobt, Expt_NobtSE))
-#                             saveRDS(Expt_Nobt_All, "DEGAnalysis/RNA-seq/Expt_Nobt_All.rds")
-#                             return(Expt_Nobt_All)})
 
 Expt_SlycSRA <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycSRA.rds"),
                          error=function(e){
@@ -120,6 +110,19 @@ Expt_Slyc <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc.rds"),
                         saveRDS(Expt_Slyc, "DEGAnalysis/RNA-seq/Expt_Slyc.rds")
                         return(Expt_Slyc)})
 
+Expt_SlycSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycSE.rds"),
+                      error=function(e){
+                      SlycSEBamFiles <- BamFileList(metadata$Path[grep(x = metadata$Path,pattern="*Slyc_SE*")],
+                                                    yieldSize=50000)
+                      Expt_SlycSE <- summarizeOverlaps(feature=Slycgenes,
+                                                     reads=SlycSEBamFiles,
+                                                     mode="Union",
+                                                     singleEnd=TRUE,
+                                                     ignore.strand=FALSE)
+                      colData(Expt_SlycSE) <- DataFrame(metadata[grep(x = metadata$Path,pattern="*Slyc_SE*"),])
+                      saveRDS(Expt_SlycSE, "DEGAnalysis/RNA-seq/Expt_SlycSE.rds")
+                      return(Expt_SlycSE)})
+
 Expt_Spimp <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds"),
          error=function(e){
            SpimpBamFiles <- BamFileList(metadata$Path[metadata$Species=="Pimpinellifolium"],
@@ -136,37 +139,50 @@ Expt_Spimp <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds"),
            saveRDS(Expt_Spimp, "DEGAnalysis/RNA-seq/Expt_Spimp.rds")
            return(Expt_Spimp)})
 
+Expt_SpimpSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SpimpSE.rds"),
+                        error=function(e){
+                          SpimpSEBamFiles <- BamFileList(metadata$Path[grep(x = metadata$Path,pattern="*Spimp_SE*")],
+                                                        yieldSize=50000)
+                          Expt_SpimpSE <- summarizeOverlaps(feature=Spimpgenes,
+                                                           reads=SpimpSEBamFiles,
+                                                           mode="Union",
+                                                           singleEnd=TRUE,
+                                                           ignore.strand=FALSE)
+                          colData(Expt_SpimpSE) <- DataFrame(metadata[grep(x = metadata$Path,pattern="*Spimp_SE*"),])
+                          saveRDS(Expt_SpimpSE, "DEGAnalysis/RNA-seq/Expt_SpimpSE.rds")
+                          return(Expt_SpimpSE)})
+
 # Combine Spimp and Slyc to look for genes that are different between them
 Expt_Solanum <- do.call(cbind, list(Expt_Slyc, Expt_Spimp))
 
 # Orthogroups -------------------------------------------------------------
 # This section is an attempt to do a cross-species comparison using the orthogroups assigned to the 4 species by Orthofinder.
 Expt_All_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_All_Ortho.rds"),
-                           error=function(e){
-                             mapping <- "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv"
-                             Expt_Nobt_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
-                                                                    GeneWiseExpt = Expt_Nobt_All,
-                                                                    SingleCopyOrthoOnly = TRUE)
-                             Expt_Slyc_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
-                                                                    GeneWiseExpt = subset(Expt_Slyc, select=DAP<45),
-                                                                    SingleCopyOrthoOnly = TRUE)
-                             Expt_Spimp_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
-                                                                     GeneWiseExpt = subset(Expt_Spimp, select=DAP<45),
-                                                                     SingleCopyOrthoOnly = TRUE)
-                             Expt_TAIR_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
-                                                                    GeneWiseExpt = Expt_TAIR,
-                                                                    SingleCopyOrthoOnly = TRUE)
-                             Expt_All_Ortho <- do.call(cbind, list(Expt_Nobt_Ortho,
-                                                 Expt_Slyc_Ortho,
-                                                 Expt_Spimp_Ortho,
-                                                 Expt_TAIR_Ortho))
-                             #Add Stage variable to normalize DAP across species
-                             Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,3.5,3.5,3.5,3.5,3.5,3.5,
-                                                       1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
-                                                       1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
-                                                       1,1,1,2,2,2,3,3,3,3.5,3.5,3.5)
-                             saveRDS(Expt_All_Ortho, file="DEGAnalysis/RNA-seq/Expt_All_Ortho.rds")
-                             return(Expt_All_Ortho)})
+                  error=function(e){
+                   mapping <- "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv"
+                   Expt_Nobt_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                         GeneWiseExpt = Expt_NobtSE,
+                                         SingleCopyOrthoOnly = TRUE)
+                   Expt_Slyc_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                         GeneWiseExpt = subset(Expt_SlycSE, select=DAP<45),
+                                         SingleCopyOrthoOnly = TRUE)
+                   Expt_Spimp_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                         GeneWiseExpt = subset(Expt_SpimpSE, select=DAP<45),
+                                         SingleCopyOrthoOnly = TRUE)
+                   Expt_TAIR_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                         GeneWiseExpt = Expt_TAIR,
+                                         SingleCopyOrthoOnly = TRUE)
+                   Expt_All_Ortho <- do.call(cbind, list(Expt_Nobt_Ortho,
+                                       Expt_Slyc_Ortho,
+                                       Expt_Spimp_Ortho,
+                                       Expt_TAIR_Ortho))
+                   #Add Stage variable to normalize DAP across species
+                   Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,3.5,3.5,3.5,3.5,3.5,3.5,
+                                             1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
+                                             1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
+                                             1,1,1,2,2,2,3,3,3,3.5,3.5,3.5)
+                   saveRDS(Expt_All_Ortho, file="DEGAnalysis/RNA-seq/Expt_All_Ortho.rds")
+                   return(Expt_All_Ortho)})
 
 # Make a new orthogroup file that leaves out arabidopsis to get more genes
 # tmp <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv", stringsAsFactors = F, sep="\t", header=T)[,-c(2)]
