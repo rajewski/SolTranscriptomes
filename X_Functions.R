@@ -26,7 +26,7 @@ DESeqSpline <- function(se=se,
   colnames(design) <- paste0("spline", seq(1:dim(design)[2]))
   colData(se) <- cbind(colData(se), design)
   if (length(unique(colData(se)[,CaseCtlVar]))>1) {
-    message("Two entries detected for ", CaseCtlVar,". Incorporating this into the model")
+    message(length(unique(colData(se)[,CaseCtlVar])), " entries detected for ", CaseCtlVar,". Incorporating this into the model")
     if (is(se, "RangedSummarizedExperiment")) {
       dds <- DESeqDataSet(se,
                           design = as.formula(paste0("~",
