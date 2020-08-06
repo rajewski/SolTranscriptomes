@@ -107,7 +107,8 @@ for (GeneTable in c(Up03,Up06,Up011,Up36,Up311,Up611,
 # Rename the columns for easier ID later
 colnames(Gene_List_Nobt) <- c("ID","Up03","Up06","Up011","Up36","Up311","Up611",
                               'Down03',"Down06","Down011","Down36","Down311","Down611")
-
+colnames(Gene_List_Nobt) <- c("ID","Up 1-2","Up 1-3","Up 1-Br","Up 2-3","Up 2-Br","Up 3-Br",
+                              'Down 1-2',"Down 1-3","Down 1-Br","Down 2-3","Down 2-Br","Down 3-Br")
 
 # Make the plot with Upset ------------------------------------------------
 upset(Gene_List_Nobt, 
@@ -125,40 +126,11 @@ Expt_TAIR <- readRDS("DEGAnalysis/RNA-seq/Expt_TAIR.rds")
 colData(Expt_TAIR)$DAP <- as.factor(colData(Expt_TAIR)$DAP)
 DDS_TAIRPairwise <- DESeqDataSet(Expt_TAIR,
                                  design= ~ DAP)
+DDS_TAIRPairwise$Accession <- sub("\\.\\d", "", DDS_TAIRPairwise$Accession) #converted to char FYI
+DDS_TAIRPairwise <- collapseReplicates(DDS_TAIRPairwise,
+                                       DDS_TAIRPairwise$Accession)
+DDS_TAIRPairwise <- estimateSizeFactors(DDS_TAIRPairwise)
 DDS_TAIRPairwise <- DESeq(DDS_TAIRPairwise)
-
-# 1 v 3 DPA
-TRes_DAP_13 <- results(DDS_TAIRPairwise, 
-                      contrast=c("DAP", "1", "3"), 
-                      alpha=0.05)
-TRes_DAP_13 <- lfcShrink(DDS_TAIRPairwise, 
-                        contrast=c("DAP", "1", "3"), 
-                        res=TRes_DAP_13)
-TResSig_DAP_13 <- subset(TRes_DAP_13, padj<=0.05)
-TUp13 <- list(as.data.frame(rownames(TResSig_DAP_13)[TResSig_DAP_13$log2FoldChange>=2]))
-TDown13 <- list(as.data.frame(rownames(TResSig_DAP_13)[TResSig_DAP_13$log2FoldChange<=2]))
-
-# 0 v 6 DPA
-TRes_DAP_16 <- results(DDS_TAIRPairwise, 
-                      contrast=c("DAP", "1", "6"), 
-                      alpha=0.05)
-TRes_DAP_16 <- lfcShrink(DDS_TAIRPairwise, 
-                        contrast=c("DAP", "1", "6"), 
-                        res=TRes_DAP_16)
-TRes_DAP_16 <- subset(TRes_DAP_16, padj<=0.05)
-TUp16 <- list(as.data.frame(rownames(TRes_DAP_16)[TRes_DAP_16$log2FoldChange>=2]))
-TDown16 <- list(as.data.frame(rownames(TRes_DAP_16)[TRes_DAP_16$log2FoldChange<=2]))
-
-# 0 v 11 DPA
-TRes_DAP_112 <- results(DDS_TAIRPairwise, 
-                       contrast=c("DAP", "1", "12"), 
-                       alpha=0.05)
-TRes_DAP_112 <- lfcShrink(DDS_TAIRPairwise, 
-                         contrast=c("DAP", "1", "12"), 
-                         res=TRes_DAP_112)
-TResSig_DAP_112 <- subset(TRes_DAP_112, padj<=0.05)
-TUp112 <- list(as.data.frame(rownames(TResSig_DAP_112)[TResSig_DAP_112$log2FoldChange>=2]))
-TDown112 <- list(as.data.frame(rownames(TResSig_DAP_112)[TResSig_DAP_112$log2FoldChange<=2]))
 
 # 3 v 6 DPA
 TRes_DAP_36 <- results(DDS_TAIRPairwise, 
@@ -168,10 +140,21 @@ TRes_DAP_36 <- lfcShrink(DDS_TAIRPairwise,
                         contrast=c("DAP", "3", "6"), 
                         res=TRes_DAP_36)
 TResSig_DAP_36 <- subset(TRes_DAP_36, padj<=0.05)
-TUp36 <- list(as.data.frame(rownames(TResSig_DAP_36)[TResSig_DAP_36$log2FoldChange>=2]))
-TDown36 <- list(as.data.frame(rownames(TResSig_DAP_36)[TResSig_DAP_36$log2FoldChange<=2]))
+TUp13 <- list(as.data.frame(rownames(TResSig_DAP_36)[TResSig_DAP_36$log2FoldChange>=2]))
+TDown13 <- list(as.data.frame(rownames(TResSig_DAP_36)[TResSig_DAP_36$log2FoldChange<=2]))
 
-# 3 v 11 DPA
+# 3 v 9 DPA
+TRes_DAP_39 <- results(DDS_TAIRPairwise, 
+                      contrast=c("DAP", "3", "9"), 
+                      alpha=0.05)
+TRes_DAP_39 <- lfcShrink(DDS_TAIRPairwise, 
+                        contrast=c("DAP", "3", "9"), 
+                        res=TRes_DAP_39)
+TRes_DAP_39 <- subset(TRes_DAP_39, padj<=0.05)
+TUp39 <- list(as.data.frame(rownames(TRes_DAP_39)[TRes_DAP_39$log2FoldChange>=2]))
+TDown39 <- list(as.data.frame(rownames(TRes_DAP_39)[TRes_DAP_39$log2FoldChange<=2]))
+
+# 3 v 12 DPA
 TRes_DAP_312 <- results(DDS_TAIRPairwise, 
                        contrast=c("DAP", "3", "12"), 
                        alpha=0.05)
@@ -182,9 +165,20 @@ TResSig_DAP_312 <- subset(TRes_DAP_312, padj<=0.05)
 TUp312 <- list(as.data.frame(rownames(TResSig_DAP_312)[TResSig_DAP_312$log2FoldChange>=2]))
 TDown312 <- list(as.data.frame(rownames(TResSig_DAP_312)[TResSig_DAP_312$log2FoldChange<=2]))
 
-# 6 v 11 DPA
-TRes_DAP_612 <- results(DDS_TAIRPairwise,
-                       contrast=c("DAP", "6", "12"),
+# 6 v 9 DPA
+TRes_DAP_69 <- results(DDS_TAIRPairwise, 
+                      contrast=c("DAP", "6", "9"), 
+                      alpha=0.05)
+TRes_DAP_69 <- lfcShrink(DDS_TAIRPairwise, 
+                        contrast=c("DAP", "6", "9"), 
+                        res=TRes_DAP_69)
+TResSig_DAP_69 <- subset(TRes_DAP_69, padj<=0.05)
+TUp69 <- list(as.data.frame(rownames(TResSig_DAP_69)[TResSig_DAP_69$log2FoldChange>=2]))
+TDown69 <- list(as.data.frame(rownames(TResSig_DAP_69)[TResSig_DAP_69$log2FoldChange<=2]))
+
+# 6 v 12 DPA
+TRes_DAP_612 <- results(DDS_TAIRPairwise, 
+                       contrast=c("DAP", "6", "12"), 
                        alpha=0.05)
 TRes_DAP_612 <- lfcShrink(DDS_TAIRPairwise, 
                          contrast=c("DAP", "6", "12"), 
@@ -193,22 +187,35 @@ TResSig_DAP_612 <- subset(TRes_DAP_612, padj<=0.05)
 TUp612 <- list(as.data.frame(rownames(TResSig_DAP_612)[TResSig_DAP_612$log2FoldChange>=2]))
 TDown612 <- list(as.data.frame(rownames(TResSig_DAP_612)[TResSig_DAP_612$log2FoldChange<=2]))
 
+# 9 v 12 DPA
+TRes_DAP_912 <- results(DDS_TAIRPairwise,
+                       contrast=c("DAP", "9", "12"),
+                       alpha=0.05)
+TRes_DAP_912 <- lfcShrink(DDS_TAIRPairwise, 
+                         contrast=c("DAP", "9", "12"), 
+                         res=TRes_DAP_912)
+TResSig_DAP_912 <- subset(TRes_DAP_912, padj<=0.05)
+TUp912 <- list(as.data.frame(rownames(TResSig_DAP_912)[TResSig_DAP_912$log2FoldChange>=2]))
+TDown912 <- list(as.data.frame(rownames(TResSig_DAP_912)[TResSig_DAP_912$log2FoldChange<=2]))
+
 List_TAIR <- Map(list,
-                 TUp13,TUp16,TUp112,TUp36,TUp312,TUp612,
-                 TDown13,TDown16,TDown112,TDown36,TDown312,TDown612)
+                 TUp36,TUp39,TUp312,TUp69,TUp612,TUp912,
+                 TDown36,TDown39,TDown312,TDown69,TDown612,TDown912)
 Gene_List_TAIR <- as.data.frame(unique(unlist(List_TAIR)))
 
 
 # Make a table of orthogenes and their presence/absence in a datas --------
-for (GeneTable in c(TUp13,TUp16,TUp112,TUp36,TUp312,TUp612,
-                    TDown13,TDown16,TDown112,TDown36,TDown312,TDown612)) {
+for (GeneTable in c(TUp36,TUp39,TUp312,TUp69,TUp612,TUp912,
+                    TDown36,TDown39,TDown312,TDown69,TDown612,TDown912)) {
   Common_TAIR<-as.data.frame(Gene_List_TAIR[,1] %in% as.data.frame(GeneTable)[,1])
   Common_TAIR[,1][Common_TAIR[,1]==TRUE]<- 1
   Gene_List_TAIR<-cbind(Gene_List_TAIR,Common_TAIR)
 }
 # Rename the columns for easier ID later
-colnames(Gene_List_TAIR) <- c("ID","Up13","Up16","Up112","Up36","Up312","Up612",
-                              'Down13',"Down16","Down112","Down36","Down312","Down612")
+colnames(Gene_List_TAIR) <- c("ID","TUp36","TUp39","TUp312","TUp69","TUp612","TUp912",
+                              "TDown36","TDown39","TDown312","TDown69","TDown612","TDown912")
+colnames(Gene_List_TAIR) <- c("ID","Up 1-2","Up 1-3","Up 1-Br","Up 2-3","Up 2-Br","Up 3-Br",
+                              'Down 1-2',"Down 1-3","Down 1-Br","Down 2-3","Down 2-Br","Down 3-Br")
 
 
 # Make the plot with Upset ------------------------------------------------
@@ -223,7 +230,7 @@ upset(Gene_List_TAIR,
 
 
 # Make Slyc Data ----------------------------------------------------------
-Expt_Slyc <- readRDS("DEGAnalysis/RNA-seq/Expt_Slyc.rds")
+Expt_Slyc <- readRDS("DEGAnalysis/RNA-seq/Expt_SlycSE.rds")
 colData(Expt_Slyc)$DAP <- as.factor(colData(Expt_Slyc)$DAP)
 DDS_SlycPairwise <- DESeqDataSet(Expt_Slyc,
                                  design= ~ DAP)
@@ -311,6 +318,8 @@ for (GeneTable in c(SUp13,SUp115,SUp135,SUp315,SUp335,SUp1535,
 # Rename the columns for easier ID later
 colnames(Gene_List_Slyc) <- c("ID","Up13","Up115","Up135","Up315","Up335","Up1535",
                               'Down13',"Down115","Down135","Down315","Down335","Down1535")
+colnames(Gene_List_Slyc) <- c("ID","Up 1-2","Up 1-3","Up 1-Br","Up 2-3","Up 2-Br","Up 3-Br",
+                              'Down 1-2',"Down 1-3","Down 1-Br","Down 2-3","Down 2-Br","Down 3-Br")
 
 
 # Make the plot with Upset ------------------------------------------------
@@ -326,7 +335,7 @@ upset(Gene_List_Slyc,
 
 # Pimp --------------------------------------------------------------------
 # Make Slyc Data ----------------------------------------------------------
-Expt_Spimp <- readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds")
+Expt_Spimp <- readRDS("DEGAnalysis/RNA-seq/Expt_SpimpSE.rds")
 colData(Expt_Spimp)$DAP <- as.factor(colData(Expt_Spimp)$DAP)
 DDS_SpimpPairwise <- DESeqDataSet(Expt_Spimp,
                                  design= ~ DAP)
@@ -414,7 +423,8 @@ for (GeneTable in c(SpUp13,SpUp115,SpUp135,SpUp315,SpUp335,SpUp1535,
 # Rename the columns for easier ID later
 colnames(Gene_List_Spimp) <- c("ID","Up13","Up115","Up135","Up315","Up335","Up1535",
                               'Down13',"Down115","Down135","Down315","Down335","Down1535")
-
+colnames(Gene_List_Spimp) <- c("ID","Up 1-2","Up 1-3","Up 1-Br","Up 2-3","Up 2-Br","Up 3-Br",
+                              'Down 1-2',"Down 1-3","Down 1-Br","Down 2-3","Down 2-Br","Down 3-Br")
 
 # Make the plot with Upset ------------------------------------------------
 upset(Gene_List_Spimp, 
