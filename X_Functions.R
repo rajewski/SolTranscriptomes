@@ -62,15 +62,15 @@ DESeqSpline <- function(se=se,
   }
   
   dds <- estimateSizeFactors(dds)
-  # in case of a Slyc vs Spimp comparision, make sure the DEGs aren't ones where Spimp has no counts. This could represent a mapping problem to the Slyc genome
-  if(CaseCtlVar=="Species" && length(levels(dds$Species))) {
-    nc1 <- counts(subset(dds, select=Species==levels(dds$Species)[1]), normalized=TRUE)
-    nc2 <- counts(subset(dds, select=Species==levels(dds$Species)[2]), normalized=TRUE)
-    filter1 <- rowSums(nc1 >=10) >= (dim(nc1)[[2]]*0.2)
-    filter2 <- rowSums(nc2 >=10) >= (dim(nc2)[[2]]*0.2)
-    filter <- filter1 & filter2
-    dds <- dds[filter,]
-  }
+  # in case of a Slyc vs Spimp comparision, make sure the DEGs aren't ones where Spimp has no counts. This could represent a mapping problem to the Slyc genome, but I dont know if this is legit
+  # if(CaseCtlVar=="Species" && length(levels(dds$Species))) {
+  #   nc1 <- counts(subset(dds, select=Species==levels(dds$Species)[1]), normalized=TRUE)
+  #   nc2 <- counts(subset(dds, select=Species==levels(dds$Species)[2]), normalized=TRUE)
+  #   filter1 <- rowSums(nc1 >=10) >= (dim(nc1)[[2]]*0.2)
+  #   filter2 <- rowSums(nc2 >=10) >= (dim(nc2)[[2]]*0.2)
+  #   filter <- filter1 & filter2
+  #   dds <- dds[filter,]
+  # }
   if (vsNoise) {
     dds <- DESeq(dds,test="LRT", reduced = ~ 1)
   }  else if (length(unique(colData(se)[,CaseCtlVar]))>1) {
