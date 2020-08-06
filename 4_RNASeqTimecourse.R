@@ -9,6 +9,7 @@ library("DEGreport")
 library("dplyr")
 library("tibble")
 library("tidyr")
+library("BiocParallel")
 source("X_Functions.R")
 
 # Prep Inputs -------------------------------------------------------------
@@ -121,7 +122,7 @@ Expt_SlycSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycSE.rds"),
                                                      ignore.strand=FALSE)
                       colData(Expt_SlycSE) <- DataFrame(metadata[grep(x = metadata$Path,pattern="*Slyc_SE*"),])
                       saveRDS(Expt_SlycSE, "DEGAnalysis/RNA-seq/Expt_SlycSE.rds")
-                      return(Expt_SlycSE)})
+                      return(Expt_SlycSE)}) 
 
 Expt_Spimp <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds"),
          error=function(e){
@@ -143,20 +144,23 @@ Expt_SpimpSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SpimpSE.rds"),
                         error=function(e){
                           SpimpSEBamFiles <- BamFileList(metadata$Path[grep(x = metadata$Path,pattern="*Spimp_SE*")],
                                                         yieldSize=50000)
-                          Expt_SpimpSE <- summarizeOverlaps(feature=Spimpgenes,
+                          Expt_SpimpSE <- summarizeOverlaps(feature=Slycgenes,
                                                            reads=SpimpSEBamFiles,
                                                            mode="Union",
                                                            singleEnd=TRUE,
-                                                           ignore.strand=FALSE)
+                                                           ignore.strand=FALSE,
+                                                           BPPARAM=SerialParam())
                           colData(Expt_SpimpSE) <- DataFrame(metadata[grep(x = metadata$Path,pattern="*Spimp_SE*"),])
                           saveRDS(Expt_SpimpSE, "DEGAnalysis/RNA-seq/Expt_SpimpSE.rds")
-                          return(Expt_SpimpSE)})
+                          return(Expt_SpimpSE)}) #Alex Redo these 8/5/20
 
 # Combine Spimp and Slyc to look for genes that are different between them
-Expt_Solanum <- do.call(cbind, list(Expt_Slyc, Expt_Spimp))
+Expt_Solanum <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Solanum.rds"),
+                        error=function(e){
+                        do.call(cbind, list(Expt_Slyc, Expt_Spimp))})
 
 # Orthogroups -------------------------------------------------------------
-# This section is an attempt to do a cross-species comparison using the orthogroups assigned to the 4 species by Orthofinder.
+# This section does a cross-species comparison using the orthogroups assigned to the 4 species by Orthofinder.
 Expt_All_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_All_Ortho.rds"),
                   error=function(e){
                    mapping <- "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv"
@@ -177,76 +181,66 @@ Expt_All_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_All_Ortho.rds"),
                                        Expt_Spimp_Ortho,
                                        Expt_TAIR_Ortho))
                    #Add Stage variable to normalize DAP across species
-                   Expt_All_Ortho$Stage <- c(1,1,1,2,2,3,2,3,3,3.5,3.5,3.5,3.5,3.5,3.5,
+                   Expt_All_Ortho$Stage <- c(3.5,3.5,3.5,3.5,3.5,3.5,1,1,1,2,2,2,3,3,3,
                                              1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
                                              1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
-                                             1,1,1,2,2,2,3,3,3,3.5,3.5,3.5)
+                                             1,1,1,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3.5,3.5,3.5)
                    saveRDS(Expt_All_Ortho, file="DEGAnalysis/RNA-seq/Expt_All_Ortho.rds")
                    return(Expt_All_Ortho)})
 
-# Make a new orthogroup file that leaves out arabidopsis to get more genes
-# tmp <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv", stringsAsFactors = F, sep="\t", header=T)[,-c(2)]
-# write.table(tmp, file="Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups_NoArabidopsis.tsv",
-#             row.names = F,
-#             quote=F,
-#             sep="\t")
-# rm(tmp)
-
 Expt_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds"),
                                 error=function(e){
-                        Expt_NobtRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Oroups/Orthogroups_NoArabidopsis.tsv",
-                                                               GeneWiseExpt = subset(Expt_Nobt_All, select=DAP),
-                                                               SingleCopyOrthoOnly = TRUE,
-                                                               Arabidopsis = FALSE)
+                        Expt_NobtRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups_NoArabidopsis.tsv",
+                                                GeneWiseExpt = subset(Expt_NobtSE, select=DAP>3),
+                                                SingleCopyOrthoOnly = TRUE,
+                                                Arabidopsis = FALSE)
                         Expt_NobtRipe_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5,3.5,3.5,3.5)
                         saveRDS(Expt_NobtRipe_Ortho, "DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds")
                         return(Expt_NobtRipe_Ortho)})
 
-
 Expt_Slyc1545_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc1545_Ortho.rds"),
                                 error=function(e){
-                         tmp <- subset(Expt_Slyc, select=DAP>11)
+                         tmp <- subset(Expt_SlycSE, select=DAP>11)
                          tmp <- subset(tmp, select=DAP!=35)
-                         Expt_Slyc1545_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_Ma           roups/Orthogroups.tsv",
-                                                                    GeneWiseExpt = tmp,
-                                                                    SingleCopyOrthoOnly = TRUE,
-                                                                    Arabidopsis = FALSE)
+                         Expt_Slyc1545_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
+                                                GeneWiseExpt = tmp,
+                                                SingleCopyOrthoOnly = TRUE,
+                                                Arabidopsis = FALSE)
                          Expt_Slyc1545_Ortho$Stage <- c(3,3,3,4,4,4)
                          saveRDS(Expt_Slyc1545_Ortho, "DEGAnalysis/RNA-seq/Expt_Slyc1545_Ortho.rds")
                          rm(tmp)
                          return(Expt_Slyc1545_Ortho)})
 Expt_Slyc1535_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc1535_Ortho.rds"),
                                 error=function(e){
-                          tmp <- subset(Expt_Slyc, select=DAP>11)
+                          tmp <- subset(Expt_SlycSE, select=DAP>11)
                           tmp <- subset(tmp, select=DAP<45)
                           Expt_Slyc1535_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
-                                                                       GeneWiseExpt = tmp,
-                                                                       SingleCopyOrthoOnly = TRUE,
-                                                                       Arabidopsis = FALSE)
+                                                GeneWiseExpt = tmp,
+                                                SingleCopyOrthoOnly = TRUE,
+                                                Arabidopsis = FALSE)
                           Expt_Slyc1535_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5)
                           saveRDS(Expt_Slyc1535_Ortho, "DEGAnalysis/RNA-seq/Expt_Slyc1535_Ortho.rds")
                           rm(tmp)
                           return(Expt_Slyc1535_Ortho)})
 Expt_Slyc3545_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc3545_Ortho.rds"),
                                 error=function(e){
-                                  tmp <- subset(Expt_Slyc, select=DAP>15)
+                                  tmp <- subset(Expt_SlycSE, select=DAP>15)
                                   Expt_Slyc3545_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
-                                                                             GeneWiseExpt = tmp,
-                                                                             SingleCopyOrthoOnly = TRUE,
-                                                                             Arabidopsis = FALSE)
+                                                GeneWiseExpt = tmp,
+                                                SingleCopyOrthoOnly = TRUE,
+                                                Arabidopsis = FALSE)
                                   Expt_Slyc3545_Ortho$Stage <- c(3,3,3,3.5,3.5,3.5)
                                   saveRDS(Expt_Slyc3545_Ortho, "DEGAnalysis/RNA-seq/Expt_Slyc3545_Ortho.rds")
                                   rm(tmp)
                                   return(Expt_Slyc3545_Ortho)})
 
-
-
 # Design and DE Testing ----------------------------------------------------
 DDS_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_TAIR.rds"),
                      error=function(e){
-                       DDS_TAIR <- DESeqSpline(Expt_TAIR)
+                       DDS_TAIR <- DESeqSpline(Expt_TAIR,
+                                               CollapseTechRep = TRUE)
                        saveRDS(DDS_TAIR, "DEGAnalysis/RNA-seq/DDS_TAIR.rds")
-                       return(DDS_TAIR)}) #collapse technical reps??????
+                       return(DDS_TAIR)}) 
 
 DDS_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Nobt.rds"),
                      error=function(e){
@@ -254,12 +248,12 @@ DDS_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Nobt.rds"),
                        saveRDS(DDS_Nobt, "DEGAnalysis/RNA-seq/DDS_Nobt.rds")
                        return(DDS_Nobt)})
 
-DDS_Nobt_All <- tryCatch(read.RDS("DEGAnalysis/RNA-seq/DDS_Nobt_All.rds"),
+DDS_NobtSE <- tryCatch(read.RDS("DEGAnalysis/RNA-seq/DDS_NobtSE.rds"),
                          error=function(e){
-                           DDS_Nobt_All <- DESeqSpline(Expt_Nobt_All,
+                           DDS_NobtSE <- DESeqSpline(Expt_NobtSE,
                                                        CollapseTechRep = TRUE)
-                           saveRDS(DDS_Nobt_All, "DEGAnalysis/RNA-seq/DDS_Nobt_All.rds")
-                           return(DDS_Nobt_All)})
+                           saveRDS(DDS_NobtSE, "DEGAnalysis/RNA-seq/DDS_NobtSE.rds")
+                           return(DDS_NobtSE)})
 
 DDS_SlycSRA <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_SlycSRA.rds"),
                         error=function(e){
@@ -304,38 +298,38 @@ DDS_Solanum_3DF_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF_N
 
 # Test for DEGs with diff patterns by species
 DDS_AllOrtho_DEGBySpecies <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGBySpecies.rds"),
-                                      error=function(e){
-                                        DDS_AllOrtho_DEGBySpecies <- DESeqSpline(Expt_All_Ortho,
-                                                                                 CaseCtlVar = "Species",
-                                                                                 timeVar = "Stage",
-                                                                                 CollapseTechRep = TRUE)
-                                        # columns have duplicate names, which would be changed and mess up metadata mapping
-                                        colnames(DDS_AllOrtho_DEGBySpecies) <- NULL 
-                                        saveRDS(DDS_AllOrtho_DEGBySpecies, "DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGBySpecies.rds")
-                                        return(DDS_AllOrtho_DEGBySpecies)})
+              error=function(e){
+                DDS_AllOrtho_DEGBySpecies <- DESeqSpline(Expt_All_Ortho,
+                                                CaseCtlVar = "Species",
+                                                timeVar = "Stage",
+                                                CollapseTechRep = TRUE)
+                # columns have duplicate names, which would be changed and mess up metadata mapping
+                colnames(DDS_AllOrtho_DEGBySpecies) <- NULL 
+                saveRDS(DDS_AllOrtho_DEGBySpecies, "DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGBySpecies.rds")
+                return(DDS_AllOrtho_DEGBySpecies)})
 
 # Test for DEGs with diff patterns by fruit type
 DDS_AllOrtho_DEGByFruit <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGByFruit.rds"),
-                                    error=function(e){
-                                      DDS_AllOrtho_DEGByFruit <- DESeqSpline(Expt_All_Ortho,
-                                                                             CaseCtlVar = "Fruit",
-                                                                             timeVar = "Stage",
-                                                                             CollapseTechRep = TRUE)
-                                      # columns have duplicate names, which would be changed and mess up metadata mapping
-                                      colnames(DDS_AllOrtho_DEGByFruit) <- NULL 
-                                      saveRDS(DDS_AllOrtho_DEGByFruit, "DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGByFruit.rds")
-                                      return(DDS_AllOrtho_DEGByFruit)})
+                error=function(e){
+                  DDS_AllOrtho_DEGByFruit <- DESeqSpline(Expt_All_Ortho,
+                                                         CaseCtlVar = "Fruit",
+                                                         timeVar = "Stage",
+                                                         CollapseTechRep = TRUE)
+                  # columns have duplicate names, which would be changed and mess up metadata mapping
+                  colnames(DDS_AllOrtho_DEGByFruit) <- NULL 
+                  saveRDS(DDS_AllOrtho_DEGByFruit, "DEGAnalysis/RNA-seq/DDS_AllOrtho_DEGByFruit.rds")
+                  return(DDS_AllOrtho_DEGByFruit)})
 
 # Find the genes with a common pattern across species
 DDS_AllOrtho_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.rds"),
-                               error=function(e){
-                                 DDS_AllOrtho_Noise <- DESeqSpline(Expt_All_Ortho,
-                                                                   vsNoise = TRUE,
-                                                                   timeVar="Stage",
-                                                                   CollapseTechRep = TRUE)
-                                 colnames(DDS_AllOrtho_Noise) <- NULL 
-                                 saveRDS(DDS_AllOrtho_Noise, "DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.rds")
-                                 return(DDS_AllOrtho_Noise)})
+                error=function(e){
+                  DDS_AllOrtho_Noise <- DESeqSpline(Expt_All_Ortho,
+                                                    vsNoise = TRUE,
+                                                    timeVar="Stage",
+                                                    CollapseTechRep = TRUE)
+                  colnames(DDS_AllOrtho_Noise) <- NULL 
+                  saveRDS(DDS_AllOrtho_Noise, "DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.rds")
+                  return(DDS_AllOrtho_Noise)})
 
 # Test for DEGs in Dry Fruited only
 # DDS_DryOrtho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_DryOrtho.rds"),
@@ -553,12 +547,6 @@ PlotCluster + theme_minimal() +
         legend.position = "none",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
-
-
-# NoFUL2 and NoMBP10 are in cluster 2
-# In SlycIH FUL1 is cluster 3
-# in SlycSRA FUL1 and FUL2 are cluster 1
-# FUL and AGL79 are not DE
 
 # Save Cluster genes to a file --------------------------------------------
 X <- split(Cluster_AllOrtho_Noise$df, Cluster_AllOrtho_Noise$df$cluster)
