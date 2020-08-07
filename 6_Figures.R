@@ -10,12 +10,13 @@ library("tidyr")
 library("dplyr")
 library("Rgraphviz")
 library("scales")
+library("lemon")
 source("X_Functions.R")
 
 # Full Model All Cluster Plots -----------------------------------------------------------
-Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
-Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGByFruit.rds")
-Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds")
+Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_Noise.rds")
+Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGByFruit.rds")
+Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGBySpecies.rds")
 
 pal <- viridis(4, option="D")
 
@@ -25,7 +26,7 @@ Model1_plot <- ggplot(Cluster_AllOrtho_Noise$normalized,
   scale_fill_manual(values=pal[2]) +
   scale_color_manual(values=pal[2]) +
   facet_rep_wrap(~cluster,
-                 nrow = 4) +
+                 nrow = 2) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF"),
@@ -79,7 +80,7 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
   Model2Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                                 GOIs=tmpList)
 }
-capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_GOTables.txt")
+capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_Unripe_GOTables.txt")
 
 Model3Tables <- list()
 for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
@@ -91,7 +92,7 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
   Model3Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                                 GOIs=tmpList)
 }
-capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_GOTables.txt")
+capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_Unripe_GOTables.txt")
 
 # Needs update after cluster re-org ---------------------------------------
 
