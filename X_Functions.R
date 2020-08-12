@@ -146,18 +146,20 @@ ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
                             sep="\t",
                             stringsAsFactors = F,
                             header=T)
+  if(!Arabidopsis) {
+    Orthogroups <- Orthogroups[,-2]
+  }
   if (SingleCopyOrthoOnly) {
     Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
     Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
   }
   if(Arabidopsis) {
     Orthogroups$Concatenated <- paste(Orthogroups$Arabidopsis, Orthogroups$Nicotiana, Orthogroups$Solanum, sep=", ") 
-    Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c(1,5)]), 2, sep=", ")
   } else {
     Orthogroups$Concatenated <- paste(Orthogroups$Nicotiana, Orthogroups$Solanum, sep=", ") 
-    Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c(1,4)]), 2, sep=", ")
   }
-  # Rename columns just in case
+  Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c("Orthogroup", "Concatenated")]), 2, sep=", ")
+  # Rename columns for short code
   colnames(Orthogroups) <- c("V1", "V2")
   # Extract, subset, and aggregate count matrix from SummarizedExperiment
   Counts <- assay(GeneWiseExpt)
