@@ -215,6 +215,31 @@ Expt_All_Ortho_Unripe <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_All_Ortho_Un
                              saveRDS(Expt_All_Ortho_Unripe, file="DEGAnalysis/RNA-seq/Expt_All_Ortho_Unripe.rds")
                              return(Expt_All_Ortho_Unripe)})
 
+Expt_SolOrtho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SolOrtho.rds"),
+                             error=function(e){
+                               mapping <- "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv"
+                               Expt_Nobt_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                                      GeneWiseExpt = Expt_NobtSE,
+                                                      SingleCopyOrthoOnly = TRUE,
+                                                      Arabidopsis = FALSE)
+                               Expt_Slyc_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                                      GeneWiseExpt = subset(Expt_SlycSE, select=DAP<45),
+                                                      SingleCopyOrthoOnly = TRUE,
+                                                      Arabidopsis = FALSE)
+                               Expt_Spimp_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = mapping,
+                                                      GeneWiseExpt = subset(Expt_SpimpSE, select=DAP<45),
+                                                      SingleCopyOrthoOnly = TRUE,
+                                                      Arabidopsis = FALSE)
+                               Expt_SolOrtho <- do.call(cbind, list(Expt_Nobt_Ortho,
+                                                                     Expt_Slyc_Ortho,
+                                                                     Expt_Spimp_Ortho))
+                               #Add Stage variable to normalize DAP across species
+                               Expt_SolOrtho$Stage <- c(3.5,3.5,3.5,3.5,3.5,3.5,1,1,1,2,2,2,3,3,3,
+                                                         1,1,1,2,2,2,3,3,3,3.5,3.5,3.5,
+                                                         1,1,1,2,2,2,3,3,3,3.5,3.5,3.5)
+                               saveRDS(Expt_SolOrtho, file="DEGAnalysis/RNA-seq/Expt_SolOrtho.rds")
+                               return(Expt_SolOrtho)})
+
 Expt_NobtRipe_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtRipe_Ortho.rds"),
                                 error=function(e){
                         Expt_NobtRipe_Ortho <- ConvertGenes2Orthos(OrthogroupMappingFile = "Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups_NoArabidopsis.tsv",
@@ -358,6 +383,37 @@ DDS_AllOrtho_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.r
                   saveRDS(DDS_AllOrtho_Noise, "DEGAnalysis/RNA-seq/DDS_AllOrtho_Noise.rds")
                   return(DDS_AllOrtho_Noise)})
 
+#Just the solanaceous species
+DDS_SolOrtho_DEGBySpecies <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_SolOrtho_DEGBySpecies.rds"),
+                error=function(e){
+                 DDS_SolOrtho_DEGBySpecies <- DESeqSpline(Expt_SolOrtho,
+                                                          CaseCtlVar = "Species",
+                                                          timeVar = "Stage",
+                                                          CollapseTechRep = TRUE)
+                 # columns have duplicate names, which would be changed and mess up metadata mapping
+                 colnames(DDS_SolOrtho_DEGBySpecies) <- NULL 
+                 saveRDS(DDS_SolOrtho_DEGBySpecies, "DEGAnalysis/RNA-seq/DDS_SolOrtho_DEGBySpecies.rds")
+                 return(DDS_SolOrtho_DEGBySpecies)})
+DDS_SolOrtho_DEGByFruit <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_SolOrtho_DEGByFruit.rds"),
+               error=function(e){
+                 DDS_SolOrtho_DEGByFruit <- DESeqSpline(Expt_SolOrtho,
+                                                        CaseCtlVar = "Fruit",
+                                                        timeVar = "Stage",
+                                                        CollapseTechRep = TRUE)
+                 # columns have duplicate names, which would be changed and mess up metadata mapping
+                 colnames(DDS_SolOrtho_DEGByFruit) <- NULL 
+                 saveRDS(DDS_SolOrtho_DEGByFruit, "DEGAnalysis/RNA-seq/DDS_SolOrtho_DEGByFruit.rds")
+                 return(DDS_SolOrtho_DEGByFruit)})
+DDS_SolOrtho_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_SolOrtho_Noise.rds"),
+              error=function(e){
+                DDS_SolOrtho_Noise <- DESeqSpline(Expt_SolOrtho,
+                                                  vsNoise = TRUE,
+                                                  timeVar="Stage",
+                                                  CollapseTechRep = TRUE)
+                colnames(DDS_SolOrtho_Noise) <- NULL 
+                saveRDS(DDS_SolOrtho_Noise, "DEGAnalysis/RNA-seq/DDS_SolOrtho_Noise.rds")
+                return(DDS_SolOrtho_Noise)})
+
 # Unripe Data -------
 # Test for DEGs with diff patterns by species
 DDS_AllOrtho_Unripe_DEGBySpecies <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_AllOrtho_Unripe_DEGBySpecies.rds"),
@@ -458,52 +514,6 @@ DDS_Slyc3545_Ortho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Slyc3545_Ortho.r
                                                              reduced = ~1)
                                  saveRDS(DDS_Slyc3545_Ortho, "DEGAnalysis/RNA-seq/DDS_Slyc3545_Ortho.rds")
                                  return(DDS_Slyc3545_Ortho)})
-
-# Play around with individual genes ---------------------------------------
-Exampledds <- DDS_AllOrtho_DEGByFruit #assign one dds as the example to streamline code
-ExampleRes <- results(Exampledds) #get results
-ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
-head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
-#Examine an individual Gene
-topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
-colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
-colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
-plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "Stage"), normalized = T) #plot best fitting gene
-
-# Get a set of FUL genes for each species. Only use one of these
-FULgenes<-c(FUL.1="AT5G60910.1",
-            FUL.2="AT5G60910.2",
-            AGL79="AT3G30260.1")
-FULgenes<-c(SlFUL1="Solyc06g069430.3.1",
-            SlFUL2="Solyc03g114830.3.1",
-            SlMBP10="Solyc02g065730.2.1",
-            SlMBP20="Solyc02g089210.4.1" )
-FULgenes<-c(SpFUL1="Solyc06g069430.3.1",
-            SpFUL2="Solyc03g114830.3.1",
-            SpMBP10="Solyc02g065730.2.1",
-            SpMBP20="Solyc02g089210.4.1" )
-FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
-            NoFUL2="NIOBTv3_g39464.t1",
-            NoMBP10="NIOBTv3_g07845.t1",
-            NoMBP20="NIOBT_gMBP20.t1" )
-FULgenes<-c(euFULI="OG0004494",
-            euFULII="OG0007327")
-# Plot FUL Genes
-for (i in 1:length(FULgenes)) {
-  pdf(file=paste0("DEGAnalysis/RNA-seq/Plots/Slyc_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
-      width=6,
-      height=4)
-  plotCounts(Exampledds,
-             gene=FULgenes[i],
-             intgroup=c("Stage"), # Remove Genotype for nonSlycSRA
-             main=paste0(names(FULgenes[i]), 
-                         " p=",
-                         formatC(ExampleRes$padj[rownames(ExampleRes)==FULgenes[i]], format = "e", digits = 1)),
-             xlab="Stae",
-             normalized=T,
-             replace=T)
-  dev.off()
-}
  
 # Clustering --------------------------------------------------------------
 # For all genes, this is best run noninteractively with the 4_NoninteractiveClustering.sh script
@@ -586,6 +596,31 @@ Cluster_AllOrtho_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho
               saveRDS(Cluster_AllOrtho_Noise, "DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
                                   return(Cluster_AllOrtho_Noise)})
 
+Cluster_SolOrtho_DEGBySpecies <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_SolOrtho_DEGBySpecies.rds"),
+            error=function(e){
+              Cluster_SolOrtho_DEGBySpecies <- DESeqCluster(DDS_SolOrtho_DEGBySpecies,
+                                             numGenes = "all",
+                                             CaseCtlVar = "Species",    
+                                             timeVar = "Stage")
+              saveRDS(Cluster_SolOrtho_DEGBySpecies, "DEGAnalysis/RNA-seq/Cluster_SolOrtho_DEGBySpecies.rds")
+              return(Cluster_SolOrtho_DEGBySpecies)})
+
+Cluster_SolOrtho_DEGByFruit <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_SolOrtho_DEGByFruit.rds"),
+           error=function(e){
+             Cluster_SolOrtho_DEGByFruit <- DESeqCluster(DDS_SolOrtho_DEGByFruit,
+                                             numGenes = "all",
+                                             CaseCtlVar = "Fruit",
+                                             timeVar = "Stage")
+             saveRDS(Cluster_SolOrtho_DEGByFruit, "DEGAnalysis/RNA-seq/Cluster_SolOrtho_DEGByFruit.rds")
+             return(Cluster_SolOrtho_DEGByFruit)})
+Cluster_SolOrtho_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_SolOrtho_Noise.rds"), 
+           error=function(e){
+             Cluster_SolOrtho_Noise <- DESeqCluster(DDS_SolOrtho_Noise,
+                                                    numGenes = "all",
+                                                    timeVar = "Stage")
+             saveRDS(Cluster_SolOrtho_Noise, "DEGAnalysis/RNA-seq/Cluster_SolOrtho_Noise.rds")
+             return(Cluster_SolOrtho_Noise)})
+
 Cluster_AllOrtho_Unripe_DEGBySpecies <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGBySpecies.rds"),
                 error=function(e){
                   Cluster_AllOrtho_Unripe_DEGBySpecies <- DESeqCluster(DDS_AllOrtho_Unripe_DEGBySpecies,
@@ -621,6 +656,51 @@ Cluster_DryOrtho <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_DryOrtho.rds")
                                saveRDS(Cluster_DryOrtho, "DEGAnalysis/RNA-seq/Cluster_DryOrtho.rds")
                                return(Cluster_DryOrtho)})
 
+# Play around with individual genes ---------------------------------------
+Exampledds <- DDS_AllOrtho_DEGByFruit #assign one dds as the example to streamline code
+ExampleRes <- results(Exampledds) #get results
+ExampleResSig <- subset(ExampleRes, padj < 0.05) #subset by FDR
+head(ExampleResSig[order(ExampleResSig$padj ), ]) #see best fitting genes for spline model
+#Examine an individual Gene
+topGene <- rownames(ExampleRes)[which.min(ExampleRes$padj)]
+colData(Exampledds)$DAP <- as.factor(colData(Exampledds)$DAP)
+colData(Exampledds)$Stage <- as.factor(colData(Exampledds)$Stage)
+plotCounts(Exampledds, gene=topGene, intgroup=c("Species", "Stage"), normalized = T) #plot best fitting gene
+
+# Get a set of FUL genes for each species. Only use one of these
+FULgenes<-c(FUL.1="AT5G60910.1",
+            FUL.2="AT5G60910.2",
+            AGL79="AT3G30260.1")
+FULgenes<-c(SlFUL1="Solyc06g069430.3.1",
+            SlFUL2="Solyc03g114830.3.1",
+            SlMBP10="Solyc02g065730.2.1",
+            SlMBP20="Solyc02g089210.4.1" )
+FULgenes<-c(SpFUL1="Solyc06g069430.3.1",
+            SpFUL2="Solyc03g114830.3.1",
+            SpMBP10="Solyc02g065730.2.1",
+            SpMBP20="Solyc02g089210.4.1" )
+FULgenes<-c(NoFUL1="NIOBTv3_g28929-D2.t1",
+            NoFUL2="NIOBTv3_g39464.t1",
+            NoMBP10="NIOBTv3_g07845.t1",
+            NoMBP20="NIOBT_gMBP20.t1" )
+FULgenes<-c(euFULI="OG0004494",
+            euFULII="OG0007327")
+# Plot FUL Genes
+for (i in 1:length(FULgenes)) {
+  pdf(file=paste0("DEGAnalysis/RNA-seq/Plots/Slyc_", names(FULgenes[i]), ".pdf"), # _SRA v _IH on Slyc
+      width=6,
+      height=4)
+  plotCounts(Exampledds,
+             gene=FULgenes[i],
+             intgroup=c("Stage"), # Remove Genotype for nonSlycSRA
+             main=paste0(names(FULgenes[i]), 
+                         " p=",
+                         formatC(ExampleRes$padj[rownames(ExampleRes)==FULgenes[i]], format = "e", digits = 1)),
+             xlab="Stae",
+             normalized=T,
+             replace=T)
+  dev.off()
+}
 
 # Plot Cluster Profiles ---------------------------------------------------
 # Use the ggplot plotting scripts for figures. Use this for exploring
