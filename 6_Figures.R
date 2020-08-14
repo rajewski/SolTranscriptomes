@@ -13,10 +13,10 @@ library("scales")
 library("lemon")
 source("X_Functions.R")
 
-# Full Model All Cluster Plots -----------------------------------------------------------
-Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_Noise.rds")
-Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGByFruit.rds")
-Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGBySpecies.rds")
+# 4 Species, Stage 1-Breaker Plots ----------------------------------------------------------
+Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
+Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGByFruit.rds")
+Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds")
 
 pal <- viridis(4, option="D")
 
@@ -33,6 +33,8 @@ Model1_plot <- ggplot(Cluster_AllOrtho_Noise$normalized,
         legend.position = "none") +
   geom_violin(position=position_dodge(width=0), alpha=0.5) +
   stat_summary(fun=mean, geom="line", aes(group=Species))
+Model1_plot
+ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Noise.pdf", height=7, width=13)
 
 Model2_plot <- ggplot(Cluster_AllOrtho_DEGByFruit$normalized, 
                      aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
@@ -46,6 +48,8 @@ Model2_plot <- ggplot(Cluster_AllOrtho_DEGByFruit$normalized,
         strip.background = element_rect(fill="#FFFFFF")) +
   geom_violin(position=position_dodge(width=0), alpha=0.5) +
   stat_summary(fun=mean, geom="line", aes(group=Fruit))
+Model2_plot
+ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Fruit.pdf", height=7, width=13)
 
 Model3_plot <- ggplot(Cluster_AllOrtho_DEGBySpecies$normalized, 
                      aes(x=Stage, y=value, col=Species, fill=Species)) +
@@ -59,10 +63,10 @@ Model3_plot <- ggplot(Cluster_AllOrtho_DEGBySpecies$normalized,
         strip.background = element_rect(fill="#FFFFFF")) +
   geom_violin(position=position_dodge(width=0), alpha=0.5) +
   stat_summary(fun=mean, geom="line", aes(group=Species))
+Model3_plot
+ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Species.pdf", height=7, width=13)
 
-
-# GO Tables to Pick Clusters ----------------------------------------------
-
+# 4 Species, Stage 1-Breaker GO Plots ----------------------------------------------
 # Make a list of the GO Tables
 Model1Tables <- list()
 for (i in levels(as.factor(Cluster_AllOrtho_Noise$normalized$cluster))) {
@@ -80,7 +84,7 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
   Model2Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                                 GOIs=tmpList)
 }
-capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_Unripe_GOTables.txt")
+capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_GOTables.txt")
 
 Model3Tables <- list()
 for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
@@ -92,7 +96,90 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
   Model3Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                                 GOIs=tmpList)
 }
-capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_Unripe_GOTables.txt")
+capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_GOTables.txt")
+
+# 4 Species, Stage 1-3 Plots ----------------------------------------------------------
+Cluster_AllOrtho_Unripe_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_Noise.rds")
+Cluster_AllOrtho_Unripe_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGByFruit.rds")
+Cluster_AllOrtho_Unripe_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGBySpecies.rds")
+
+Model1_Unripe_plot <- ggplot(Cluster_AllOrtho_Unripe_Noise$normalized, 
+                      aes(x=Stage, y=value, col=Species, fill=Species)) +
+  labs(y="Z-score") +
+  scale_fill_manual(values=pal[2]) +
+  scale_color_manual(values=pal[2]) +
+  facet_rep_wrap(~cluster,
+                 nrow = 2) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF"),
+        legend.position = "none") +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Species))
+Model1_Unripe_plot
+ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Unripe_Noise.pdf", height=7, width=13)
+
+Model2_Unripe_plot <- ggplot(Cluster_AllOrtho_Unripe_DEGByFruit$normalized, 
+                      aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
+  labs(y="Z-score") +
+  scale_fill_manual(values=pal[1:2]) +
+  scale_color_manual(values=pal[1:2]) +
+  facet_rep_wrap(~cluster,
+                 nrow = 4) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF")) +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Fruit))
+Model2_Unripe_plot
+ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Unripe_Fruit.pdf", height=7, width=13)
+
+Model3_Unripe_plot <- ggplot(Cluster_AllOrtho_Unripe_DEGBySpecies$normalized, 
+                      aes(x=Stage, y=value, col=Species, fill=Species)) +
+  labs(y="Z-score") +
+  scale_fill_manual(values=pal) +
+  scale_color_manual(values=pal) +
+  facet_rep_wrap(~cluster,
+                 nrow = 4) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF")) +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Species))
+Model3_Unripe_plot
+ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Unripe_Species.pdf", height=7, width=13)
+
+# 4 Species, Stage 1-3 GO Plots ----------------------------------------------
+# Make a list of the GO Tables
+Model1_UnripeTables <- list()
+for (i in levels(as.factor(Cluster_AllOrtho_Unripe_Noise$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_Unripe_Noise$normalized$genes %in% Cluster_AllOrtho_Unripe_Noise$normalized$genes[Cluster_AllOrtho_Unripe_Noise$normalized$cluster==i]))
+  names(tmpList) <- Cluster_AllOrtho_Unripe_Noise$normalized$genes
+  Model1_UnripeTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                                GOIs=tmpList)
+}
+capture.output(Model1_UnripeTables, file="DEGAnalysis/RNA-seq/AllOrtho_Unripe_Noise_GOTables.txt")
+
+Model2_UnripeTables <- list()
+for (i in levels(as.factor(Cluster_AllOrtho_Unripe_DEGByFruit$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_Unripe_DEGByFruit$normalized$genes %in% Cluster_AllOrtho_Unripe_DEGByFruit$normalized$genes[Cluster_AllOrtho_Unripe_DEGByFruit$normalized$cluster==i]))
+  names(tmpList) <- Cluster_AllOrtho_Unripe_DEGByFruit$normalized$genes
+  Model2_UnripeTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                                GOIs=tmpList)
+}
+capture.output(Model2_UnripeTables, file="DEGAnalysis/RNA-seq/AllOrtho_Unripe_DEGByFruit_GOTables.txt")
+
+Model3_UnripeTables <- list()
+for (i in levels(as.factor(Cluster_AllOrtho_Unripe_DEGBySpecies$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_Unripe_DEGBySpecies$normalized$genes %in% Cluster_AllOrtho_Unripe_DEGBySpecies$normalized$genes[Cluster_AllOrtho_Unripe_DEGByFruit$normalized$cluster==i]))
+  if (length(levels(tmpList))==1) {
+    next
+  }
+  names(tmpList) <- Cluster_AllOrtho_Unripe_DEGBySpecies$normalized$genes
+  Model3_UnripeTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                                GOIs=tmpList)
+}
+capture.output(Model3_UnripeTables, file="DEGAnalysis/RNA-seq/AllOrtho_Unripe_DEGBySpecies_GOTables.txt")
 
 # Needs update after cluster re-org ---------------------------------------
 

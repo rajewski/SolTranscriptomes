@@ -1,0 +1,65 @@
+$`1`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006793 GO:0006793, phosphorus metabolic proce  0.034          54
+2 GO:0006796 GO:0006796, phosphate-containing compo  0.034          54
+
+$`5`
+       GO.ID                                   Term Fisher Significant
+1 GO:0071705 GO:0071705, nitrogen compound transpor  0.031          14
+2 GO:0008104       GO:0008104, protein localization  0.040          13
+3 GO:0015031          GO:0015031, protein transport  0.040          13
+4 GO:0015833          GO:0015833, peptide transport  0.040          13
+5 GO:0042886            GO:0042886, amide transport  0.040          13
+6 GO:0045184 GO:0045184, establishment of protein l  0.040          13
+7 GO:0050794 GO:0050794, regulation of cellular pro  0.043          46
+
+$`6`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006928 GO:0006928, movement of cell or subcel  0.040           7
+2 GO:0007017  GO:0007017, microtubule-based process  0.040           7
+3 GO:0007018 GO:0007018, microtubule-based movement  0.040           7
+4 GO:0006508                GO:0006508, proteolysis  0.048          18
+
+$`7`
+       GO.ID                                   Term Fisher Significant
+1 GO:0051186 GO:0051186, cofactor metabolic process  0.029           4
+
+$`8`
+       GO.ID                                   Term Fisher Significant
+1 GO:0009451           GO:0009451, RNA modification  0.034           5
+2 GO:0034622 GO:0034622, cellular protein-containin  0.046           4
+
+$`11`
+        GO.ID                                   Term Fisher Significant
+1  GO:0051641      GO:0051641, cellular localization  0.017           7
+2  GO:0046907    GO:0046907, intracellular transport  0.027           6
+3  GO:0051649 GO:0051649, establishment of localizat  0.027           6
+4  GO:0071702 GO:0071702, organic substance transpor  0.037           7
+5  GO:0008104       GO:0008104, protein localization  0.041           6
+6  GO:0015031          GO:0015031, protein transport  0.041           6
+7  GO:0015833          GO:0015833, peptide transport  0.041           6
+8  GO:0042886            GO:0042886, amide transport  0.041           6
+9  GO:0045184 GO:0045184, establishment of protein l  0.041           6
+10 GO:0006886 GO:0006886, intracellular protein tran  0.043           5
+11 GO:0034613 GO:0034613, cellular protein localizat  0.043           5
+12 GO:0070727 GO:0070727, cellular macromolecule loc  0.043           5
+
+$`12`
+       GO.ID                                   Term Fisher Significant
+1 GO:0035556 GO:0035556, intracellular signal trans  0.045           3
+
+$`13`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006399     GO:0006399, tRNA metabolic process  0.030           5
+2 GO:0006412                GO:0006412, translation  0.047           7
+3 GO:0043043 GO:0043043, peptide biosynthetic proce  0.047           7
+
+$`20`
+       GO.ID                                   Term Fisher Significant
+1 GO:0016310            GO:0016310, phosphorylation  0.011          12
+2 GO:0006468    GO:0006468, protein phosphorylation  0.014          11
+3 GO:0006793 GO:0006793, phosphorus metabolic proce  0.017          13
+4 GO:0006796 GO:0006796, phosphate-containing compo  0.017          13
+5 GO:0006464 GO:0006464, cellular protein modificat  0.026          13
+6 GO:0036211 GO:0036211, protein modification proce  0.026          13
+
