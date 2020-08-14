@@ -217,12 +217,12 @@ GOEnrich <- function(gene2go="",
                 description = "Slyc Cluster 1",
                 ontology = GOCategory,
                 allGenes = GOI,
-                nodeSize = 2,
+                nodeSize = 5,
                 annot = annFUN.gene2GO,
                 gene2GO=GO)
   # Do the enrichment test
   GOResults <- runTest(GOData,
-                       algorithm="weight01",
+                       algorithm="classic", #classic is best, then lea?
                        statistic = "fisher")
   # Summarize the test with a table
   GOTable <- GenTable(GOData,

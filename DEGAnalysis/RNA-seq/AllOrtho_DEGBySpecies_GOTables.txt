@@ -1,0 +1,41 @@
+$`4`
+       GO.ID                    Term Fisher Significant
+1 GO:0006508 GO:0006508, proteolysis  0.024          12
+
+$`7`
+        GO.ID                                   Term Fisher Significant
+1  GO:0016070      GO:0016070, RNA metabolic process 0.0032          17
+2  GO:0090304 GO:0090304, nucleic acid metabolic pro 0.0033          20
+3  GO:0006139 GO:0006139, nucleobase-containing comp 0.0136          21
+4  GO:0006725 GO:0006725, cellular aromatic compound 0.0136          21
+5  GO:0046483 GO:0046483, heterocycle metabolic proc 0.0136          21
+6  GO:1901360 GO:1901360, organic cyclic compound me 0.0136          21
+7  GO:1901566 GO:1901566, organonitrogen compound bi 0.0222           7
+8  GO:0010467            GO:0010467, gene expression 0.0246          17
+9  GO:0009059 GO:0009059, macromolecule biosynthetic 0.0371          16
+10 GO:0034645 GO:0034645, cellular macromolecule bio 0.0371          16
+11 GO:0034641 GO:0034641, cellular nitrogen compound 0.0374          22
+
+$`8`
+       GO.ID                                   Term Fisher Significant
+1 GO:0034613 GO:0034613, cellular protein localizat  0.019           8
+2 GO:0070727 GO:0070727, cellular macromolecule loc  0.019           8
+3 GO:0006886 GO:0006886, intracellular protein tran  0.035           7
+
+$`10`
+       GO.ID                        Term Fisher Significant
+1 GO:0010467 GO:0010467, gene expression  0.029          24
+
+$`11`
+       GO.ID                             Term Fisher Significant
+1 GO:0019725 GO:0019725, cellular homeostasis  0.049           5
+2 GO:0042592  GO:0042592, homeostatic process  0.049           5
+
+$`20`
+       GO.ID                                   Term Fisher Significant
+1 GO:0016043 GO:0016043, cellular component organiz   0.03           3
+
+$`27`
+       GO.ID                             Term Fisher Significant
+1 GO:0050896 GO:0050896, response to stimulus   0.03           5
+
