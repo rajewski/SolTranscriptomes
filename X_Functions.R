@@ -244,6 +244,9 @@ GOEnrich <- function(gene2go="",
   GoGraph$Fisher <- as.numeric(GoGraph$Fisher)
   return(GoGraph)
 }
+
+
+
 # Make a Plot of these GO Enrichments -------------------------------------
 GOPlot <- function(GoGraph=X,
                    Title="") 

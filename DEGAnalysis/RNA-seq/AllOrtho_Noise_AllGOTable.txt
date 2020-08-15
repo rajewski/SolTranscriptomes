@@ -1,0 +1,3 @@
+       GO.ID                               Term Fisher Significant
+1 GO:0006397        GO:0006397, mRNA processing  0.024           2
+2 GO:0016071 GO:0016071, mRNA metabolic process  0.038           2
