@@ -15,8 +15,14 @@ source("X_Functions.R")
 
 # 4 Species, Stage 1-Breaker Plots ----------------------------------------------------------
 Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
+write.table(unique(Cluster_AllOrtho_Noise$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise.txt")
+
 Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGByFruit.rds")
+write.table(unique(Cluster_AllOrtho_DEGByFruit$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit.txt")
+
 Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds")
+write.table(unique(Cluster_AllOrtho_DEGBySpecies$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies.txt")
+
 
 pal <- viridis(4, option="D")
 
@@ -76,6 +82,10 @@ for (i in levels(as.factor(Cluster_AllOrtho_Noise$normalized$cluster))) {
                                   GOIs=tmpList)
 }
 capture.output(Model1Tables, file="DEGAnalysis/RNA-seq/AllOrtho_Noise_GOTables.txt")
+# All the genes as a cohort
+Model1_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+         GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise.txt")
+capture.output(Model1_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_Noise_AllGOTable.txt")
 
 Model2Tables <- list()
 for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
@@ -85,6 +95,11 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
                                 GOIs=tmpList)
 }
 capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_GOTables.txt")
+# All the genes as a cohort
+Model2_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                            GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit.txt")
+capture.output(Model2_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_AllGOTable.txt")
+
 
 Model3Tables <- list()
 for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
@@ -97,6 +112,11 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
                                 GOIs=tmpList)
 }
 capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_GOTables.txt")
+# All the genes as a cohort
+Model3_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
+                            GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies.txt",
+                            NumCategories = 50)
+capture.output(Model3_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_AllGOTable.txt")
 
 # 4 Species, Stage 1-3 Plots ----------------------------------------------------------
 Cluster_AllOrtho_Unripe_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_Noise.rds")

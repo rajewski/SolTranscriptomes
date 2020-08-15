@@ -1,0 +1,14 @@
+        GO.ID                                   Term Fisher Significant
+1  GO:0016579   GO:0016579, protein deubiquitination 0.0085           5
+2  GO:0070646 GO:0070646, protein modification by sm 0.0085           5
+3  GO:0000375 GO:0000375, RNA splicing, via transest 0.0145           4
+4  GO:0000377 GO:0000377, RNA splicing, via transest 0.0145           4
+5  GO:0000398 GO:0000398, mRNA splicing, via spliceo 0.0145           4
+6  GO:0006397            GO:0006397, mRNA processing 0.0206           9
+7  GO:0065008 GO:0065008, regulation of biological q 0.0213          21
+8  GO:0006396             GO:0006396, RNA processing 0.0230          23
+9  GO:0006260            GO:0006260, DNA replication 0.0276           9
+10 GO:0008380               GO:0008380, RNA splicing 0.0287           4
+11 GO:0006259      GO:0006259, DNA metabolic process 0.0384          21
+12 GO:0065003 GO:0065003, protein-containing complex 0.0444           8
+13 GO:0022613 GO:0022613, ribonucleoprotein complex  0.0467          10
