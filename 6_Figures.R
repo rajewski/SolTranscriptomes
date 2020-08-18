@@ -57,6 +57,15 @@ Model2_plot <- ggplot(Cluster_AllOrtho_DEGByFruit$normalized,
 Model2_plot
 ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Fruit.pdf", height=7, width=13)
 
+# Get ranges for each cluster
+M2Aggr <- aggregate(Cluster_AllOrtho_DEGByFruit$normalized,
+                    by=list(Cluster_AllOrtho_DEGByFruit$normalized$Fruit,
+                            Cluster_AllOrtho_DEGByFruit$normalized$cluster,
+                            Cluster_AllOrtho_DEGByFruit$normalized$Stage), FUN=mean)[,c(1,2,3,6)]
+M2Aggr <- M2Aggr %>% spread(Group.3, value)
+M2Aggr$Range <- apply(M2Aggr[,3:6], 1, FUN=max) - apply(M2Aggr[,3:6], 1, FUN=min)
+M2Flx <- M2Aggr[M2Aggr$Range>=1,]
+
 Model3_plot <- ggplot(Cluster_AllOrtho_DEGBySpecies$normalized, 
                      aes(x=Stage, y=value, col=Species, fill=Species)) +
   labs(y="Z-score") +
@@ -71,6 +80,43 @@ Model3_plot <- ggplot(Cluster_AllOrtho_DEGBySpecies$normalized,
   stat_summary(fun=mean, geom="line", aes(group=Species))
 Model3_plot
 ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Species.pdf", height=7, width=13)
+
+# Get ranges for each cluster
+M3Aggr <- aggregate(Cluster_AllOrtho_DEGBySpecies$normalized,
+                    by=list(Cluster_AllOrtho_DEGBySpecies$normalized$Species,
+                            Cluster_AllOrtho_DEGBySpecies$normalized$cluster,
+                            Cluster_AllOrtho_DEGBySpecies$normalized$Stage), FUN=mean)[,c(1,2,3,6)]
+M3Aggr <- M3Aggr %>% spread(Group.3, value)
+M3Aggr$Range <- apply(M3Aggr[,3:6], 1, FUN=max) - apply(M3Aggr[,3:6], 1, FUN=min)
+M3Flx <- M3Aggr[M3Aggr$Range>=1,]
+
+#What is the overlap in gene number ofr Model 2 and Model 3
+library("UpSetR")
+M1orthos <- list(as.data.frame(unique(Cluster_AllOrtho_Noise$normalized$genes)))
+M2orthos <- list(as.data.frame(unique(Cluster_AllOrtho_DEGByFruit$normalized$genes)))
+M3orthos <- list(as.data.frame(unique(Cluster_AllOrtho_DEGBySpecies$normalized$genes)))
+List_Models <- Map(list,
+                   M1orthos, M2orthos, M3orthos)
+Gene_List <- as.data.frame(unique(unlist(List_Models)))
+for (GeneTable in c(M1orthos, M2orthos, M3orthos)) {
+  Common<-as.data.frame(Gene_List[,1] %in% as.data.frame(GeneTable)[,1])
+  Common[,1][Common[,1]==TRUE]<- 1
+  Gene_List<-cbind(Gene_List,Common)
+}
+colnames(Gene_List) <- c("ID","Model1", "Model2", "Model3")
+upset(Gene_List, 
+      sets = colnames(Gene_List)[-1],
+      mainbar.y.label = "Number of genes", 
+      sets.x.label = "Total number of genes", 
+      text.scale = 1.5,
+      point.size = 3, 
+      line.size = 1,
+      nintersects = 100)
+
+#Get the genes present in all models
+AlwaysDE <- as.character(Gene_List$ID[apply(Gene_List[,c(2:4)],1, FUN=min)==1])
+orthogenes <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv", stringsAsFactors = F, sep="\t", header = T)
+AlwaysDE <- orthogenes[orthogenes$Orthogroup %in% AlwaysDE,]
 
 # 4 Species, Stage 1-Breaker GO Plots ----------------------------------------------
 # Make a list of the GO Tables
