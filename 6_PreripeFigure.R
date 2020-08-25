@@ -1,6 +1,7 @@
 # To make the figure for the pre-ripening transcriptome data
 library("DEGreport")
 library("ggplot2")
+library("ggplotify")
 library("cowplot")
 theme_set(theme_cowplot())
 library("topGO")
@@ -11,28 +12,34 @@ library("dplyr")
 library("Rgraphviz")
 library("scales")
 library("lemon")
+library("UpSetR")
 source("X_Functions.R")
 
-# 4 Species, Stage 1-Breaker Plots ----------------------------------------------------------
+# Read in Data and set global stuff ---------------------------------------
+pal <- viridis(4, option="D") #Purple, Blue, Teal, Yellow
+palw <- wes_palette("Zissou1",4,"continuous") #Blue, green, yellow, red
+
 Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
-write.table(unique(Cluster_AllOrtho_Noise$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise.txt")
+#write.table(unique(Cluster_AllOrtho_Noise$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise.txt")
 
 Cluster_AllOrtho_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGByFruit.rds")
-write.table(unique(Cluster_AllOrtho_DEGByFruit$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit.txt")
+#write.table(unique(Cluster_AllOrtho_DEGByFruit$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit.txt")
 
 Cluster_AllOrtho_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_DEGBySpecies.rds")
-write.table(unique(Cluster_AllOrtho_DEGBySpecies$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies.txt")
+#write.table(unique(Cluster_AllOrtho_DEGBySpecies$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies.txt")
 
-
-pal <- viridis(4, option="D")
-
+# 4 Species, Stage 1-Breaker Plots ----------------------------------------------------------
+# Labeller object to rename clusters
+M1_Labs <- c("1" = "Cluster 1", "2" = "Cluster 2", "3" = "Cluster 3", "5"="Cluster 4")
 Model1_plot <- ggplot(Cluster_AllOrtho_Noise$normalized, 
                             aes(x=Stage, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score") +
-  scale_fill_manual(values=pal[2]) +
-  scale_color_manual(values=pal[2]) +
+  labs(y="Z-score of Expression") +
+  scale_fill_manual(values="#9B9B9B") +
+  scale_color_manual(values="#000000") +
   facet_rep_wrap(~cluster,
+                 labeller=labeller(cluster=M1_Labs),
                  nrow = 2) +
+  scale_x_discrete(labels=c("1" = "1", "2" = "2", "3" = "3", "3.5" = "Br")) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF"),
@@ -42,22 +49,84 @@ Model1_plot <- ggplot(Cluster_AllOrtho_Noise$normalized,
 Model1_plot
 ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Noise.pdf", height=7, width=13)
 
+M2_Labs <- paste("Cluster", 1:length(unique(Cluster_AllOrtho_DEGByFruit$normalized$cluster)))
+names(M2_Labs) <- sort(unique(Cluster_AllOrtho_DEGByFruit$normalized$cluster))
 Model2_plot <- ggplot(Cluster_AllOrtho_DEGByFruit$normalized, 
                      aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score") +
-  scale_fill_manual(values=pal[1:2]) +
-  scale_color_manual(values=pal[1:2]) +
+  labs(y="Z-score of Expression") +
+  scale_fill_manual(values=palw[3:4]) +
+  scale_color_manual(values=palw[3:4]) +
   facet_rep_wrap(~cluster,
-                 nrow = 4) +
+                 labeller=labeller(cluster=M2_Labs),
+                 nrow = 3) +
+  scale_x_discrete(labels=c("1" = "1", "2" = "2", "3" = "3", "3.5" = "Br")) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF")) +
+        strip.background = element_rect(fill="#FFFFFF"),
+        legend.position = c(.95, 0), legend.justification = c(1, -1)) +
   geom_violin(position=position_dodge(width=0), alpha=0.5) +
   stat_summary(fun=mean, geom="line", aes(group=Fruit))
 Model2_plot
 ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Fruit.pdf", height=7, width=13)
 
-# Get ranges for each cluster
+M3_Labs <- paste("Cluster", 1:length(unique(Cluster_AllOrtho_DEGBySpecies$normalized$cluster)))
+names(M3_Labs) <- sort(unique(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))
+Model3_plot <- ggplot(Cluster_AllOrtho_DEGBySpecies$normalized, 
+                     aes(x=Stage, y=value, col=Species, fill=Species)) +
+  labs(y="Z-score of Expression") +
+  scale_fill_manual(values=palw[c(2,1,3,4)]) +
+  scale_color_manual(values=palw[c(2,1,3,4)]) +
+  facet_rep_wrap(~cluster,
+                 labeller=labeller(cluster=M3_Labs),
+                 nrow = 5) +
+  scale_x_discrete(labels=c("1" = "1", "2" = "2", "3" = "3", "3.5" = "Br")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF"),
+        legend.position = c(1, 0), legend.justification = c(1.5, -0.3)) +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Species))
+Model3Legend <- get_legend(Model3_plot + theme(legend.position = c(0.5,0.8)))
+Model3_plot
+ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Species.pdf", height=7, width=13)
+
+# Broken up plot to wrap around GO plot
+Model3_BrokenPlot_1 <- ggplot(subset(Cluster_AllOrtho_DEGBySpecies$normalized, 
+                             cluster %in% c(1,4,7,8,10,11,13,18,19)), 
+                      aes(x=Stage, y=value, col=Species, fill=Species)) +
+  labs(y=NULL, x=NULL) +
+  scale_fill_manual(values=palw[c(2,1,3,4)]) +
+  scale_color_manual(values=palw[c(2,1,3,4)]) +
+  facet_rep_wrap(~cluster,
+                 labeller=labeller(cluster=M3_Labs),
+                 nrow = 3) +
+  scale_x_discrete(labels=c("1" = "1", "2" = "2", "3" = "3", "3.5" = "Br")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF"),
+        legend.position = "none",
+        axis.text.x=element_blank()) +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Species))
+
+Model3_BrokenPlot_2 <- ggplot(subset(Cluster_AllOrtho_DEGBySpecies$normalized, 
+                                     cluster %notin% c(1,4,7,8,10,11,13,18,19)), 
+                              aes(x=Stage, y=value, col=Species, fill=Species)) +
+  labs(y="Z-score of Expression") +
+  scale_fill_manual(values=palw[c(2,1,3,4)]) +
+  scale_color_manual(values=palw[c(2,1,3,4)]) +
+  facet_rep_wrap(~cluster,
+                 labeller=labeller(cluster=M3_Labs),
+                 nrow = 3) +
+  scale_x_discrete(labels=c("1" = "1", "2" = "2", "3" = "3", "3.5" = "Br")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF"),
+        legend.position = "none") +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Species))
+
+# Expression Range by Cluster ---------------------------------------------
 M2Aggr <- aggregate(Cluster_AllOrtho_DEGByFruit$normalized,
                     by=list(Cluster_AllOrtho_DEGByFruit$normalized$Fruit,
                             Cluster_AllOrtho_DEGByFruit$normalized$cluster,
@@ -65,23 +134,6 @@ M2Aggr <- aggregate(Cluster_AllOrtho_DEGByFruit$normalized,
 M2Aggr <- M2Aggr %>% spread(Group.3, value)
 M2Aggr$Range <- apply(M2Aggr[,3:6], 1, FUN=max) - apply(M2Aggr[,3:6], 1, FUN=min)
 M2Flx <- M2Aggr[M2Aggr$Range>=1,]
-
-Model3_plot <- ggplot(Cluster_AllOrtho_DEGBySpecies$normalized, 
-                     aes(x=Stage, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score") +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  facet_rep_wrap(~cluster,
-                 nrow = 4) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF")) +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Species))
-Model3_plot
-ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Species.pdf", height=7, width=13)
-
-# Get ranges for each cluster
 M3Aggr <- aggregate(Cluster_AllOrtho_DEGBySpecies$normalized,
                     by=list(Cluster_AllOrtho_DEGBySpecies$normalized$Species,
                             Cluster_AllOrtho_DEGBySpecies$normalized$cluster,
@@ -90,8 +142,7 @@ M3Aggr <- M3Aggr %>% spread(Group.3, value)
 M3Aggr$Range <- apply(M3Aggr[,3:6], 1, FUN=max) - apply(M3Aggr[,3:6], 1, FUN=min)
 M3Flx <- M3Aggr[M3Aggr$Range>=1,]
 
-#What is the overlap in gene number ofr Model 2 and Model 3
-library("UpSetR")
+# Orthogene Overlap among Models ------------------------------------------
 M1orthos <- list(as.data.frame(unique(Cluster_AllOrtho_Noise$normalized$genes)))
 M2orthos <- list(as.data.frame(unique(Cluster_AllOrtho_DEGByFruit$normalized$genes)))
 M3orthos <- list(as.data.frame(unique(Cluster_AllOrtho_DEGBySpecies$normalized$genes)))
@@ -103,11 +154,12 @@ for (GeneTable in c(M1orthos, M2orthos, M3orthos)) {
   Common[,1][Common[,1]==TRUE]<- 1
   Gene_List<-cbind(Gene_List,Common)
 }
-colnames(Gene_List) <- c("ID","Model1", "Model2", "Model3")
-upset(Gene_List, 
-      sets = colnames(Gene_List)[-1],
-      mainbar.y.label = "Number of genes", 
-      sets.x.label = "Total number of genes", 
+colnames(Gene_List) <- c("ID","Model 1", "Model 2", "Model 3")
+OverlapUpset <- upset(Gene_List[c(1,4,3,2)], 
+      sets = colnames(Gene_List)[c(4,3,2)],
+      mainbar.y.label = "Number of DEGs", 
+      sets.x.label = NULL, 
+      keep.order = T,
       text.scale = 1.5,
       point.size = 3, 
       line.size = 1,
@@ -117,6 +169,7 @@ upset(Gene_List,
 AlwaysDE <- as.character(Gene_List$ID[apply(Gene_List[,c(2:4)],1, FUN=min)==1])
 orthogenes <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv", stringsAsFactors = F, sep="\t", header = T)
 AlwaysDE <- orthogenes[orthogenes$Orthogroup %in% AlwaysDE,]
+write.table(AlwaysDE$Arabidopsis, file="DEGAnalysis/RNA-seq/Lists/SevenOrthos.tsv", row.names = F, col.names = F, quote = F)
 
 # 4 Species, Stage 1-Breaker GO Plots ----------------------------------------------
 # Make a list of the GO Tables
@@ -132,6 +185,8 @@ capture.output(Model1Tables, file="DEGAnalysis/RNA-seq/AllOrtho_Noise_GOTables.t
 Model1_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
          GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise.txt")
 capture.output(Model1_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_Noise_AllGOTable.txt")
+Model1_AllPlot <- GOPlot(Model1_AllTable, Title="Overall GO") +
+  theme(legend.position = "none")
 
 Model2Tables <- list()
 for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
@@ -140,10 +195,20 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
   Model2Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                                 GOIs=tmpList)
 }
+
 capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_GOTables.txt")
+M2C4_Plot <- GOPlot(Model2Tables[['4']], Title = "Cluster 4 GO") +
+  theme(legend.position = "none")
+M2C12_Plot <- GOPlot(Model2Tables[['12']], Title = "Cluster 11 GO") +
+  theme(legend.position = "none")
+M2C18_Plot <- GOPlot(Model2Tables[['18']], Title = "Cluster 16 GO") +
+  theme(legend.position = "none")
+
 # All the genes as a cohort
 Model2_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                             GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit.txt")
+Model2_AllPlot <- GOPlot(Model2_AllTable, Title="Overall GO") +
+  theme(legend.position="none")
 capture.output(Model2_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_AllGOTable.txt")
 
 
@@ -162,290 +227,19 @@ capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_GOT
 Model3_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                             GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies.txt",
                             NumCategories = 50)
+Model3_AllPlot <- GOPlot(Model3_AllTable, Title="Overall GO") +
+  theme(legend.position=c(0.86,0.3))
+GO_Legend <- get_legend(Model3_AllPlot + theme(legend.position=c(0,0)))
 capture.output(Model3_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_AllGOTable.txt")
 
-# 4 Species, Stage 1-3 Plots ----------------------------------------------------------
-Cluster_AllOrtho_Unripe_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_Noise.rds")
-Cluster_AllOrtho_Unripe_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGByFruit.rds")
-Cluster_AllOrtho_Unripe_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Unripe_DEGBySpecies.rds")
-
-Model1_Unripe_plot <- ggplot(Cluster_AllOrtho_Unripe_Noise$normalized, 
-                      aes(x=Stage, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score") +
-  scale_fill_manual(values=pal[2]) +
-  scale_color_manual(values=pal[2]) +
-  facet_rep_wrap(~cluster,
-                 nrow = 2) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF"),
-        legend.position = "none") +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Species))
-Model1_Unripe_plot
-ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Unripe_Noise.pdf", height=7, width=13)
-
-Model2_Unripe_plot <- ggplot(Cluster_AllOrtho_Unripe_DEGByFruit$normalized, 
-                      aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score") +
-  scale_fill_manual(values=pal[1:2]) +
-  scale_color_manual(values=pal[1:2]) +
-  facet_rep_wrap(~cluster,
-                 nrow = 4) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF")) +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-Model2_Unripe_plot
-ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Unripe_Fruit.pdf", height=7, width=13)
-
-Model3_Unripe_plot <- ggplot(Cluster_AllOrtho_Unripe_DEGBySpecies$normalized, 
-                      aes(x=Stage, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score") +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  facet_rep_wrap(~cluster,
-                 nrow = 4) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF")) +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Species))
-Model3_Unripe_plot
-ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Unripe_Species.pdf", height=7, width=13)
-
-# 4 Species, Stage 1-3 GO Plots ----------------------------------------------
-# Make a list of the GO Tables
-Model1_UnripeTables <- list()
-for (i in levels(as.factor(Cluster_AllOrtho_Unripe_Noise$normalized$cluster))) {
-  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_Unripe_Noise$normalized$genes %in% Cluster_AllOrtho_Unripe_Noise$normalized$genes[Cluster_AllOrtho_Unripe_Noise$normalized$cluster==i]))
-  names(tmpList) <- Cluster_AllOrtho_Unripe_Noise$normalized$genes
-  Model1_UnripeTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                                GOIs=tmpList)
-}
-capture.output(Model1_UnripeTables, file="DEGAnalysis/RNA-seq/AllOrtho_Unripe_Noise_GOTables.txt")
-
-Model2_UnripeTables <- list()
-for (i in levels(as.factor(Cluster_AllOrtho_Unripe_DEGByFruit$normalized$cluster))) {
-  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_Unripe_DEGByFruit$normalized$genes %in% Cluster_AllOrtho_Unripe_DEGByFruit$normalized$genes[Cluster_AllOrtho_Unripe_DEGByFruit$normalized$cluster==i]))
-  names(tmpList) <- Cluster_AllOrtho_Unripe_DEGByFruit$normalized$genes
-  Model2_UnripeTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                                GOIs=tmpList)
-}
-capture.output(Model2_UnripeTables, file="DEGAnalysis/RNA-seq/AllOrtho_Unripe_DEGByFruit_GOTables.txt")
-
-Model3_UnripeTables <- list()
-for (i in levels(as.factor(Cluster_AllOrtho_Unripe_DEGBySpecies$normalized$cluster))) {
-  tmpList <- as.factor(as.numeric(Cluster_AllOrtho_Unripe_DEGBySpecies$normalized$genes %in% Cluster_AllOrtho_Unripe_DEGBySpecies$normalized$genes[Cluster_AllOrtho_Unripe_DEGByFruit$normalized$cluster==i]))
-  if (length(levels(tmpList))==1) {
-    next
-  }
-  names(tmpList) <- Cluster_AllOrtho_Unripe_DEGBySpecies$normalized$genes
-  Model3_UnripeTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                                GOIs=tmpList)
-}
-capture.output(Model3_UnripeTables, file="DEGAnalysis/RNA-seq/AllOrtho_Unripe_DEGBySpecies_GOTables.txt")
-
-# Needs update after cluster re-org ---------------------------------------
+# The seven genes in all models
+SevenTables <- GOEnrich(gene2go = "DEGAnalysis/Pfam/TAIR10.gene2go.tsv",
+                              GOIs="DEGAnalysis/RNA-seq/Lists/SevenOrthos.tsv")
 
 
-# Make Model 1 Cluster 1 and 2 plots
-M1 <- Cluster_AllOrtho_Noise$normalized
+# Assemble the Figure -----------------------------------------------------
 
-M1C1_Plot <- ggplot(subset(M1, cluster %in% 1),
-                    aes(x=Stage, y=value, fill=pal[2], col=pal[2])) +
-  labs(y="Z-score"
-       #,
-       #title="Cluster 1",
-       #subtitle = "(n=580)"
-       ) +
-  scale_fill_manual(values=pal[2]) +
-  scale_color_manual(values=pal[2]) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none") +
-  geom_violin(alpha=0.5) +
-  stat_summary(fun=mean, geom="line", color=pal[1], aes(group=1))
-
-M1C2_Plot <- ggplot(subset(M1, cluster %in% 2),
-       aes(x=Stage, y=value, fill=pal[2], col=pal[2])) +
-  labs(y="Z-score"
-       #,
-       #title="Cluster 2",
-       #subtitle = "(n=199)"
-       ) +
-  scale_fill_manual(values=pal[2]) +
-  scale_color_manual(values=pal[2]) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none") +
-  geom_violin(alpha=0.5) +
-  stat_summary(fun=mean, geom="line", color=pal[1], aes(group=1))
-  
-# Make Model 2 Cluster 2, 14, and 19
-M2 <- Cluster_AllOrtho_DEGByFruit$normalized
-M2All_plot <- ggplot(M2, aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score") +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  facet_wrap(~cluster,
-             labeller=label_both,
-             nrow = 3) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none",
-        strip.background = element_rect(fill="#FFFFFF")) +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-
-
-M2C1_Plot <- ggplot(subset(M2, cluster %in% 1),
-                    aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score"
-       #,
-       #title="Cluster 1",
-       #subtitle="(n=777)"
-  ) +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none") +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-
-M2C2_Plot <- ggplot(subset(M2, cluster %in% 2),
-               aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score"
-       #,
-       #title="Cluster 2",
-       #subtitle="(n=268)"
-       ) +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none") +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-
-M2C5_Plot <- ggplot(subset(M2, cluster %in% 5),
-                    aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score",
-       title="Cluster 5",
-       subtitle="(n=292)"
-  ) +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none") +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-
-M2C6_Plot <- ggplot(subset(M2, cluster %in% 6),
-                    aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score",
-       title="Cluster 6",
-       subtitle="(n=64)"
-  ) +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none") +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-
-
-M2C14_Plot <- ggplot(subset(M2, cluster %in% 14),
-                aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score"
-       ,
-       title="Cluster 14",
-       subtitle="(n=18)"
-       ) +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none") +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-
-M2C18_Plot <- ggplot(subset(M2, cluster %in% 18),
-                    aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score",
-       title="Cluster 18",
-       subtitle="(n=19)"
-  ) +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5)) +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-  
-M2C19_Plot <- ggplot(subset(M2, cluster %in% 19),
-                aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-  labs(y="Z-score"
-       ,
-       title="Cluster 19",
-       subtitle="(n=24)"
-       ) +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        legend.position = "none") +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-
-M2_Legend <- get_legend(ggplot(subset(M2, cluster %in% 19),
-                               aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
-                          scale_fill_manual(values=pal) +
-                          scale_color_manual(values=pal) +
-                          geom_violin(position=position_dodge(width=0), alpha=0.5)+
-                          theme(legend.position = "bottom",
-                             legend.justification="center",
-                             legend.title = element_blank()))
-
-
-# GO Plots ----------------------------------------------------------------
-# grab the functions to make these plots below in the final section
-
-# M1 Overall Table
-M1GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                   GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise_AllGenes.txt"),
-               Title = "Overall GO Enrichment") +
-  theme(legend.position = "none")
-M2GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                   GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit_AllGenes.txt"),
-               Title = "Overall GO Enrichment") +
-  theme(legend.position = "none")
-M3GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                   GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies_AllGenes.txt"),
-               Title = "Overall GO Enrichment")
-M1C1GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                      GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise_Cluster_1.txt")) +
-  theme(legend.position = "none")
-M1C2GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                      GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise_Cluster_2.txt")) +
-  theme(legend.position = "none")
-M2C1GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                          GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit_Cluster_1.txt")) +
-  theme(legend.position = "none")
-M2C2GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                      GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit_Cluster_2.txt")) +
-  theme(legend.position = "none")
-M2C14GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                      GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit_Cluster_14.txt")) +
-  theme(legend.position = "none")
-M2C19GO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
-                       GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit_Cluster_19.txt")) +
-  theme(legend.position = "none")
-
+#Make Titles
 Model1_Title <- ggdraw() + 
   draw_label("Model 1",
              fontface = 'bold',
@@ -463,100 +257,83 @@ Model3_Title <- ggdraw() +
              hjust = 0.5,
              size=18) +
   theme(plot.margin = margin(0, 0, 0, 7))
-
-Cluster1_Title <- ggdraw() + 
-  draw_label("Cluster 1",             
+Overlap_Title <- ggdraw() + 
+  draw_label("All Models",
              fontface = 'bold',
              hjust = 0.5,
-             size=14) +
+             size=18) +
   theme(plot.margin = margin(0, 0, 0, 7))
-Cluster2_Title <- ggdraw() + 
-  draw_label("Cluster 2",             
+GOLeg_Title <- ggdraw() + 
+  draw_label("Number of ",
              fontface = 'bold',
              hjust = 0.5,
-             size=14) +
+             size=18) +
   theme(plot.margin = margin(0, 0, 0, 7))
-Cluster14_Title <- ggdraw() + 
-  draw_label("Cluster 14",             
-             fontface = 'bold',
-             hjust = 0.5,
-             size=14) +
-  theme(plot.margin = margin(0, 0, 0, 7))
-Cluster19_Title <- ggdraw() + 
-  draw_label("Cluster 19",             
-             fontface = 'bold',
-             hjust = 0.5,
-             size=14) +
-  theme(plot.margin = margin(0, 0, 0, 7))
-
-
-
-# Assemble Figure 2 ---------------------------------------------------
-
-# By row
-TopRow <- plot_grid(Model1_Title,
-                    Model2_Title,
-                    M1GO,
-                    M2GO,
-                    Cluster1_Title,
-                    Cluster1_Title,
-                    nrow = 3,
-                    labels=c("","","A","G","",""),
-                    rel_heights = c(0.1,1,.07),
-                    align="h")
-
-MiddleRow1 <- plot_grid(M1C1_Plot,
-                        M1C1GO,
-                        M2C1_Plot,
-                        M2C1GO,
-                        nrow=1,
-                        rel_widths = c(2,3,2,3),
-                        labels=c("B","C","H","I"))
-MiddleTitle <- plot_grid(Cluster2_Title,
-                         Cluster14_Title,
-                         nrow=1)
-MiddleRow2 <- plot_grid(M1C2_Plot,
-                        M1C2GO,
-                        M2C14_Plot,
-                        M2C14GO,
-                        nrow=1,
-                        rel_widths = c(2,3,2,3),
-                        labels=c("D","E","J","K"))
-BottomTitle <- plot_grid(Model3_Title,
-                         Cluster19_Title,
-                         nrow=1)
-BottomPlots <- plot_grid(M3GO,
-                         M2C19_Plot,
-                         M2C19GO,
-                         nrow=1,
-                         rel_widths = c(5,2,3),
-                         labels=c("F","L","M"))
-BottomRow <- plot_grid(BottomTitle,
-                       BottomPlots,
-                       nrow=2,
-                       rel_heights = c(0.1,1))
-FinalPlot <- plot_grid(TopRow,
-                       MiddleRow1,
-                       MiddleTitle,
-                       MiddleRow2,
-                       BottomRow,
-                       nrow=5,
-                       rel_heights = c(1,1,0.1,1,1))
-
-ggsave2("Figures/Figure2.pdf", width=20, height=20)
-
-
-# Assembly Figure S1 ------------------------------------------------------
-
-Figure_S1 <- plot_grid(M2C5_Plot,
-                       M2C6_Plot,
-                       M2C18_Plot,
+#Model 1 Panel
+Panel_M1 <- plot_grid(Model1_Title,
+                      Model1_AllPlot,
+                      Model1_plot,
+                      nrow = 3,
+                      labels=c("","A", "B"),
+                      rel_heights = c(0.1,.4,1),
+                      axis="r",
+                      align="h")
+Panel_M2R1 <- plot_grid(Model2_AllPlot,
+                      M2C4_Plot,
+                      M2C12_Plot,
+                      M2C18_Plot,
+                      nrow = 1,
+                      labels=c("C","E", "F", "G"),
+                      axis="r",
+                      align="h")
+Panel_M2 <- plot_grid(Model2_Title,
+                      Panel_M2R1,
+                      Model2_plot,
+                      nrow = 3,
+                      labels=c("","", "D"),
+                      rel_heights = c(0.1,1,2),
+                      axis="r",
+                      align="h")
+Panel_Top <- plot_grid(Panel_M1,
+                       Panel_M2,
                        nrow=1,
-                       labels=c("A","B","C"))
-ggsave2("Figures/FigureS1.pdf", width=20, height=6)
-
-
-
+                       rel_widths = c(1,2))
+Panel_M3_1 <- plot_grid(Model3_AllPlot,
+                      Model3_BrokenPlot_1,
+                      ncol=2,
+                      rel_widths = c(3.9,3),
+                      labels=c("H", "I"))
+Panel_M3_2 <- plot_grid(Model3_Title,
+                        Panel_M3_1,
+                        Model3_BrokenPlot_2,
+                        nrow=3,
+                        rel_heights = c(0.1,1,1))
+Panel_Legend <- plot_grid(Model3Legend,
+                          align="h",
+                          axis="l")
+Panel_Upset1 <- plot_grid(Panel_Legend,
+                         OverlapUpset$Main_bar, 
+                         OverlapUpset$Sizes, 
+                         OverlapUpset$Matrix,
+                         labels=c("","J","", ""),
+                         nrow=2, 
+                         align='v', 
+                         axis="t",
+                         rel_heights = c(3,1),
+                         rel_widths = c(2,3))
+Panel_Upset2 <- plot_grid(Overlap_Title,
+                         Panel_Upset1,
+                         nrow=2,
+                         rel_heights = c(0.1,1))
+Panel_Bottom <- plot_grid(Panel_M3_2,
+                          Panel_Upset2,
+                          ncol = 2,
+                          rel_widths = c(2,1))
+FullFigure <- plot_grid(Panel_Top,
+                        Panel_Bottom,
+                        nrow = 2)
+FullFigure
+ggsave2(file="Figures/Preripe.pdf",plot=FullFigure, width=32, height=22)
 
   
   
