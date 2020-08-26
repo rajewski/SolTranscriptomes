@@ -183,7 +183,7 @@ capture.output(Model1Tables, file="DEGAnalysis/RNA-seq/AllOrtho_Noise_GOTables.t
 Model1_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
          GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise.txt")
 capture.output(Model1_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_Noise_AllGOTable.txt")
-Model1_AllPlot <- GOPlot(Model1_AllTable, Title="Overall GO") +
+Model1_AllPlot <- GOPlot(Model1_AllTable, Title="Overall GO", LegendLimit = 36) +
   theme(legend.position = "none")
 
 Model2Tables <- list()
@@ -193,22 +193,21 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
   Model2Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                                 GOIs=tmpList)
 }
-
 capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_GOTables.txt")
-M2C4_Plot <- GOPlot(Model2Tables[['4']], Title = "Cluster 4 GO") +
+
+M2C4_Plot <- GOPlot(Model2Tables[['4']], Title = "Cluster 4 GO", LegendLimit = 36) +
   theme(legend.position = "none")
-M2C12_Plot <- GOPlot(Model2Tables[['12']], Title = "Cluster 11 GO") +
+M2C12_Plot <- GOPlot(Model2Tables[['12']], Title = "Cluster 11 GO", LegendLimit = 36) +
   theme(legend.position = "none")
-M2C18_Plot <- GOPlot(Model2Tables[['18']], Title = "Cluster 16 GO") +
+M2C18_Plot <- GOPlot(Model2Tables[['18']], Title = "Cluster 16 GO", LegendLimit = 36) +
   theme(legend.position = "none")
 
 # All the genes as a cohort
 Model2_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                             GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGByFruit.txt")
-Model2_AllPlot <- GOPlot(Model2_AllTable, Title="Overall GO") +
+Model2_AllPlot <- GOPlot(Model2_AllTable, Title="Overall GO", LegendLimit = 36) +
   theme(legend.position="none")
 capture.output(Model2_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_AllGOTable.txt")
-
 
 Model3Tables <- list()
 for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
@@ -225,7 +224,7 @@ capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_GOT
 Model3_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                             GOIs="DEGAnalysis/RNA-seq/Lists/AllOrtho_DEGBySpecies.txt",
                             NumCategories = 50)
-Model3_AllPlot <- GOPlot(Model3_AllTable, Title="Overall GO") +
+Model3_AllPlot <- GOPlot(Model3_AllTable, Title="Overall GO", LegendLimit = 36) +
   theme(legend.position=c(0.86,0.3))
 GO_Legend <- get_legend(Model3_AllPlot + theme(legend.position=c(0,0)))
 capture.output(Model3_AllTable, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_AllGOTable.txt")

@@ -249,7 +249,8 @@ GOEnrich <- function(gene2go="",
 
 # Make a Plot of these GO Enrichments -------------------------------------
 GOPlot <- function(GoGraph=X,
-                   Title="") 
+                   Title="",
+                   LegendLimit=max(GoGraph$Significant)) 
 {
   require(ggplot2)
   GoPlot <- ggplot(GoGraph, aes(x=Term, y=-log10(Fisher), fill=Significant)) +
@@ -257,8 +258,8 @@ GOPlot <- function(GoGraph=X,
     xlab(element_blank()) +
     ylab("Log Fold Enrichment") +
     scale_fill_gradientn(colours = wes_palette("Royal1", 2, type="discrete"),
-                         limits=c(1,36),
-                         breaks=c(1,35)) +
+                         limits=c(1,LegendLimit),
+                         breaks=c(1,LegendLimit)) +
     ggtitle(Title) +
     scale_y_continuous(breaks=round(seq(0, max(-log10(GoGraph$Fisher),3)), 1)) +
     #theme_bw(base_size=12) +
