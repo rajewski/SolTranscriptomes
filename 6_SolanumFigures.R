@@ -11,10 +11,12 @@ library("scales")
 library("lemon")
 source("X_Functions.R")
 
-#Need the plotting functions from the other figure script 6_Figures
+# Read in the datasets ----------------------------------------------------
 Cluster_Solanum <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF.rds")
 Cluster_Solanum_Noise <-readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
 
+
+# Cluster Profile Plots ---------------------------------------------------
 # Plot all clusters for the pimp vs AC model
 SA_Labs <- paste("Cluster", 1:length(unique(Cluster_Solanum$normalized$cluster)))
 names(SA_Labs) <- sort(unique(Cluster_Solanum$normalized$cluster))
@@ -32,19 +34,15 @@ SolanumAll_plot <- ggplot(Cluster_Solanum$normalized, aes(x=DAP, y=value, col=Sp
         strip.background = element_rect(fill="#FFFFFF")) +
   geom_violin(position=position_dodge(width=0), alpha=0.5) +
   stat_summary(fun=mean, geom="line", aes(group=Species))
+SolanumAll_plot
 ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_Solanum_3DF.pdf", height=8, width=20)
-
-SolGO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                        GOIs="DEGAnalysis/RNA-seq/Lists/Solanum_3DF_AllGenes.txt"),
-               Title = "Overall GO Enrichment") +
-  theme(legend.position = "none")
 
 # Plot all clusters for the Tom v Noise model
 SN_Labs <- paste("Cluster", 1:length(unique(Cluster_Solanum_Noise$normalized$cluster)))
 names(SN_Labs) <- sort(unique(Cluster_Solanum_Noise$normalized$cluster))
 SolanumNoise_plot <- ggplot(Cluster_Solanum_Noise$normalized, 
                             aes(x=DAP, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score") +
+  labs(y="Z-score of Expression") +
   scale_fill_manual(values=palw[4]) +
   scale_color_manual(values=palw[4]) +
   facet_rep_wrap(~cluster,
@@ -57,23 +55,40 @@ SolanumNoise_plot <- ggplot(Cluster_Solanum_Noise$normalized,
         legend.position = "none") +
   geom_violin(position=position_dodge(width=0), alpha=0.5) +
   stat_summary(fun=mean, geom="line", aes(group=Species))
+SolanumNoise_plot
 ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_Solanum_3DF_Noise.pdf", height=8, width=20)
 
-SolNoiseGO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+# Make GO Plots and Lists -----------------------------------------------------------
+# Cohort of all genes in first model
+GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                         GOIs="DEGAnalysis/RNA-seq/Lists/Solanum_3DF_AllGenes.txt"),
+                Title = "Overall GO Enrichment")
+ggsave2("DEGAnalysis/RNA-seq/Plots/Solanum_3DF_AllGO.pdf", height=8, width=11 )
+# Cohort of all genes in second model
+GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
                          GOIs="DEGAnalysis/RNA-seq/Lists/Solanum_3DF_Noise_AllGenes.txt"),
-                Title = "Overall GO Enrichment") +
-  theme(legend.position = "none")
+                Title = "Overall GO Enrichment")
+ggsave2("DEGAnalysis/RNA-seq/Plots/Solanum_3DF_Noise_AllGO.pdf", height=8, width=11 )
+
+# Get table of GOs by cluster
+SolTables <- list()
+for (i in levels(as.factor(Cluster_Solanum$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_Solanum$normalized$genes %in% Cluster_Solanum$normalized$genes[Cluster_Solanum$normalized$cluster==i]))
+  names(tmpList) <- Cluster_Solanum$normalized$genes
+  SolTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",GOIs=tmpList)}
+names(SolTables) <- SA_Labs[names(SolTables)]
+capture.output(SolTables, file="DEGAnalysis/RNA-seq/Solanum_3DF_GOTables.txt")
 
 SolNoiseTables <- list()
 for (i in levels(as.factor(Cluster_Solanum_Noise$normalized$cluster))) {
   tmpList <- as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% Cluster_Solanum_Noise$normalized$genes[Cluster_Solanum_Noise$normalized$cluster==i]))
   names(tmpList) <- Cluster_Solanum_Noise$normalized$genes
   SolNoiseTables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                               GOIs=tmpList)
-}
+                               GOIs=tmpList)}
+names(SolNoiseTables) <- SN_Labs[names(SolNoiseTables)]
 capture.output(SolNoiseTables, file="DEGAnalysis/RNA-seq/Solanum_3DF_Noise_GOTables.txt")
 
-# Individual Genes --------------------------------------------------------
+# Plot Individual Genes --------------------------------------------------------
 # named vector of important genes
 impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc10g006880.3.1"="NOR",
@@ -136,7 +151,7 @@ Subset_Solanum_Noise$Abbr <- impt_genes[Subset_Solanum_Noise$genes]
 Subset_Solanum <- subset(Cluster_Solanum$normalized, genes %in% names(impt_genes))
 Subset_Solanum$Abbr <- impt_genes[Subset_Solanum$genes]
 
-# Plot of important genes with differential expression between the two species
+# Plot of differential expression between the two species
 Indiv_Plot_1 <- ggplot(Subset_Solanum,
                      aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
   labs(y="Z-score of Expression") +
@@ -150,7 +165,7 @@ Indiv_Plot_1 <- ggplot(Subset_Solanum,
         strip.text.x = element_text(face="italic")) +
   geom_line(position=position_dodge(width=0))
 
-# Plot of important genes with differentail expression in common among the solanum species
+# Plot of  differential expression in common 
 Indiv_Plot_2 <- ggplot(Subset_Solanum_Noise,
                        aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
   labs(y="Z-score of Expression") +

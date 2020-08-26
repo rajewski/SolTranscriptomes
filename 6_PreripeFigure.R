@@ -193,6 +193,7 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
   Model2Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                                 GOIs=tmpList)
 }
+names(Model2Tables) <- M2_Labs[names(Model2Tables)]
 capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_GOTables.txt")
 
 M2C4_Plot <- GOPlot(Model2Tables[['4']], Title = "Cluster 4 GO", LegendLimit = 36) +
@@ -219,6 +220,7 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGBySpecies$normalized$cluster))) {
   Model3Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
                                 GOIs=tmpList)
 }
+names(Model3Tables) <- M3_Labs[names(Model3Tables)]
 capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGBySpecies_GOTables.txt")
 # All the genes as a cohort
 Model3_AllTable <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.gene2go.tsv",
