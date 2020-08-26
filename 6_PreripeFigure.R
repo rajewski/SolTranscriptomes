@@ -87,6 +87,7 @@ Model3_plot <- ggplot(Cluster_AllOrtho_DEGBySpecies$normalized,
   geom_violin(position=position_dodge(width=0), alpha=0.5) +
   stat_summary(fun=mean, geom="line", aes(group=Species))
 Model3Legend <- get_legend(Model3_plot + theme(legend.position = c(0.5,0.8)))
+Model3Legend_Alone <- get_legend(Model3_plot +theme(legend.position=c(1.2,0.8)))
 Model3_plot
 ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_AllOrtho_Species.pdf", height=7, width=13)
 
@@ -263,12 +264,7 @@ Overlap_Title <- ggdraw() +
              hjust = 0.5,
              size=18) +
   theme(plot.margin = margin(0, 0, 0, 7))
-GOLeg_Title <- ggdraw() + 
-  draw_label("Number of ",
-             fontface = 'bold',
-             hjust = 0.5,
-             size=18) +
-  theme(plot.margin = margin(0, 0, 0, 7))
+
 #Model 1 Panel
 Panel_M1 <- plot_grid(Model1_Title,
                       Model1_AllPlot,
@@ -278,22 +274,32 @@ Panel_M1 <- plot_grid(Model1_Title,
                       rel_heights = c(0.1,.4,1),
                       axis="r",
                       align="h")
+# Save Panel A as its own figure
+#Panel_M1
+#ggsave2("Figures/Figure 2 Model 1.pdf", height=10, width=11)
+
 Panel_M2R1 <- plot_grid(Model2_AllPlot,
                       M2C4_Plot,
                       M2C12_Plot,
                       M2C18_Plot,
                       nrow = 1,
-                      labels=c("C","E", "F", "G"),
+                      labels=c("C","E", "F", "G"), #For Model 2 with others
+                      #labels=c("A","C","D","E"), # For Model 2 alone
                       axis="r",
                       align="h")
 Panel_M2 <- plot_grid(Model2_Title,
                       Panel_M2R1,
                       Model2_plot,
                       nrow = 3,
-                      labels=c("","", "D"),
+                      labels=c("","", "D"), #For Model 2 with others
+                      #labels=c("", "", "B"), # For Model 2 alone
                       rel_heights = c(0.1,1,2),
                       axis="r",
                       align="h")
+# Save Model 2 as its own figure
+Panel_M2
+ggsave2("Figures/Figure 2 Model 2.pdf", height=11, width=22)
+
 Panel_Top <- plot_grid(Panel_M1,
                        Panel_M2,
                        nrow=1,
@@ -302,12 +308,22 @@ Panel_M3_1 <- plot_grid(Model3_AllPlot,
                       Model3_BrokenPlot_1,
                       ncol=2,
                       rel_widths = c(3.9,3),
-                      labels=c("H", "I"))
+                      labels=c("A", "B")) # For Model 3 alone
+                      #labels=c("H", "I")) # For Model 3 with others
 Panel_M3_2 <- plot_grid(Model3_Title,
                         Panel_M3_1,
                         Model3_BrokenPlot_2,
                         nrow=3,
                         rel_heights = c(0.1,1,1))
+
+# Save Model 3 as its own figure
+# Panel_M3_Alone <- plot_grid(Panel_M3_2,
+#                             Model3Legend_Alone,
+#                             ncol=2,
+#                             rel_widths = c(11.6,1))
+# Panel_M3_Alone
+# ggsave2("Figures/Figure 2 Model 3.pdf", width=24, height=11)
+
 Panel_Legend <- plot_grid(Model3Legend,
                           align="h",
                           axis="l")
@@ -325,6 +341,22 @@ Panel_Upset2 <- plot_grid(Overlap_Title,
                          Panel_Upset1,
                          nrow=2,
                          rel_heights = c(0.1,1))
+# Save Upset Plot as its own Figure
+Panel_Upset1_Alone <- plot_grid(NULL,
+                                OverlapUpset$Main_bar, 
+                                OverlapUpset$Sizes, 
+                                OverlapUpset$Matrix,
+                                nrow=2, 
+                                align='v', 
+                                axis="t",
+                                rel_heights = c(3,1),
+                                rel_widths = c(2,3))
+Panel_Upset2_Alone <- plot_grid(Overlap_Title,
+                                Panel_Upset1_Alone,
+                                nrow=2,
+                                rel_heights = c(0.1,1))
+Panel_Upset2_Alone
+ggsave2("Figures/Figure 2 All Models.pdf", height=11, width=10)
 Panel_Bottom <- plot_grid(Panel_M3_2,
                           Panel_Upset2,
                           ncol = 2,
