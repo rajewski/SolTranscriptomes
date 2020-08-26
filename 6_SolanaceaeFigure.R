@@ -4,8 +4,6 @@ library("ggplot2")
 library("cowplot")
 theme_set(theme_cowplot())
 library("topGO")
-library("wesanderson")
-library("viridis")
 library("tidyr")
 library("dplyr")
 library("Rgraphviz")
@@ -21,14 +19,11 @@ Cluster_SolOrtho_Unripe_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_SolOrtho_U
 Cluster_SolOrtho_Unripe_DEGByFruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_SolOrtho_Unripe_DEGByFruit.rds")
 Cluster_SolOrtho_Unripe_DEGBySpecies <- readRDS("DEGAnalysis/RNA-seq/Cluster_SolOrtho_Unripe_DEGBySpecies.rds")
 
-
-pal <- viridis(3, option="D")
-
 Model1_plot <- ggplot(Cluster_SolOrtho_Noise$normalized, 
                             aes(x=Stage, y=value, col=Species, fill=Species)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=pal[2]) +
-  scale_color_manual(values=pal[2]) +
+  scale_fill_manual(values="#9B9B9B") +
+  scale_color_manual(values="#000000") +
   facet_rep_wrap(~cluster,
                  nrow = 2) +
   theme(plot.title = element_text(hjust = 0.5),
@@ -44,8 +39,8 @@ ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_SolOrtho_Noise.pdf", height=7
 Model2_plot <- ggplot(Cluster_SolOrtho_DEGByFruit$normalized, 
                      aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=pal[1:2]) +
-  scale_color_manual(values=pal[1:2]) +
+  scale_fill_manual(values=palw[3:4]) +
+  scale_color_manual(values=palw[3:4]) +
   facet_rep_wrap(~cluster,
                  nrow = 4) +
   theme(plot.title = element_text(hjust = 0.5),
@@ -59,8 +54,8 @@ ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_SolOrtho_Fruit.pdf", height=7
 Model3_plot <- ggplot(Cluster_SolOrtho_DEGBySpecies$normalized, 
                      aes(x=Stage, y=value, col=Species, fill=Species)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
+  scale_fill_manual(values=palw[c(1,3,4)]) +
+  scale_color_manual(values=palw[c(1,3,4)]) +
   facet_rep_wrap(~cluster,
                  nrow = 4) +
   theme(plot.title = element_text(hjust = 0.5),
@@ -74,8 +69,8 @@ ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_SolOrtho_Species.pdf", height
 Model1_Unripe_plot <- ggplot(Cluster_SolOrtho_Unripe_Noise$normalized, 
                       aes(x=Stage, y=value, col=Species, fill=Species)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=pal[2]) +
-  scale_color_manual(values=pal[2]) +
+  scale_fill_manual(values="#9B9B9B") +
+  scale_color_manual(values="#000000") +
   facet_rep_wrap(~cluster,
                  nrow = 2) +
   theme(plot.title = element_text(hjust = 0.5),
@@ -90,8 +85,8 @@ ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_SolOrtho_Unripe_Noise.pdf", h
 Model2_Unripe_plot <- ggplot(Cluster_SolOrtho_Unripe_DEGByFruit$normalized, 
                       aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=pal[1:2]) +
-  scale_color_manual(values=pal[1:2]) +
+  scale_fill_manual(values=palw[3:4]) +
+  scale_color_manual(values=palw[3:4]) +
   facet_rep_wrap(~cluster,
                  nrow = 4) +
   theme(plot.title = element_text(hjust = 0.5),
@@ -105,8 +100,8 @@ ggsave2("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_SolOrtho_Unripe_Fruit.pdf", h
 Model3_Unripe_plot <- ggplot(Cluster_SolOrtho_Unripe_DEGBySpecies$normalized, 
                       aes(x=Stage, y=value, col=Species, fill=Species)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=pal) +
-  scale_color_manual(values=pal) +
+  scale_fill_manual(values=palw[c(1,3,4)]) +
+  scale_color_manual(values=palw[c(1,3,4)]) +
   facet_rep_wrap(~cluster,
                  nrow = 4) +
   theme(plot.title = element_text(hjust = 0.5),
@@ -183,7 +178,7 @@ for (i in levels(as.factor(Cluster_SolOrtho_Unripe_DEGBySpecies$normalized$clust
 capture.output(Model3_UnripeTables, file="DEGAnalysis/RNA-seq/SolOrtho_Unripe_DEGBySpecies_GOTables.txt")
 
 # Needs update after cluster re-org ---------------------------------------
-
+#especially update the color palette as needed
 
 # Make Model 1 Cluster 1 and 2 plots
 M1 <- Cluster_AllOrtho_Noise$normalized

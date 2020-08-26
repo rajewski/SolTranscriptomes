@@ -5,8 +5,6 @@ library("ggplotify")
 library("cowplot")
 theme_set(theme_cowplot())
 library("topGO")
-library("wesanderson")
-library("viridis")
 library("tidyr")
 library("dplyr")
 library("Rgraphviz")
@@ -16,8 +14,6 @@ library("UpSetR")
 source("X_Functions.R")
 
 # Read in Data and set global stuff ---------------------------------------
-pal <- viridis(4, option="D") #Purple, Blue, Teal, Yellow
-palw <- wes_palette("Zissou1",4,"continuous") #Blue, green, yellow, red
 
 Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
 #write.table(unique(Cluster_AllOrtho_Noise$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise.txt")
@@ -142,6 +138,7 @@ M3Aggr <- aggregate(Cluster_AllOrtho_DEGBySpecies$normalized,
 M3Aggr <- M3Aggr %>% spread(Group.3, value)
 M3Aggr$Range <- apply(M3Aggr[,3:6], 1, FUN=max) - apply(M3Aggr[,3:6], 1, FUN=min)
 M3Flx <- M3Aggr[M3Aggr$Range>=1,]
+M3_Labs[names(M3_Labs) %in% M3Flx$Group.2[M3Flx$Group.1=="Tobacco"]]
 
 # Orthogene Overlap among Models ------------------------------------------
 M1orthos <- list(as.data.frame(unique(Cluster_AllOrtho_Noise$normalized$genes)))
@@ -356,7 +353,7 @@ Panel_Upset2_Alone <- plot_grid(Overlap_Title,
                                 nrow=2,
                                 rel_heights = c(0.1,1))
 Panel_Upset2_Alone
-ggsave2("Figures/Figure 2 All Models.pdf", height=11, width=10)
+ggsave2("Figures/Figure 2 All Models.pdf", height=6, width=10)
 Panel_Bottom <- plot_grid(Panel_M3_2,
                           Panel_Upset2,
                           ncol = 2,

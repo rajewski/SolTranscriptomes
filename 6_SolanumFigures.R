@@ -4,7 +4,6 @@ library("ggplot2")
 library("cowplot")
 theme_set(theme_cowplot())
 library("topGO")
-library("wesanderson")
 library("tidyr")
 library("dplyr")
 library("Rgraphviz")
@@ -15,13 +14,12 @@ source("X_Functions.R")
 #Need the plotting functions from the other figure script 6_Figures
 Cluster_Solanum <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF.rds")
 Cluster_Solanum_Noise <-readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
-palsol <- wes_palette("Zissou1", 2, type="continuous")
 
 # Plot all clusters for the pimp vs AC model
 SolanumAll_plot <- ggplot(Cluster_Solanum$normalized, aes(x=DAP, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score") +
-  scale_fill_manual(values=palsol) +
-  scale_color_manual(values=palsol) +
+  labs(y="Z-score of Expression") +
+  scale_fill_manual(values=palw[c(1,4)]) +
+  scale_color_manual(values=palw[c(1,4)]) +
   facet_rep_wrap(~cluster,
              labeller=label_both,
              nrow = 3) +
@@ -41,8 +39,8 @@ SolGO <- GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
 SolanumNoise_plot <- ggplot(Cluster_Solanum_Noise$normalized, 
                             aes(x=DAP, y=value, col=Species, fill=Species)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=palsol[2]) +
-  scale_color_manual(values=palsol[2]) +
+  scale_fill_manual(values=palw[4]) +
+  scale_color_manual(values=pal[4]) +
   facet_rep_wrap(~cluster,
                  nrow = 4) +
   theme(plot.title = element_text(hjust = 0.5),
@@ -84,8 +82,8 @@ Subset_Solanum$Abbr <- impt_genes[Subset_Solanum$genes]
 Indiv_Plot_1 <- ggplot(Subset_Solanum,
                      aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=palsol) +
-  scale_color_manual(values=palsol) +
+  scale_fill_manual(values=palw[4]) +
+  scale_color_manual(values=palw[4]) +
   facet_wrap(~Abbr) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
@@ -97,8 +95,8 @@ Indiv_Plot_1 <- ggplot(Subset_Solanum,
 Indiv_Plot_2 <- ggplot(Subset_Solanum_Noise,
                        aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
   labs(y="Z-score") +
-  scale_fill_manual(values=palsol[2]) +
-  scale_color_manual(values=palsol[2]) +
+  scale_fill_manual(values=palw[4]) +
+  scale_color_manual(values=palw[4]) +
   facet_rep_wrap(~Abbr,
              nrow=4,
              ) +
