@@ -196,11 +196,11 @@ for (i in levels(as.factor(Cluster_AllOrtho_DEGByFruit$normalized$cluster))) {
 names(Model2Tables) <- M2_Labs[names(Model2Tables)]
 capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/AllOrtho_DEGByFruit_GOTables.txt")
 
-M2C4_Plot <- GOPlot(Model2Tables[['4']], Title = "Cluster 4 GO", LegendLimit = 36) +
+M2C4_Plot <- GOPlot(Model2Tables[['Cluster 4']], Title = "Cluster 4 GO", LegendLimit = 36) +
   theme(legend.position = "none")
-M2C12_Plot <- GOPlot(Model2Tables[['12']], Title = "Cluster 11 GO", LegendLimit = 36) +
+M2C12_Plot <- GOPlot(Model2Tables[['Cluster 11']], Title = "Cluster 11 GO", LegendLimit = 36) +
   theme(legend.position = "none")
-M2C18_Plot <- GOPlot(Model2Tables[['18']], Title = "Cluster 16 GO", LegendLimit = 36) +
+M2C18_Plot <- GOPlot(Model2Tables[['Cluster 16']], Title = "Cluster 16 GO", LegendLimit = 36) +
   theme(legend.position = "none")
 
 # All the genes as a cohort
