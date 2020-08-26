@@ -1,6 +1,7 @@
 # Orthogroup Venn Diagram -------------------------------------------------
 library("VennDiagram")
-library("wesanderson")
+source("X_Functions.R")
+
 Orthos <- read.table("Orthofinder/OrthoFinder/Results_May17/Orthogroups/Orthogroups.tsv",
                      sep="\t",
                      stringsAsFactors = F,
@@ -13,7 +14,7 @@ Set3 <- Orthos[,c(1,4)] %>% filter_all(all_vars(!grepl("^$",.)))
 venn.diagram(
   x = list(Set1[,1], Set2[,1], Set3[,1]),
   category.names = c("Arabidopsis", "Nicotiana", "Solanum"),
-  filename = "Figures/AllyOrthogroups.png",
+  filename = "Figures/AllOrthogroups.png",
   imagetype = "png",
   main="Orthogenes",
   main.fontfamily = "sans",
@@ -26,7 +27,7 @@ venn.diagram(
   output=F,
   lwd=2,
   lty=1,
-  fill=wes_palette("Zissou1", 3, "continuous"))
+  fill=palw[2:4])
 
 # All Species, single copy
 SingleOrthos <- Orthos %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
@@ -49,7 +50,7 @@ venn.diagram(
   output=F,
   lwd=2,
   lty=1,
-  fill=wes_palette("Zissou1", 3, "continuous"))
+  fill=palw[2:4])
 
 # Dry Species Only
 DryOrthos <- SingleOrthos[,1:3] #For just Dry Species
@@ -75,6 +76,6 @@ venn.diagram(
   output=F,
   lwd=2,
   lty=1,
-  fill=wes_palette("Zissou1", 3, "continuous")[1:2])
+  fill=palw[2:3])
 
 

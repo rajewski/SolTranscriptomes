@@ -373,4 +373,14 @@ PfamEnrichment <- function(AllGenesFile = "",
 }
 
 
+# Common Color Palette  ---------------------------------------------------
+library("wesanderson")
+palw <- wes_palette("Zissou1",4,"continuous") 
+#Blue=Pimpinellifolium
+#Green=Arabidopsis
+#Yellow=Obtusifolia or dry
+#Red=Lycopersicum or fleshy
+
+
+
 
