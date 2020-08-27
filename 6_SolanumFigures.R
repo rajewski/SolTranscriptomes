@@ -22,13 +22,14 @@ SA_Labs <- paste("Cluster", 1:length(unique(Cluster_Solanum$normalized$cluster))
 names(SA_Labs) <- sort(unique(Cluster_Solanum$normalized$cluster))
 
 SolanumAll_plot <- ggplot(Cluster_Solanum$normalized, aes(x=DAP, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score of Expression") +
+  labs(y="Z-score of Expression",
+       x="Stage") +
   scale_fill_manual(values=palw[c(1,4)]) +
   scale_color_manual(values=palw[c(1,4)]) +
   facet_rep_wrap(~cluster,
              labeller=labeller(cluster=SA_Labs),
              nrow = 3) +
-  scale_x_discrete(labels=c("1" = "1", "3" = "3", "15" = "15", "35" = "Br", "45"="RR")) +
+  scale_x_discrete(labels=c("1" = "1", "3" = "2", "15" = "3", "35" = "Br", "45"="RR")) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF")) +
@@ -42,13 +43,14 @@ SN_Labs <- paste("Cluster", 1:length(unique(Cluster_Solanum_Noise$normalized$clu
 names(SN_Labs) <- sort(unique(Cluster_Solanum_Noise$normalized$cluster))
 SolanumNoise_plot <- ggplot(Cluster_Solanum_Noise$normalized, 
                             aes(x=DAP, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score of Expression") +
+  labs(y="Z-score of Expression",
+       x="Stage") +
   scale_fill_manual(values=palw[4]) +
   scale_color_manual(values=palw[4]) +
   facet_rep_wrap(~cluster,
                  nrow = 4,
                  labeller=labeller(cluster=SN_Labs)) +
-  scale_x_discrete(labels=c("1" = "1", "3" = "3", "15" = "15", "35" = "Br", "45"="RR")) +
+  scale_x_discrete(labels=c("1" = "1", "3" = "2", "15" = "3", "35" = "Br", "45"="RR")) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF"),
@@ -63,12 +65,12 @@ ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_Solanum_3DF_Noise.pdf", height
 GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
                          GOIs="DEGAnalysis/RNA-seq/Lists/Solanum_3DF_AllGenes.txt"),
                 Title = "Overall GO Enrichment")
-ggsave2("DEGAnalysis/RNA-seq/Plots/Solanum_3DF_AllGO.pdf", height=8, width=11 )
+ggsave2("DEGAnalysis/Pfam/Plots/Solanum_3DF_GO.pdf", height=8, width=15 )
 # Cohort of all genes in second model
 GOPlot(GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
                          GOIs="DEGAnalysis/RNA-seq/Lists/Solanum_3DF_Noise_AllGenes.txt"),
                 Title = "Overall GO Enrichment")
-ggsave2("DEGAnalysis/RNA-seq/Plots/Solanum_3DF_Noise_AllGO.pdf", height=8, width=11 )
+ggsave2("DEGAnalysis/Pfam/Plots/Solanum_3DF_Noise_NoiseGO.pdf", height=8, width=15 )
 
 # Get table of GOs by cluster
 SolTables <- list()
@@ -87,6 +89,13 @@ for (i in levels(as.factor(Cluster_Solanum_Noise$normalized$cluster))) {
                                GOIs=tmpList)}
 names(SolNoiseTables) <- SN_Labs[names(SolNoiseTables)]
 capture.output(SolNoiseTables, file="DEGAnalysis/RNA-seq/Solanum_3DF_Noise_GOTables.txt")
+
+GOPlot(SolNoiseTables[['Cluster 19']], Title = "Cluster 19 GO", LegendLimit = 18) +
+  theme(legend.position = "none")
+ggsave2("DEGAnalysis/Pfam/Plots/Solanum_3DF_Noise_Cluster19.pdf", width=6, height=3)
+GOPlot(SolNoiseTables[['Cluster 8']], Title = "Cluster 8 GO") 
+ggsave2("DEGAnalysis/Pfam/Plots/Solanum_3DF_Noise_Cluster8.pdf", width=12, height=6)
+
 
 # Plot Individual Genes --------------------------------------------------------
 # named vector of important genes
@@ -154,29 +163,34 @@ Subset_Solanum$Abbr <- impt_genes[Subset_Solanum$genes]
 # Plot of differential expression between the two species
 Indiv_Plot_1 <- ggplot(Subset_Solanum,
                      aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
-  labs(y="Z-score of Expression") +
+  labs(y="Z-score of Expression",
+       x="Stage") +
   scale_fill_manual(values=palw[c(1,4)]) +
   scale_color_manual(values=palw[c(1,4)]) +
-  facet_wrap(~Abbr) +
-  scale_x_discrete(labels=c("1" = "1", "3" = "3", "15" = "15", "35" = "Br", "45"="RR")) +
+  facet_rep_wrap(~Abbr) +
+  scale_x_discrete(labels=c("1" = "1", "3" = "2", "15" = "3", "35" = "Br", "45"="RR")) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF"),
         strip.text.x = element_text(face="italic")) +
   geom_line(position=position_dodge(width=0))
+Indiv_Plot_1
+ggsave2("DEGAnalysis/RNA-seq/Plots/SpecificGenes_Solanum_3DF.pdf", height=7, width=10)
 
 # Plot of  differential expression in common 
 Indiv_Plot_2 <- ggplot(Subset_Solanum_Noise,
                        aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
-  labs(y="Z-score of Expression") +
+  labs(y="Z-score of Expression",
+       x="Stage") +
   scale_fill_manual(values=palw[4]) +
   scale_color_manual(values=palw[4]) +
   facet_rep_wrap(~Abbr,
-                 nrow=4) +
-  scale_x_discrete(labels=c("1" = "1", "3" = "3", "15" = "15", "35" = "Br", "45"="RR")) +
+                 nrow=3) +
+  scale_x_discrete(labels=c("1" = "1", "3" = "2", "15" = "3", "35" = "Br", "45"="RR")) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
         legend.position = "none",
         strip.background = element_rect(fill="#FFFFFF"),
         strip.text.x = element_text(face="italic")) +
   geom_line(position=position_dodge(width=0))
+ggsave2("DEGAnalysis/RNA-seq/Plots/SpecificGenes_Solanum_3DF_Noise.pdf", height=10, width=25)
