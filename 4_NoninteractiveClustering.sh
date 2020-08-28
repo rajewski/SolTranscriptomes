@@ -13,7 +13,7 @@ if [ $SLURM_ARRAY_TASK_ID == 1 ]; then
 fi
 
 if [ $SLURM_ARRAY_TASK_ID == 2 ]; then
-    Rscript 4_NoninteractiveClustering.R SlycIH
+    Rscript 4_NoninteractiveClustering.R Slyc
 fi
 
 if [ $SLURM_ARRAY_TASK_ID == 3 ]; then
@@ -24,10 +24,4 @@ if [ $SLURM_ARRAY_TASK_ID == 4 ]; then
     Rscript 4_NoninteractiveClustering.R Nobt
 fi
 
-if [ $SLURM_ARRAY_TASK_ID == 5 ]; then
-    Rscript 4_NoninteractiveClustering.R SlycIH3Stage
-fi
 
-if [ $SLURM_ARRAY_TASK_ID == 6 ]; then
-    Rscript 4_NoninteractiveClustering.R TAIR3stage
-fi
