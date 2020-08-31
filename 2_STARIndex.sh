@@ -12,6 +12,7 @@ set -e
 TAIRDIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/TAIR10
 NobtDIR=/rhome/arajewski/shared/Nobtusifolia/Genome_Files
 SlycDIR=/rhome/arajewski/bigdata/Datura/Alkaloids/ExternalData/Slyc
+MelonDIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/C_melo
 
 module load STAR/2.5.3a
 #Make index Files for Arabidopsis
@@ -67,4 +68,20 @@ if [ ! -e $SlycDIR/SAindex ]; then
     echo Done.
 else
     echo STAR index for S. lycopersicum already present.
+fi
+
+#Make index Files for Melon 
+if [ ! -e $MelonDIR/SAindex ]; then
+    echo Making STAR index for Melon...
+    STAR \
+        --runThreadN $SLURM_CPUS_PER_TASK \
+        --runMode genomeGenerate \
+        --genomeDir $MelonDIR/ \
+        --genomeFastaFiles $MelonDIR/CM3.5.1_genome.fa \
+        --sjdbGTFfile $MelonDIR/CM3.5.1_gene.gff  \
+        --sjdbOverhang 100 \
+        --sjdbGTFtagExonParentTranscript Parent
+    echo Done.
+else
+    echo STAR index for Melon already present.
 fi
