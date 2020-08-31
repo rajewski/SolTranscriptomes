@@ -1,0 +1,253 @@
+
+OrthoFinder version 2.4.0 Copyright (C) 2014 David Emms
+
+2020-08-31 14:26:03 : Starting OrthoFinder
+30 thread(s) for highly parallel tasks (BLAST searches etc.)
+1 thread(s) for OrthoFinder algorithm
+
+Checking required programs are installed
+----------------------------------------
+Test can run "mcl -h" - ok
+Test can run "mafft /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory//_dependencies_check/SimpleTest.fa" - ok
+Test can run "iqtree" - ok
+
+WARNING: Files have been ignored as they don't appear to be FASTA files:
+1_Orthofinder.sh
+1_Orthofinder.sh~
+OrthoFinder expects FASTA files to have one of the following extensions: pep, faa, fa, fasta, fas
+
+Dividing up work for BLAST for parallel processing
+--------------------------------------------------
+2020-08-31 14:26:06 : Creating diamond database 1 of 4
+2020-08-31 14:26:07 : Creating diamond database 2 of 4
+2020-08-31 14:26:07 : Creating diamond database 3 of 4
+2020-08-31 14:26:07 : Creating diamond database 4 of 4
+
+Running diamond all-versus-all
+------------------------------
+Using 30 thread(s)
+2020-08-31 14:26:08 : This may take some time....
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies0 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species3.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast3_0.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies3 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species0.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast0_3.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies2 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species2.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast2_2.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies1 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species3.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast3_1.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies2 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species1.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast1_2.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies3 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species3.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast3_3.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies1 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species2.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast2_1.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies0 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species2.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast2_0.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies3 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species2.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast2_3.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies1 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species1.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast1_1.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies2 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species3.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast3_2.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies2 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species0.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast0_2.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies0 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species1.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast1_0.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies3 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species1.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast1_3.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies1 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species0.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast0_1.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+
+ERROR: external program called by OrthoFinder returned an error code: -4
+
+Command: diamond blastp -d /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/diamondDBSpecies0 -q /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Species0.fa -o /bigdata/littlab/arajewski/FULTranscriptomes/Orthofinder/OrthoFinder/Results_Aug31/WorkingDirectory/Blast0_0.txt --more-sensitive -p 1 --quiet -e 0.001 --compress 1
+
+stdout
+------
+b''
+stderr
+------
+b''
+2020-08-31 14:26:09 : Done all-versus-all sequence search
+
+Running OrthoFinder algorithm
+-----------------------------
+2020-08-31 14:26:09 : Initial processing of each species
+WARNING: Too few hits between species 0 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 3 to normalise the scores, these hits will be ignored
+2020-08-31 14:26:14 : Initial processing of species 0 complete
+WARNING: Too few hits between species 1 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 3 to normalise the scores, these hits will be ignored
+2020-08-31 14:26:18 : Initial processing of species 1 complete
+WARNING: Too few hits between species 2 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 3 to normalise the scores, these hits will be ignored
+2020-08-31 14:26:22 : Initial processing of species 2 complete
+WARNING: Too few hits between species 3 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 3 to normalise the scores, these hits will be ignored
+2020-08-31 14:26:28 : Initial processing of species 3 complete
+2020-08-31 14:26:31 : Connected putative homologues
+2020-08-31 14:26:35 : Written final scores for species 0 to graph file
+2020-08-31 14:26:39 : Written final scores for species 1 to graph file
+2020-08-31 14:26:43 : Written final scores for species 2 to graph file
+2020-08-31 14:26:48 : Written final scores for species 3 to graph file
+/opt/linux/centos/7.x/x86_64/pkgs/miniconda3/4.3.31/lib/python3.6/site-packages/numpy/core/fromnumeric.py:2920: RuntimeWarning: Mean of empty slice.
+  out=out, **kwargs)
+/opt/linux/centos/7.x/x86_64/pkgs/miniconda3/4.3.31/lib/python3.6/site-packages/numpy/core/_methods.py:85: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+2020-08-31 14:27:03 : Ran MCL
+
+Writing orthogroups to file
+---------------------------
+Traceback (most recent call last):
+  File "/opt/linux/centos/7.x/x86_64/pkgs/orthofinder/2.4.0/orthofinder", line 7, in <module>
+    main(args)
+  File "/bigdata/operations/pkgadmin/opt/linux/centos/7.x/x86_64/pkgs/orthofinder/2.4.0/scripts_of/__main__.py", line 1730, in main
+    DoOrthogroups(options, speciesInfoObj, seqsInfo)    
+  File "/bigdata/operations/pkgadmin/opt/linux/centos/7.x/x86_64/pkgs/orthofinder/2.4.0/scripts_of/__main__.py", line 1359, in DoOrthogroups
+    Stats(ogs, speciesNamesDict, speciesInfoObj.speciesToUse, files.FileHandler.iResultsVersion)
+  File "/bigdata/operations/pkgadmin/opt/linux/centos/7.x/x86_64/pkgs/orthofinder/2.4.0/scripts_of/__main__.py", line 741, in Stats
+    j, _ = next((i, x) for i, x in enumerate(L) if x > nAssigned/2)
+StopIteration

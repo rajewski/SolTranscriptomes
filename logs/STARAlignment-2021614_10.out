@@ -1,0 +1,6 @@
+Mapping SRR3199616
+Aug 31 16:07:15 ..... started STAR run
+Aug 31 16:07:15 ..... loading genome
+Aug 31 16:07:21 ..... started mapping
+Aug 31 16:08:02 ..... started sorting BAM
+/var/spool/slurmd/job2021614/slurm_script: line 89: 44772 Illegal instruction     STAR --runThreadN $SLURM_CPUS_PER_TASK --genomeDir $INDEXDIR/ --outFileNamePrefix $OUTDIR/$i. --outSAMtype BAM SortedByCoordinate --readFilesIn $INDIR/${i}_1_trimmed.fq.gz --readFilesCommand zcat

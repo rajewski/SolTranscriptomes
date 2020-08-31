@@ -1,0 +1,19 @@
+STAR index for Arabidopsis already present.
+STAR index for N. obtusifolia already present.
+STAR index for S. lycopersicum already present.
+Making STAR index for Melon...
+Aug 31 15:32:41 ..... started STAR run
+Aug 31 15:32:41 ... starting to generate Genome files
+Aug 31 15:32:47 ... starting to sort Suffix Array. This may take a long time...
+Aug 31 15:32:49 ... sorting Suffix Array chunks and saving them to disk...
+Aug 31 15:36:02 ... loading chunks from disk, packing SA...
+Aug 31 15:36:09 ... finished generating suffix array
+Aug 31 15:36:09 ... generating Suffix Array index
+Aug 31 15:37:09 ... completed Suffix Array index
+Aug 31 15:37:09 ..... processing annotations GTF
+Aug 31 15:37:12 ..... inserting junctions into the genome indices
+Aug 31 15:38:06 ... writing Genome to disk ...
+Aug 31 15:38:06 ... writing Suffix Array to disk ...
+Aug 31 15:38:09 ... writing SAindex to disk
+Aug 31 15:38:10 ..... finished successfully
+Done.

@@ -1,0 +1,14 @@
+/var/spool/slurmd/job2020746/slurm_script: line 246: [!: command not found
+C. melo genome already present.
+Downloading C. melo genome annotation...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 27 4543k   27 1242k    0     0   670k      0  0:00:06  0:00:01  0:00:05  670k 84 4543k   84 3843k    0     0  1347k      0  0:00:03  0:00:02  0:00:01 1347k100 4543k  100 4543k    0     0  1462k      0  0:00:03  0:00:03 --:--:-- 1462k
+Done downloading, now unzipping...
+Done.
+Downloading C. melo proteins...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  2 5073k    2  110k    0     0  83973      0  0:01:01  0:00:01  0:01:00 83910 35 5073k   35 1807k    0     0   776k      0  0:00:06  0:00:02  0:00:04  776k 75 5073k   75 3853k    0     0  1158k      0  0:00:04  0:00:03  0:00:01 1158k100 5073k  100 5073k    0     0  1296k      0  0:00:03  0:00:03 --:--:-- 1296k
+Done downlaoding, now unzipping...
+Done.

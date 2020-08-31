@@ -1,0 +1,105 @@
+Mapping PIMP1DPA1
+Aug 05 10:44:18 ..... started STAR run
+Aug 05 10:44:18 ..... loading genome
+Aug 05 10:44:27 ..... started mapping
+Aug 05 10:47:58 ..... started sorting BAM
+Aug 05 10:48:45 ..... finished successfully
+Done.
+Mapping PIMP1DPA2
+Aug 05 10:48:45 ..... started STAR run
+Aug 05 10:48:45 ..... loading genome
+Aug 05 10:48:52 ..... started mapping
+Aug 05 10:52:28 ..... started sorting BAM
+Aug 05 10:53:19 ..... finished successfully
+Done.
+Mapping PIMP1DPA3
+Aug 05 10:53:19 ..... started STAR run
+Aug 05 10:53:19 ..... loading genome
+Aug 05 10:53:49 ..... started mapping
+Aug 05 10:57:32 ..... started sorting BAM
+Aug 05 10:58:20 ..... finished successfully
+Done.
+Mapping PIMP3DPA1
+Aug 05 10:58:20 ..... started STAR run
+Aug 05 10:58:20 ..... loading genome
+Aug 05 10:58:47 ..... started mapping
+Aug 05 11:02:52 ..... started sorting BAM
+Aug 05 11:03:44 ..... finished successfully
+Done.
+Mapping PIMP3DPA2
+Aug 05 11:03:44 ..... started STAR run
+Aug 05 11:03:44 ..... loading genome
+Aug 05 11:04:06 ..... started mapping
+Aug 05 11:07:56 ..... started sorting BAM
+Aug 05 11:08:49 ..... finished successfully
+Done.
+Mapping PIMP3DPA3
+Aug 05 11:08:49 ..... started STAR run
+Aug 05 11:08:49 ..... loading genome
+Aug 05 11:09:23 ..... started mapping
+Aug 05 11:18:08 ..... started sorting BAM
+Aug 05 11:20:02 ..... finished successfully
+Done.
+Mapping PIMP15DPA1
+Aug 05 11:20:02 ..... started STAR run
+Aug 05 11:20:02 ..... loading genome
+Aug 05 11:20:40 ..... started mapping
+Aug 05 11:28:00 ..... started sorting BAM
+Aug 05 11:29:47 ..... finished successfully
+Done.
+Mapping PIMP15DPA2
+Aug 05 11:29:48 ..... started STAR run
+Aug 05 11:29:48 ..... loading genome
+Aug 05 11:30:28 ..... started mapping
+Aug 05 11:34:49 ..... started sorting BAM
+Aug 05 11:35:54 ..... finished successfully
+Done.
+Mapping PIMP15DPA3
+Aug 05 11:35:54 ..... started STAR run
+Aug 05 11:35:54 ..... loading genome
+Aug 05 11:36:29 ..... started mapping
+Aug 05 11:36:57 ..... started sorting BAM
+Aug 05 11:37:04 ..... finished successfully
+Done.
+Mapping PIMPbreaker1
+Aug 05 11:37:04 ..... started STAR run
+Aug 05 11:37:05 ..... loading genome
+Aug 05 11:37:36 ..... started mapping
+Aug 05 11:41:22 ..... started sorting BAM
+Aug 05 11:42:18 ..... finished successfully
+Done.
+Mapping PIMPbreaker2
+Aug 05 11:42:18 ..... started STAR run
+Aug 05 11:42:19 ..... loading genome
+Aug 05 11:42:47 ..... started mapping
+Aug 05 11:47:09 ..... started sorting BAM
+Aug 05 11:48:08 ..... finished successfully
+Done.
+Mapping PIMPbreaker3
+Aug 05 11:48:08 ..... started STAR run
+Aug 05 11:48:08 ..... loading genome
+Aug 05 11:48:18 ..... started mapping
+Aug 05 11:52:35 ..... started sorting BAM
+Aug 05 11:53:34 ..... finished successfully
+Done.
+Mapping PIMPrr1
+Aug 05 11:53:35 ..... started STAR run
+Aug 05 11:53:35 ..... loading genome
+Aug 05 11:53:44 ..... started mapping
+Aug 05 11:58:32 ..... started sorting BAM
+Aug 05 11:59:34 ..... finished successfully
+Done.
+Mapping PIMPrr2
+Aug 05 11:59:34 ..... started STAR run
+Aug 05 11:59:34 ..... loading genome
+Aug 05 11:59:43 ..... started mapping
+Aug 05 12:03:27 ..... started sorting BAM
+Aug 05 12:04:19 ..... finished successfully
+Done.
+Mapping PIMPrr3
+Aug 05 12:04:19 ..... started STAR run
+Aug 05 12:04:19 ..... loading genome
+Aug 05 12:04:38 ..... started mapping
+Aug 05 12:12:23 ..... started sorting BAM
+Aug 05 12:13:57 ..... finished successfully
+Done.
