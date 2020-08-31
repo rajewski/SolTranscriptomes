@@ -9,8 +9,8 @@
 #SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/STARAlignment-%A_%a.out
 set -e
 
-# This is meant to be run as an array job with IDs between 0 and 7 to specify the experiment to map
-Expt=(SlycIH SlycSRA Spimp Nobt TAIRRNA TAIRChIP Nobt Nobt_All_SE Slyc_SE Spimp_SE)
+# This is meant to be run as an array job with IDs between 0 and 10 to specify the experiment to map
+Expt=(SlycIH SlycSRA Spimp Nobt TAIRRNA TAIRChIP Nobt Nobt_All_SE Slyc_SE Spimp_SE Melon)
 OUTDIR=STAR/${Expt[$SLURM_ARRAY_TASK_ID]}
 mkdir -p $OUTDIR
 
@@ -74,6 +74,11 @@ case "$SLURM_ARRAY_TASK_ID" in
     SampleList=( PIMP1DPA1 PIMP1DPA2 PIMP1DPA3 PIMP3DPA1 PIMP3DPA2 PIMP3DPA3 PIMP15DPA1 PIMP15DPA2 PIMP15DPA3 PIMPbreaker1 PIMPbreaker2 PIMPbreaker3 PIMPrr1 PIMPrr2 PIMPrr3 )
     INDEXDIR=SlycDNA
     INDIR=SpimpRNA
+    ISPE=0
+    ;;
+SampleList=( SRR3199616 SRR3199617 SRR3199618 SRR3199656 SRR3199657 SRR3199622 SRR3199623 SRR3199624 SRR3199628 SRR3199629 SRR3199630 SRR3199635 )
+    INDEXDIR=ExternalData/C_melo
+    INDIR=ExternalData/RNAseq
     ISPE=0
     ;;
 esac
