@@ -119,3 +119,15 @@ ACbreaker3 Tomato WT Fleshy 35 3 0 1 STAR/Slyc_SE/ACbreaker3.Aligned.sortedByCoo
 ACrr1 Tomato WT Fleshy 45 1 0 1 STAR/Slyc_SE/ACrr1.Aligned.sortedByCoord.out.bam
 ACrr2 Tomato WT Fleshy 45 2 0 1 STAR/Slyc_SE/ACrr2.Aligned.sortedByCoord.out.bam
 ACrr3 Tomato WT Fleshy 45 3 0 1 STAR/Slyc_SE/ACrr3.Aligned.sortedByCoord.out.bam
+SRR3199616	Melon	WT	Fleshy	10	1	0	0	STAR/Melon/SRR3199616.Aligned.sortedByCoord.out.bam
+SRR3199617	Melon	WT	Fleshy	10	2	0	0	STAR/Melon/SRR3199617.Aligned.sortedByCoord.out.bam
+SRR3199618	Melon	WT	Fleshy	10	3	0	0	STAR/Melon/SRR3199618.Aligned.sortedByCoord.out.bam
+SRR3199622	Melon	WT	Fleshy	20	1	0	0	STAR/Melon/SRR3199622.Aligned.sortedByCoord.out.bam
+SRR3199623	Melon	WT	Fleshy	20	2	0	0	STAR/Melon/SRR3199623.Aligned.sortedByCoord.out.bam
+SRR3199624	Melon	WT	Fleshy	20	3	0	0	STAR/Melon/SRR3199624.Aligned.sortedByCoord.out.bam
+SRR3199628	Melon	WT	Fleshy	30	1	0	0	STAR/Melon/SRR3199628.Aligned.sortedByCoord.out.bam
+SRR3199629	Melon	WT	Fleshy	30	2	0	0	STAR/Melon/SRR3199629.Aligned.sortedByCoord.out.bam
+SRR3199630	Melon	WT	Fleshy	30	3	0	0	STAR/Melon/SRR3199630.Aligned.sortedByCoord.out.bam
+SRR3199656	Melon	WT	Fleshy	40	1	0	0	STAR/Melon/SRR3199656.Aligned.sortedByCoord.out.bam
+SRR3199657	Melon	WT	Fleshy	40	2	0	0	STAR/Melon/SRR3199657.Aligned.sortedByCoord.out.bam
+SRR3199635	Melon	WT	Fleshy	40	3	0	0	STAR/Melon/SRR3199635.Aligned.sortedByCoord.out.bam
