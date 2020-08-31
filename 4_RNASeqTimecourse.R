@@ -16,6 +16,22 @@ source("X_Functions.R")
 # Borrowed heavily from https://www.bioconductor.org/help/course-materials/2015/LearnBioconductorFeb2015/B02.1.1_RNASeqLab.html#construct
 
 # Load a gene list by exon for counting (or make and save one)
+Melongenes <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Melongenes.rds"),
+                       error=function(e){
+                         Melontxdb <- makeTxDbFromGFF("ExternalData/C_melo/CM3.5.1_gene.gff",
+                                                      organmis="Cucumis melo")
+                         Melongenes <- exonsBy(Melontxdb, by="tx", use.names=TRUE)
+                         saveRDS(Melongenes, "DEGAnalysis/RNA-seq/Melongenes.rds")
+                         return(Melongenes)
+                       })
+Nobtgenes <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Nobtgenes.rds"),
+                      error=function(e){
+                        Nobttxdb <- makeTxDbFromGFF("NobtDNA/NIOBT_r1.0.update.gff",
+                                                    organism="Nicotiana obtusifolia")
+                        Nobtgenes <- exonsBy(Nobttxdb, by="tx", use.names=TRUE)
+                        saveRDS(Nobtgenes, "DEGAnalysis/RNA-seq/Nobtgenes.rds")
+                        return(Nobtgenes)})
+
 Slycgenes <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Slycgenes.rds"),
                       error=function(e){
                         Slyctxdb <- makeTxDbFromGFF("SlycDNA/ITAG4.0_gene_models.gff",
@@ -30,42 +46,20 @@ TAIR10genes <- tryCatch(readRDS("DEGAnalysis/RNA-seq/TAIR10genes.rds"),
                           TAIR10genes <- exonsBy(TAIR10txdb, by="tx", use.names=TRUE)
                           saveRDS(TAIR10genes, "DEGAnalysis/RNA-seq/TAIR10genes.rds")
                           return(TAIR10genes)})
-Nobtgenes <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Nobtgenes.rds"),
-                      error=function(e){
-                        Nobttxdb <- makeTxDbFromGFF("NobtDNA/NIOBT_r1.0.update.gff",
-                                                    organism="Nicotiana obtusifolia")
-                        Nobtgenes <- exonsBy(Nobttxdb, by="tx", use.names=TRUE)
-                        saveRDS(Nobtgenes, "DEGAnalysis/RNA-seq/Nobtgenes.rds")
-                        return(Nobtgenes)})
-
 # Read in the Sample list
 metadata <- read.table("DEGAnalysis/RNA-seq/metadata.tsv", header=T, sep="")
 metadata$Path <- as.character(metadata$Path)
 
 # Count Reads -------------------------------------------------------------
-Expt_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_TAIR.rds"),
-                      error=function(e){
-                        TAIR10BamFiles <- BamFileList(metadata$Path[metadata$Species=="Arabidopsis"],
-                                         yieldSize=2000000)
-                        Expt_TAIR <- summarizeOverlaps(features=TAIR10genes,
-                                                       reads=TAIR10BamFiles,
-                                                       mode="Union",
-                                                       singleEnd=TRUE,
-                                                       ignore.strand=TRUE,
-                                                       BPPARAM=SerialParam())
-                        colData(Expt_TAIR) <- DataFrame(metadata[metadata$Species=="Arabidopsis",])
-                        saveRDS(Expt_TAIR, "DEGAnalysis/RNA-seq/Expt_TAIR.rds")
-                        return(Expt_TAIR)})
-
 Expt_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Nobt.rds"), #PE stage 1-3 data
                       error=function(e){
                         NobtBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tobacco" & metadata$PE==1], yieldSize=2000000)
                         Expt_Nobt <- summarizeOverlaps(feature=Nobtgenes,
-                                        reads=NobtBamFiles,
-                                        mode="Union",
-                                        singleEnd=FALSE,
-                                        ignore.strand=FALSE,
-                                        BPPARAM=SerialParam()) 
+                                                       reads=NobtBamFiles,
+                                                       mode="Union",
+                                                       singleEnd=FALSE,
+                                                       ignore.strand=FALSE,
+                                                       BPPARAM=SerialParam()) 
                         colData(Expt_Nobt) <- DataFrame(metadata[metadata$Species=="Tobacco" & metadata$PE==1,])
                         saveRDS(Expt_Nobt, "DEGAnalysis/RNA-seq/Expt_Nobt.rds")
                         return(Expt_Nobt)})
@@ -82,23 +76,24 @@ Expt_NobtSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_NobtSE.rds"), #All dat
                           saveRDS(Expt_NobtSE, "DEGAnalysis/RNA-seq/Expt_NobtSE.rds")
                           return(Expt_NobtSE)})
 
-Expt_SlycSRA <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycSRA.rds"),
-                         error=function(e){
-                           SlycSRABamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0],
-                                                          yieldSize=2000000)
-                           Expt_SlycSRA <- summarizeOverlaps(features=Slycgenes,
-                                                             reads=SlycSRABamFiles,
-                                                             mode="Union",
-                                                             singleEnd=TRUE,
-                                                             ignore.strand=TRUE)
-                           colData(Expt_SlycSRA) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==0,])
-                           saveRDS(Expt_SlycSRA, "DEGAnalysis/RNA-seq/Expt_SlycSRA.rds")
-                           return(Expt_SlycSRA)})
+Expt_Melon <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Melon.rds"),
+                      error=function(e){
+                        MelonBamFiles <- BamFileList(metadata$Path[metadata$Species=="Melon"],
+                                                      yieldSize=2000000)
+                        Expt_Melon <- summarizeOverlaps(features=Melongenes,
+                                                       reads=MelonBamFiles,
+                                                       mode="Union",
+                                                       singleEnd=TRUE,
+                                                       ignore.strand=TRUE,
+                                                       BPPARAM=SerialParam())
+                        colData(Expt_Melon) <- DataFrame(metadata[metadata$Species=="Melon",])
+                        saveRDS(Expt_Melon, "DEGAnalysis/RNA-seq/Expt_Melon.rds")
+                        return(Expt_Melon)})
 
 Expt_Slyc <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc.rds"),
                       error=function(e){
                         SlycIHBamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==1],
-                                         yieldSize=50000)
+                                                      yieldSize=50000)
                         SlycIHPart<-list()
                         for (i in 1:length(metadata$Accession[metadata$Species=="Tomato" & metadata$PE==1])) {
                           SlycIHPart[[i]] <- summarizeOverlaps(feature=Slycgenes,
@@ -112,47 +107,74 @@ Expt_Slyc <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Slyc.rds"),
                         return(Expt_Slyc)})
 
 Expt_SlycSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycSE.rds"),
-                      error=function(e){
-                      SlycSEBamFiles <- BamFileList(metadata$Path[grep(x = metadata$Path,pattern="*Slyc_SE*")],
-                                                    yieldSize=50000)
-                      Expt_SlycSE <- summarizeOverlaps(feature=Slycgenes,
-                                                     reads=SlycSEBamFiles,
-                                                     mode="Union",
-                                                     singleEnd=TRUE,
-                                                     ignore.strand=FALSE)
-                      colData(Expt_SlycSE) <- DataFrame(metadata[grep(x = metadata$Path,pattern="*Slyc_SE*"),])
-                      saveRDS(Expt_SlycSE, "DEGAnalysis/RNA-seq/Expt_SlycSE.rds")
-                      return(Expt_SlycSE)}) 
-
-Expt_Spimp <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds"),
-         error=function(e){
-           SpimpBamFiles <- BamFileList(metadata$Path[metadata$Species=="Pimpinellifolium"],
-                                        yieldSize=2000000)
-           SpimpPart<-list()
-           for (i in 1:length(metadata$Accession[metadata$Species=="Pimpinellifolium"])) {
-             SpimpPart[[i]] <- summarizeOverlaps(feature=Slycgenes,
-                                                 reads=SpimpBamFiles[i],
-                                                 mode="Union",
-                                                 singleEnd=FALSE,
-                                                 ignore.strand=FALSE)}
-           Expt_Spimp <- do.call(cbind,SpimpPart)
-           colData(Expt_Spimp) <- DataFrame(metadata[metadata$Species=="Pimpinellifolium",])
-           saveRDS(Expt_Spimp, "DEGAnalysis/RNA-seq/Expt_Spimp.rds")
-           return(Expt_Spimp)})
-
-Expt_SpimpSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SpimpSE.rds"),
                         error=function(e){
-                          SpimpSEBamFiles <- BamFileList(metadata$Path[grep(x = metadata$Path,pattern="*Spimp_SE*")],
+                          SlycSEBamFiles <- BamFileList(metadata$Path[grep(x = metadata$Path,pattern="*Slyc_SE*")],
                                                         yieldSize=50000)
-                          Expt_SpimpSE <- summarizeOverlaps(feature=Slycgenes,
-                                                           reads=SpimpSEBamFiles,
+                          Expt_SlycSE <- summarizeOverlaps(feature=Slycgenes,
+                                                           reads=SlycSEBamFiles,
                                                            mode="Union",
                                                            singleEnd=TRUE,
-                                                           ignore.strand=FALSE,
-                                                           BPPARAM=SerialParam())
-                          colData(Expt_SpimpSE) <- DataFrame(metadata[grep(x = metadata$Path,pattern="*Spimp_SE*"),])
-                          saveRDS(Expt_SpimpSE, "DEGAnalysis/RNA-seq/Expt_SpimpSE.rds")
-                          return(Expt_SpimpSE)}) #Alex Redo these 8/5/20
+                                                           ignore.strand=FALSE)
+                          colData(Expt_SlycSE) <- DataFrame(metadata[grep(x = metadata$Path,pattern="*Slyc_SE*"),])
+                          saveRDS(Expt_SlycSE, "DEGAnalysis/RNA-seq/Expt_SlycSE.rds")
+                          return(Expt_SlycSE)})
+
+Expt_SlycSRA <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SlycSRA.rds"),
+                         error=function(e){
+                           SlycSRABamFiles <- BamFileList(metadata$Path[metadata$Species=="Tomato" & metadata$PE==0],
+                                                          yieldSize=2000000)
+                           Expt_SlycSRA <- summarizeOverlaps(features=Slycgenes,
+                                                             reads=SlycSRABamFiles,
+                                                             mode="Union",
+                                                             singleEnd=TRUE,
+                                                             ignore.strand=TRUE)
+                           colData(Expt_SlycSRA) <- DataFrame(metadata[metadata$Species=="Tomato" & metadata$PE==0,])
+                           saveRDS(Expt_SlycSRA, "DEGAnalysis/RNA-seq/Expt_SlycSRA.rds")
+                           return(Expt_SlycSRA)})
+
+Expt_Spimp <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Spimp.rds"),
+                       error=function(e){
+                         SpimpBamFiles <- BamFileList(metadata$Path[metadata$Species=="Pimpinellifolium"],
+                                                      yieldSize=2000000)
+                         SpimpPart<-list()
+                         for (i in 1:length(metadata$Accession[metadata$Species=="Pimpinellifolium"])) {
+                           SpimpPart[[i]] <- summarizeOverlaps(feature=Slycgenes,
+                                                               reads=SpimpBamFiles[i],
+                                                               mode="Union",
+                                                               singleEnd=FALSE,
+                                                               ignore.strand=FALSE)}
+                         Expt_Spimp <- do.call(cbind,SpimpPart)
+                         colData(Expt_Spimp) <- DataFrame(metadata[metadata$Species=="Pimpinellifolium",])
+                         saveRDS(Expt_Spimp, "DEGAnalysis/RNA-seq/Expt_Spimp.rds")
+                         return(Expt_Spimp)})
+
+Expt_SpimpSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_SpimpSE.rds"),
+                         error=function(e){
+                           SpimpSEBamFiles <- BamFileList(metadata$Path[grep(x = metadata$Path,pattern="*Spimp_SE*")],
+                                                          yieldSize=50000)
+                           Expt_SpimpSE <- summarizeOverlaps(feature=Slycgenes,
+                                                             reads=SpimpSEBamFiles,
+                                                             mode="Union",
+                                                             singleEnd=TRUE,
+                                                             ignore.strand=FALSE,
+                                                             BPPARAM=SerialParam())
+                           colData(Expt_SpimpSE) <- DataFrame(metadata[grep(x = metadata$Path,pattern="*Spimp_SE*"),])
+                           saveRDS(Expt_SpimpSE, "DEGAnalysis/RNA-seq/Expt_SpimpSE.rds")
+                           return(Expt_SpimpSE)}) #Alex Redo these 8/5/20
+
+Expt_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_TAIR.rds"),
+                      error=function(e){
+                        TAIR10BamFiles <- BamFileList(metadata$Path[metadata$Species=="Arabidopsis"],
+                                         yieldSize=2000000)
+                        Expt_TAIR <- summarizeOverlaps(features=TAIR10genes,
+                                                       reads=TAIR10BamFiles,
+                                                       mode="Union",
+                                                       singleEnd=TRUE,
+                                                       ignore.strand=TRUE,
+                                                       BPPARAM=SerialParam())
+                        colData(Expt_TAIR) <- DataFrame(metadata[metadata$Species=="Arabidopsis",])
+                        saveRDS(Expt_TAIR, "DEGAnalysis/RNA-seq/Expt_TAIR.rds")
+                        return(Expt_TAIR)})
 
 # Combine Spimp and Slyc to look for genes that are different between them
 Expt_Solanum <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Solanum.rds"),
@@ -325,7 +347,7 @@ DDS_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Nobt.rds"),
                        saveRDS(DDS_Nobt, "DEGAnalysis/RNA-seq/DDS_Nobt.rds")
                        return(DDS_Nobt)})
 
-DDS_NobtSE <- tryCatch(read.RDS("DEGAnalysis/RNA-seq/DDS_NobtSE.rds"),
+DDS_NobtSE <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_NobtSE.rds"),
                          error=function(e){
                            DDS_NobtSE <- DESeqSpline(Expt_NobtSE,
                                                        CollapseTechRep = TRUE)
@@ -585,7 +607,7 @@ Cluster_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_TAIR.rds"),
 
 Cluster_Nobt <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Cluster_Nobt.rds"),
                          error=function(e){
-                           Cluster_Nobt <- DESeqCluster(DDS_Nobt, numGenes = "all")
+                           Cluster_Nobt <- DESeqCluster(DDS_NobtSE, numGenes = "all")
                            saveRDS(Cluster_Nobt, "DEGAnalysis/RNA-seq/Cluster_Nobt.rds")
                            return(Cluster_Nobt)})
 
