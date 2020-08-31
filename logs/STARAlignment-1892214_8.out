@@ -1,0 +1,105 @@
+Mapping AC1DPA1
+Aug 05 10:44:18 ..... started STAR run
+Aug 05 10:44:18 ..... loading genome
+Aug 05 10:44:27 ..... started mapping
+Aug 05 10:47:56 ..... started sorting BAM
+Aug 05 10:48:45 ..... finished successfully
+Done.
+Mapping AC1DPA2
+Aug 05 10:48:46 ..... started STAR run
+Aug 05 10:48:46 ..... loading genome
+Aug 05 10:48:52 ..... started mapping
+Aug 05 10:55:33 ..... started sorting BAM
+Aug 05 10:57:23 ..... finished successfully
+Done.
+Mapping AC1DPA3
+Aug 05 10:57:23 ..... started STAR run
+Aug 05 10:57:24 ..... loading genome
+Aug 05 10:57:53 ..... started mapping
+Aug 05 11:00:48 ..... started sorting BAM
+Aug 05 11:01:33 ..... finished successfully
+Done.
+Mapping AC3DPA1
+Aug 05 11:01:33 ..... started STAR run
+Aug 05 11:01:33 ..... loading genome
+Aug 05 11:02:07 ..... started mapping
+Aug 05 11:09:37 ..... started sorting BAM
+Aug 05 11:11:27 ..... finished successfully
+Done.
+Mapping AC3DPA2
+Aug 05 11:11:28 ..... started STAR run
+Aug 05 11:11:28 ..... loading genome
+Aug 05 11:11:55 ..... started mapping
+Aug 05 11:20:07 ..... started sorting BAM
+Aug 05 11:22:42 ..... finished successfully
+Done.
+Mapping AC3DPA3
+Aug 05 11:22:42 ..... started STAR run
+Aug 05 11:22:42 ..... loading genome
+Aug 05 11:23:18 ..... started mapping
+Aug 05 11:27:36 ..... started sorting BAM
+Aug 05 11:28:41 ..... finished successfully
+Done.
+Mapping AC15DPA1
+Aug 05 11:28:41 ..... started STAR run
+Aug 05 11:28:41 ..... loading genome
+Aug 05 11:28:50 ..... started mapping
+Aug 05 11:32:50 ..... started sorting BAM
+Aug 05 11:33:51 ..... finished successfully
+Done.
+Mapping AC15DPA2
+Aug 05 11:33:52 ..... started STAR run
+Aug 05 11:33:52 ..... loading genome
+Aug 05 11:34:22 ..... started mapping
+Aug 05 11:37:58 ..... started sorting BAM
+Aug 05 11:38:56 ..... finished successfully
+Done.
+Mapping AC15DPA3
+Aug 05 11:38:56 ..... started STAR run
+Aug 05 11:38:56 ..... loading genome
+Aug 05 11:39:26 ..... started mapping
+Aug 05 11:42:29 ..... started sorting BAM
+Aug 05 11:43:16 ..... finished successfully
+Done.
+Mapping ACbreaker1
+Aug 05 11:43:16 ..... started STAR run
+Aug 05 11:43:16 ..... loading genome
+Aug 05 11:43:43 ..... started mapping
+Aug 05 11:47:41 ..... started sorting BAM
+Aug 05 11:48:32 ..... finished successfully
+Done.
+Mapping ACbreaker2
+Aug 05 11:48:32 ..... started STAR run
+Aug 05 11:48:32 ..... loading genome
+Aug 05 11:48:51 ..... started mapping
+Aug 05 11:53:10 ..... started sorting BAM
+Aug 05 11:54:01 ..... finished successfully
+Done.
+Mapping ACbreaker3
+Aug 05 11:54:01 ..... started STAR run
+Aug 05 11:54:01 ..... loading genome
+Aug 05 11:54:23 ..... started mapping
+Aug 05 11:58:51 ..... started sorting BAM
+Aug 05 11:59:59 ..... finished successfully
+Done.
+Mapping ACrr1
+Aug 05 11:59:59 ..... started STAR run
+Aug 05 11:59:59 ..... loading genome
+Aug 05 12:00:12 ..... started mapping
+Aug 05 12:02:37 ..... started sorting BAM
+Aug 05 12:03:17 ..... finished successfully
+Done.
+Mapping ACrr2
+Aug 05 12:03:17 ..... started STAR run
+Aug 05 12:03:17 ..... loading genome
+Aug 05 12:04:01 ..... started mapping
+Aug 05 12:05:39 ..... started sorting BAM
+Aug 05 12:06:06 ..... finished successfully
+Done.
+Mapping ACrr3
+Aug 05 12:06:06 ..... started STAR run
+Aug 05 12:06:06 ..... loading genome
+Aug 05 12:06:24 ..... started mapping
+Aug 05 12:08:32 ..... started sorting BAM
+Aug 05 12:09:04 ..... finished successfully
+Done.

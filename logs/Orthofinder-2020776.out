@@ -1,0 +1,1 @@
+/var/spool/slurmd/job2020776/slurm_script: line 26: 27414 Illegal instruction     orthofinder -t $SLURM_CPUS_PER_TASK -M msa -T iqtree -f ./

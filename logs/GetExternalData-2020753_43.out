@@ -1,0 +1,143 @@
+Downloading SRR3199656 data from SRA...
+
+2020-08-31T21:07:04 prefetch.2.10.0: 1) Downloading 'SRR3199656'...
+2020-08-31T21:07:04 prefetch.2.10.0:  Downloading via https...
+2020-08-31T21:09:37 prefetch.2.10.0:  https download succeed
+2020-08-31T21:09:37 prefetch.2.10.0: 1) 'SRR3199656' was downloaded successfully
+Done.
+Dumping fastq data for SRR3199656...
+Read 11732662 spots for SRR3199656
+Written 11732662 spots for SRR3199656
+Done.
+Running Trim Galore on SRR3199656...
+ModuleCmd_Switch.c(172):ERROR:152: Module 'python/2.7.5' is currently not loaded
+Proceeding with single-core trimming (user-defined)
+Path to Cutadapt set as: 'cutadapt' (default)
+Cutadapt seems to be working fine (tested command 'cutadapt --version')
+Cutadapt version: 2.10
+single-core operation.
+No quality encoding type selected. Assuming that the data provided uses Sanger encoded Phred scores (default)
+
+
+
+AUTO-DETECTING ADAPTER TYPE
+===========================
+Attempting to auto-detect adapter type from the first 1 million sequences of the first file (>> SRR3199656_1.fastq.gz <<)
+
+Found perfect matches for the following adapter sequences:
+Adapter type	Count	Sequence	Sequences analysed	Percentage
+Illumina	459	AGATCGGAAGAGC	1000000	0.05
+smallRNA	1	TGGAATTCTCGG	1000000	0.00
+Nextera	0	CTGTCTCTTATA	1000000	0.00
+Using Illumina adapter for trimming (count: 459). Second best hit was smallRNA (count: 1)
+
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: SRR3199656_1.fastq.gz
+Trimming mode: single-end
+Trim Galore version: 0.6.4_dev
+Cutadapt version: 2.10
+Number of cores used for trimming: 1
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (Illumina TruSeq, Sanger iPCR; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length before a sequence gets removed: 20 bp
+Output file(s) will be GZIP compressed
+
+Cutadapt seems to be fairly up-to-date (version 2.10). Setting -j 1
+Writing final adapter and quality trimmed output to SRR3199656_1_trimmed.fq.gz
+
+
+  >>> Now performing quality (cutoff '-q 20') and adapter trimming in a single pass for the adapter sequence: 'AGATCGGAAGAGC' from file SRR3199656_1.fastq.gz <<< 
+10000000 sequences processed
+This is cutadapt 2.10 with Python 3.7.6
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC SRR3199656_1.fastq.gz
+Processing reads on 1 core in single-end mode ...
+Finished in 287.98 s (25 us/read; 2.44 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:              11,732,662
+Reads with adapters:                 5,883,071 (50.1%)
+Reads written (passing filters):    11,732,662 (100.0%)
+
+Total basepairs processed:   598,365,762 bp
+Quality-trimmed:              16,687,517 bp (2.8%)
+Total written (filtered):    446,216,929 bp (74.6%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 5883071 times
+
+No. of allowed errors:
+0-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 21.0%
+  C: 13.6%
+  G: 11.4%
+  T: 9.0%
+  none/other: 44.9%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	2352603	2933165.5	0	2352603
+2	626248	733291.4	0	626248
+3	197389	183322.8	0	197389
+4	43875	45830.7	0	43875
+5	9656	11457.7	0	9656
+6	1737	2864.4	0	1737
+7	471	716.1	0	471
+8	199	179.0	0	199
+9	567	44.8	0	115 452
+10	725	11.2	1	36 689
+11	563	2.8	1	21 542
+12	203	0.7	1	28 175
+13	67	0.2	1	25 42
+14	71	0.2	1	49 22
+15	65	0.2	1	44 21
+16	69	0.2	1	43 26
+17	159	0.2	1	111 48
+18	516	0.2	1	466 50
+19	3385	0.2	1	3337 48
+20	256	0.2	1	150 106
+21	176	0.2	1	68 108
+22	174	0.2	1	21 153
+23	283	0.2	1	13 270
+24	426	0.2	1	7 419
+25	558	0.2	1	8 550
+26	1298	0.2	1	5 1293
+27	1505	0.2	1	7 1498
+28	1153	0.2	1	6 1147
+29	1199	0.2	1	5 1194
+30	694	0.2	1	5 689
+31	1087	0.2	1	1 1086
+32	1375	0.2	1	6 1369
+33	2409	0.2	1	4 2405
+34	3320	0.2	1	4 3316
+35	1630	0.2	1	8 1622
+36	1598	0.2	1	4 1594
+37	2377	0.2	1	6 2371
+38	2206	0.2	1	78 2128
+39	2972	0.2	1	8 2964
+40	2678	0.2	1	20 2658
+41	3890	0.2	1	122 3768
+42	7704	0.2	1	9 7695
+43	6921	0.2	1	189 6732
+44	22221	0.2	1	1 22220
+45	34702	0.2	1	12 34690
+46	26387	0.2	1	11 26376
+47	32033	0.2	1	7 32026
+48	51614	0.2	1	10 51604
+49	60965	0.2	1	21 60944
+50	2368692	0.2	1	323 2368369
+
+RUN STATISTICS FOR INPUT FILE: SRR3199656_1.fastq.gz
+=============================================
+11732662 sequences processed in total
+Sequences removed because they became shorter than the length cutoff of 20 bp:	2648582 (22.6%)
+
+Done.
