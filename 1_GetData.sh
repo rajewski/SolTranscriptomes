@@ -240,9 +240,10 @@ fi
 
 # Melon Genome and RNA seq data
 if [ "$SLURM_ARRAY_TASK_ID" == 59 ]; then
-  cd  ExternalData/C_melo
+    mkdir -p ExternalData/C_melo
+    cd  ExternalData/C_melo
   # Get genome fasta
-  if [! -e CM3.5.1_genome.fa ]; then
+  if [ ! -e CM3.5.1_genome.fa ]; then
       echo Downloading C. melo genome fasta genome...
       curl ftp://cucurbitgenomics.org/pub/cucurbit/genome/melon/v3.5.1/CM3.5.1_genome.fa.gz > CM3.5.1_genome.fa.gz
       echo Done downloading, now unzipping...
@@ -267,6 +268,16 @@ if [ "$SLURM_ARRAY_TASK_ID" == 59 ]; then
       curl ftp://cucurbitgenomics.org/pub/cucurbit/genome/melon/v3.5.1/CM3.5.1_protein.fa.gz > CM3.5.1_protein.fa.gz
       echo Done downlaoding, now unzipping...
       gunzip CM3.5.1_protein.fa.gz
+      echo Done.
+  else
+      echo C. melo proteins already present.
+  fi
+  # Get GO Terms
+  if [ ! -e CM3.5.1_GO_anno.txt ]; then
+      echo Downloading C. melo GO Terms...
+      curl ftp://cucurbitgenomics.org/pub/cucurbit/genome/melon/v3.5.1/CM3.5.1_GO_anno.txt.gz > CM3.5.1_GO_anno.txt.gz
+      echo Done downlaoding, now unzipping...
+      gunzip CM3.5.1_GO_anno.txt
       echo Done.
   else
       echo C. melo proteins already present.
