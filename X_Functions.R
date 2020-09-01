@@ -166,8 +166,11 @@ ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
   Counts <- Counts[rownames(Counts) %in% as.character(Orthogroups$Concatenated),]
   rownames(Counts) <- as.character(Orthogroups$Orthogroup[match(rownames(Counts), Orthogroups$Concatenated)])
   Counts <- as.data.frame(cbind(rownames(Counts), Counts), row.names = F)
-  Counts <- aggregate(.~Counts$V1,data=Counts[,2:dim(Counts)[2]], FUN=mean)
-  rownames(Counts) <- Counts$`Counts$V1`
+  if (!SingleCopyOrthoOnly) {
+    # Average expression of multi copy genes
+    Counts <- aggregate(.~Counts$V1,data=Counts[,2:dim(Counts)[2]], FUN=mean)
+  }
+  rownames(Counts) <- Counts[,1]
   Counts <- Counts[,-1]
   if (!SingleCopyOrthoOnly) {
     # Include orthogroups that have no data
