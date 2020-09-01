@@ -1,0 +1,223 @@
+$`Cluster 1`
+       GO.ID                       Term Fisher Significant
+1 GO:0006396 GO:0006396, RNA processing  0.045           3
+
+$`Cluster 2`
+        GO.ID                                   Term Fisher Significant
+1  GO:1901137 GO:1901137, carbohydrate derivative bi 0.0055          10
+2  GO:1901135 GO:1901135, carbohydrate derivative me 0.0125          11
+3  GO:0009123 GO:0009123, nucleoside monophosphate m 0.0140           5
+4  GO:0009124 GO:0009124, nucleoside monophosphate b 0.0140           5
+5  GO:0009126 GO:0009126, purine nucleoside monophos 0.0140           5
+6  GO:0009127 GO:0009127, purine nucleoside monophos 0.0140           5
+7  GO:0009156 GO:0009156, ribonucleoside monophospha 0.0140           5
+8  GO:0009161 GO:0009161, ribonucleoside monophospha 0.0140           5
+9  GO:0009167 GO:0009167, purine ribonucleoside mono 0.0140           5
+10 GO:0009168 GO:0009168, purine ribonucleoside mono 0.0140           5
+11 GO:0006486      GO:0006486, protein glycosylation 0.0284           4
+12 GO:0006754   GO:0006754, ATP biosynthetic process 0.0284           4
+13 GO:0009100 GO:0009100, glycoprotein metabolic pro 0.0284           4
+14 GO:0009101 GO:0009101, glycoprotein biosynthetic  0.0284           4
+15 GO:0043413 GO:0043413, macromolecule glycosylatio 0.0284           4
+16 GO:0046034      GO:0046034, ATP metabolic process 0.0284           4
+17 GO:0009142 GO:0009142, nucleoside triphosphate bi 0.0446           4
+18 GO:0009145 GO:0009145, purine nucleoside triphosp 0.0446           4
+19 GO:0009201 GO:0009201, ribonucleoside triphosphat 0.0446           4
+20 GO:0009206 GO:0009206, purine ribonucleoside trip 0.0446           4
+
+$`Cluster 3`
+        GO.ID                                   Term Fisher Significant
+1  GO:0009165 GO:0009165, nucleotide biosynthetic pr 0.0061           4
+2  GO:1901293 GO:1901293, nucleoside phosphate biosy 0.0061           4
+3  GO:0009108 GO:0009108, coenzyme biosynthetic proc 0.0073           4
+4  GO:1901135 GO:1901135, carbohydrate derivative me 0.0094           5
+5  GO:0006732 GO:0006732, coenzyme metabolic process 0.0104           4
+6  GO:0006753 GO:0006753, nucleoside phosphate metab 0.0104           4
+7  GO:0009117 GO:0009117, nucleotide metabolic proce 0.0104           4
+8  GO:0019637 GO:0019637, organophosphate metabolic  0.0107           5
+9  GO:0051186 GO:0051186, cofactor metabolic process 0.0107           5
+10 GO:0009152 GO:0009152, purine ribonucleotide bios 0.0135           3
+11 GO:0009260 GO:0009260, ribonucleotide biosyntheti 0.0135           3
+12 GO:0046390 GO:0046390, ribose phosphate biosynthe 0.0135           3
+13 GO:1901575 GO:1901575, organic substance cataboli 0.0142           4
+14 GO:0009056          GO:0009056, catabolic process 0.0164           4
+15 GO:0006164 GO:0006164, purine nucleotide biosynth 0.0166           3
+16 GO:0009150 GO:0009150, purine ribonucleotide meta 0.0166           3
+17 GO:0009259 GO:0009259, ribonucleotide metabolic p 0.0166           3
+18 GO:1901137 GO:1901137, carbohydrate derivative bi 0.0187           4
+19 GO:0019693 GO:0019693, ribose phosphate metabolic 0.0202           3
+20 GO:0072522 GO:0072522, purine-containing compound 0.0202           3
+
+$`Cluster 4`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006284       GO:0006284, base-excision repair 0.0069           2
+2 GO:0006629    GO:0006629, lipid metabolic process 0.0330           4
+3 GO:0006281                 GO:0006281, DNA repair 0.0330           3
+4 GO:0006974 GO:0006974, cellular response to DNA d 0.0386           3
+5 GO:0033554 GO:0033554, cellular response to stres 0.0386           3
+6 GO:0051716 GO:0051716, cellular response to stimu 0.0456           4
+
+$`Cluster 5`
+       GO.ID                                   Term Fisher Significant
+1 GO:0005976 GO:0005976, polysaccharide metabolic p  0.025           3
+2 GO:0051273 GO:0051273, beta-glucan metabolic proc  0.048           2
+3 GO:0051274 GO:0051274, beta-glucan biosynthetic p  0.048           2
+
+$`Cluster 7`
+       GO.ID                                   Term Fisher Significant
+1 GO:0007165        GO:0007165, signal transduction  0.019           3
+2 GO:0023052                  GO:0023052, signaling  0.019           3
+3 GO:0006259      GO:0006259, DNA metabolic process  0.028           4
+4 GO:0007154         GO:0007154, cell communication  0.028           3
+5 GO:0050896       GO:0050896, response to stimulus  0.038           5
+6 GO:0051716 GO:0051716, cellular response to stimu  0.046           4
+7 GO:0006260            GO:0006260, DNA replication  0.048           2
+
+$`Cluster 8`
+        GO.ID                                   Term Fisher Significant
+1  GO:0018130 GO:0018130, heterocycle biosynthetic p 0.0075          21
+2  GO:1901362 GO:1901362, organic cyclic compound bi 0.0082          22
+3  GO:0071554 GO:0071554, cell wall organization or  0.0301           3
+4  GO:0019438 GO:0019438, aromatic compound biosynth 0.0413          18
+5  GO:0034654 GO:0034654, nucleobase-containing comp 0.0417          16
+6  GO:0006351 GO:0006351, transcription, DNA-templat 0.0467          13
+7  GO:0032774   GO:0032774, RNA biosynthetic process 0.0467          13
+8  GO:0097659 GO:0097659, nucleic acid-templated tra 0.0467          13
+9  GO:0006355 GO:0006355, regulation of transcriptio 0.0481          12
+10 GO:0051252 GO:0051252, regulation of RNA metaboli 0.0481          12
+11 GO:1903506 GO:1903506, regulation of nucleic acid 0.0481          12
+12 GO:2001141 GO:2001141, regulation of RNA biosynth 0.0481          12
+
+$`Cluster 9`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006950         GO:0006950, response to stress  0.022           8
+2 GO:0006281                 GO:0006281, DNA repair  0.024           6
+3 GO:0006259      GO:0006259, DNA metabolic process  0.030           8
+4 GO:0006974 GO:0006974, cellular response to DNA d  0.032           6
+5 GO:0033554 GO:0033554, cellular response to stres  0.032           6
+
+$`Cluster 10`
+        GO.ID                                   Term Fisher Significant
+1  GO:0006886 GO:0006886, intracellular protein tran 0.0013           3
+2  GO:0034613 GO:0034613, cellular protein localizat 0.0015           3
+3  GO:0070727 GO:0070727, cellular macromolecule loc 0.0015           3
+4  GO:0046907    GO:0046907, intracellular transport 0.0020           3
+5  GO:0051649 GO:0051649, establishment of localizat 0.0020           3
+6  GO:0015031          GO:0015031, protein transport 0.0029           3
+7  GO:0015833          GO:0015833, peptide transport 0.0029           3
+8  GO:0042886            GO:0042886, amide transport 0.0029           3
+9  GO:0045184 GO:0045184, establishment of protein l 0.0029           3
+10 GO:0008104       GO:0008104, protein localization 0.0032           3
+11 GO:0051641      GO:0051641, cellular localization 0.0032           3
+12 GO:0071705 GO:0071705, nitrogen compound transpor 0.0040           3
+13 GO:0033036 GO:0033036, macromolecule localization 0.0045           3
+14 GO:0071702 GO:0071702, organic substance transpor 0.0045           3
+
+$`Cluster 11`
+       GO.ID                                   Term Fisher Significant
+1 GO:0035556 GO:0035556, intracellular signal trans  0.013           3
+2 GO:0007165        GO:0007165, signal transduction  0.019           4
+3 GO:0023052                  GO:0023052, signaling  0.019           4
+4 GO:0007154         GO:0007154, cell communication  0.030           4
+
+$`Cluster 13`
+       GO.ID                                   Term Fisher Significant
+1 GO:0046907    GO:0046907, intracellular transport  0.010           4
+2 GO:0051649 GO:0051649, establishment of localizat  0.010           4
+3 GO:0051641      GO:0051641, cellular localization  0.019           4
+4 GO:0006886 GO:0006886, intracellular protein tran  0.038           3
+5 GO:0034613 GO:0034613, cellular protein localizat  0.044           3
+6 GO:0070727 GO:0070727, cellular macromolecule loc  0.044           3
+
+$`Cluster 16`
+        GO.ID                                   Term Fisher Significant
+1  GO:0006090 GO:0006090, pyruvate metabolic process  0.012           2
+2  GO:1901566 GO:1901566, organonitrogen compound bi  0.020           7
+3  GO:0043043 GO:0043043, peptide biosynthetic proce  0.028           4
+4  GO:0043604 GO:0043604, amide biosynthetic process  0.032           4
+5  GO:0055086 GO:0055086, nucleobase-containing smal  0.033           3
+6  GO:0006518  GO:0006518, peptide metabolic process  0.035           4
+7  GO:0006793 GO:0006793, phosphorus metabolic proce  0.038           8
+8  GO:0006796 GO:0006796, phosphate-containing compo  0.038           8
+9  GO:0043603 GO:0043603, cellular amide metabolic p  0.039           4
+10 GO:0006928 GO:0006928, movement of cell or subcel  0.047           2
+11 GO:0007018 GO:0007018, microtubule-based movement  0.047           2
+
+$`Cluster 17`
+       GO.ID                                   Term Fisher Significant
+1 GO:0016311          GO:0016311, dephosphorylation  0.033           2
+2 GO:0045229 GO:0045229, external encapsulating str  0.033           2
+3 GO:0071555     GO:0071555, cell wall organization  0.033           2
+4 GO:0006518  GO:0006518, peptide metabolic process  0.036           6
+5 GO:0043603 GO:0043603, cellular amide metabolic p  0.042           6
+6 GO:0071554 GO:0071554, cell wall organization or   0.045           2
+
+$`Cluster 18`
+       GO.ID                               Term Fisher Significant
+1 GO:0042545 GO:0042545, cell wall modification  0.046           1
+
+$`Cluster 19`
+       GO.ID                                   Term Fisher Significant
+1 GO:0030001        GO:0030001, metal ion transport  0.011           2
+2 GO:0006812           GO:0006812, cation transport  0.025           2
+3 GO:0006811              GO:0006811, ion transport  0.037           2
+4 GO:0006778 GO:0006778, porphyrin-containing compo  0.041           1
+5 GO:0009605 GO:0009605, response to external stimu  0.041           1
+6 GO:0033013 GO:0033013, tetrapyrrole metabolic pro  0.041           1
+7 GO:0042440  GO:0042440, pigment metabolic process  0.041           1
+
+$`Cluster 20`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006081 GO:0006081, cellular aldehyde metaboli 0.0056           2
+2 GO:0006310          GO:0006310, DNA recombination 0.0113           2
+3 GO:0006720 GO:0006720, isoprenoid metabolic proce 0.0188           2
+4 GO:0008299 GO:0008299, isoprenoid biosynthetic pr 0.0188           2
+
+$`Cluster 21`
+        GO.ID                                   Term Fisher Significant
+1  GO:0006396             GO:0006396, RNA processing 0.0011           4
+2  GO:0006139 GO:0006139, nucleobase-containing comp 0.0037           8
+3  GO:0016070      GO:0016070, RNA metabolic process 0.0043           6
+4  GO:0090304 GO:0090304, nucleic acid metabolic pro 0.0056           7
+5  GO:0046483 GO:0046483, heterocycle metabolic proc 0.0059           8
+6  GO:0006725 GO:0006725, cellular aromatic compound 0.0067           8
+7  GO:1901360 GO:1901360, organic cyclic compound me 0.0073           8
+8  GO:0006364            GO:0006364, rRNA processing 0.0081           2
+9  GO:0016072     GO:0016072, rRNA metabolic process 0.0081           2
+10 GO:0010467            GO:0010467, gene expression 0.0120           6
+11 GO:0034641 GO:0034641, cellular nitrogen compound 0.0136           8
+12 GO:0042254        GO:0042254, ribosome biogenesis 0.0143           2
+13 GO:0022613 GO:0022613, ribonucleoprotein complex  0.0161           2
+14 GO:0034470           GO:0034470, ncRNA processing 0.0220           2
+
+$`Cluster 23`
+       GO.ID                                   Term Fisher Significant
+1 GO:0016579   GO:0016579, protein deubiquitination  0.026           1
+2 GO:0070646 GO:0070646, protein modification by sm  0.026           1
+3 GO:0070647 GO:0070647, protein modification by sm  0.046           1
+
+$`Cluster 24`
+        GO.ID                                   Term Fisher Significant
+1  GO:0032501 GO:0032501, multicellular organismal p 0.0015           2
+2  GO:0006412                GO:0006412, translation 0.0041           3
+3  GO:0043043 GO:0043043, peptide biosynthetic proce 0.0047           3
+4  GO:0043604 GO:0043604, amide biosynthetic process 0.0053           3
+5  GO:0006518  GO:0006518, peptide metabolic process 0.0056           3
+6  GO:0043603 GO:0043603, cellular amide metabolic p 0.0062           3
+7  GO:0044267 GO:0044267, cellular protein metabolic 0.0152           5
+8  GO:1901564 GO:1901564, organonitrogen compound me 0.0284           6
+9  GO:0019538  GO:0019538, protein metabolic process 0.0322           5
+10 GO:0006520 GO:0006520, cellular amino acid metabo 0.0365           2
+11 GO:1901566 GO:1901566, organonitrogen compound bi 0.0454           3
+
+$`Cluster 25`
+       GO.ID                                   Term Fisher Significant
+1 GO:0051128 GO:0051128, regulation of cellular com 0.0051           2
+2 GO:0034622 GO:0034622, cellular protein-containin 0.0459           2
+3 GO:0065003 GO:0065003, protein-containing complex 0.0459           2
+
+$`Cluster 26`
+       GO.ID                                   Term Fisher Significant
+1 GO:0006721 GO:0006721, terpenoid metabolic proces  0.046           1
+2 GO:0016114 GO:0016114, terpenoid biosynthetic pro  0.046           1
+

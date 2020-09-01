@@ -1,1 +1,13 @@
-list()
+$`2`
+        GO.ID                                   Term Fisher Significant
+1  GO:0043412 GO:0043412, macromolecule modification 0.0038           6
+2  GO:0006793 GO:0006793, phosphorus metabolic proce 0.0041           5
+3  GO:0006796 GO:0006796, phosphate-containing compo 0.0041           5
+4  GO:0019538  GO:0019538, protein metabolic process 0.0110           6
+5  GO:0044267 GO:0044267, cellular protein metabolic 0.0110           6
+6  GO:1901564 GO:1901564, organonitrogen compound me 0.0110           6
+7  GO:0006464 GO:0006464, cellular protein modificat 0.0142           5
+8  GO:0036211 GO:0036211, protein modification proce 0.0142           5
+9  GO:0006468    GO:0006468, protein phosphorylation 0.0169           4
+10 GO:0016310            GO:0016310, phosphorylation 0.0169           4
+
