@@ -161,12 +161,10 @@ ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
     Orthogroups <- Orthogroups %>% unite("Concatenated", 3:length(Orthogroups), sep=", ")
     }
   Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c("Orthogroup", "Concatenated")]), 2, sep=", ")
-  # Rename columns for short code
-  colnames(Orthogroups) <- c("V1", "V2")
   # Extract, subset, and aggregate count matrix from SummarizedExperiment
   Counts <- assay(GeneWiseExpt)
-  Counts <- Counts[rownames(Counts) %in% as.character(Orthogroups$V2),]
-  rownames(Counts) <- as.character(Orthogroups$V1[match(rownames(Counts), Orthogroups$V2)])
+  Counts <- Counts[rownames(Counts) %in% as.character(Orthogroups$Concatenated),]
+  rownames(Counts) <- as.character(Orthogroups$Orthogroup[match(rownames(Counts), Orthogroups$Concatenated)])
   Counts <- as.data.frame(cbind(rownames(Counts), Counts), row.names = F)
   Counts <- aggregate(.~Counts$V1,data=Counts[,2:dim(Counts)[2]], FUN=mean)
   rownames(Counts) <- Counts$`Counts$V1`
