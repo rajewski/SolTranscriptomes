@@ -30,7 +30,7 @@ dev.off()
 showSigOfNodes(SlycGOData, score(SlycGOResults), firstSigNodes = 10, useInfo = "all")
 
 # Make a file of orthogroups to GO terms, via tomato
-Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Apr23/Orthogroups/Orthogroups.tsv",
+Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_May17//Orthogroups/Orthogroups.tsv",
                           sep="\t",
                           stringsAsFactors = F,
                           header=T)
