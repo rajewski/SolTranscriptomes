@@ -197,7 +197,7 @@ GOEnrich <- function(gene2go="",
   require(tidyr)
   require(dplyr)
   # Clean the lists of GO terms from the bash script and convert to a named list object
-  GO <- read.table(gene2go, stringsAsFactors = F)
+  GO <- read.table(gene2go, stringsAsFactors = F, sep="\t")
   GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
   GO <- GO %>% 
     distinct() %>% 
