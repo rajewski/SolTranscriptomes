@@ -172,6 +172,7 @@ ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
   }
   rownames(Counts) <- Counts[,1]
   Counts <- Counts[,-1]
+  Counts <- apply(Counts, c(1,2), as.numeric)
   if (!SingleCopyOrthoOnly) {
     # Include orthogroups that have no data
     Counts <- rbind(Counts,
