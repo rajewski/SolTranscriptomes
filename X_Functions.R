@@ -57,6 +57,7 @@ DESeqSpline <- function(se=se,
   if (CollapseTechRep) {
     #Collapse technical replicates
     #Assumes tech reps share an accession name with ".1" or ".2" to differentiate them
+    message("Collapsing technical replicates based on accession name.")
     dds$Accession <- sub("\\.\\d", "", dds$Accession) #converted to char, FYI
     dds <- collapseReplicates(dds, dds$Accession)
   }
@@ -221,12 +222,12 @@ GOEnrich <- function(gene2go="",
                 description = "Slyc Cluster 1",
                 ontology = GOCategory,
                 allGenes = GOI,
-                nodeSize = 5,
+                nodeSize = 5, #better than 10
                 annot = annFUN.gene2GO,
                 gene2GO=GO)
   # Do the enrichment test
   GOResults <- runTest(GOData,
-                       algorithm="classic", #classic is best, then lea?
+                       algorithm="weight01", #better than classic,weight,parentchild
                        statistic = "fisher")
   # Summarize the test with a table
   GOTable <- GenTable(GOData,
@@ -381,11 +382,20 @@ PfamEnrichment <- function(AllGenesFile = "",
 # Common Color Palette  ---------------------------------------------------
 library("wesanderson")
 palw <- wes_palette("Zissou1",4,"continuous") 
-#Blue=Pimpinellifolium
-#Green=Arabidopsis
-#Yellow=Obtusifolia or dry
-#Red=Lycopersicum or fleshy
+#"#3B9AB2" = Blue = Pimpinellifolium
+#"#9EBE91" = Green = Arabidopsis
+#"#E4B80E" = Yellow = Obtusifolia or dry
+#"#F21A00" = Red = Lycopersicum or fleshy
 
+palfill <- c("#E4B80E", "#FFFFFF", "#808080", "#F21A00", "#FFFFFF", "#808080", "#000000")
+palline <- c("#E4B80E", "#E4B80E", "#E4B80E", "#F21A00", "#F21A00", "#F21A00", "#F21A00")
+#"#E4B80E" within "#E4B80E" = dry
+#"#FFFFFF" within "#E4B80E" = Obtusifolia
+#"#808080" within "#E4B80E" = Arabidopsis
+#"#F21A00" within "#F21A00" = fleshy
+#"#FFFFFF" within "#F21A00" = lycopersicum
+#"#808080" within "#F21A00" = pimp
+#"#000000" within "#F21A00" = melon
 
 
 
