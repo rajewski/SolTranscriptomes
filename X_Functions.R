@@ -288,6 +288,49 @@ GOPlot <- function(GoGraph=X,
 }
 
 
+# PCA from DESeq2 ---------------------------------------------------------
+# This is a modification of  DESeq2::plotPCA()
+plotPCAmod = function(object, 
+                      shape="Stage",
+                      color="Species",
+                      ntop=500,
+                      xPC=1,
+                      yPC=2) {
+  # calculate the variance for each gene
+  rv <- rowVars(assay(object))
+  # select the ntop genes by variance
+  select <- order(rv, decreasing=TRUE)[seq_len(min(ntop, length(rv)))]
+  # perform a PCA on the data in assay(x) for the selected genes
+  pca <- prcomp(t(assay(object)[select,]))
+  # the contribution to the total variance for each component
+  percentVar <- pca$sdev^2 / sum( pca$sdev^2 )
+  #if (!all(intgroup %in% names(colData(object)))) {
+  #  stop("the argument 'intgroup' should specify columns of colData(dds)")
+  #}
+  #intgroup.df <- as.data.frame(colData(object)[, intgroup, drop=FALSE])
+  # nly support one group 
+  shapeVec <- colData(object)[[shape]]
+  colorVec <- colData(object)[[color]]
+  # assembly the data for the plot
+  d <- data.frame(PCx=pca$x[,xPC], PCy=pca$x[,yPC], shapeCol=shapeVec, colorCol=colorVec, name=colnames(object))
+  
+  ggplot(data=d, aes_string(x="PCx", y="PCy", color=d$colorCol, shape=d$shapeCol)) + 
+    geom_point(               size=3) + 
+    xlab(paste0("PC",xPC,": ",round(percentVar[xPC] * 100),"% variance")) +
+    ylab(paste0("PC",yPC,": ",round(percentVar[yPC] * 100),"% variance")) +
+    coord_fixed() +
+    #scale_fill_manual(values=palfill[c(3,7,6,1,4)]) +
+    #scale_color_manual(values=palline[c(3,7,6,1,4)]) +
+        theme(plot.title = element_text(hjust = 0.5),
+          plot.subtitle = element_text(hjust=0.5),
+          strip.background = element_rect(fill="#FFFFFF"),
+          legend.position = "right", 
+          legend.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank())
+}
+
+
 # IPR Domain Enrichment ---------------------------------------------------
 #this  borrows heavily from the supplement of https://doi.org/10.1104/pp.108.132985
 PfamEnrichment <- function(AllGenesFile = "",
