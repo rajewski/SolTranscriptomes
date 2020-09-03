@@ -29,20 +29,27 @@ Plot <- GOPlot(Table, Title="Conserved Solanum Genes")
 dev.off()
 showSigOfNodes(SlycGOData, score(SlycGOResults), firstSigNodes = 10, useInfo = "all")
 
-# Make a file of orthogroups to GO terms, via tomato
-Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_May17//Orthogroups/Orthogroups.tsv",
+# Make a file of orthogroups to GO terms, via arabidopsis
+Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Aug31/Orthogroups/Orthogroups.tsv",
                           sep="\t",
                           stringsAsFactors = F,
                           header=T)
 Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
-Orthogroups <- Orthogroups[,c(1,4)]
 Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
-GO <- read.table("DEGAnalysis/Pfam/Slyc.gene2go.tsv", stringsAsFactors = F)
+Orthogroups$Cucumis <- strtrim(Orthogroups$Cucumis,12)
+GOSlyc <- read.table("DEGAnalysis/Pfam/Slyc.gene2go.tsv", stringsAsFactors = F)
+GOSlyc <- merge(GOSlyc, Orthogroups, by.x=1, by.y="Solanum")[,c("Orthogroup", "V2")]
+GOTAIR <- read.table("DEGAnalysis/Pfam/TAIR10.gene2go.tsv", stringsAsFactors = F)
+GOTAIR <- merge(GOTAIR, Orthogroups, by.x=1, by.y="Arabidopsis")[,c("Orthogroup", "V2")]
+GONobt <- read.table("DEGAnalysis/Pfam/Nobt.gene2go.tsv", stringsAsFactors = F)
+GONobt <- merge(GONobt, Orthogroups, by.x=1, by.y="Nicotiana")[,c("Orthogroup", "V2")]
+GOMelon <- read.table("DEGAnalysis/Pfam/Melon.gene2go.tsv", stringsAsFactors = F, sep="\t")[,1:2]
+GOMelon <- merge(GOMelon, Orthogroups, by.x=1, by.y="Cucumis")[,c("Orthogroup", "V2")]
+GO <- rbind(GOSlyc, GOTAIR, GONobt, GOMelon) #make superlist of of all GO terms across species
 GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
 GO <- GO %>% 
   distinct() %>% 
-  group_by(V1) %>% 
+  group_by(Orthogroup) %>% 
   mutate(V2 = paste0(V2, collapse = "|")) %>%
   distinct()
-Ortho2Go <- merge(GO, Orthogroups, by.x="V1", by.y="Solanum")[,c(3,2)]
-write.table(Ortho2Go, "DEGAnalysis/Pfam/Ortho.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
+write.table(GO, "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
