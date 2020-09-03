@@ -30,25 +30,25 @@ names(M3_Labs) <- sort(unique(Cluster_Species$normalized$cluster))
 
 # Clusters --------------------------------------------------------------
 # Clusters of 5-species data by fruit type
-ggplot(Cluster_Fruit$normalized, 
+Plot_Cluster_Fruit <- ggplot(Cluster_Fruit$normalized, 
                       aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
   labs(y="Z-score of Expression") +
   scale_fill_manual(values=palfill[c(1,4)]) +
   scale_color_manual(values=palline[c(1,4)]) +
   facet_rep_wrap(~cluster,
                  labeller=labeller(cluster=M2_Labs),
-                 nrow = 2) +
+                 nrow = 4) +
   scale_x_discrete(labels=c("1" = "1", "2" = "2", "3" = "3")) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF"),
-        legend.position = c(.95, 0), legend.justification = c(1, -1)) +
+        legend.position = c(.7, .125)) +
   geom_violin(position=position_dodge(width=0), alpha=0.5) +
   stat_summary(fun=mean, geom="line", aes(group=Fruit))
 ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_FiveOrtho_Fruit.pdf", height=7, width=13)
 
 # Clusters of 5-species data by species
-ggplot(Cluster_Species$normalized, 
+Plot_Cluster_Species <- ggplot(Cluster_Species$normalized, 
                       aes(x=Stage, y=value, col=Species, fill=Species)) +
   labs(y="Z-score of Expression") +
   facet_rep_wrap(~cluster,
@@ -64,6 +64,122 @@ ggplot(Cluster_Species$normalized,
   geom_violin(position=position_dodge(width=0), alpha=1) +
   stat_summary(fun=mean, geom="line", aes(group=Species))
 ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_FiveOrtho_Species.pdf", height=7, width=13)
+
+
+# GO Enrichment -----------------------------------------------------------
+### All genes
+# GO Tables for 5-species data noise, all genes
+Sig_Noise <- subset(results(DDS_Noise), padj<0.01)
+Sig_Noise <- as.factor(as.numeric(rownames(DDS_Noise) %in% rownames(Sig_Noise)))
+names(Sig_Noise) <- rownames(DDS_Noise)
+Table_Noise <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",GOIs=Sig_Noise)
+Plot_GO_Noise <- GOPlot(Table_Noise, Title="Overall GO") +
+  theme(legend.position = "right")
+#capture.output(Table_Noise, file="DEGAnalysis/RNA-seq/FiveOrtho_Noise_AllGOTable.txt")
+
+# GO Tables for 5-species data by fruit type, all genes
+Sig_Fruit <- subset(results(DDS_Fruit), padj<0.01)
+Sig_Fruit <- as.factor(as.numeric(rownames(DDS_Fruit) %in% rownames(Sig_Fruit)))
+names(Sig_Fruit) <- rownames(DDS_Fruit)
+Table_Fruit <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+                                  GOIs=Sig_Fruit)
+Plot_GO_Fruit <- GOPlot(Table_Fruit, Title="Overall GO", LegendLimit = 33) +
+  theme(legend.position = "right")
+#capture.output(Table_Fruit, file="DEGAnalysis/RNA-seq/FiveOrtho_Fruit_AllGOTable.txt")
+
+### Clustered Genes
+# GO tables for 5-species data by fruit type, clustered
+Model2Tables <- list()
+for (i in levels(as.factor(Cluster_Fruit$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_Fruit$normalized$genes %in% Cluster_Fruit$normalized$genes[Cluster_Fruit$normalized$cluster==i]))
+  names(tmpList) <- Cluster_Fruit$normalized$genes
+  Model2Tables[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+                                GOIs=tmpList)
+}
+names(Model2Tables) <- M2_Labs[names(Model2Tables)]
+#capture.output(Model2Tables, file="DEGAnalysis/RNA-seq/Five_Fruit_GOTables.txt")
+Plot_GO_Fruit_C5 <- GOPlot(Model2Tables[[5]], Title="Cluster 5 GO", LegendLimit = 33) + 
+  theme(legend.position = "none")
+Plot_GO_Fruit_C6 <- GOPlot(Model2Tables[[6]], Title="Cluster 6 GO", LegendLimit = 33) + 
+  theme(legend.position = "none")
+Plot_GO_Fruit_C7 <- GOPlot(Model2Tables[[7]], Title="Cluster 7 GO", LegendLimit = 33)  + 
+  theme(legend.position = "none")
+
+# PCA ---------------------------------------------------------------------
+ResSig_Noise <- subset(results(DDS_Noise), padj<=0.01)
+Subset_Noise <- DDS_Noise[rownames(DDS_Noise) %in% rownames(ResSig_Noise)]
+RLD_Noise <- rlog(Subset_Noise, blind=FALSE)
+RLD_Noise$Stage <- as.factor(RLD_Noise$Stage)
+Plot_PCA_Noise_Legend <- get_legend(plotPCAmod(RLD_Noise))
+Plot_PCA_Noise_1v3 <- plotPCAmod(RLD_Noise, xPC=1, yPC=3) + 
+  theme(legend.position = "none")
+Plot_PCA_Noise_2v3 <- plotPCAmod(RLD_Noise, xPC=2, yPC=3) + 
+  theme(legend.position = "none")
+#PC1 Melon vs all, then dry, then tomato
+#PC2 divergence between terminally fleshy and terminally dry
+#PC3 developmental time
+
+Res_Fruit <- results(DDS_Fruit)
+ResSig_Fruit <- subset(Res_Fruit, padj<=0.01)
+Subset_Fruit <- DDS_Fruit[rownames(DDS_Fruit) %in% rownames(ResSig_Fruit)]
+RLD_Fruit <- rlog(Subset_Fruit, blind=FALSE)
+RLD_Fruit$Stage <- as.factor(RLD_Fruit$Stage)
+plotPCAmod(RLD_Fruit, 
+          intgroup = c("Species"),
+          ntop=dim(RLD_Fruit)[1],
+          xPC=1, yPC=2)
+#PC1 fleshy to dry
+#PC2 tom vs melon with dry in center
+#PC3 tobacco from all others
+
+ResSig_Species <- subset(results(DDS_Species), padj<=0.01)
+Subset_Species <- DDS_Species[rownames(DDS_Species) %in% rownames(ResSig_Species)]
+RLD_Species <- rlog(Subset_Species, blind=FALSE)
+plotPCAmod(RLD_Species, intgroup = c("Species"), ntop=dim(RLD_Species)[1], xPC=1, yPC=3)
+#PC1 all from Aabidopsis
+#PC2 extremes are fleshy and middle is dry
+#PC3 all from tobacco
+
+# Assemble Figure(s) ------------------------------------------------------
+# Model 1 figure
+Plot_Model1_Top <- plot_grid(Plot_GO_Noise,
+                         labels = c("A"))
+Plot_Model1_BottomLeft <- plot_grid(Plot_PCA_Noise_1v3,
+                                    Plot_PCA_Noise_2v3,
+                                    nrow=2,
+                                    labels=c("B","C"),
+                                    align="h",
+                                    axis="l")
+Plot_Model1_BottomRight <- plot_grid(Plot_PCA_Noise_Legend,
+                                     NULL,
+                                     nrow=2)
+Plot_Model1_Bottom <- plot_grid(Plot_Model1_BottomLeft,
+                                Plot_Model1_BottomRight,
+                                ncol=2,
+                                rel_widths = c(1,0.2),
+                                align="h",
+                                axis="l")
+Plot_Model1_Final <- plot_grid(Plot_Model1_Top,
+                               Plot_Model1_Bottom,
+                               nrow=2,
+                               rel_heights = c(1,2))
+ggsave2("Figures/Figure 2 Model 1.pdf", height=15, width=10)
+
+Plot_Model2_Left <- plot_grid(Plot_GO_Fruit,
+                              Plot_GO_Fruit_C5,
+                              Plot_GO_Fruit_C6,
+                              Plot_GO_Fruit_C7,
+                              labels = c("A","C","D","E"),
+                              rel_heights = c(0.9,1.4,1.6,.6),
+                              nrow=4) 
+Plot_Model2_Right <- plot_grid(Plot_Cluster_Fruit,
+                               labels = "B")
+Plot_Model2_Final <- plot_grid(Plot_Model2_Left,
+                               Plot_Model2_Right,
+                               nrow=1,
+                               rel_widths = c(1,1))
+ggsave2("Figures/Figure 2 Model 2.pdf", height=15, width=20)
+
 
 
 
