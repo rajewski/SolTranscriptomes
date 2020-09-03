@@ -14,6 +14,61 @@ library("UpSetR")
 source("X_Functions.R")
 
 # Read in Data and set global stuff ---------------------------------------
+Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Unripe_DEGByFruit.rds")
+Cluster_Species <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Unripe_DEGBySpecies.rds")
+DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_Noise.rds")
+DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_DEGByFruit.rds")
+DDS_Species <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_DEGBySpecies.rds")
+
+# Set relabeling for clusters
+# By fruit
+M2_Labs <- paste("Cluster", 1:length(unique(Cluster_Fruit$normalized$cluster)))
+names(M2_Labs) <- sort(unique(Cluster_Fruit$normalized$cluster))
+# By Species
+M3_Labs <- paste("Cluster", 1:length(unique(Cluster_Species$normalized$cluster)))
+names(M3_Labs) <- sort(unique(Cluster_Species$normalized$cluster))
+
+# Clusters --------------------------------------------------------------
+# Clusters of 5-species data by fruit type
+ggplot(Cluster_Fruit$normalized, 
+                      aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
+  labs(y="Z-score of Expression") +
+  scale_fill_manual(values=palfill[c(1,4)]) +
+  scale_color_manual(values=palline[c(1,4)]) +
+  facet_rep_wrap(~cluster,
+                 labeller=labeller(cluster=M2_Labs),
+                 nrow = 2) +
+  scale_x_discrete(labels=c("1" = "1", "2" = "2", "3" = "3")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF"),
+        legend.position = c(.95, 0), legend.justification = c(1, -1)) +
+  geom_violin(position=position_dodge(width=0), alpha=0.5) +
+  stat_summary(fun=mean, geom="line", aes(group=Fruit))
+ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_FiveOrtho_Fruit.pdf", height=7, width=13)
+
+# Clusters of 5-species data by species
+ggplot(Cluster_Species$normalized, 
+                      aes(x=Stage, y=value, col=Species, fill=Species)) +
+  labs(y="Z-score of Expression") +
+  facet_rep_wrap(~cluster,
+                 labeller=labeller(cluster=M3_Labs),
+                 nrow = 3) +
+  scale_fill_manual(values=palfill[c(3,7,6,2,5)]) +
+  scale_color_manual(values=palline[c(3,7,6,2,5)]) +
+  scale_x_discrete(labels=c("1" = "1", "2" = "2", "3" = "3")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        strip.background = element_rect(fill="#FFFFFF"),
+        legend.position = c(.95, 0), legend.justification = c(1, -1)) +
+  geom_violin(position=position_dodge(width=0), alpha=1) +
+  stat_summary(fun=mean, geom="line", aes(group=Species))
+ggsave("DEGAnalysis/RNA-seq/Plots/ClusterProfiles_FiveOrtho_Species.pdf", height=7, width=13)
+
+
+
+
+
 
 Cluster_AllOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_AllOrtho_Noise.rds")
 #write.table(unique(Cluster_AllOrtho_Noise$normalized$genes),quote=F, col.names = F, row.names = F, file="DEGAnalysis/RNA-seq/Lists/AllOrtho_Noise.txt")
