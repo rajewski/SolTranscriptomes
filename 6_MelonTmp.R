@@ -4,15 +4,16 @@ library("cowplot")
 theme_set(theme_cowplot())
 library("scales")
 library("lemon")
+library("DESeq2")
 source("X_Functions.R")
 
 #Trying out the 5 species data, might add into the preripe figure
 Cluster_Melon <- readRDS("DEGAnalysis/RNA-seq/Cluster_Melon.rds")
 Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Unripe_DEGByFruit.rds")
 Cluster_Species <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Unripe_DEGBySpecies.rds")
-DDS_FiveOrtho_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_Noise.rds")
-DDS_FiveOrtho_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_DEGByFruit.rds")
-DDS_FiveOrtho_Species <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_DEGBySpecies.rds")
+DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_Noise.rds")
+DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_DEGByFruit.rds")
+DDS_Species <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_DEGBySpecies.rds")
 
 # Set relabeling for clusters
 # Melon-only
@@ -144,11 +145,23 @@ capture.output(Model3Tables, file="DEGAnalysis/RNA-seq/Five_Species_GOTables.txt
 
 
 # PCA ---------------------------------------------------------------------
-RLD_FiveOrtho_Noise <- rlog(DDS_FiveOrtho_Noise, blind=FALSE)
-plotPCA(RLD_FiveOrtho_Noise, intgroup = c("Species"))
+ResSig_Noise <- subset(results(DDS_Noise), padj<=0.01)
+Subset_Noise <- DDS_Noise[rownames(DDS_Noise) %in% rownames(ResSig_Noise)]
+RLD_Noise <- rlog(Subset_Noise, blind=FALSE)
+RLD_Noise$Stage <- as.factor(RLD_Noise$Stage)
+plotPCA(RLD_Noise, intgroup = c("Stage"))
 
-RLD_FiveOrtho_Fruit <- rlog(DDS_FiveOrtho_Fruit, blind=FALSE)
-plotPCA(RLD_FiveOrtho_Fruit, intgroup = c("Species"))
+Res_Fruit <- results(DDS_Fruit)
+ResSig_Fruit <- subset(Res_Fruit, padj<=0.01)
+Subset_Fruit <- DDS_Fruit[rownames(DDS_Fruit) %in% rownames(ResSig_Fruit)]
+RLD_Fruit <- rlog(Subset_Fruit, blind=FALSE)
+plotPCA(RLD_Fruit, intgroup = c("Species"))
 
-RLD_FiveOrtho_Species <- rlog(DDS_FiveOrtho_Species, blind=FALSE)
-plotPCA(RLD_FiveOrtho_Species, intgroup = c("Species"))
+Res_Species <- results(DDS_Species)
+ResSig_Species <- subset(Res_Species, padj<=0.01)
+Subset_Species <- DDS_Species[rownames(DDS_Species) %in% rownames(ResSig_Species)]
+RLD_Species <- rlog(Subset_Species, blind=FALSE)
+plotPCA(RLD_Species, intgroup = c("Species"))
+
+
+
