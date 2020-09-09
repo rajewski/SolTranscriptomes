@@ -142,25 +142,20 @@ DESeqCluster <- function(dds=dds,
 ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
                                 GeneWiseExpt="",
                                 SingleCopyOrthoOnly=FALSE,
-                                Arabidopsis=TRUE) {
+                                RemoveTaxa=c()) {
   require(tidyr)
   Orthogroups <- read.table(OrthogroupMappingFile,
                             sep="\t",
                             stringsAsFactors = F,
                             header=T)
-  if(!Arabidopsis) {
-    Orthogroups <- Orthogroups[,-2]
+  if (!is.null(RemoveTaxa)) {
+    Orthogroups <- Orthogroups[,-which(names(Orthogroups) %in% RemoveTaxa)]
   }
   if (SingleCopyOrthoOnly) {
     Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
     Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
   }
-  if(Arabidopsis) {
-    Orthogroups <- Orthogroups %>% unite("Concatenated", 2:length(Orthogroups), sep=", ")
-  } else {
-    #Assumes Arabidopsis is the 2nd column
-    Orthogroups <- Orthogroups %>% unite("Concatenated", 3:length(Orthogroups), sep=", ")
-    }
+  Orthogroups <- Orthogroups %>% unite("Concatenated", 2:length(Orthogroups), sep=", ")
   Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c("Orthogroup", "Concatenated")]), 2, sep=", ")
   # Extract, subset, and aggregate count matrix from SummarizedExperiment
   Counts <- assay(GeneWiseExpt)
