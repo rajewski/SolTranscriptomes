@@ -31,11 +31,11 @@ venn.diagram(
   lty=1)
 
 # All Species, single copy
-SingleOrthos <- Orthos %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
-SingleSet1 <- SingleOrthos[,c(1:2)] %>% filter_all(all_vars(!grepl("^$",.)))
-SingleSet2 <- SingleOrthos[,c(1,3)] %>% filter_all(all_vars(!grepl("^$",.)))
-SingleSet3 <- SingleOrthos[,c(1,4)] %>% filter_all(all_vars(!grepl("^$",.)))
-SingleSet4 <- SingleOrthos[,c(1,5)] %>% filter_all(all_vars(!grepl("^$",.)))
+#SingleOrthos <- Orthos %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
+SingleSet1 <- Set1 %>% filter_all(all_vars(!grepl(',',.)))
+SingleSet2 <- Set2 %>% filter_all(all_vars(!grepl(',',.)))
+SingleSet3 <- Set3 %>% filter_all(all_vars(!grepl(',',.)))
+SingleSet4 <- Set4 %>% filter_all(all_vars(!grepl(',',.)))
 venn.diagram(
   x = list(SingleSet1[,1], SingleSet2[,1], SingleSet3[,1], SingleSet4[,1]),
   category.names = c("Arabidopsis","Cucumis", "Nicotiana", "Solanum"),
