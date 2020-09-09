@@ -1,8 +1,0 @@
-       GO.ID                                   Term Fisher Significant
-1 GO:0051604         GO:0051604, protein maturation 0.0035           2
-2 GO:0080147 GO:0080147, root hair cell development 0.0350           1
-3 GO:0042127 GO:0042127, regulation of cell prolife 0.0350           1
-4 GO:0006357 GO:0006357, regulation of transcriptio 0.0419           1
-5 GO:0015696         GO:0015696, ammonium transport 0.0419           1
-6 GO:0007062  GO:0007062, sister chromatid cohesion 0.0487           1
-7 GO:0006560  GO:0006560, proline metabolic process 0.0487           1
