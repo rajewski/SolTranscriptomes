@@ -45,7 +45,8 @@ GONobt <- read.table("DEGAnalysis/Pfam/Nobt.gene2go.tsv", stringsAsFactors = F)
 GONobt <- merge(GONobt, Orthogroups, by.x=1, by.y="Nicotiana")[,c("Orthogroup", "V2")]
 GOMelon <- read.table("DEGAnalysis/Pfam/Melon.gene2go.tsv", stringsAsFactors = F, sep="\t")[,1:2]
 GOMelon <- merge(GOMelon, Orthogroups, by.x=1, by.y="Cucumis")[,c("Orthogroup", "V2")]
-GO <- rbind(GOSlyc, GOTAIR, GONobt, GOMelon) #make superlist of of all GO terms across species
+#make superlist of of all GO terms across species
+GO <- rbind(GOSlyc, GOTAIR, GONobt, GOMelon) 
 GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
 GO <- GO %>% 
   distinct() %>% 
@@ -53,3 +54,21 @@ GO <- GO %>%
   mutate(V2 = paste0(V2, collapse = "|")) %>%
   distinct()
 write.table(GO, "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
+# Make superlist for only dry terms
+GOdry <- rbind(GOTAIR, GONobt)
+GOdry <- separate_rows(as.data.frame(GOdry[,c(1,2)]), 2, sep="\\|")
+GOdry <- GOdry %>% 
+  distinct() %>% 
+  group_by(Orthogroup) %>% 
+  mutate(V2 = paste0(V2, collapse = "|")) %>%
+  distinct()
+write.table(GOdry, "DEGAnalysis/Pfam/Ortho.831Dry.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
+# Make superlist for only fleshy terms
+GOfleshy <- rbind(GOMelon, GOSlyc)
+GOfleshy <- separate_rows(as.data.frame(GOfleshy[,c(1,2)]), 2, sep="\\|")
+GOfleshy <- GOfleshy %>% 
+  distinct() %>% 
+  group_by(Orthogroup) %>% 
+  mutate(V2 = paste0(V2, collapse = "|")) %>%
+  distinct()
+write.table(GOfleshy, "DEGAnalysis/Pfam/Ortho.831Fleshy.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
