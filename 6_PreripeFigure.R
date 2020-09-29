@@ -1,5 +1,6 @@
 # To make the figure for the pre-ripening transcriptome data
 library("DEGreport")
+library("DESeq2")
 library("ggplot2")
 library("ggplotify")
 library("cowplot")
@@ -14,11 +15,11 @@ library("UpSetR")
 source("X_Functions.R")
 
 # Read in Data and set global stuff ---------------------------------------
-Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Unripe_DEGByFruit.rds")
-Cluster_Species <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Unripe_DEGBySpecies.rds")
+Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Unripe_Fruit.rds")
+Cluster_Species <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Unripe_Species.rds")
 DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_Noise.rds")
-DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_DEGByFruit.rds")
-DDS_Species <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_DEGBySpecies.rds")
+DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_Fruit.rds")
+DDS_Species <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Unripe_Species.rds")
 
 # Set relabeling for clusters
 # By fruit
@@ -111,23 +112,28 @@ Subset_Noise <- DDS_Noise[rownames(DDS_Noise) %in% rownames(ResSig_Noise)]
 RLD_Noise <- rlog(Subset_Noise, blind=FALSE)
 RLD_Noise$Stage <- as.factor(RLD_Noise$Stage)
 Plot_PCA_Noise_Legend <- get_legend(plotPCAmod(RLD_Noise))
+Plot_PCA_Noise_1v2 <- plotPCAmod(RLD_Noise, xPC=1, yPC=2) + 
+  theme(legend.position = "none")
 Plot_PCA_Noise_1v3 <- plotPCAmod(RLD_Noise, xPC=1, yPC=3) + 
   theme(legend.position = "none")
-Plot_PCA_Noise_2v3 <- plotPCAmod(RLD_Noise, xPC=2, yPC=3) + 
+Plot_PCA_Noise_2v3 <- plotPCAmod(RLD_Noise, xPC=3, yPC=2) + 
   theme(legend.position = "none")
-#PC1 Melon vs all, then dry, then tomato
-#PC2 divergence between terminally fleshy and terminally dry
-#PC3 developmental time
+
 
 Res_Fruit <- results(DDS_Fruit)
 ResSig_Fruit <- subset(Res_Fruit, padj<=0.01)
 Subset_Fruit <- DDS_Fruit[rownames(DDS_Fruit) %in% rownames(ResSig_Fruit)]
 RLD_Fruit <- rlog(Subset_Fruit, blind=FALSE)
 RLD_Fruit$Stage <- as.factor(RLD_Fruit$Stage)
-plotPCAmod(RLD_Fruit, 
-          intgroup = c("Species"),
+plotPCAmod(RLD_Fruit,
           ntop=dim(RLD_Fruit)[1],
           xPC=1, yPC=2)
+plotPCAmod(RLD_Fruit,
+           ntop=dim(RLD_Fruit)[1],
+           xPC=2, yPC=3)
+plotPCAmod(RLD_Fruit,
+           ntop=dim(RLD_Fruit)[1],
+           xPC=1, yPC=3)
 #PC1 fleshy to dry
 #PC2 tom vs melon with dry in center
 #PC3 tobacco from all others
@@ -144,21 +150,29 @@ plotPCAmod(RLD_Species, intgroup = c("Species"), ntop=dim(RLD_Species)[1], xPC=1
 # Model 1 figure
 Plot_Model1_Top <- plot_grid(Plot_GO_Noise,
                          labels = c("A"))
-Plot_Model1_BottomLeft <- plot_grid(Plot_PCA_Noise_1v3,
-                                    Plot_PCA_Noise_2v3,
+Plot_Model1_Bottom <- plot_grid(Plot_PCA_Noise_1v2,
+                                Plot_PCA_Noise_2v3,
+                                Plot_PCA_Noise_1v3,
+                                Plot_PCA_Noise_Legend,
+                                nrow=1,
+                                labels=c("B", "C", "D", ""),
+                                rel_widths = c(1,1,1,0.2))
+Plot_Model1_BottomLeft <- plot_grid(Plot_PCA_Noise_1v2,
+                                    Plot_PCA_Noise_1v3,
                                     nrow=2,
                                     labels=c("B","C"),
                                     align="h",
                                     axis="l")
-Plot_Model1_BottomRight <- plot_grid(Plot_PCA_Noise_Legend,
-                                     NULL,
+Plot_Model1_BottomRight <- plot_grid(Plot_PCA_Noise_2v3,
+                                     Plot_PCA_Noise_Legend,
+                                     align="h",
+                                     axis="l",
                                      nrow=2)
 Plot_Model1_Bottom <- plot_grid(Plot_Model1_BottomLeft,
                                 Plot_Model1_BottomRight,
                                 ncol=2,
-                                rel_widths = c(1,0.2),
-                                align="h",
-                                axis="l")
+                                rel_widths = c(1,1),
+                                align="h")
 Plot_Model1_Final <- plot_grid(Plot_Model1_Top,
                                Plot_Model1_Bottom,
                                nrow=2,
