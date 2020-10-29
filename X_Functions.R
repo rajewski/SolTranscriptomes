@@ -417,6 +417,17 @@ PfamEnrichment <- function(AllGenesFile = "",
 }
 
 
+# Rename DESeq Clusters ---------------------------------------------------
+ClusterLabs <- function(ClusterObj) {
+  labels <- paste("Cluster", seq_along(unique(Cluster_Nobt$normalized$cluster)))
+  names(labels) <- seq_along(unique(Cluster_Nobt$normalized$cluster))
+  return(labels)
+}
+
+
+# Stage Labels ------------------------------------------------------------
+Stage_Labs <- c("1"="1", "2"="2", "3"="3", "3.5"="Br", "4"="RR")
+
 # Common Color Palette  ---------------------------------------------------
 library("wesanderson")
 palw <- wes_palette("Zissou1",4,"continuous") 
