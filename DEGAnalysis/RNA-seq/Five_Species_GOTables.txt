@@ -1,0 +1,686 @@
+$`Cluster 1`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 1.8e-09          47
+2  GO:0009735      GO:0009735, response to cytokinin 1.3e-07           3
+3  GO:0009744        GO:0009744, response to sucrose 2.6e-07           3
+4  GO:0016310            GO:0016310, phosphorylation 4.5e-07          10
+5  GO:0000160 GO:0000160, phosphorelay signal transd 1.6e-06           3
+6  GO:0023014 GO:0023014, signal transduction by pro 2.9e-06           3
+7  GO:0040007                     GO:0040007, growth 1.5e-05           5
+8  GO:0019288 GO:0019288, isopentenyl diphosphate bi 3.3e-05           3
+9  GO:0000723       GO:0000723, telomere maintenance 5.7e-05           2
+10 GO:0010075 GO:0010075, regulation of meristem gro 8.5e-05           2
+11 GO:0007264 GO:0007264, small GTPase mediated sign 8.5e-05           2
+12 GO:0030244 GO:0030244, cellulose biosynthetic pro 1.2e-04           2
+13 GO:0009968 GO:0009968, negative regulation of sig 1.2e-04           2
+14 GO:0034976 GO:0034976, response to endoplasmic re 1.2e-04           2
+15 GO:0006446 GO:0006446, regulation of translationa 2.0e-04           2
+16 GO:0009845           GO:0009845, seed germination 2.5e-04           2
+17 GO:0042742 GO:0042742, defense response to bacter 3.7e-04           2
+18 GO:0000377 GO:0000377, RNA splicing, via transest 3.7e-04           2
+19 GO:0006629    GO:0006629, lipid metabolic process 4.0e-04           9
+20 GO:0045893 GO:0045893, positive regulation of tra 5.1e-04           2
+
+$`Cluster 2`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 4.0e-12          98
+2  GO:0006355 GO:0006355, regulation of transcriptio 7.8e-11          12
+3  GO:0055114 GO:0055114, oxidation-reduction proces 1.2e-10          15
+4  GO:0006886 GO:0006886, intracellular protein tran 1.0e-08          10
+5  GO:0055085    GO:0055085, transmembrane transport 1.8e-08           9
+6  GO:0006468    GO:0006468, protein phosphorylation 3.6e-08           9
+7  GO:0006633 GO:0006633, fatty acid biosynthetic pr 4.3e-08           5
+8  GO:0006281                 GO:0006281, DNA repair 5.3e-08           8
+9  GO:0005985  GO:0005985, sucrose metabolic process 3.2e-07           5
+10 GO:0009888         GO:0009888, tissue development 3.2e-06           7
+11 GO:0008643     GO:0008643, carbohydrate transport 6.0e-06           3
+12 GO:0006744 GO:0006744, ubiquinone biosynthetic pr 9.6e-06           3
+13 GO:0005982   GO:0005982, starch metabolic process 1.2e-05           6
+14 GO:0009630               GO:0009630, gravitropism 2.0e-05           3
+15 GO:0003002            GO:0003002, regionalization 4.8e-05           3
+16 GO:0048285          GO:0048285, organelle fission 9.3e-05           3
+17 GO:0009909 GO:0009909, regulation of flower devel 1.1e-04           3
+18 GO:0090305 GO:0090305, nucleic acid phosphodieste 1.3e-04           3
+19 GO:0006090 GO:0006090, pyruvate metabolic process 1.8e-04           4
+20 GO:0016567     GO:0016567, protein ubiquitination 2.5e-04           3
+
+$`Cluster 3`
+        GO.ID                                   Term Fisher Significant
+1  GO:0051510 GO:0051510, regulation of unidimension 0.0015           1
+2  GO:0050789 GO:0050789, regulation of biological p 0.0017           4
+3  GO:0009626 GO:0009626, plant-type hypersensitive  0.0018           1
+4  GO:0031497         GO:0031497, chromatin assembly 0.0018           1
+5  GO:0006554   GO:0006554, lysine catabolic process 0.0018           1
+6  GO:0000741                  GO:0000741, karyogamy 0.0018           1
+7  GO:0034976 GO:0034976, response to endoplasmic re 0.0021           1
+8  GO:0009644 GO:0009644, response to high light int 0.0021           1
+9  GO:0042542 GO:0042542, response to hydrogen perox 0.0021           1
+10 GO:0034968 GO:0034968, histone lysine methylation 0.0027           1
+11 GO:0042537 GO:0042537, benzene-containing compoun 0.0030           1
+12 GO:0009560 GO:0009560, embryo sac egg cell differ 0.0036           1
+13 GO:0009408           GO:0009408, response to heat 0.0036           1
+14 GO:0042445  GO:0042445, hormone metabolic process 0.0045           1
+15 GO:0042180 GO:0042180, cellular ketone metabolic  0.0054           1
+16 GO:0016999 GO:0016999, antibiotic metabolic proce 0.0057           1
+17 GO:0045454     GO:0045454, cell redox homeostasis 0.0060           1
+18 GO:0006310          GO:0006310, DNA recombination 0.0060           1
+19 GO:0005985  GO:0005985, sucrose metabolic process 0.0078           1
+20 GO:0006457            GO:0006457, protein folding 0.0105           1
+
+$`Cluster 4`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 1.40e-16          60
+2  GO:0006457            GO:0006457, protein folding 4.80e-08           5
+3  GO:0055114 GO:0055114, oxidation-reduction proces 3.10e-07          10
+4  GO:0034660    GO:0034660, ncRNA metabolic process 6.70e-07           6
+5  GO:0010027 GO:0010027, thylakoid membrane organiz 8.50e-07           4
+6  GO:0019288 GO:0019288, isopentenyl diphosphate bi 8.50e-07           4
+7  GO:0000160 GO:0000160, phosphorelay signal transd 2.60e-06           3
+8  GO:0009902     GO:0009902, chloroplast relocation 2.60e-06           3
+9  GO:0006468    GO:0006468, protein phosphorylation 9.70e-06           7
+10 GO:0000413 GO:0000413, protein peptidyl-prolyl is 9.70e-06           3
+11 GO:0006412                GO:0006412, translation 2.10e-05           5
+12 GO:0019252 GO:0019252, starch biosynthetic proces 3.20e-05           3
+13 GO:0048581 GO:0048581, negative regulation of pos 1.20e-04           2
+14 GO:0080129 GO:0080129, proteasome core complex as 1.70e-04           2
+15 GO:0051788 GO:0051788, response to misfolded prot 2.80e-04           2
+16 GO:0009069 GO:0009069, serine family amino acid m 3.10e-04           3
+17 GO:0048573  GO:0048573, photoperiodism, flowering 4.30e-04           2
+18 GO:0006635  GO:0006635, fatty acid beta-oxidation 5.20e-04           2
+19 GO:0006511 GO:0006511, ubiquitin-dependent protei 8.20e-04           2
+20 GO:0010207    GO:0010207, photosystem II assembly 1.05e-03           2
+
+$`Cluster 5`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0055085    GO:0055085, transmembrane transport 0.000012           5
+2  GO:0008152          GO:0008152, metabolic process 0.000033          37
+3  GO:0006355 GO:0006355, regulation of transcriptio 0.000067           4
+4  GO:0006275 GO:0006275, regulation of DNA replicat 0.000200           2
+5  GO:0006888 GO:0006888, ER to Golgi vesicle-mediat 0.000200           2
+6  GO:0009555         GO:0009555, pollen development 0.000410           2
+7  GO:0055114 GO:0055114, oxidation-reduction proces 0.000640           5
+8  GO:0016999 GO:0016999, antibiotic metabolic proce 0.000760           2
+9  GO:0006486      GO:0006486, protein glycosylation 0.000930           2
+10 GO:0006508                GO:0006508, proteolysis 0.001030           3
+11 GO:0006468    GO:0006468, protein phosphorylation 0.002430           3
+12 GO:1901564 GO:1901564, organonitrogen compound me 0.002910          18
+13 GO:0006807 GO:0006807, nitrogen compound metaboli 0.004280          27
+14 GO:0097435 GO:0097435, supramolecular fiber organ 0.006320           2
+15 GO:0009314      GO:0009314, response to radiation 0.008430           2
+16 GO:0006270 GO:0006270, DNA replication initiation 0.010720           1
+17 GO:0030833 GO:0030833, regulation of actin filame 0.010720           1
+18 GO:0046686    GO:0046686, response to cadmium ion 0.010720           1
+19 GO:0009060        GO:0009060, aerobic respiration 0.010720           1
+20 GO:0046487 GO:0046487, glyoxylate metabolic proce 0.010720           1
+
+$`Cluster 6`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 5.6e-09          11
+2  GO:0000413 GO:0000413, protein peptidyl-prolyl is 1.3e-07           4
+3  GO:0048193    GO:0048193, Golgi vesicle transport 1.3e-06           4
+4  GO:0006364            GO:0006364, rRNA processing 1.9e-06           6
+5  GO:0005975 GO:0005975, carbohydrate metabolic pro 5.9e-06           6
+6  GO:0042446 GO:0042446, hormone biosynthetic proce 6.7e-06           3
+7  GO:0008152          GO:0008152, metabolic process 2.2e-05          63
+8  GO:0015995 GO:0015995, chlorophyll biosynthetic p 2.4e-05           3
+9  GO:0043085 GO:0043085, positive regulation of cat 4.6e-05           3
+10 GO:0070085              GO:0070085, glycosylation 5.8e-05           3
+11 GO:0010027 GO:0010027, thylakoid membrane organiz 7.7e-05           3
+12 GO:0030258         GO:0030258, lipid modification 9.4e-05           4
+13 GO:0000154          GO:0000154, rRNA modification 1.0e-04           2
+14 GO:0072593 GO:0072593, reactive oxygen species me 1.5e-04           3
+15 GO:0042546       GO:0042546, cell wall biogenesis 1.5e-04           3
+16 GO:0042793      GO:0042793, plastid transcription 1.5e-04           2
+17 GO:0009750       GO:0009750, response to fructose 1.5e-04           2
+18 GO:0006457            GO:0006457, protein folding 1.9e-04           3
+19 GO:0042133 GO:0042133, neurotransmitter metabolic 2.1e-04           2
+20 GO:0009814 GO:0009814, defense response, incompat 3.6e-04           2
+
+$`Cluster 7`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 2.8e-27         200
+2  GO:0055114 GO:0055114, oxidation-reduction proces 1.5e-17          25
+3  GO:0006468    GO:0006468, protein phosphorylation 2.0e-15          22
+4  GO:0006355 GO:0006355, regulation of transcriptio 1.9e-14          17
+5  GO:0043604 GO:0043604, amide biosynthetic process 7.1e-12          17
+6  GO:0009793 GO:0009793, embryo development ending  1.2e-09           8
+7  GO:0009152 GO:0009152, purine ribonucleotide bios 6.6e-09           8
+8  GO:0016310            GO:0016310, phosphorylation 8.5e-09          33
+9  GO:0055085    GO:0055085, transmembrane transport 7.5e-08          12
+10 GO:0006570 GO:0006570, tyrosine metabolic process 9.6e-08           5
+11 GO:0006508                GO:0006508, proteolysis 1.1e-07          14
+12 GO:1901659 GO:1901659, glycosyl compound biosynth 1.8e-07           6
+13 GO:0033875 GO:0033875, ribonucleoside bisphosphat 1.8e-07           4
+14 GO:0034032 GO:0034032, purine nucleoside bisphosp 1.8e-07           4
+15 GO:0017144     GO:0017144, drug metabolic process 1.8e-07          18
+16 GO:0006098    GO:0006098, pentose-phosphate shunt 4.1e-07           6
+17 GO:0006886 GO:0006886, intracellular protein tran 4.5e-07          12
+18 GO:0006810                  GO:0006810, transport 6.1e-07          43
+19 GO:0005996 GO:0005996, monosaccharide metabolic p 1.1e-06           6
+20 GO:0009058       GO:0009058, biosynthetic process 2.1e-06          92
+
+$`Cluster 8`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 2.8e-08           9
+2  GO:0008152          GO:0008152, metabolic process 2.9e-08          63
+3  GO:0006508                GO:0006508, proteolysis 2.9e-08          11
+4  GO:0009793 GO:0009793, embryo development ending  8.5e-08           5
+5  GO:0009987           GO:0009987, cellular process 3.2e-07          58
+6  GO:0010027 GO:0010027, thylakoid membrane organiz 1.9e-06           4
+7  GO:0000278         GO:0000278, mitotic cell cycle 2.1e-06           5
+8  GO:0006364            GO:0006364, rRNA processing 2.9e-06           5
+9  GO:0051603 GO:0051603, proteolysis involved in ce 1.2e-05           3
+10 GO:0016556          GO:0016556, mRNA modification 1.8e-05           3
+11 GO:0009658   GO:0009658, chloroplast organization 4.3e-05           4
+12 GO:0016192 GO:0016192, vesicle-mediated transport 5.4e-05           6
+13 GO:0006468    GO:0006468, protein phosphorylation 7.4e-05           5
+14 GO:0042254        GO:0042254, ribosome biogenesis 9.4e-05           8
+15 GO:0048527   GO:0048527, lateral root development 1.2e-04           2
+16 GO:0030833 GO:0030833, regulation of actin filame 1.2e-04           2
+17 GO:0010090     GO:0010090, trichome morphogenesis 1.2e-04           2
+18 GO:0006886 GO:0006886, intracellular protein tran 1.3e-04           6
+19 GO:0048765 GO:0048765, root hair cell differentia 1.8e-04           2
+20 GO:0016485         GO:0016485, protein processing 1.8e-04           2
+
+$`Cluster 9`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 1.60e-06           7
+2  GO:0006468    GO:0006468, protein phosphorylation 1.60e-06           6
+3  GO:0006886 GO:0006886, intracellular protein tran 3.10e-06           6
+4  GO:0006094            GO:0006094, gluconeogenesis 1.00e-05           3
+5  GO:0033036 GO:0033036, macromolecule localization 1.90e-05          10
+6  GO:0009753  GO:0009753, response to jasmonic acid 8.20e-05           2
+7  GO:0070972 GO:0070972, protein localization to en 1.20e-04           2
+8  GO:0010498 GO:0010498, proteasomal protein catabo 1.20e-04           2
+9  GO:0044262 GO:0044262, cellular carbohydrate meta 1.40e-04           8
+10 GO:0006312      GO:0006312, mitotic recombination 1.70e-04           2
+11 GO:0006000 GO:0006000, fructose metabolic process 1.70e-04           2
+12 GO:0006013  GO:0006013, mannose metabolic process 2.30e-04           2
+13 GO:0006612 GO:0006612, protein targeting to membr 2.90e-04           2
+14 GO:0010467            GO:0010467, gene expression 4.00e-04          16
+15 GO:0009560 GO:0009560, embryo sac egg cell differ 5.30e-04           2
+16 GO:0016579   GO:0016579, protein deubiquitination 5.30e-04           2
+17 GO:0006412                GO:0006412, translation 6.10e-04           4
+18 GO:0006206 GO:0006206, pyrimidine nucleobase meta 6.30e-04           2
+19 GO:0042254        GO:0042254, ribosome biogenesis 7.30e-04           3
+20 GO:0007010  GO:0007010, cytoskeleton organization 1.22e-03           2
+
+$`Cluster 10`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0034968 GO:0034968, histone lysine methylation 0.000023           2
+2  GO:0009640         GO:0009640, photomorphogenesis 0.000057           2
+3  GO:0006468    GO:0006468, protein phosphorylation 0.000140           3
+4  GO:0035556 GO:0035556, intracellular signal trans 0.000270           2
+5  GO:0009658   GO:0009658, chloroplast organization 0.000270           2
+6  GO:0006342        GO:0006342, chromatin silencing 0.004080           1
+7  GO:0009097 GO:0009097, isoleucine biosynthetic pr 0.004080           1
+8  GO:0006816      GO:0006816, calcium ion transport 0.004080           1
+9  GO:0009089 GO:0009089, lysine biosynthetic proces 0.004080           1
+10 GO:0051726   GO:0051726, regulation of cell cycle 0.004650           2
+11 GO:0043067 GO:0043067, regulation of programmed c 0.004900           1
+12 GO:0009626 GO:0009626, plant-type hypersensitive  0.004900           1
+13 GO:0000741                  GO:0000741, karyogamy 0.004900           1
+14 GO:0030091             GO:0030091, protein repair 0.004900           1
+15 GO:0000338      GO:0000338, protein deneddylation 0.005710           1
+16 GO:0051302 GO:0051302, regulation of cell divisio 0.006530           1
+17 GO:0000911 GO:0000911, cytokinesis by cell plate  0.007340           1
+18 GO:0010038      GO:0010038, response to metal ion 0.007340           1
+19 GO:0044237 GO:0044237, cellular metabolic process 0.007780          14
+20 GO:0009086 GO:0009086, methionine biosynthetic pr 0.008150           1
+
+$`Cluster 11`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 6.80e-08          72
+2  GO:0006355 GO:0006355, regulation of transcriptio 6.80e-07           9
+3  GO:0006351 GO:0006351, transcription, DNA-templat 2.00e-06          13
+4  GO:0006468    GO:0006468, protein phosphorylation 3.50e-06           7
+5  GO:0015031          GO:0015031, protein transport 1.20e-05           7
+6  GO:0006259      GO:0006259, DNA metabolic process 3.40e-05          10
+7  GO:0006139 GO:0006139, nucleobase-containing comp 7.00e-05          35
+8  GO:0055114 GO:0055114, oxidation-reduction proces 1.00e-04           7
+9  GO:0051252 GO:0051252, regulation of RNA metaboli 1.30e-04          11
+10 GO:0090501 GO:0090501, RNA phosphodiester bond hy 1.60e-04           2
+11 GO:0042254        GO:0042254, ribosome biogenesis 1.70e-04           4
+12 GO:0032259                GO:0032259, methylation 1.70e-04           4
+13 GO:0000272 GO:0000272, polysaccharide catabolic p 2.40e-04           2
+14 GO:0006298            GO:0006298, mismatch repair 4.50e-04           2
+15 GO:0048573  GO:0048573, photoperiodism, flowering 8.70e-04           2
+16 GO:0090305 GO:0090305, nucleic acid phosphodieste 1.18e-03           4
+17 GO:0006206 GO:0006206, pyrimidine nucleobase meta 1.23e-03           2
+18 GO:0006144 GO:0006144, purine nucleobase metaboli 1.23e-03           2
+19 GO:0015995 GO:0015995, chlorophyll biosynthetic p 2.38e-03           2
+20 GO:0016043 GO:0016043, cellular component organiz 2.46e-03          11
+
+$`Cluster 12`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0009987           GO:0009987, cellular process 5.50e-08          38
+2  GO:0055114 GO:0055114, oxidation-reduction proces 2.00e-07           7
+3  GO:0006355 GO:0006355, regulation of transcriptio 1.30e-06           6
+4  GO:0006950         GO:0006950, response to stress 6.50e-05          13
+5  GO:0048731         GO:0048731, system development 7.40e-05           8
+6  GO:0006865       GO:0006865, amino acid transport 9.50e-05           2
+7  GO:0006468    GO:0006468, protein phosphorylation 9.50e-05           5
+8  GO:0006568 GO:0006568, tryptophan metabolic proce 1.60e-04           2
+9  GO:0006281                 GO:0006281, DNA repair 1.90e-04           3
+10 GO:0006479        GO:0006479, protein methylation 6.80e-04           2
+11 GO:0009628 GO:0009628, response to abiotic stimul 7.20e-04           6
+12 GO:0045454     GO:0045454, cell redox homeostasis 8.40e-04           2
+13 GO:0008152          GO:0008152, metabolic process 1.60e-03          37
+14 GO:0005975 GO:0005975, carbohydrate metabolic pro 1.65e-03           4
+15 GO:0006974 GO:0006974, cellular response to DNA d 2.03e-03           4
+16 GO:0043170 GO:0043170, macromolecule metabolic pr 2.40e-03          24
+17 GO:0006457            GO:0006457, protein folding 2.58e-03           2
+18 GO:0006631 GO:0006631, fatty acid metabolic proce 2.58e-03           2
+19 GO:0051716 GO:0051716, cellular response to stimu 3.55e-03          10
+20 GO:0007154         GO:0007154, cell communication 5.95e-03           5
+
+$`Cluster 13`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 2.3e-08           9
+2  GO:0005985  GO:0005985, sucrose metabolic process 1.5e-05           3
+3  GO:0006793 GO:0006793, phosphorus metabolic proce 2.3e-05          10
+4  GO:0006816      GO:0006816, calcium ion transport 3.3e-05           2
+5  GO:0045492 GO:0045492, xylan biosynthetic process 5.0e-05           2
+6  GO:0010413 GO:0010413, glucuronoxylan metabolic p 5.0e-05           2
+7  GO:0006855 GO:0006855, drug transmembrane transpo 5.0e-05           2
+8  GO:0030244 GO:0030244, cellulose biosynthetic pro 7.0e-05           2
+9  GO:0009225 GO:0009225, nucleotide-sugar metabolic 7.0e-05           2
+10 GO:0010264 GO:0010264, myo-inositol hexakisphosph 7.0e-05           2
+11 GO:0008283         GO:0008283, cell proliferation 9.3e-05           2
+12 GO:0006869            GO:0006869, lipid transport 9.3e-05           2
+13 GO:0035304 GO:0035304, regulation of protein deph 1.2e-04           2
+14 GO:0006354 GO:0006354, DNA-templated transcriptio 1.2e-04           2
+15 GO:0000911 GO:0000911, cytokinesis by cell plate  1.2e-04           2
+16 GO:0000398 GO:0000398, mRNA splicing, via spliceo 1.5e-04           2
+17 GO:0000226 GO:0000226, microtubule cytoskeleton o 1.8e-04           2
+18 GO:0008152          GO:0008152, metabolic process 2.3e-04          39
+19 GO:0010228 GO:0010228, vegetative to reproductive 2.9e-04           3
+20 GO:0006094            GO:0006094, gluconeogenesis 3.5e-04           2
+
+$`Cluster 14`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 1.2e-15          19
+2  GO:0006352 GO:0006352, DNA-templated transcriptio 5.9e-09           4
+3  GO:0006206 GO:0006206, pyrimidine nucleobase meta 2.7e-07           4
+4  GO:0006511 GO:0006511, ubiquitin-dependent protei 5.2e-07           4
+5  GO:0007018 GO:0007018, microtubule-based movement 7.4e-06           3
+6  GO:0009069 GO:0009069, serine family amino acid m 1.8e-05           5
+7  GO:0006635  GO:0006635, fatty acid beta-oxidation 1.9e-05           3
+8  GO:0006355 GO:0006355, regulation of transcriptio 3.6e-05           6
+9  GO:0008152          GO:0008152, metabolic process 4.8e-05          90
+10 GO:0006468    GO:0006468, protein phosphorylation 5.7e-05           8
+11 GO:0006418 GO:0006418, tRNA aminoacylation for pr 5.8e-05           3
+12 GO:0006518  GO:0006518, peptide metabolic process 1.1e-04           7
+13 GO:0016042    GO:0016042, lipid catabolic process 1.9e-04           5
+14 GO:0016310            GO:0016310, phosphorylation 2.2e-04          14
+15 GO:0032259                GO:0032259, methylation 2.4e-04           4
+16 GO:0046486 GO:0046486, glycerolipid metabolic pro 3.0e-04           3
+17 GO:0030091             GO:0030091, protein repair 3.0e-04           2
+18 GO:0006771 GO:0006771, riboflavin metabolic proce 3.0e-04           2
+19 GO:0009765 GO:0009765, photosynthesis, light harv 3.0e-04           2
+20 GO:0098662 GO:0098662, inorganic cation transmemb 4.1e-04           3
+
+$`Cluster 15`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0009813 GO:0009813, flavonoid biosynthetic pro 5.90e-07           3
+2  GO:0009411             GO:0009411, response to UV 4.70e-06           3
+3  GO:0010027 GO:0010027, thylakoid membrane organiz 2.70e-05           3
+4  GO:0055114 GO:0055114, oxidation-reduction proces 3.00e-05           8
+5  GO:0050832 GO:0050832, defense response to fungus 4.90e-05           2
+6  GO:0006270 GO:0006270, DNA replication initiation 4.90e-05           2
+7  GO:0006508                GO:0006508, proteolysis 5.40e-05           4
+8  GO:0006655 GO:0006655, phosphatidylglycerol biosy 1.80e-04           2
+9  GO:0006446 GO:0006446, regulation of translationa 1.80e-04           2
+10 GO:0042742 GO:0042742, defense response to bacter 3.20e-04           2
+11 GO:0071555     GO:0071555, cell wall organization 3.60e-04           3
+12 GO:0006400          GO:0006400, tRNA modification 4.40e-04           2
+13 GO:0010207    GO:0010207, photosystem II assembly 6.50e-04           2
+14 GO:0008152          GO:0008152, metabolic process 8.50e-04          43
+15 GO:0006355 GO:0006355, regulation of transcriptio 9.30e-04           4
+16 GO:0019288 GO:0019288, isopentenyl diphosphate bi 1.54e-03           2
+17 GO:0006468    GO:0006468, protein phosphorylation 2.71e-03           3
+18 GO:0006457            GO:0006457, protein folding 2.79e-03           2
+19 GO:0009767 GO:0009767, photosynthetic electron tr 6.58e-03           2
+20 GO:0044743 GO:0044743, protein transmembrane impo 6.58e-03           2
+
+$`Cluster 16`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 1.8e-11          16
+2  GO:0008152          GO:0008152, metabolic process 1.6e-09          90
+3  GO:0006468    GO:0006468, protein phosphorylation 3.5e-08          10
+4  GO:0055085    GO:0055085, transmembrane transport 5.1e-07          10
+5  GO:0006364            GO:0006364, rRNA processing 6.2e-07           5
+6  GO:0006412                GO:0006412, translation 1.4e-06           8
+7  GO:0042254        GO:0042254, ribosome biogenesis 7.2e-06           9
+8  GO:0009408           GO:0009408, response to heat 2.4e-05           3
+9  GO:0009069 GO:0009069, serine family amino acid m 2.4e-05           5
+10 GO:0006457            GO:0006457, protein folding 2.5e-05           4
+11 GO:0006979 GO:0006979, response to oxidative stre 5.5e-05           6
+12 GO:0040029 GO:0040029, regulation of gene express 6.8e-05           4
+13 GO:0010207    GO:0010207, photosystem II assembly 7.3e-05           3
+14 GO:0006096         GO:0006096, glycolytic process 1.0e-04           3
+15 GO:0006754   GO:0006754, ATP biosynthetic process 1.3e-04           5
+16 GO:0016567     GO:0016567, protein ubiquitination 1.6e-04           3
+17 GO:0006508                GO:0006508, proteolysis 2.1e-04           6
+18 GO:0140013   GO:0140013, meiotic nuclear division 2.3e-04           2
+19 GO:0051510 GO:0051510, regulation of unidimension 2.3e-04           2
+20 GO:0006414   GO:0006414, translational elongation 2.3e-04           2
+
+$`Cluster 17`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 1.2e-12          11
+2  GO:0006508                GO:0006508, proteolysis 9.1e-08           6
+3  GO:0015979             GO:0015979, photosynthesis 1.1e-07           5
+4  GO:0006570 GO:0006570, tyrosine metabolic process 2.9e-06           3
+5  GO:1902600 GO:1902600, proton transmembrane trans 5.9e-06           3
+6  GO:0016556          GO:0016556, mRNA modification 5.9e-06           3
+7  GO:0010605 GO:0010605, negative regulation of mac 3.3e-05           3
+8  GO:0009089 GO:0009089, lysine biosynthetic proces 5.7e-05           2
+9  GO:0050832 GO:0050832, defense response to fungus 5.7e-05           2
+10 GO:0043405 GO:0043405, regulation of MAP kinase a 5.7e-05           2
+11 GO:0009069 GO:0009069, serine family amino acid m 7.8e-05           4
+12 GO:0035335 GO:0035335, peptidyl-tyrosine dephosph 8.5e-05           2
+13 GO:0009968 GO:0009968, negative regulation of sig 1.2e-04           2
+14 GO:0042133 GO:0042133, neurotransmitter metabolic 1.2e-04           2
+15 GO:0043086 GO:0043086, negative regulation of cat 2.0e-04           2
+16 GO:0046777 GO:0046777, protein autophosphorylatio 3.1e-04           2
+17 GO:0008152          GO:0008152, metabolic process 4.4e-04          50
+18 GO:0031324 GO:0031324, negative regulation of cel 5.9e-04           2
+19 GO:0051172 GO:0051172, negative regulation of nit 5.9e-04           2
+20 GO:0006418 GO:0006418, tRNA aminoacylation for pr 7.6e-04           2
+
+$`Cluster 18`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 1.10e-15          58
+2  GO:0006661 GO:0006661, phosphatidylinositol biosy 2.20e-07           4
+3  GO:0005975 GO:0005975, carbohydrate metabolic pro 2.60e-06           9
+4  GO:0010038      GO:0010038, response to metal ion 4.80e-05           3
+5  GO:0045786 GO:0045786, negative regulation of cel 8.20e-05           2
+6  GO:0006284       GO:0006284, base-excision repair 8.20e-05           2
+7  GO:1905039 GO:1905039, carboxylic acid transmembr 8.20e-05           2
+8  GO:0006281                 GO:0006281, DNA repair 1.80e-04           6
+9  GO:0055114 GO:0055114, oxidation-reduction proces 1.90e-04           6
+10 GO:0006606 GO:0006606, protein import into nucleu 2.30e-04           2
+11 GO:0009220 GO:0009220, pyrimidine ribonucleotide  2.30e-04           2
+12 GO:0071229 GO:0071229, cellular response to acid  3.50e-04           3
+13 GO:0016192 GO:0016192, vesicle-mediated transport 3.60e-04           3
+14 GO:0018108 GO:0018108, peptidyl-tyrosine phosphor 4.40e-04           2
+15 GO:0009560 GO:0009560, embryo sac egg cell differ 5.30e-04           2
+16 GO:0048366           GO:0048366, leaf development 6.10e-04           3
+17 GO:1901701 GO:1901701, cellular response to oxyge 1.61e-03           3
+18 GO:0042493           GO:0042493, response to drug 2.00e-03           2
+19 GO:0009108 GO:0009108, coenzyme biosynthetic proc 2.67e-03           3
+20 GO:0045017 GO:0045017, glycerolipid biosynthetic  2.72e-03           5
+
+$`Cluster 19`
+        GO.ID                                   Term    Fisher Significant
+1  GO:0065004 GO:0065004, protein-DNA complex assemb 0.0000061           2
+2  GO:0055114 GO:0055114, oxidation-reduction proces 0.0001600           3
+3  GO:0006468    GO:0006468, protein phosphorylation 0.0021200           2
+4  GO:0034728    GO:0034728, nucleosome organization 0.0028000           1
+5  GO:0042816 GO:0042816, vitamin B6 metabolic proce 0.0028000           1
+6  GO:0000724 GO:0000724, double-strand break repair 0.0028000           1
+7  GO:0031497         GO:0031497, chromatin assembly 0.0033500           1
+8  GO:0010026   GO:0010026, trichome differentiation 0.0039100           1
+9  GO:0070925         GO:0070925, organelle assembly 0.0039100           1
+10 GO:0030488           GO:0030488, tRNA methylation 0.0039100           1
+11 GO:0001522    GO:0001522, pseudouridine synthesis 0.0044700           1
+12 GO:0009813 GO:0009813, flavonoid biosynthetic pro 0.0044700           1
+13 GO:0008283         GO:0008283, cell proliferation 0.0044700           1
+14 GO:0006446 GO:0006446, regulation of translationa 0.0050300           1
+15 GO:0019761 GO:0019761, glucosinolate biosynthetic 0.0050300           1
+16 GO:0009933 GO:0009933, meristem structural organi 0.0067000           1
+17 GO:0009555         GO:0009555, pollen development 0.0078100           1
+18 GO:0042364 GO:0042364, water-soluble vitamin bios 0.0083700           1
+19 GO:0051276    GO:0051276, chromosome organization 0.0085100           3
+20 GO:0043085 GO:0043085, positive regulation of cat 0.0122500           1
+
+$`Cluster 20`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 0.000096           8
+2  GO:0034976 GO:0034976, response to endoplasmic re 0.003000           1
+3  GO:0006826         GO:0006826, iron ion transport 0.003000           1
+4  GO:0016558 GO:0016558, protein import into peroxi 0.004300           1
+5  GO:0035966 GO:0035966, response to topologically  0.004700           1
+6  GO:0006221 GO:0006221, pyrimidine nucleotide bios 0.004700           1
+7  GO:0006635  GO:0006635, fatty acid beta-oxidation 0.005200           1
+8  GO:0006633 GO:0006633, fatty acid biosynthetic pr 0.007700           1
+9  GO:0046939 GO:0046939, nucleotide phosphorylation 0.010300           1
+10 GO:0071310 GO:0071310, cellular response to organ 0.013700           1
+11 GO:0009725        GO:0009725, response to hormone 0.019600           1
+12 GO:0032259                GO:0032259, methylation 0.028900           1
+13 GO:0007165        GO:0007165, signal transduction 0.031000           1
+14 GO:0006412                GO:0006412, translation 0.031800           1
+15 GO:0055085    GO:0055085, transmembrane transport 0.032900           2
+16 GO:0006355 GO:0006355, regulation of transcriptio 0.042700           1
+
+$`Cluster 21`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0000160 GO:0000160, phosphorelay signal transd 1.1e-05           2
+2  GO:0023014 GO:0023014, signal transduction by pro 1.6e-05           2
+3  GO:0016311          GO:0016311, dephosphorylation 1.9e-03           2
+4  GO:0009395 GO:0009395, phospholipid catabolic pro 2.6e-03           1
+5  GO:0009396 GO:0009396, folic acid-containing comp 2.6e-03           1
+6  GO:0051606      GO:0051606, detection of stimulus 2.6e-03           1
+7  GO:0010155 GO:0010155, regulation of proton trans 2.6e-03           1
+8  GO:0009073 GO:0009073, aromatic amino acid family 2.6e-03           1
+9  GO:0000154          GO:0000154, rRNA modification 2.6e-03           1
+10 GO:0018202 GO:0018202, peptidyl-histidine modific 2.6e-03           1
+11 GO:0000070 GO:0000070, mitotic sister chromatid s 3.1e-03           1
+12 GO:0007062  GO:0007062, sister chromatid cohesion 3.1e-03           1
+13 GO:0046486 GO:0046486, glycerolipid metabolic pro 3.3e-03           2
+14 GO:0051336 GO:0051336, regulation of hydrolase ac 3.6e-03           1
+15 GO:0071214 GO:0071214, cellular response to abiot 3.6e-03           1
+16 GO:0010431            GO:0010431, seed maturation 3.6e-03           1
+17 GO:0010053 GO:0010053, root epidermal cell differ 3.6e-03           1
+18 GO:0043086 GO:0043086, negative regulation of cat 4.6e-03           1
+19 GO:0007018 GO:0007018, microtubule-based movement 4.6e-03           1
+20 GO:0035304 GO:0035304, regulation of protein deph 4.6e-03           1
+
+$`Cluster 22`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0016579   GO:0016579, protein deubiquitination 0.000022           2
+2  GO:0000023  GO:0000023, maltose metabolic process 0.000051           2
+3  GO:0043085 GO:0043085, positive regulation of cat 0.000077           2
+4  GO:0019252 GO:0019252, starch biosynthetic proces 0.000077           2
+5  GO:0042254        GO:0042254, ribosome biogenesis 0.000610           2
+6  GO:0006732 GO:0006732, coenzyme metabolic process 0.001090           2
+7  GO:0098655 GO:0098655, cation transmembrane trans 0.002800           2
+8  GO:0006270 GO:0006270, DNA replication initiation 0.003010           1
+9  GO:0015696         GO:0015696, ammonium transport 0.003010           1
+10 GO:0010155 GO:0010155, regulation of proton trans 0.003010           1
+11 GO:0006833            GO:0006833, water transport 0.003010           1
+12 GO:0046128 GO:0046128, purine ribonucleoside meta 0.003610           1
+13 GO:0032508       GO:0032508, DNA duplex unwinding 0.003610           1
+14 GO:0034032 GO:0034032, purine nucleoside bisphosp 0.003610           1
+15 GO:0033875 GO:0033875, ribonucleoside bisphosphat 0.003610           1
+16 GO:0016125   GO:0016125, sterol metabolic process 0.003610           1
+17 GO:0000394 GO:0000394, RNA splicing, via endonucl 0.003610           1
+18 GO:0043603 GO:0043603, cellular amide metabolic p 0.004140           3
+19 GO:0000338      GO:0000338, protein deneddylation 0.004210           1
+20 GO:0051258     GO:0051258, protein polymerization 0.004210           1
+
+$`Cluster 23`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 0.00016          12
+2  GO:0010468 GO:0010468, regulation of gene express 0.00173           4
+3  GO:0016049                GO:0016049, cell growth 0.00207           2
+4  GO:0006414   GO:0006414, translational elongation 0.00280           1
+5  GO:0009395 GO:0009395, phospholipid catabolic pro 0.00280           1
+6  GO:0048868    GO:0048868, pollen tube development 0.00335           1
+7  GO:0032984 GO:0032984, protein-containing complex 0.00335           1
+8  GO:0030244 GO:0030244, cellulose biosynthetic pro 0.00391           1
+9  GO:0000904 GO:0000904, cell morphogenesis involve 0.00391           1
+10 GO:0006655 GO:0006655, phosphatidylglycerol biosy 0.00503           1
+11 GO:0009826 GO:0009826, unidimensional cell growth 0.00837           1
+12 GO:0031047      GO:0031047, gene silencing by RNA 0.00837           1
+13 GO:0000302 GO:0000302, response to reactive oxyge 0.00892           1
+14 GO:0006417  GO:0006417, regulation of translation 0.00892           1
+15 GO:0045454     GO:0045454, cell redox homeostasis 0.01114           1
+16 GO:0016114 GO:0016114, terpenoid biosynthetic pro 0.01114           1
+17 GO:0006310          GO:0006310, DNA recombination 0.01114           1
+18 GO:0006351 GO:0006351, transcription, DNA-templat 0.01290           2
+19 GO:0051128 GO:0051128, regulation of cellular com 0.01336           1
+20 GO:0006364            GO:0006364, rRNA processing 0.01887           1
+
+$`Cluster 24`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0008152          GO:0008152, metabolic process 4.30e-07           9
+2  GO:0055114 GO:0055114, oxidation-reduction proces 3.90e-05           4
+3  GO:0048878       GO:0048878, chemical homeostasis 3.90e-04           2
+4  GO:0042816 GO:0042816, vitamin B6 metabolic proce 2.15e-03           1
+5  GO:0006623 GO:0006623, protein targeting to vacuo 2.15e-03           1
+6  GO:0042744 GO:0042744, hydrogen peroxide cataboli 2.15e-03           1
+7  GO:0009626 GO:0009626, plant-type hypersensitive  2.58e-03           1
+8  GO:0045088 GO:0045088, regulation of innate immun 2.58e-03           1
+9  GO:0000394 GO:0000394, RNA splicing, via endonucl 2.58e-03           1
+10 GO:0043067 GO:0043067, regulation of programmed c 2.58e-03           1
+11 GO:0009773 GO:0009773, photosynthetic electron tr 3.01e-03           1
+12 GO:0080135 GO:0080135, regulation of cellular res 3.01e-03           1
+13 GO:0009086 GO:0009086, methionine biosynthetic pr 4.30e-03           1
+14 GO:0009630               GO:0009630, gravitropism 4.30e-03           1
+15 GO:0048585 GO:0048585, negative regulation of res 4.30e-03           1
+16 GO:0045893 GO:0045893, positive regulation of tra 6.01e-03           1
+17 GO:0006081 GO:0006081, cellular aldehyde metaboli 6.20e-03           2
+18 GO:0042364 GO:0042364, water-soluble vitamin bios 6.44e-03           1
+19 GO:0030003 GO:0030003, cellular cation homeostasi 7.30e-03           1
+20 GO:0015979             GO:0015979, photosynthesis 7.35e-03           2
+
+$`Cluster 25`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0055085    GO:0055085, transmembrane transport 6.50e-06           4
+2  GO:0006412                GO:0006412, translation 9.10e-04           2
+3  GO:0006814       GO:0006814, sodium ion transport 3.01e-03           1
+4  GO:0010647 GO:0010647, positive regulation of cel 3.01e-03           1
+5  GO:0019320   GO:0019320, hexose catabolic process 3.01e-03           1
+6  GO:0030833 GO:0030833, regulation of actin filame 3.01e-03           1
+7  GO:0140013   GO:0140013, meiotic nuclear division 3.01e-03           1
+8  GO:0000723       GO:0000723, telomere maintenance 3.01e-03           1
+9  GO:0006506 GO:0006506, GPI anchor biosynthetic pr 3.01e-03           1
+10 GO:0010638 GO:0010638, positive regulation of org 3.61e-03           1
+11 GO:0016036 GO:0016036, cellular response to phosp 3.61e-03           1
+12 GO:0006012 GO:0006012, galactose metabolic proces 3.61e-03           1
+13 GO:0007062  GO:0007062, sister chromatid cohesion 3.61e-03           1
+14 GO:0006302 GO:0006302, double-strand break repair 4.21e-03           1
+15 GO:0071897   GO:0071897, DNA biosynthetic process 4.21e-03           1
+16 GO:0080135 GO:0080135, regulation of cellular res 4.21e-03           1
+17 GO:0048584 GO:0048584, positive regulation of res 4.21e-03           1
+18 GO:0009407    GO:0009407, toxin catabolic process 4.81e-03           1
+19 GO:0006812           GO:0006812, cation transport 5.17e-03           3
+20 GO:0033044 GO:0033044, regulation of chromosome o 5.41e-03           1
+
+$`Cluster 26`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 0.00002           3
+2  GO:0048653         GO:0048653, anther development 0.00150           1
+3  GO:0042538 GO:0042538, hyperosmotic salinity resp 0.00180           1
+4  GO:0034976 GO:0034976, response to endoplasmic re 0.00210           1
+5  GO:0009407    GO:0009407, toxin catabolic process 0.00240           1
+6  GO:0045892 GO:0045892, negative regulation of tra 0.00330           1
+7  GO:0035966 GO:0035966, response to topologically  0.00330           1
+8  GO:0009414 GO:0009414, response to water deprivat 0.00330           1
+9  GO:0014070 GO:0014070, response to organic cyclic 0.00360           1
+10 GO:0009408           GO:0009408, response to heat 0.00360           1
+11 GO:0009737  GO:0009737, response to abscisic acid 0.00510           1
+12 GO:0045454     GO:0045454, cell redox homeostasis 0.00600           1
+13 GO:0006260            GO:0006260, DNA replication 0.00870           1
+14 GO:0051301              GO:0051301, cell division 0.00870           1
+15 GO:0071310 GO:0071310, cellular response to organ 0.00960           1
+16 GO:0006259      GO:0006259, DNA metabolic process 0.01850           2
+17 GO:0032259                GO:0032259, methylation 0.02030           1
+18 GO:0007165        GO:0007165, signal transduction 0.02180           1
+19 GO:0006355 GO:0006355, regulation of transcriptio 0.02300           2
+20 GO:0006508                GO:0006508, proteolysis 0.02740           1
+
+$`Cluster 27`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0032259                GO:0032259, methylation 0.000041           3
+2  GO:0009058       GO:0009058, biosynthetic process 0.000054           7
+3  GO:0008104       GO:0008104, protein localization 0.000910           3
+4  GO:0006355 GO:0006355, regulation of transcriptio 0.004470           2
+5  GO:0006270 GO:0006270, DNA replication initiation 0.004940           1
+6  GO:0000724 GO:0000724, double-strand break repair 0.004940           1
+7  GO:0006623 GO:0006623, protein targeting to vacuo 0.004940           1
+8  GO:0007015 GO:0007015, actin filament organizatio 0.005930           1
+9  GO:0016485         GO:0016485, protein processing 0.005930           1
+10 GO:0032508       GO:0032508, DNA duplex unwinding 0.005930           1
+11 GO:0006261 GO:0006261, DNA-dependent DNA replicat 0.006620           2
+12 GO:0019243 GO:0019243, methylglyoxal catabolic pr 0.006910           1
+13 GO:0042542 GO:0042542, response to hydrogen perox 0.006910           1
+14 GO:0071897   GO:0071897, DNA biosynthetic process 0.006910           1
+15 GO:0080129 GO:0080129, proteasome core complex as 0.006910           1
+16 GO:0009644 GO:0009644, response to high light int 0.006910           1
+17 GO:0006401      GO:0006401, RNA catabolic process 0.007900           1
+18 GO:0016226 GO:0016226, iron-sulfur cluster assemb 0.008880           1
+19 GO:0070918 GO:0070918, production of small RNA in 0.008880           1
+20 GO:0051788 GO:0051788, response to misfolded prot 0.008880           1
+
+$`Cluster 28`
+        GO.ID                                   Term    Fisher Significant
+1  GO:0006308      GO:0006308, DNA catabolic process 0.0000057           2
+2  GO:0008152          GO:0008152, metabolic process 0.0001600          15
+3  GO:0016310            GO:0016310, phosphorylation 0.0005800           4
+4  GO:0010014        GO:0010014, meristem initiation 0.0038700           1
+5  GO:0006468    GO:0006468, protein phosphorylation 0.0040900           2
+6  GO:0048868    GO:0048868, pollen tube development 0.0046400           1
+7  GO:0006855 GO:0006855, drug transmembrane transpo 0.0046400           1
+8  GO:0042278 GO:0042278, purine nucleoside metaboli 0.0054100           1
+9  GO:0048449     GO:0048449, floral organ formation 0.0054100           1
+10 GO:0009220 GO:0009220, pyrimidine ribonucleotide  0.0061900           1
+11 GO:0010073       GO:0010073, meristem maintenance 0.0069600           1
+12 GO:0009965         GO:0009965, leaf morphogenesis 0.0085000           1
+13 GO:0045892 GO:0045892, negative regulation of tra 0.0085000           1
+14 GO:0055114 GO:0055114, oxidation-reduction proces 0.0099200           2
+15 GO:0006144 GO:0006144, purine nucleobase metaboli 0.0100300           1
+16 GO:0007389 GO:0007389, pattern specification proc 0.0108000           1
+17 GO:0048481    GO:0048481, plant ovule development 0.0123400           1
+18 GO:0009909 GO:0009909, regulation of flower devel 0.0131000           1
+19 GO:0019953        GO:0019953, sexual reproduction 0.0131000           1
+20 GO:0006633 GO:0006633, fatty acid biosynthetic pr 0.0138700           1
+
+$`Cluster 29`
+        GO.ID                                   Term   Fisher Significant
+1  GO:0055114 GO:0055114, oxidation-reduction proces 0.000042           5
+2  GO:0031323 GO:0031323, regulation of cellular met 0.000170           3
+3  GO:0015979             GO:0015979, photosynthesis 0.000170           4
+4  GO:0045454     GO:0045454, cell redox homeostasis 0.000230           2
+5  GO:0005982   GO:0005982, starch metabolic process 0.000360           3
+6  GO:0006098    GO:0006098, pentose-phosphate shunt 0.000450           2
+7  GO:0009658   GO:0009658, chloroplast organization 0.000510           2
+8  GO:0006457            GO:0006457, protein folding 0.000700           2
+9  GO:0019682 GO:0019682, glyceraldehyde-3-phosphate 0.001040           3
+10 GO:0043436  GO:0043436, oxoacid metabolic process 0.003000           4
+11 GO:0008654 GO:0008654, phospholipid biosynthetic  0.004140           3
+12 GO:0006139 GO:0006139, nucleobase-containing comp 0.004600           6
+13 GO:0033692 GO:0033692, cellular polysaccharide bi 0.005380           2
+14 GO:0048509 GO:0048509, regulation of meristem dev 0.006440           2
+15 GO:0010075 GO:0010075, regulation of meristem gro 0.006700           1
+16 GO:0019375 GO:0019375, galactolipid biosynthetic  0.006700           1
+17 GO:0042214  GO:0042214, terpene metabolic process 0.006700           1
+18 GO:0009773 GO:0009773, photosynthetic electron tr 0.007810           1
+19 GO:0010264 GO:0010264, myo-inositol hexakisphosph 0.007810           1
+20 GO:0006468    GO:0006468, protein phosphorylation 0.008450           2
+
+$`Cluster 30`
+        GO.ID                                   Term  Fisher Significant
+1  GO:0006468    GO:0006468, protein phosphorylation 2.4e-05           3
+2  GO:0048527   GO:0048527, lateral root development 2.4e-03           1
+3  GO:0042793      GO:0042793, plastid transcription 2.8e-03           1
+4  GO:0009765 GO:0009765, photosynthesis, light harv 2.8e-03           1
+5  GO:0009750       GO:0009750, response to fructose 2.8e-03           1
+6  GO:0009744        GO:0009744, response to sucrose 2.8e-03           1
+7  GO:0044281 GO:0044281, small molecule metabolic p 2.9e-03           6
+8  GO:0006805 GO:0006805, xenobiotic metabolic proce 3.3e-03           1
+9  GO:0009773 GO:0009773, photosynthetic electron tr 3.3e-03           1
+10 GO:1900673   GO:1900673, olefin metabolic process 3.3e-03           1
+11 GO:0006550 GO:0006550, isoleucine catabolic proce 3.8e-03           1
+12 GO:0006552  GO:0006552, leucine catabolic process 3.8e-03           1
+13 GO:0006574   GO:0006574, valine catabolic process 3.8e-03           1
+14 GO:0051302 GO:0051302, regulation of cell divisio 3.8e-03           1
+15 GO:1901606 GO:1901606, alpha-amino acid catabolic 3.9e-03           2
+16 GO:1905393      GO:1905393, plant organ formation 4.3e-03           1
+17 GO:0090697 GO:0090697, post-embryonic plant organ 4.3e-03           1
+18 GO:0042537 GO:0042537, benzene-containing compoun 4.7e-03           1
+19 GO:0009902     GO:0009902, chloroplast relocation 4.7e-03           1
+20 GO:0071704 GO:0071704, organic substance metaboli 4.9e-03           8
+

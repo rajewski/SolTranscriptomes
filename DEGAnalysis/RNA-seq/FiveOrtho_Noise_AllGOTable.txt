@@ -1,0 +1,9 @@
+       GO.ID                                   Term Fisher Significant
+1 GO:0045454     GO:0045454, cell redox homeostasis 0.0010           4
+2 GO:0006662 GO:0006662, glycerol ether metabolic p 0.0030           2
+3 GO:0043161 GO:0043161, proteasome-mediated ubiqui 0.0082           2
+4 GO:0008643     GO:0008643, carbohydrate transport 0.0129           2
+5 GO:0080135 GO:0080135, regulation of cellular res 0.0129           2
+6 GO:0018208 GO:0018208, peptidyl-proline modificat 0.0172           3
+7 GO:0032268 GO:0032268, regulation of cellular pro 0.0175           3
+8 GO:0000413 GO:0000413, protein peptidyl-prolyl is 0.0488           2
