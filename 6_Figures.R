@@ -5,7 +5,6 @@ theme_set(theme_cowplot())
 library("lemon")
 library("patchwork")
 
-
 # Read Data In ------------------------------------------------------------
 Cluster_Nobt <- readRDS("DEGAnalysis/RNA-seq/Cluster_Nobt.rds")
 Labs_NobtCluster <- ClusterLabs(Cluster_Nobt)
@@ -17,64 +16,6 @@ Cluster_Solanum_Noise <-readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.r
 Labs_SolanumNoiseCluster <- ClusterLabs(Cluster_Solanum_Noise)
 Labs_SolanumStage <- c("1"="1", "3"="2", "15"="3", "35"="Br", "45"="RR")
 
-# Tobacco Clusters -----------------------------------------------------------
-# consider using lapply to make a list of the individual (unfaceted) plots?
-C1 <- ggplot(Cluster_Nobt$normalized, 
-                      aes(x=DAP, y=value, col=Species, fill=Species)) +
-  labs(y="Z-score of Expression",
-       x="Stage") +
-  facet_rep_wrap(~cluster,
-                 labeller=labeller(cluster=Labs_NobtCluster),
-                 nrow = 2) +
-  scale_fill_manual(values=palfill[2]) +
-  scale_color_manual(values=palline[2]) +
-  scale_x_discrete(labels=Labs_NobtStage) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF"),
-        legend.position = "none",
-        legend.justification = c(1, -1)) +
-  geom_violin(position=position_dodge(width=0), alpha=0.5) +
-  stat_summary(fun=mean, geom="line", aes(group=Fruit))
-
-C2 <- list()
-C2 <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)),
-             function(i) ggplot(Cluster_Nobt$normalized[Cluster_Nobt$normalized$cluster==i,], 
-             aes(x=DAP, y=value, col=Species, fill=Species)) +
-               labs(y="Z-score of Expression",
-                    x="Stage") +
-             scale_fill_manual(values=palfill[1]) +
-             scale_color_manual(values=palline[1]) +
-             scale_x_discrete(labels=Labs_NobtStage) +
-             theme(plot.title = element_text(hjust = 0.5),
-                   plot.subtitle = element_text(hjust=0.5),
-                   strip.background = element_rect(fill="#FFFFFF"),
-                   legend.position = "none",
-                   legend.justification = c(1, -1)) +
-             geom_violin(position=position_dodge(width=0), alpha=0.5) +
-             stat_summary(fun=mean, geom="line", aes(group=Fruit))+
-             ggtitle(paste("Cluster", i, "Expression")))
-
-
-# Tobacco GO Plots --------------------------------------------------------
-# Do the GO Enrichment
-Tables_Nobt <- list()
-for (i in levels(as.factor(Cluster_Nobt$normalized$cluster))) {
-  tmpList <- as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% Cluster_Nobt$normalized$genes[Cluster_Nobt$normalized$cluster==i]))
-  names(tmpList) <- Cluster_Nobt$normalized$genes
-  Tables_Nobt[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Nobt.gene2go.tsv",
-                                GOIs=tmpList,
-                               NumCategories = 10)
-}
-names(Tables_Nobt) <- Labs_NobtCluster[names(Tables_Nobt)]
-# Create a list of the GO Plots
-GO_Nobt <- list()
-GO_Nobt <- lapply(seq_along(Tables_Nobt), 
-                  function(i) GOPlot(Tables_Nobt[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
-                    theme(legend.position = "none"))
-
-
-# Tobacco Gene Plots ------------------------------------------------------
 # List important genes to plot
 impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc10g006880.3.1"="NOR",
@@ -129,6 +70,45 @@ impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc06g065310.3.1"="Solyc06g065310.3.1",
                 "Solyc08g066860.2.1"="Solyc08g066860.2.1",
                 "Solyc07g005840.2.1"="SlCel3")
+
+# Tobacco Clusters -----------------------------------------------------------
+C1 <- list()
+C1 <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)),
+             function(i) ggplot(Cluster_Nobt$normalized[Cluster_Nobt$normalized$cluster==i,], 
+             aes(x=DAP, y=value, col=Species, fill=Species)) +
+               labs(y="Z-score of Expression",
+                    x="Stage") +
+             scale_fill_manual(values=palfill[1]) +
+             scale_color_manual(values=palline[1]) +
+             scale_x_discrete(labels=Labs_NobtStage) +
+             theme(plot.title = element_text(hjust = 0.5),
+                   plot.subtitle = element_text(hjust=0.5),
+                   strip.background = element_rect(fill="#FFFFFF"),
+                   legend.position = "none",
+                   legend.justification = c(1, -1)) +
+             geom_violin(position=position_dodge(width=0), alpha=0.5) +
+             stat_summary(fun=mean, geom="line", aes(group=Fruit))+
+             ggtitle(paste("Cluster", i, "Expression")))
+
+# Tobacco GO Plots --------------------------------------------------------
+# Do the GO Enrichment
+Tables_Nobt <- list()
+for (i in levels(as.factor(Cluster_Nobt$normalized$cluster))) {
+  tmpList <- as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% Cluster_Nobt$normalized$genes[Cluster_Nobt$normalized$cluster==i]))
+  names(tmpList) <- Cluster_Nobt$normalized$genes
+  Tables_Nobt[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Nobt.gene2go.tsv",
+                                GOIs=tmpList,
+                               NumCategories = 10)
+}
+names(Tables_Nobt) <- Labs_NobtCluster[names(Tables_Nobt)]
+# Create a list of the GO Plots
+GO_Nobt <- list()
+GO_Nobt <- lapply(seq_along(Tables_Nobt), 
+                  function(i) GOPlot(Tables_Nobt[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
+                    theme(legend.position = "none"))
+
+
+# Tobacco Gene Plots ------------------------------------------------------
 # Get Nobt orthologs
 orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
                           sep="\t",
@@ -170,11 +150,10 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
   plot_annotation(tag_levels = "A")
 ggsave("Figures/Tobacco_Clusters.pdf", height=20, width=15)
 
-
 # Solanum Clusters ------------------------------------------------------
 # For common patterns
-C3 <- list()
-C3 <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$cluster)),
+C2 <- list()
+C2 <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$cluster)),
              function(i) ggplot(Cluster_Solanum_Noise$normalized[Cluster_Solanum_Noise$normalized$cluster==i,], 
                                 aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Z-score of Expression",
@@ -190,8 +169,8 @@ C3 <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$cluster)),
                stat_summary(fun=mean, geom="line", aes(group=Fruit))+
                ggtitle(paste("Cluster", i, "Expression")))
 # For divergent patterns
-C4 <- list()
-C4 <- lapply(seq_along(unique(Cluster_Solanum$normalized$cluster)),
+C3 <- list()
+C3 <- lapply(seq_along(unique(Cluster_Solanum$normalized$cluster)),
              function(i) ggplot(Cluster_Solanum$normalized[Cluster_Solanum$normalized$cluster==i,], 
                                 aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Z-score of Expression",
@@ -240,16 +219,32 @@ GO_Solanum <- lapply(seq_along(Tables_Solanum),
                     theme(legend.position = "none"))
 
 # Solanum Gene Plots -----------------------------------------------------------
-
 # Make a new dataframe with just those genes
 Subset_Solanum <- subset(Cluster_Solanum$normalized, genes %in% names(impt_genes))
 Subset_Solanum$Abbr <- impt_genes[Subset_Solanum$genes]
 Subset_SolanumNoise <- subset(Cluster_Solanum_Noise$normalized, genes %in% names(impt_genes))
 Subset_SolanumNoise$Abbr <- impt_genes[Subset_SolanumNoise$genes]
 
-# Plot the overaged expression of these genes
+# For common patterns
 G2 <- list()
-G2 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
+G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
+             function(i) ggplot(Subset_SolanumNoise[Subset_SolanumNoise$Abbr==unique(Subset_SolanumNoise$Abbr)[i],], 
+                                aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
+               labs(y="Z-score of Expression",
+                    x="Stage") +
+               scale_color_manual(values=palline[4]) +
+               scale_x_discrete(labels=Labs_SolanumStage) +
+               theme(plot.title = element_text(hjust = 0.5,face="italic"),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     strip.text.x = element_text(face="italic"),
+                     legend.position = "none") +
+               geom_line(position=position_dodge(width=0))+
+               ggtitle(unique(Subset_SolanumNoise$Abbr)[i]))
+
+# For divergent patterns
+G3 <- list()
+G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
              function(i) ggplot(Subset_Solanum[Subset_Solanum$Abbr==unique(Subset_Solanum$Abbr)[i],], 
              aes(x=DAP, y=value, col=Species, fill=Species, group=Species, lty=Species)) +
   labs(y="Z-score of Expression",
@@ -263,21 +258,6 @@ G2 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
   geom_line(position=position_dodge(width=0)) +
     ggtitle(unique(Subset_Solanum$Abbr)[i]))
 
-G3 <- list()
-G3 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
-             function(i) ggplot(Subset_SolanumNoise[Subset_SolanumNoise$Abbr==unique(Subset_SolanumNoise$Abbr)[i],], 
-             aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
-  labs(y="Z-score of Expression",
-       x="Stage") +
-  scale_color_manual(values=palline[4]) +
-  scale_x_discrete(labels=Labs_SolanumStage) +
-  theme(plot.title = element_text(hjust = 0.5,face="italic"),
-        plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF"),
-        strip.text.x = element_text(face="italic"),
-        legend.position = "none") +
-  geom_line(position=position_dodge(width=0))+
-    ggtitle(unique(Subset_SolanumNoise$Abbr)[i]))
 
 # Gene Figure -------------------------------------------------------------
 
