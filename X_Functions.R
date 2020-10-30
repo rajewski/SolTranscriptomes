@@ -57,6 +57,7 @@ DESeqSpline <- function(se=se,
   if (CollapseTechRep) {
     #Collapse technical replicates
     #Assumes tech reps share an accession name with ".1" or ".2" to differentiate them
+    message("Collapsing technical replicates based on accession name.")
     dds$Accession <- sub("\\.\\d", "", dds$Accession) #converted to char, FYI
     dds <- collapseReplicates(dds, dds$Accession)
   }
@@ -141,25 +142,20 @@ DESeqCluster <- function(dds=dds,
 ConvertGenes2Orthos <- function(OrthogroupMappingFile="",
                                 GeneWiseExpt="",
                                 SingleCopyOrthoOnly=FALSE,
-                                Arabidopsis=TRUE) {
+                                RemoveTaxa=c()) {
   require(tidyr)
   Orthogroups <- read.table(OrthogroupMappingFile,
                             sep="\t",
                             stringsAsFactors = F,
                             header=T)
-  if(!Arabidopsis) {
-    Orthogroups <- Orthogroups[,-2]
+  if (!is.null(RemoveTaxa)) {
+    Orthogroups <- Orthogroups[,-which(names(Orthogroups) %in% RemoveTaxa)]
   }
   if (SingleCopyOrthoOnly) {
     Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
     Orthogroups <- Orthogroups %>% filter_all(all_vars(!grepl("^$",.))) # Remove empties
   }
-  if(Arabidopsis) {
-    Orthogroups <- Orthogroups %>% unite("Concatenated", 2:length(Orthogroups), sep=", ")
-  } else {
-    #Assumes Arabidopsis is the 2nd column
-    Orthogroups <- Orthogroups %>% unite("Concatenated", 3:length(Orthogroups), sep=", ")
-    }
+  Orthogroups <- Orthogroups %>% unite("Concatenated", 2:length(Orthogroups), sep=", ")
   Orthogroups <- separate_rows(as.data.frame(Orthogroups[,c("Orthogroup", "Concatenated")]), 2, sep=", ")
   # Extract, subset, and aggregate count matrix from SummarizedExperiment
   Counts <- assay(GeneWiseExpt)
@@ -197,7 +193,7 @@ GOEnrich <- function(gene2go="",
   require(tidyr)
   require(dplyr)
   # Clean the lists of GO terms from the bash script and convert to a named list object
-  GO <- read.table(gene2go, stringsAsFactors = F)
+  GO <- read.table(gene2go, stringsAsFactors = F, sep="\t")
   GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
   GO <- GO %>% 
     distinct() %>% 
@@ -221,12 +217,12 @@ GOEnrich <- function(gene2go="",
                 description = "Slyc Cluster 1",
                 ontology = GOCategory,
                 allGenes = GOI,
-                nodeSize = 5,
+                nodeSize = 5, #better than 10
                 annot = annFUN.gene2GO,
                 gene2GO=GO)
   # Do the enrichment test
   GOResults <- runTest(GOData,
-                       algorithm="classic", #classic is best, then lea?
+                       algorithm="weight01", #better than classic,weight,parentchild
                        statistic = "fisher")
   # Summarize the test with a table
   GOTable <- GenTable(GOData,
@@ -284,6 +280,49 @@ GOPlot <- function(GoGraph=X,
     guides(fill=guide_colorbar(ticks=FALSE, label.position = 'left')) +
     coord_flip()
   print(GoPlot)
+}
+
+
+# PCA from DESeq2 ---------------------------------------------------------
+# This is a modification of  DESeq2::plotPCA()
+plotPCAmod = function(object, 
+                      shape="Stage",
+                      color="Species",
+                      ntop=500,
+                      xPC=1,
+                      yPC=2) {
+  # calculate the variance for each gene
+  rv <- rowVars(assay(object))
+  # select the ntop genes by variance
+  select <- order(rv, decreasing=TRUE)[seq_len(min(ntop, length(rv)))]
+  # perform a PCA on the data in assay(x) for the selected genes
+  pca <- prcomp(t(assay(object)[select,]))
+  # the contribution to the total variance for each component
+  percentVar <- pca$sdev^2 / sum( pca$sdev^2 )
+  #if (!all(intgroup %in% names(colData(object)))) {
+  #  stop("the argument 'intgroup' should specify columns of colData(dds)")
+  #}
+  #intgroup.df <- as.data.frame(colData(object)[, intgroup, drop=FALSE])
+  # nly support one group 
+  shapeVec <- colData(object)[[shape]]
+  colorVec <- colData(object)[[color]]
+  # assembly the data for the plot
+  d <- data.frame(PCx=pca$x[,xPC], PCy=pca$x[,yPC], shapeCol=shapeVec, colorCol=colorVec, name=colnames(object))
+  
+  ggplot(data=d, aes_string(x="PCx", y="PCy", color=d$colorCol, shape=d$shapeCol)) + 
+    geom_point(               size=3) + 
+    xlab(paste0("PC",xPC,": ",round(percentVar[xPC] * 100),"% variance")) +
+    ylab(paste0("PC",yPC,": ",round(percentVar[yPC] * 100),"% variance")) +
+    coord_fixed() +
+    #scale_fill_manual(values=palfill[c(3,7,6,1,4)]) +
+    #scale_color_manual(values=palline[c(3,7,6,1,4)]) +
+        theme(plot.title = element_text(hjust = 0.5),
+          plot.subtitle = element_text(hjust=0.5),
+          strip.background = element_rect(fill="#FFFFFF"),
+          legend.position = "right", 
+          legend.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank())
 }
 
 
@@ -378,14 +417,34 @@ PfamEnrichment <- function(AllGenesFile = "",
 }
 
 
+# Rename DESeq Clusters ---------------------------------------------------
+ClusterLabs <- function(ClusterObj) {
+  labels <- paste("Cluster", seq_along(unique(Cluster_Nobt$normalized$cluster)))
+  names(labels) <- seq_along(unique(Cluster_Nobt$normalized$cluster))
+  return(labels)
+}
+
+
+# Stage Labels ------------------------------------------------------------
+Stage_Labs <- c("1"="1", "2"="2", "3"="3", "3.5"="Br", "4"="RR")
+
 # Common Color Palette  ---------------------------------------------------
 library("wesanderson")
 palw <- wes_palette("Zissou1",4,"continuous") 
-#Blue=Pimpinellifolium
-#Green=Arabidopsis
-#Yellow=Obtusifolia or dry
-#Red=Lycopersicum or fleshy
+#"#3B9AB2" = Blue = Pimpinellifolium
+#"#9EBE91" = Green = Arabidopsis
+#"#E4B80E" = Yellow = Obtusifolia or dry
+#"#F21A00" = Red = Lycopersicum or fleshy
 
+palfill <- c("#E4B80E", "#FFFFFF", "#808080", "#F21A00", "#FFFFFF", "#808080", "#000000")
+palline <- c("#E4B80E", "#E4B80E", "#E4B80E", "#F21A00", "#F21A00", "#F21A00", "#F21A00")
+#"#E4B80E" within "#E4B80E" = dry
+#"#FFFFFF" within "#E4B80E" = Obtusifolia
+#"#808080" within "#E4B80E" = Arabidopsis
+#"#F21A00" within "#F21A00" = fleshy
+#"#FFFFFF" within "#F21A00" = lycopersicum
+#"#808080" within "#F21A00" = pimp
+#"#000000" within "#F21A00" = melon
 
 
 
