@@ -218,6 +218,10 @@ GO_Solanum <- lapply(seq_along(Tables_Solanum),
                   function(i) GOPlot(Tables_Solanum[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
                     theme(legend.position = "none"))
 
+
+# Solanum Figures ----------------------------------------------------------
+
+
 # Solanum Gene Plots -----------------------------------------------------------
 # Make a new dataframe with just those genes
 Subset_Solanum <- subset(Cluster_Solanum$normalized, genes %in% names(impt_genes))
@@ -267,13 +271,17 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
 
 # Five-Species Venn Diagram -----------------------------------------------
 
+#From 6_VennDiagram.R
 
 # Five-Species GO Plots ---------------------------------------------------
 
+#From 6_Dry_v_Fleshy.R
 
 # Five-Species PCA --------------------------------------------------------
 
+#From 6_Dry_v_Fleshy.R
 
 # Five-Species Clusters ---------------------------------------------------
 
+#From 6_Dry_v_Fleshy.R
 
