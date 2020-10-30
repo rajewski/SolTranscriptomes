@@ -146,19 +146,22 @@ Subset_Nobt <- subset(Cluster_Nobt$normalized, genes %in% names(Gene_Nobt))
 Subset_Nobt$Abbr <- Gene_Nobt[Subset_Nobt$genes]
 
 # Plot the overaged expression of these genes
-G1 <- ggplot(Subset_Nobt, aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
+G1 <- list()
+G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
+             function(i) ggplot(Subset_Nobt[Subset_Nobt$Abbr==unique(Subset_Nobt$Abbr)[i],],
+            aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
   labs(y="Z-score of Expression",
        x="Stage") +
   scale_fill_manual(values=palfill[2]) +
   scale_color_manual(values=palline[2]) +
-  facet_rep_wrap(~Abbr) +
   scale_x_discrete(labels=Labs_NobtStage) +
-  theme(plot.title = element_text(hjust = 0.5),
+  theme(plot.title = element_text(hjust = 0.5, face="italic"),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF"),
         strip.text.x = element_text(face="italic"),
         legend.position = "none") +
-  geom_line(position=position_dodge(width=0))
+  geom_line(position=position_dodge(width=0)) +
+    ggtitle(unique(Subset_Nobt$Abbr)[i]))
 
 # Tobacco Figures ----------------------------------------------------------
 
@@ -245,33 +248,41 @@ Subset_SolanumNoise <- subset(Cluster_Solanum_Noise$normalized, genes %in% names
 Subset_SolanumNoise$Abbr <- impt_genes[Subset_SolanumNoise$genes]
 
 # Plot the overaged expression of these genes
-G2 <- ggplot(Subset_Solanum, 
+G2 <- list()
+G2 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
+             function(i) ggplot(Subset_Solanum[Subset_Solanum$Abbr==unique(Subset_Solanum$Abbr)[i],], 
              aes(x=DAP, y=value, col=Species, fill=Species, group=Species, lty=Species)) +
   labs(y="Z-score of Expression",
        x="Stage") +
   scale_color_manual(values=palline[c(5,6)]) +
-  facet_rep_wrap(~Abbr) +
   scale_x_discrete(labels=Labs_SolanumStage) +
-  theme(plot.title = element_text(hjust = 0.5),
+  theme(plot.title = element_text(hjust = 0.5,face="italic"),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF"),
         strip.text.x = element_text(face="italic")) +
-  geom_line(position=position_dodge(width=0))
+  geom_line(position=position_dodge(width=0)) +
+    ggtitle(unique(Subset_Solanum$Abbr)[i]))
 
-G3 <- ggplot(Subset_SolanumNoise, 
+G3 <- list()
+G3 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
+             function(i) ggplot(Subset_SolanumNoise[Subset_SolanumNoise$Abbr==unique(Subset_SolanumNoise$Abbr)[i],], 
              aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
   labs(y="Z-score of Expression",
        x="Stage") +
   scale_color_manual(values=palline[4]) +
-  facet_rep_wrap(~Abbr) +
   scale_x_discrete(labels=Labs_SolanumStage) +
-  theme(plot.title = element_text(hjust = 0.5),
+  theme(plot.title = element_text(hjust = 0.5,face="italic"),
         plot.subtitle = element_text(hjust=0.5),
         strip.background = element_rect(fill="#FFFFFF"),
         strip.text.x = element_text(face="italic"),
         legend.position = "none") +
-  geom_line(position=position_dodge(width=0))
+  geom_line(position=position_dodge(width=0))+
+    ggtitle(unique(Subset_SolanumNoise$Abbr)[i]))
 
+# Gene Figure -------------------------------------------------------------
+
+(G1[[1]] | G2[[1]] | G3[[1]]) +
+   plot_annotation(tag_levels = "A")
 
 
 # Five-Species Venn Diagram -----------------------------------------------
