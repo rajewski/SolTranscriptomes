@@ -419,8 +419,8 @@ PfamEnrichment <- function(AllGenesFile = "",
 
 # Rename DESeq Clusters ---------------------------------------------------
 ClusterLabs <- function(ClusterObj) {
-  labels <- paste("Cluster", seq_along(unique(Cluster_Nobt$normalized$cluster)))
-  names(labels) <- seq_along(unique(Cluster_Nobt$normalized$cluster))
+  labels <- paste("Cluster", seq_along(unique(ClusterObj$normalized$cluster)))
+  names(labels) <- sort(unique(ClusterObj$normalized$cluster))
   return(labels)
 }
 
