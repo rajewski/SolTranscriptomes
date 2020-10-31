@@ -272,7 +272,7 @@ GOPlot <- function(GoGraph=X,
       legend.key.size=unit(0.5, "cm"),      #Sets overall area/size of the legend
       #legend.text=element_text(size=18),  #Text size
       legend.title=element_blank(),
-      plot.title=element_text(angle=0, face="bold", vjust=1, size=25),
+      plot.title=element_text(angle=0, face="bold", vjust=1),
       axis.text.x=element_text(angle=0, hjust=0.5),
       axis.text.y=element_text(angle=0, vjust=0.5),
       axis.title=element_text(hjust=0.5),
