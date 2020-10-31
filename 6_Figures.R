@@ -88,8 +88,8 @@ C1 <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)),
              aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Z-score of Expression",
                     x="Stage") +
-             scale_fill_manual(values=palfill[1]) +
-             scale_color_manual(values=palline[1]) +
+             scale_fill_manual(values=palw2[1]) +
+             scale_color_manual(values=palw2[1]) +
              scale_x_discrete(labels=Labs_NobtStage) +
              theme(plot.title = element_text(hjust = 0.5),
                    plot.subtitle = element_text(hjust=0.5),
@@ -114,12 +114,23 @@ names(Tables_Nobt) <- Labs_NobtCluster[names(Tables_Nobt)]
 # Create a list of the GO Plots
 GO_Nobt <- list()
 GO_Nobt <- lapply(seq_along(Tables_Nobt), 
-                  function(i) GOPlot(Tables_Nobt[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
+                  function(i) GOPlot(Tables_Nobt[[i]], 
+                                     Title = paste("Cluster", i, "GO Enrichment"),
+                                     colorHex = palw2[1]) +
                     theme(legend.position = "none"))
 
 
 # Tobacco Gene Plots ------------------------------------------------------
-# Get Nobt orthologs
+# Test if I should plot a gene at all
+Test_Nobt <- as.data.frame(results(DDS_Nobt))
+Test_Nobt <- Test_Nobt[row.names(Test_Nobt) %in% names(Gene_Nobt),]
+Test_Nobt$Abbr <- Gene_Nobt[row.names(Test_Nobt)]
+Test_Nobt <- Test_Nobt[order(Test_Nobt$Abbr),]
+Test_Nobt$Plot <- TRUE
+Test_Nobt$Plot[Test_Nobt$padj>0.01 | is.na(Test_Nobt$padj)] <- FALSE
+Test_Nobt <- Test_Nobt[,-c(1:5)]
+
+#Get Nobt orthologs
 orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
                           sep="\t",
                           stringsAsFactors = F,
@@ -150,7 +161,8 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                scale_color_manual(values=palw2[1]) +
                scale_fill_manual(values=palw2[1]) +
                scale_x_discrete(labels=Labs_NobtStage) +
-               theme(plot.title = element_text(hjust = 0.5,face="italic"),
+               theme(plot.title = element_text(hjust = 0.5,
+                                     face = ifelse(Test_Nobt[i,"Plot"], 'bold.italic', 'italic')),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
                      strip.text.x = element_text(face="italic"),
@@ -160,9 +172,17 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                ggtitle(unique(Subset_Nobt$Abbr)[i]))
 
 # Tobacco Figures ----------------------------------------------------------
+(G1[[1]] + G1[[2]] + G1[[3]] + G1[[4]] + G1[[5]] + 
+   G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] + G1[[10]] + 
+   G1[[11]] + G1[[12]]  + G1[[14]] + G1[[15]] + 
+   G1[[16]] + G1[[17]] + G1[[18]] + G1[[19]] + G1[[20]] + 
+   G1[[21]] + G1[[22]] + G1[[23]] + G1[[24]] + G1[[25]] + 
+   G1[[26]]) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Tobacco_Genes.pdf", height=15, width=15)
 
-((C2[[1]] | GO_Nobt[[1]]) / (C2[[2]] | GO_Nobt[[2]]) / (C2[[3]] | GO_Nobt[[3]]) /
- (C2[[4]] | GO_Nobt[[4]]) / (C2[[5]] | GO_Nobt[[5]]) / (C2[[6]] | GO_Nobt[[6]])) + 
+((C1[[1]] | GO_Nobt[[1]]) / (C1[[2]] | GO_Nobt[[2]]) / (C1[[3]] | GO_Nobt[[3]]) /
+ (C1[[4]] | GO_Nobt[[4]]) / (C1[[5]] | GO_Nobt[[5]]) / (C1[[6]] | GO_Nobt[[6]])) + 
   plot_annotation(tag_levels = "A")
 ggsave("Figures/Tobacco_Clusters.pdf", height=20, width=15)
 
@@ -234,7 +254,6 @@ GO_Solanum <- lapply(seq_along(Tables_Solanum),
                   function(i) GOPlot(Tables_Solanum[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
                     theme(legend.position = "none"))
 
-# Solanum Figures ----------------------------------------------------------
 
 
 # Solanum Gene Plots DDS --------------------------------------------------
@@ -272,7 +291,8 @@ G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
                scale_color_manual(values=palw2[3]) +
                scale_fill_manual(values=palw2[3]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
-               theme(plot.title = element_text(hjust = 0.5,face="italic"),
+               theme(plot.title = element_text(hjust = 0.5,
+                                    face = ifelse(Test_Solanum[i,"Choose"]=="Together", 'bold.italic', 'italic')),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
                      strip.text.x = element_text(face="italic"),
@@ -304,7 +324,8 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
               #                       labels=c("Wild", "Cultivated or Both")) +
                scale_fill_manual(values=palw2[c(2,3)]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
-               theme(plot.title = element_text(hjust = 0.5,face="italic"),
+               theme(plot.title = element_text(hjust = 0.5,
+                                  face = ifelse(Test_Solanum[i,"Choose"]=="Separate", 'bold.italic', 'italic')),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
                      strip.text.x = element_text(face="italic"),
@@ -316,14 +337,16 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
 
 
 # Gene Figure -------------------------------------------------------------
-
-(G2[[1]] | G2[[2]] | G2[[3]] | G2[[4]] | G2[[5]] | G2[[6]] | G2[[7]] | G2[[8]]) /
-  (G3[[1]] | G2[[10]] | G2[[11]] | G2[[12]] | G2[[13]] | G2[[14]] | G2[[15]] | G3[[2]]) /
-  (G2[[17]] | G2[[18]] | G2[[19]] | G2[[20]] | G2[[21]] | G2[[22]] | G2[[23]] | G2[[24]]) /
-  (G2[[6]] | G2[[26]] | G3[[3]] | G2[[28]] | G2[[29]] | G2[[30]] | G2[[31]] | G3[[4]]) +
+(G2[[1]] + G2[[2]] + G2[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G2[[7]] + G2[[8]] + 
+  G2[[9]] + G2[[10]] + G2[[11]] + G2[[12]] + G2[[13]] + G2[[14]] + G2[[15]] + G2[[16]] + 
+  G2[[17]] + G2[[18]] + G2[[19]] + G2[[20]] + G2[[21]] + G2[[22]] + G2[[23]] + G2[[24]] + 
+  G2[[25]] + G2[[26]] + G2[[27]] + G2[[28]] + G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + 
+  G3[[33]] + G2[[34]] + G2[[35]] + G2[[36]] + G2[[37]] + G2[[38]] + G2[[39]] + G2[[40]] + 
+  G2[[41]] + G2[[42]] + G3[[43]] + G2[[44]] + G2[[45]] + G2[[46]] + G2[[47]] + G3[[48]] + 
+  G3[[49]] + G2[[50]] + G2[[51]] + G2[[52]] + G2[[53]]) +
    plot_annotation(tag_levels = "A") +
   plot_layout(guides="collect")
-ggsave2("Figures/Tomato_Genes.pdf", height=15, width=25)
+ggsave2("Figures/Tomato_Genes.pdf", height=30, width=30)
 
 
 # Five-Species Venn Diagram -----------------------------------------------
