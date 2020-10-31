@@ -431,6 +431,7 @@ Stage_Labs <- c("1"="1", "2"="2", "3"="3", "3.5"="Br", "4"="RR")
 # Common Color Palette  ---------------------------------------------------
 library("wesanderson")
 palw <- wes_palette("Zissou1",4,"continuous") 
+palw2 <- wes_palette("FantasticFox1", 3, "continuous")
 #"#3B9AB2" = Blue = Pimpinellifolium
 #"#9EBE91" = Green = Arabidopsis
 #"#E4B80E" = Yellow = Obtusifolia or dry

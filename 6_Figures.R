@@ -147,8 +147,8 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                                 aes(x=DAP, y=value, col=Abbr, fill=Abbr)) +
                labs(y="Normalized Counts",
                     x="Stage") +
-               scale_color_manual(values=palw[3]) +
-               scale_fill_manual(values=palw[3]) +
+               scale_color_manual(values=palw2[1]) +
+               scale_fill_manual(values=palw2[1]) +
                scale_x_discrete(labels=Labs_NobtStage) +
                theme(plot.title = element_text(hjust = 0.5,face="italic"),
                      plot.subtitle = element_text(hjust=0.5),
@@ -269,7 +269,8 @@ G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
                labs(y="Normalized Counts",
                     x="Stage") +
                #ylim(Limit_genes) +
-               scale_color_manual(values=palw[4]) +
+               scale_color_manual(values=palw2[3]) +
+               scale_fill_manual(values=palw2[3]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
                theme(plot.title = element_text(hjust = 0.5,face="italic"),
                      plot.subtitle = element_text(hjust=0.5),
@@ -297,11 +298,11 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
                                 aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Normalized Counts",
                     x="Stage") +
-               scale_color_manual(values=palw[c(1,4)],
+               scale_color_manual(values=palw2[c(2,3)],
                                   labels=c("Wild", "Cultivated or Both")) +
                #scale_linetype_manual(values=c("dotted", "solid"),
               #                       labels=c("Wild", "Cultivated or Both")) +
-               scale_fill_manual(values=palw[c(1,4)]) +
+               scale_fill_manual(values=palw2[c(2,3)]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
                theme(plot.title = element_text(hjust = 0.5,face="italic"),
                      plot.subtitle = element_text(hjust=0.5),
