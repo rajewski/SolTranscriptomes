@@ -5,17 +5,23 @@ theme_set(theme_cowplot())
 library("lemon")
 library("VennDiagram")
 library("dplyr")
+library("reshape")
 library("patchwork")
 
 # Read Data In ------------------------------------------------------------
 Cluster_Nobt <- readRDS("DEGAnalysis/RNA-seq/Cluster_Nobt.rds")
 Labs_NobtCluster <- ClusterLabs(Cluster_Nobt)
+
+DDS_Nobt <- readRDS("DEGAnalysis/RNA-seq/DDS_NobtSE.rds")
 Labs_NobtStage <- c("0"="1", "3"="2", "6"="3", "11"="Br")
 
 Cluster_Solanum <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF.rds")
 Labs_SolanumCluster <- ClusterLabs(Cluster_Solanum)
 Cluster_Solanum_Noise <-readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
 Labs_SolanumNoiseCluster <- ClusterLabs(Cluster_Solanum_Noise)
+
+DDS_SolanumNoise <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF_Noise.rds")
+DDS_Solanum <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF.rds")
 Labs_SolanumStage <- c("1"="1", "3"="2", "15"="3", "35"="Br", "45"="RR")
 
 # List important genes to plot
@@ -73,6 +79,8 @@ impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc08g066860.2.1"="Solyc08g066860.2.1",
                 "Solyc07g005840.2.1"="SlCel3")
 
+Limit_genes <- c(-2.5,2.5)
+
 # Tobacco Clusters -----------------------------------------------------------
 C1 <- list()
 C1 <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)),
@@ -124,26 +132,32 @@ names(Gene_Nobt) <- tmp$Nicotiana
 Gene_Nobt <- c(Gene_Nobt, c("NIOBTv3_g28929-D2.t1"="NoFUL1","NIOBTv3_g39464.t1"="NoFUL2","NIOBTv3_g07845.t1"="NoMBP10","NIOBT_gMBP20.t1"="NoMBP20"))
 
 # Make a new dataframe with just those genes
-Subset_Nobt <- subset(Cluster_Nobt$normalized, genes %in% names(Gene_Nobt))
-Subset_Nobt$Abbr <- Gene_Nobt[Subset_Nobt$genes]
+# Subset to just the important genes
+Subset_Nobt <- as.data.frame(assay(subset(DDS_Nobt, rownames(DDS_Nobt) %in% names(Gene_Nobt))))
+Subset_Nobt$Gene <- rownames(Subset_Nobt)
+Subset_Nobt$Abbr <- Gene_Nobt[Subset_Nobt$Gene]
+Subset_Nobt <- Subset_Nobt[order(Subset_Nobt$Abbr),]
+Subset_Nobt <- melt(Subset_Nobt, id.vars = c("Gene", "Abbr"))
+Subset_Nobt$DAP <- as.factor(rep(colData(DDS_Nobt)$DAP,
+                               each=length(unique(Subset_Nobt$Gene))))
 
-# Plot the overaged expression of these genes
 G1 <- list()
 G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
-             function(i) ggplot(Subset_Nobt[Subset_Nobt$Abbr==unique(Subset_Nobt$Abbr)[i],],
-            aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
-  labs(y="Z-score of Expression",
-       x="Stage") +
-  scale_fill_manual(values=palfill[2]) +
-  scale_color_manual(values=palline[2]) +
-  scale_x_discrete(labels=Labs_NobtStage) +
-  theme(plot.title = element_text(hjust = 0.5, face="italic"),
-        plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF"),
-        strip.text.x = element_text(face="italic"),
-        legend.position = "none") +
-  geom_line(position=position_dodge(width=0)) +
-    ggtitle(unique(Subset_Nobt$Abbr)[i]))
+             function(i) ggplot(Subset_Nobt[Subset_Nobt$Abbr==unique(Subset_Nobt$Abbr)[i],], 
+                                aes(x=DAP, y=value, col=Abbr, fill=Abbr)) +
+               labs(y="Normalized Counts",
+                    x="Stage") +
+               scale_color_manual(values=palw[3]) +
+               scale_fill_manual(values=palw[3]) +
+               scale_x_discrete(labels=Labs_NobtStage) +
+               theme(plot.title = element_text(hjust = 0.5,face="italic"),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     strip.text.x = element_text(face="italic"),
+                     legend.position = "none") +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", group="Abbr")+
+               ggtitle(unique(Subset_Nobt$Abbr)[i]))
 
 # Tobacco Figures ----------------------------------------------------------
 
@@ -223,51 +237,92 @@ GO_Solanum <- lapply(seq_along(Tables_Solanum),
 # Solanum Figures ----------------------------------------------------------
 
 
-# Solanum Gene Plots -----------------------------------------------------------
-# Make a new dataframe with just those genes
-Subset_Solanum <- subset(Cluster_Solanum$normalized, genes %in% names(impt_genes))
-Subset_Solanum$Abbr <- impt_genes[Subset_Solanum$genes]
-Subset_SolanumNoise <- subset(Cluster_Solanum_Noise$normalized, genes %in% names(impt_genes))
-Subset_SolanumNoise$Abbr <- impt_genes[Subset_SolanumNoise$genes]
+# Solanum Gene Plots DDS --------------------------------------------------
+# Determine if a plot should be combined by species or now
+Test_Solanum <- merge(as.data.frame(results(DDS_Solanum)),
+                      as.data.frame(results(DDS_SolanumNoise)),
+                      by=0)
+Test_Solanum <- Test_Solanum[Test_Solanum$Row.names %in% names(impt_genes),c(1,7,13)]
+Test_Solanum$Abbr <- impt_genes[Test_Solanum$Row.names]
+Test_Solanum <- Test_Solanum[order(Test_Solanum$Abbr),]
+Test_Solanum$padj.x[Test_Solanum$padj.x>0.01] <- 1
+Test_Solanum$padj.y[Test_Solanum$padj.y>0.01] <- 1
+Test_Solanum$Choose[Test_Solanum$padj.x < Test_Solanum$padj.y] <- "Separate"
+Test_Solanum$Choose[Test_Solanum$padj.y < Test_Solanum$padj.x] <- "Together"
+Test_Solanum$Choose[is.na(Test_Solanum$Choose)] <- "Neither"
 
-# For common patterns
+# Subset to just the important genes
+Subset_SolanumNoise <- as.data.frame(assay(subset(DDS_SolanumNoise, rownames(DDS_SolanumNoise) %in% names(impt_genes))))
+Subset_SolanumNoise$Gene <- rownames(Subset_SolanumNoise)
+Subset_SolanumNoise$Abbr <- impt_genes[Subset_SolanumNoise$Gene]
+Subset_SolanumNoise <- Subset_SolanumNoise[order(Subset_SolanumNoise$Abbr),]
+Subset_SolanumNoise <- melt(Subset_SolanumNoise, id.vars = c("Gene", "Abbr"))
+Subset_SolanumNoise$Species <- rep(colData(DDS_SolanumNoise)$Species,
+                                    each=length(unique(Subset_SolanumNoise$Gene)))
+Subset_SolanumNoise$DAP <- rep(colData(DDS_SolanumNoise)$DAP,
+                                    each=length(unique(Subset_SolanumNoise$Gene)))
+
 G2 <- list()
 G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
              function(i) ggplot(Subset_SolanumNoise[Subset_SolanumNoise$Abbr==unique(Subset_SolanumNoise$Abbr)[i],], 
-                                aes(x=DAP, y=value, col=Species, fill=Species, group=Species)) +
-               labs(y="Z-score of Expression",
+                                aes(x=DAP, y=value, col=Abbr, fill=Abbr)) +
+               labs(y="Normalized Counts",
                     x="Stage") +
-               scale_color_manual(values=palline[4]) +
+               #ylim(Limit_genes) +
+               scale_color_manual(values=palw[4]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
                theme(plot.title = element_text(hjust = 0.5,face="italic"),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
                      strip.text.x = element_text(face="italic"),
                      legend.position = "none") +
-               geom_line(position=position_dodge(width=0))+
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", group="Abbr")+
                ggtitle(unique(Subset_SolanumNoise$Abbr)[i]))
 
-# For divergent patterns
+# Subset to just the important genes
+Subset_Solanum <- as.data.frame(assay(subset(DDS_Solanum, rownames(DDS_Solanum) %in% names(impt_genes))))
+Subset_Solanum$Gene <- rownames(Subset_Solanum)
+Subset_Solanum$Abbr <- impt_genes[Subset_Solanum$Gene]
+Subset_Solanum <- Subset_Solanum[order(Subset_Solanum$Abbr),]
+Subset_Solanum <- melt(Subset_Solanum, id.vars = c("Gene", "Abbr"))
+Subset_Solanum$Species <- rep(colData(DDS_Solanum)$Species,
+                                    each=length(unique(Subset_Solanum$Gene)))
+Subset_Solanum$DAP <- as.factor(rep(colData(DDS_Solanum)$DAP,
+                                each=length(unique(Subset_Solanum$Gene))))
+
 G3 <- list()
 G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
              function(i) ggplot(Subset_Solanum[Subset_Solanum$Abbr==unique(Subset_Solanum$Abbr)[i],], 
-             aes(x=DAP, y=value, col=Species, fill=Species, group=Species, lty=Species)) +
-  labs(y="Z-score of Expression",
-       x="Stage") +
-  scale_color_manual(values=palline[c(5,6)]) +
-  scale_x_discrete(labels=Labs_SolanumStage) +
-  theme(plot.title = element_text(hjust = 0.5,face="italic"),
-        plot.subtitle = element_text(hjust=0.5),
-        strip.background = element_rect(fill="#FFFFFF"),
-        strip.text.x = element_text(face="italic")) +
-  geom_line(position=position_dodge(width=0)) +
-    ggtitle(unique(Subset_Solanum$Abbr)[i]))
+                                aes(x=DAP, y=value, col=Species, fill=Species)) +
+               labs(y="Normalized Counts",
+                    x="Stage") +
+               scale_color_manual(values=palw[c(1,4)],
+                                  labels=c("Wild", "Cultivated or Both")) +
+               #scale_linetype_manual(values=c("dotted", "solid"),
+              #                       labels=c("Wild", "Cultivated or Both")) +
+               scale_fill_manual(values=palw[c(1,4)]) +
+               scale_x_discrete(labels=Labs_SolanumStage) +
+               theme(plot.title = element_text(hjust = 0.5,face="italic"),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     strip.text.x = element_text(face="italic"),
+                     legend.position = "none") +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", aes(group=Species)) +
+               #stat_summary(fun.data=mean_se, geom="errorbar", aes(group=Species)) +
+               ggtitle(unique(Subset_Solanum$Abbr)[i]))
 
 
 # Gene Figure -------------------------------------------------------------
 
-(G1[[1]] | G2[[1]] | G3[[1]]) +
-   plot_annotation(tag_levels = "A")
+(G2[[1]] | G2[[2]] | G2[[3]] | G2[[4]] | G2[[5]] | G2[[6]] | G2[[7]] | G2[[8]]) /
+  (G3[[1]] | G2[[10]] | G2[[11]] | G2[[12]] | G2[[13]] | G2[[14]] | G2[[15]] | G3[[2]]) /
+  (G2[[17]] | G2[[18]] | G2[[19]] | G2[[20]] | G2[[21]] | G2[[22]] | G2[[23]] | G2[[24]]) /
+  (G2[[6]] | G2[[26]] | G3[[3]] | G2[[28]] | G2[[29]] | G2[[30]] | G2[[31]] | G3[[4]]) +
+   plot_annotation(tag_levels = "A") +
+  plot_layout(guides="collect")
+ggsave2("Figures/Tomato_Genes.pdf", height=15, width=25)
 
 
 # Five-Species Venn Diagram -----------------------------------------------
