@@ -250,14 +250,15 @@ GOEnrich <- function(gene2go="",
 # Make a Plot of these GO Enrichments -------------------------------------
 GOPlot <- function(GoGraph=X,
                    Title="",
-                   LegendLimit=max(GoGraph$Significant)) 
+                   LegendLimit=max(GoGraph$Significant),
+                   colorHex="#B40F2099") 
 {
   require(ggplot2)
   GoPlot <- ggplot(GoGraph, aes(x=Term, y=-log10(Fisher), fill=Significant)) +
     stat_summary(geom = "bar", fun = mean, position = "dodge") +
     xlab(element_blank()) +
     ylab("Log Fold Enrichment") +
-    scale_fill_gradientn(colours = wes_palette("Royal1", 2, type="discrete"),
+    scale_fill_gradientn(colours = c("#87868140", colorHex), #0000ff40
                          limits=c(1,LegendLimit),
                          breaks=c(1,LegendLimit)) +
     ggtitle(Title) +
@@ -265,16 +266,16 @@ GOPlot <- function(GoGraph=X,
     #theme_bw(base_size=12) +
     theme(
       panel.grid = element_blank(),
-      legend.position=c(0.86,.5),
+      legend.position=c(0.8,.3),
       legend.background=element_blank(),
       legend.key=element_blank(),     #removes the border
-      legend.key.size=unit(1, "cm"),      #Sets overall area/size of the legend
+      legend.key.size=unit(0.5, "cm"),      #Sets overall area/size of the legend
       #legend.text=element_text(size=18),  #Text size
       legend.title=element_blank(),
-      plot.title=element_text(angle=0, face="bold", vjust=1),
+      plot.title=element_text(angle=0, face="bold", vjust=1, size=25),
       axis.text.x=element_text(angle=0, hjust=0.5),
       axis.text.y=element_text(angle=0, vjust=0.5),
-      axis.title=element_text(hjust=0.2),
+      axis.title=element_text(hjust=0.5),
       #title=element_text(size=18)
     ) +
     guides(fill=guide_colorbar(ticks=FALSE, label.position = 'left')) +
