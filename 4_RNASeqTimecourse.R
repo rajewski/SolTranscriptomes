@@ -179,7 +179,9 @@ Expt_TAIR <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_TAIR.rds"),
 # Combine Spimp and Slyc to look for genes that are different between them
 Expt_Solanum <- tryCatch(readRDS("DEGAnalysis/RNA-seq/Expt_Solanum.rds"),
                         error=function(e){
-                        do.call(cbind, list(Expt_Slyc, Expt_Spimp))})
+                        Expt_Solanum <- do.call(cbind, list(Expt_Slyc, Expt_Spimp))
+                        saveRDS(Expt_Solanum, "DEGAnalysis/RNA-seq/Expt_Solanum.rds")
+                        return(Expt_Solanum)})
 
 # Orthogroups -------------------------------------------------------------
 # This section does a cross-species comparison using the orthogroups assigned by Orthofinder.
@@ -414,19 +416,19 @@ DDS_Solanum <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Solanum.rds"),
 
 DDS_Solanum_3DF <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF.rds"),
                             error=function(e){
-                              DDS_Solanum <- DESeqSpline(se=Expt_Solanum,
+                              DDS_Solanum_3DF <- DESeqSpline(se=Expt_Solanum,
                                                          CaseCtlVar = "Species",
                                                          SetDF = 3)
                               saveRDS(DDS_Solanum_3DF, "DEGAnalysis/RNA-seq/DDS_Solanum_3DF.rds")
                               return(DDS_Solanum_3DF)})
 
 DDS_Solanum_3DF_Noise <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF_Noise.rds"),
-                                  error=function(e){
-                                    DESeqSpline(Expt_Solanum,
-                                                vsNoise = TRUE,
-                                                SetDF = 3)
-                                    saveRDS(DDS_Solanum_3DF_Noise, "DEGAnalysis/RNA-seq/DDS_Solanum_3DF_Noise.rds")
-                                    return(DDS_Solanum_3DF_Noise)})
+               error=function(e){
+               DDS_Solanum_3DF_Noise <- DESeqSpline(Expt_Solanum,
+                                        vsNoise = TRUE,
+                                        SetDF = 3)
+               saveRDS(DDS_Solanum_3DF_Noise, "DEGAnalysis/RNA-seq/DDS_Solanum_3DF_Noise.rds")
+               return(DDS_Solanum_3DF_Noise)})
 
 DDS_DryOrtho_Species <- tryCatch(readRDS("DEGAnalysis/RNA-seq/DDS_DryOrtho_Species.rds"),
                         error=function(e){
