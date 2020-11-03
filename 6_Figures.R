@@ -78,7 +78,7 @@ impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc04g072038.1.1"="Solyc04g072038.1.1",
                 "Solyc06g065310.3.1"="Solyc06g065310.3.1",
                 "Solyc08g066860.2.1"="SlFKD",
-                "Solyc07g005840.2.1"="SlCel3")
+                "Solyc07g005840.2.1"="Cel3")
 
 Limit_genes <- c(-2.5,2.5)
 
@@ -365,27 +365,47 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
 
 
 # Gene Figure -------------------------------------------------------------
-#Ethylene Biosynth
+#Ethylene Biosynth and perception
 (G2[[1]] + G2[[2]] + G2[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G2[[7]] + G2[[8]] + 
-   G2[[9]] + G2[[16]] +  G2[[17]] + G2[[18]])
-
-#Flavor and Pigment
-(G2[[12]] + G2[[13]] + G2[[14]] + G2[[15]] + G2[[24]] + G2[[25]] + G2[[26]])
-
-#Developmental TFs
-(G2[[10]] + G2[[19]] + G2[[21]] + G2[[22]] + G2[[23]])
-
-#Cell Size
-(G2[[11]] + G2[[20]])
-
-
-(      + G2[[27]] + G2[[28]] + G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + 
-   G3[[33]] + G2[[34]] + G2[[35]] + G2[[36]] + G2[[37]] + G2[[38]] + G2[[39]] + G2[[40]] + 
-   G2[[41]] + G2[[42]] + G3[[43]] + G2[[44]] + G2[[45]] + G2[[46]] + G2[[47]] + G3[[48]] + 
-   G3[[49]] + G2[[50]] + G2[[51]] + G2[[52]] + G2[[53]]) +
+   G2[[9]] + G2[[17]] +  G2[[18]] + G2[[19]] + G2[[36]] + guide_area()) +
   plot_annotation(tag_levels = "A") +
   plot_layout(guides="collect")
-ggsave2("Figures/Tomato_Genes.pdf", height=30, width=30)
+ggsave2("Figures/Tomato_Ethylene_Genes.pdf",
+        height=12,
+        width=12)
+
+#Flavor and Pigment
+(G2[[13]] + G2[[14]] + G2[[15]] + G2[[16]] + G2[[25]] + G2[[26]] + G2[[27]] +
+   G2[[39]] +G2[[53]])  +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(guides="collect") 
+ggsave2("Figures/Tomato_Pigment_Genes.pdf",
+        height=10,
+        width=10)
+
+#Developmental TFs
+(G2[[10]] + G2[[20]] + G2[[22]] + G2[[23]] + G2[[24]] + G2[[28]] +
+    G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + G2[[33]] + G3[[34]] +
+    G2[[35]] + G2[[36]] + G2[[47]] + G3[[48]] + G3[[49]] + G2[[50]] + 
+    G2[[51]] + G2[[52]] + guide_area())  +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(guides="collect",
+              nrow=3) 
+ggsave2("Figures/Tomato_TF_Genes.pdf",
+        height=10,
+        width=21)
+
+#Cell Wall
+(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]] + G2[[39]] + G2[[40]])
+ggsave2("Figures/Tomato_Cell_Genes.pdf",
+        height=10,
+        width=10)
+
+#Misc
+(G2[[41]] + G2[[42]] + G3[[43]] + G2[[44]] + G2[[45]] + G2[[46]]) +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(guides="collect")
+ggsave2("Figures/Tomato_Misc_Genes.pdf", height=30, width=30)
 
  
 # Five-Species Venn Diagram -----------------------------------------------
