@@ -487,8 +487,24 @@ GO_Ortho <- lapply(seq_along(Tables_Ortho),
                        theme(legend.position = "none"))
 
 # Five-Species PCA --------------------------------------------------------
+Subset_Noise <- DDS_Noise[rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<=0.01))]
+RLD_Noise <- rlog(Subset_Noise, blind=FALSE)
+RLD_Noise$Stage[RLD_Noise$Stage=="3.5"] <- "Br"
+RLD_Noise$Stage <- as.factor(RLD_Noise$Stage)
+RLD_Noise$Species <- factor(RLD_Fruit$Species, levels=c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
+# Make three PCA plots
+PCA1 <- lapply(list(c(1,2),c(2,3),c(1,3)),
+               function(i) plotPCAmod(RLD_Noise,xPC=i[1], yPC=i[2]))
 
-#From 6_Dry_v_Fleshy.R
+Subset_Fruit <- DDS_Fruit[rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<=0.01))]
+RLD_Fruit <- rlog(Subset_Fruit, blind=FALSE)
+RLD_Fruit$Stage[RLD_Fruit$Stage=="3.5"] <- "Br"
+RLD_Fruit$Stage <- as.factor(RLD_Fruit$Stage)
+RLD_Fruit$Species <- factor(RLD_Fruit$Species, levels=c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
+PCA2 <-  lapply(list(c(1,2),c(2,3),c(1,3)),
+                function(i) plotPCAmod(RLD_Fruit,
+                                       xPC=i[1], yPC=i[2],
+                                       ntop=dim(RLD_Fruit)[1]))
 
 # Five-Species Clusters ---------------------------------------------------
 
