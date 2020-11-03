@@ -1,4 +1,5 @@
 source("X_Functions.R")
+library("DESeq2")
 library("ggplot2")
 library("cowplot")
 theme_set(theme_cowplot())
@@ -65,7 +66,7 @@ impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc01g005000.3.1"="GAD3",
                 "Solyc09g091510.3.1"="CHS-1",
                 "Solyc05g053550.3.1"="CHS-2",
-                "Solyc07g052960.3.1"="GRAS38",
+                "Solyc07g052960.3.1"="SlFSR",
                 "Solyc10g005060.4.1"="CTOMT1",
                 "Solyc01g006540.4.1"="TOMLOXC",
                 "Solyc06g073720.3.1"="EIL1",
@@ -73,10 +74,10 @@ impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc06g073730.2.1"="EIL4",
                 "Solyc07g064300.3.1"="Solyc07g064300.3.1",
                 "Solyc03g117740.3.1"="Solyc03g117740.3.1",
-                "Solyc05g005150.1.1"="Solyc05g005150.1.1",
+                "Solyc05g005150.1.1"="SlKFB",
                 "Solyc04g072038.1.1"="Solyc04g072038.1.1",
                 "Solyc06g065310.3.1"="Solyc06g065310.3.1",
-                "Solyc08g066860.2.1"="Solyc08g066860.2.1",
+                "Solyc08g066860.2.1"="SlFKD",
                 "Solyc07g005840.2.1"="SlCel3")
 
 Limit_genes <- c(-2.5,2.5)
@@ -85,20 +86,20 @@ Limit_genes <- c(-2.5,2.5)
 C1 <- list()
 C1 <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)),
              function(i) ggplot(Cluster_Nobt$normalized[Cluster_Nobt$normalized$cluster==i,], 
-             aes(x=DAP, y=value, col=Species, fill=Species)) +
+                                aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Z-score of Expression",
                     x="Stage") +
-             scale_fill_manual(values=palw2[1]) +
-             scale_color_manual(values=palw2[1]) +
-             scale_x_discrete(labels=Labs_NobtStage) +
-             theme(plot.title = element_text(hjust = 0.5),
-                   plot.subtitle = element_text(hjust=0.5),
-                   strip.background = element_rect(fill="#FFFFFF"),
-                   legend.position = "none",
-                   legend.justification = c(1, -1)) +
-             geom_violin(position=position_dodge(width=0), alpha=0.5) +
-             stat_summary(fun=mean, geom="line", aes(group=Fruit))+
-             ggtitle(paste("Cluster", i, "Expression")))
+               scale_fill_manual(values=palw2[1]) +
+               scale_color_manual(values=palw2[1]) +
+               scale_x_discrete(labels=Labs_NobtStage) +
+               theme(plot.title = element_text(hjust = 0.5),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     legend.position = "none",
+                     legend.justification = c(1, -1)) +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", aes(group=Fruit))+
+               ggtitle(paste("Cluster", i, "Expression")))
 
 # Tobacco GO Plots --------------------------------------------------------
 # Do the GO Enrichment
@@ -107,7 +108,7 @@ for (i in levels(as.factor(Cluster_Nobt$normalized$cluster))) {
   tmpList <- as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% Cluster_Nobt$normalized$genes[Cluster_Nobt$normalized$cluster==i]))
   names(tmpList) <- Cluster_Nobt$normalized$genes
   Tables_Nobt[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Nobt.gene2go.tsv",
-                                GOIs=tmpList,
+                               GOIs=tmpList,
                                NumCategories = 10)
 }
 names(Tables_Nobt) <- Labs_NobtCluster[names(Tables_Nobt)]
@@ -121,15 +122,6 @@ GO_Nobt <- lapply(seq_along(Tables_Nobt),
 
 
 # Tobacco Gene Plots ------------------------------------------------------
-# Test if I should plot a gene at all
-Test_Nobt <- as.data.frame(results(DDS_Nobt))
-Test_Nobt <- Test_Nobt[row.names(Test_Nobt) %in% names(Gene_Nobt),]
-Test_Nobt$Abbr <- Gene_Nobt[row.names(Test_Nobt)]
-Test_Nobt <- Test_Nobt[order(Test_Nobt$Abbr),]
-Test_Nobt$Plot <- TRUE
-Test_Nobt$Plot[Test_Nobt$padj>0.01 | is.na(Test_Nobt$padj)] <- FALSE
-Test_Nobt <- Test_Nobt[,-c(1:5)]
-
 #Get Nobt orthologs
 orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
                           sep="\t",
@@ -141,6 +133,45 @@ tmp <- merge(Gene_Nobt, orthogroups, by.x=0, by.y="Solanum")
 Gene_Nobt <- as.character(tmp$impt_genes)
 names(Gene_Nobt) <- tmp$Nicotiana
 Gene_Nobt <- c(Gene_Nobt, c("NIOBTv3_g28929-D2.t1"="NoFUL1","NIOBTv3_g39464.t1"="NoFUL2","NIOBTv3_g07845.t1"="NoMBP10","NIOBT_gMBP20.t1"="NoMBP20"))
+rm(tmp)
+
+#Rename and hardcode genes
+Gene_Nobt <- c('NIOBTv3_g02352.t1'='NoACO6', 
+               'NIOBTv3_g22632-D2.t1'='NoAG', 
+               'NIOBTv3_g27953.t1'='NoCNR', 
+               'NIOBTv3_g13660.t1'='NoACO4', 
+               'NIOBTv3_g14235.t1'='NoSEP1', 
+               'NIOBTv3_g10096.t1'='NoFYFL', 
+               'NIOBTv3_g17569.t1'='NoPSY1', 
+               'NIOBTv3_g11084.t1'='NoGAD1', 
+               'NIOBTv3_g22270.t1'='NIOBTv3_g22270.t1', 
+               'NIOBTv3_g10008.t1'='NIOBTv3_g10008.t1', 
+               'NIOBTv3_g35607.t1'='NoKFB', 
+               'NIOBTv3_g18077.t1'='NoMC', 
+               'NIOBTv3_g12238.t1'='NIOBTv3_g12238.t1', 
+               'NIOBTv3_g12440.t1'='NoCel3', 
+               'NIOBTv3_g38689.t1'='NoACO5', 
+               'NIOBTv3_g37943.t1'='NoGRAS38', 
+               'NIOBTv3_g13969.t1'='NoSHP', 
+               'NIOBTv3_g11662.t1'='NIOBTv3_g11662.t1', 
+               'NIOBTv3_g12218.t1'='NoFKD', 
+               'NIOBTv3_g19880.t1'='NoCel2', 
+               'NIOBTv3_g10291.t1'='NoNR', 
+               'NIOBTv3_g14436.t1'='NoAGL11', 
+               'NIOBTv3_g28929-D2.t1'='NoFUL1', 
+               'NIOBTv3_g39464.t1'='NoFUL2', 
+               'NIOBTv3_g07845.t1'='NoMBP10', 
+               'NIOBT_gMBP20.t1'='NoMBP20')
+
+#Test if I should plot a gene at all
+Test_Nobt <- as.data.frame(results(DDS_Nobt))
+Test_Nobt <- Test_Nobt[row.names(Test_Nobt) %in% names(Gene_Nobt),]
+Test_Nobt$Abbr <- Gene_Nobt[row.names(Test_Nobt)]
+Test_Nobt <- Test_Nobt[order(Test_Nobt$Abbr),]
+Test_Nobt$Plot <- TRUE
+Test_Nobt$Plot[Test_Nobt$padj>0.01 | is.na(Test_Nobt$padj)] <- FALSE
+Test_Nobt <- Test_Nobt[,-c(1:5)]
+
 
 # Make a new dataframe with just those genes
 # Subset to just the important genes
@@ -150,7 +181,7 @@ Subset_Nobt$Abbr <- Gene_Nobt[Subset_Nobt$Gene]
 Subset_Nobt <- Subset_Nobt[order(Subset_Nobt$Abbr),]
 Subset_Nobt <- melt(Subset_Nobt, id.vars = c("Gene", "Abbr"))
 Subset_Nobt$DAP <- as.factor(rep(colData(DDS_Nobt)$DAP,
-                               each=length(unique(Subset_Nobt$Gene))))
+                                 each=length(unique(Subset_Nobt$Gene))))
 
 G1 <- list()
 G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
@@ -162,7 +193,7 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                scale_fill_manual(values=palw2[1]) +
                scale_x_discrete(labels=Labs_NobtStage) +
                theme(plot.title = element_text(hjust = 0.5,
-                                     face = ifelse(Test_Nobt[i,"Plot"], 'bold.italic', 'italic')),
+                                               face = ifelse(Test_Nobt[i,"Plot"], 'bold.italic', 'italic')),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
                      strip.text.x = element_text(face="italic"),
@@ -172,17 +203,16 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                ggtitle(unique(Subset_Nobt$Abbr)[i]))
 
 # Tobacco Figures ----------------------------------------------------------
-(G1[[1]] + G1[[2]] + G1[[3]] + G1[[4]] + G1[[5]] + 
-   G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] + G1[[10]] + 
-   G1[[11]] + G1[[12]]  + G1[[14]] + G1[[15]] + 
-   G1[[16]] + G1[[17]] + G1[[18]] + G1[[19]] + G1[[20]] + 
+(G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] + G1[[10]] + 
+   G1[[11]] + G1[[12]] + G1[[13]] + G1[[14]] + G1[[15]] + 
+  G1[[17]] + G1[[18]] + G1[[19]] +
    G1[[21]] + G1[[22]] + G1[[23]] + G1[[24]] + G1[[25]] + 
    G1[[26]]) +
   plot_annotation(tag_levels = "A")
 ggsave2("Figures/Tobacco_Genes.pdf", height=15, width=15)
 
 ((C1[[1]] | GO_Nobt[[1]]) / (C1[[2]] | GO_Nobt[[2]]) / (C1[[3]] | GO_Nobt[[3]]) /
- (C1[[4]] | GO_Nobt[[4]]) / (C1[[5]] | GO_Nobt[[5]]) / (C1[[6]] | GO_Nobt[[6]])) + 
+    (C1[[4]] | GO_Nobt[[4]]) / (C1[[5]] | GO_Nobt[[5]]) / (C1[[6]] | GO_Nobt[[6]])) + 
   plot_annotation(tag_levels = "A")
 ggsave("Figures/Tobacco_Clusters.pdf", height=20, width=15)
 
@@ -228,15 +258,15 @@ for (i in levels(as.factor(Cluster_Solanum_Noise$normalized$cluster))) {
   tmpList <- as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% Cluster_Solanum_Noise$normalized$genes[Cluster_Solanum_Noise$normalized$cluster==i]))
   names(tmpList) <- Cluster_Solanum_Noise$normalized$genes
   Tables_SolanumNoise[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                                  GOIs=tmpList,
-                                  NumCategories = 10)
+                                       GOIs=tmpList,
+                                       NumCategories = 10)
 }
 names(Tables_SolanumNoise) <- Labs_SolanumNoiseCluster[names(Tables_SolanumNoise)]
 # Create a list of the GO Plots
 GO_SolanumNoise <- list()
 GO_SolanumNoise <- lapply(seq_along(Tables_SolanumNoise), 
-                     function(i) GOPlot(Tables_SolanumNoise[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
-                       theme(legend.position = "none"))
+                          function(i) GOPlot(Tables_SolanumNoise[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
+                            theme(legend.position = "none"))
 
 # For divergent patterns
 Tables_Solanum <- list()
@@ -244,15 +274,15 @@ for (i in levels(as.factor(Cluster_Solanum$normalized$cluster))) {
   tmpList <- as.factor(as.numeric(Cluster_Solanum$normalized$genes %in% Cluster_Solanum$normalized$genes[Cluster_Solanum$normalized$cluster==i]))
   names(tmpList) <- Cluster_Solanum$normalized$genes
   Tables_Solanum[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                               GOIs=tmpList,
-                               NumCategories = 10)
+                                  GOIs=tmpList,
+                                  NumCategories = 10)
 }
 names(Tables_Solanum) <- Labs_SolanumCluster[names(Tables_Solanum)]
 # Create a list of the GO Plots
 GO_Solanum <- list()
 GO_Solanum <- lapply(seq_along(Tables_Solanum), 
-                  function(i) GOPlot(Tables_Solanum[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
-                    theme(legend.position = "none"))
+                     function(i) GOPlot(Tables_Solanum[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
+                       theme(legend.position = "none"))
 
 
 
@@ -277,9 +307,9 @@ Subset_SolanumNoise$Abbr <- impt_genes[Subset_SolanumNoise$Gene]
 Subset_SolanumNoise <- Subset_SolanumNoise[order(Subset_SolanumNoise$Abbr),]
 Subset_SolanumNoise <- melt(Subset_SolanumNoise, id.vars = c("Gene", "Abbr"))
 Subset_SolanumNoise$Species <- rep(colData(DDS_SolanumNoise)$Species,
-                                    each=length(unique(Subset_SolanumNoise$Gene)))
-Subset_SolanumNoise$DAP <- rep(colData(DDS_SolanumNoise)$DAP,
-                                    each=length(unique(Subset_SolanumNoise$Gene)))
+                                   each=length(unique(Subset_SolanumNoise$Gene)))
+Subset_SolanumNoise$DAP <- as.factor(rep(colData(DDS_SolanumNoise)$DAP,
+                               each=length(unique(Subset_SolanumNoise$Gene))))
 
 G2 <- list()
 G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
@@ -292,7 +322,7 @@ G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
                scale_fill_manual(values=palw2[3]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
                theme(plot.title = element_text(hjust = 0.5,
-                                    face = ifelse(Test_Solanum[i,"Choose"]=="Together", 'bold.italic', 'italic')),
+                                  face = ifelse(Test_Solanum[i,"Choose"]=="Together", 'bold.italic', 'italic')),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
                      strip.text.x = element_text(face="italic"),
@@ -308,9 +338,9 @@ Subset_Solanum$Abbr <- impt_genes[Subset_Solanum$Gene]
 Subset_Solanum <- Subset_Solanum[order(Subset_Solanum$Abbr),]
 Subset_Solanum <- melt(Subset_Solanum, id.vars = c("Gene", "Abbr"))
 Subset_Solanum$Species <- rep(colData(DDS_Solanum)$Species,
-                                    each=length(unique(Subset_Solanum$Gene)))
+                              each=length(unique(Subset_Solanum$Gene)))
 Subset_Solanum$DAP <- as.factor(rep(colData(DDS_Solanum)$DAP,
-                                each=length(unique(Subset_Solanum$Gene))))
+                                    each=length(unique(Subset_Solanum$Gene))))
 
 G3 <- list()
 G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
@@ -320,16 +350,14 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
                     x="Stage") +
                scale_color_manual(values=palw2[c(2,3)],
                                   labels=c("Wild", "Cultivated or Both")) +
-               #scale_linetype_manual(values=c("dotted", "solid"),
-              #                       labels=c("Wild", "Cultivated or Both")) +
-               scale_fill_manual(values=palw2[c(2,3)]) +
+               scale_fill_manual(values=palw2[c(2,3)],
+                                 labels=c("Wild", "Cultivated or Both")) +
                scale_x_discrete(labels=Labs_SolanumStage) +
                theme(plot.title = element_text(hjust = 0.5,
-                                  face = ifelse(Test_Solanum[i,"Choose"]=="Separate", 'bold.italic', 'italic')),
+                                               face = ifelse(Test_Solanum[i,"Choose"]=="Separate", 'bold.italic', 'italic')),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
-                     strip.text.x = element_text(face="italic"),
-                     legend.position = "none") +
+                     strip.text.x = element_text(face="italic")) +
                geom_violin(position=position_dodge(width=0), alpha=0.5) +
                stat_summary(fun=mean, geom="line", aes(group=Species)) +
                #stat_summary(fun.data=mean_se, geom="errorbar", aes(group=Species)) +
@@ -337,23 +365,34 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
 
 
 # Gene Figure -------------------------------------------------------------
+#Ethylene Biosynth
 (G2[[1]] + G2[[2]] + G2[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G2[[7]] + G2[[8]] + 
-  G2[[9]] + G2[[10]] + G2[[11]] + G2[[12]] + G2[[13]] + G2[[14]] + G2[[15]] + G2[[16]] + 
-  G2[[17]] + G2[[18]] + G2[[19]] + G2[[20]] + G2[[21]] + G2[[22]] + G2[[23]] + G2[[24]] + 
-  G2[[25]] + G2[[26]] + G2[[27]] + G2[[28]] + G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + 
-  G3[[33]] + G2[[34]] + G2[[35]] + G2[[36]] + G2[[37]] + G2[[38]] + G2[[39]] + G2[[40]] + 
-  G2[[41]] + G2[[42]] + G3[[43]] + G2[[44]] + G2[[45]] + G2[[46]] + G2[[47]] + G3[[48]] + 
-  G3[[49]] + G2[[50]] + G2[[51]] + G2[[52]] + G2[[53]]) +
-   plot_annotation(tag_levels = "A") +
+   G2[[9]] + G2[[16]] +  G2[[17]] + G2[[18]])
+
+#Flavor and Pigment
+(G2[[12]] + G2[[13]] + G2[[14]] + G2[[15]] + G2[[24]] + G2[[25]] + G2[[26]])
+
+#Developmental TFs
+(G2[[10]] + G2[[19]] + G2[[21]] + G2[[22]] + G2[[23]])
+
+#Cell Size
+(G2[[11]] + G2[[20]])
+
+
+(      + G2[[27]] + G2[[28]] + G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + 
+   G3[[33]] + G2[[34]] + G2[[35]] + G2[[36]] + G2[[37]] + G2[[38]] + G2[[39]] + G2[[40]] + 
+   G2[[41]] + G2[[42]] + G3[[43]] + G2[[44]] + G2[[45]] + G2[[46]] + G2[[47]] + G3[[48]] + 
+   G3[[49]] + G2[[50]] + G2[[51]] + G2[[52]] + G2[[53]]) +
+  plot_annotation(tag_levels = "A") +
   plot_layout(guides="collect")
 ggsave2("Figures/Tomato_Genes.pdf", height=30, width=30)
 
-
+ 
 # Five-Species Venn Diagram -----------------------------------------------
 VennOrthos <- read.table("Orthofinder/OrthoFinder/Results_Aug31/Orthogroups/Orthogroups.tsv",
-                     sep="\t",
-                     stringsAsFactors = F,
-                     header=T)
+                         sep="\t",
+                         stringsAsFactors = F,
+                         header=T)
 #All Orthogroups
 # Remove empties for each species
 Set1 <- VennOrthos[,c(1:2)] %>% filter_all(all_vars(!grepl("^$",.)))
