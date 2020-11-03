@@ -308,20 +308,34 @@ plotPCAmod = function(object,
   shapeVec <- colData(object)[[shape]]
   colorVec <- colData(object)[[color]]
   # assembly the data for the plot
-  d <- data.frame(PCx=pca$x[,xPC], PCy=pca$x[,yPC], shapeCol=shapeVec, colorCol=colorVec, name=colnames(object))
-  
-  ggplot(data=d, aes_string(x="PCx", y="PCy", color=d$colorCol, shape=d$shapeCol)) + 
-    geom_point(               size=3) + 
+  d <- data.frame(PCx=pca$x[,xPC],
+                  PCy=pca$x[,yPC],
+                  shapeCol=shapeVec,
+                  colorCol=colorVec,
+                  name=colnames(object))
+  ggplot(data=d, 
+         aes_string(x="PCx", y="PCy",
+                    #color=d$colorCol,
+                    shape=d$shapeCol,
+                    fill=d$colorCol)) + 
+    geom_point(size=3) + 
     xlab(paste0("PC",xPC,": ",round(percentVar[xPC] * 100),"% variance")) +
     ylab(paste0("PC",yPC,": ",round(percentVar[yPC] * 100),"% variance")) +
     coord_fixed() +
-    #scale_fill_manual(values=palfill[c(3,7,6,1,4)]) +
-    #scale_color_manual(values=palline[c(3,7,6,1,4)]) +
+    scale_shape_manual(name="Stage",
+                       values=c(21,22,24)) +
+    scale_fill_manual(name="Species",
+                      values=c("#000000", "#FFFFFF", palw2[c(2,1,3)]),
+                      labels=c(expr(italic("A. thaliana")),
+                               expr(italic("C. melo")),
+                               "Wild Tomato",
+                               "Tobacco",
+                               "Tomato")) +
+    guides(fill = guide_legend(override.aes=list(shape=21))) +
         theme(plot.title = element_text(hjust = 0.5),
           plot.subtitle = element_text(hjust=0.5),
           strip.background = element_rect(fill="#FFFFFF"),
           legend.position = "right", 
-          legend.title = element_blank(),
           axis.ticks = element_blank(),
           axis.text = element_blank())
 }
