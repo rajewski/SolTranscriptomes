@@ -82,6 +82,11 @@ impt_genes <- c("Solyc02g077920.4.1"="CNR",
 
 Limit_genes <- c(-2.5,2.5)
 
+Cluster_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Noise.rds")
+Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Fruit.rds")
+DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Noise.rds")
+DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Fruit.rds")
+
 # Tobacco Clusters -----------------------------------------------------------
 C1 <- list()
 C1 <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)),
@@ -458,8 +463,28 @@ venn.diagram(
   lty=1)
 
 # Five-Species GO Plots ---------------------------------------------------
+# First get all the clusters when grouped by fruit
+Tables_Ortho <- list()
+Tables_Ortho <- lapply(seq_along(unique(Cluster_Fruit$normalized$cluster)), 
+                       function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+                                             GOIs=setNames(as.factor(as.numeric(Cluster_Fruit$normalized$genes %in% Cluster_Fruit$normalized$genes[Cluster_Fruit$normalized$cluster==unique(Cluster_Fruit$normalized$cluster)[i]])),
+                                                           Cluster_Fruit$normalized$genes)))
+# Then add in Overalls
+Tables_Ortho[["Model 1"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+                                     GOIs=setNames(as.factor(as.numeric(rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<0.01)))), rownames(DDS_Noise)))
 
-#From 6_Dry_v_Fleshy.R
+Tables_Ortho[["Model 2"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+                                     GOIs=setNames(as.factor(as.numeric(rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<0.01)))), rownames(DDS_Fruit)))
+                                     
+# Save the GO Plots
+GO_Ortho <- list()
+GO_Ortho <- lapply(seq_along(Tables_Ortho), 
+                     function(i) GOPlot(Tables_Ortho[[i]],
+                                        Title = ifelse(names(Tables_Ortho[i])=='',
+                                                             paste("Cluster", i, "GO Enrichment"),
+                                                             paste(names(Tables_Ortho[i]), "GO Enrichment")),
+                                        colorHex = "#9EBE91CC")+
+                       theme(legend.position = "none"))
 
 # Five-Species PCA --------------------------------------------------------
 
