@@ -325,12 +325,12 @@ plotPCAmod = function(object,
     scale_shape_manual(name="Stage",
                        values=c(21,22,24)) +
     scale_fill_manual(name="Species",
-                      values=c("#000000", "#FFFFFF", palw2[c(2,1,3)]),
+                      values=c("#000000", "#FFFFFF", palw2[c(1,3,2)]),
                       labels=c(expr(italic("A. thaliana")),
                                expr(italic("C. melo")),
-                               "Wild Tomato",
                                "Tobacco",
-                               "Tomato")) +
+                               "Tomato",
+                               "Wild Tomato")) +
     guides(fill = guide_legend(override.aes=list(shape=21))) +
         theme(plot.title = element_text(hjust = 0.5),
           plot.subtitle = element_text(hjust=0.5),
