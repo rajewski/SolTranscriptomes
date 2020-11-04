@@ -307,6 +307,8 @@ plotPCAmod = function(object,
   # nly support one group 
   shapeVec <- colData(object)[[shape]]
   colorVec <- colData(object)[[color]]
+  FiveFill <- setNames(c("#000000", "#FFFFFF", palw2[c(1,3,2)]),
+             c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
   # assembly the data for the plot
   d <- data.frame(PCx=pca$x[,xPC],
                   PCy=pca$x[,yPC],
@@ -325,7 +327,8 @@ plotPCAmod = function(object,
     scale_shape_manual(name="Stage",
                        values=c(21,22,24)) +
     scale_fill_manual(name="Species",
-                      values=c("#000000", "#FFFFFF", palw2[c(1,3,2)]),
+                      values=FiveFill,
+                      #values=c("#000000", "#FFFFFF", palw2[c(1,3,2)]),
                       labels=c(expr(italic("A. thaliana")),
                                expr(italic("C. melo")),
                                "Tobacco",
