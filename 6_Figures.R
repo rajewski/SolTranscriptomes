@@ -353,11 +353,12 @@ Tables_SolanumNoise[["Overall"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.ge
 # Create a list of the GO Plots
 GO_SolanumNoise <- list()
 GO_SolanumNoise <- lapply(seq_along(Tables_SolanumNoise), 
-                         function(i) GOPlot(Tables_SolanumNoise[[i]],
-                                            Title = ifelse(names(Tables_SolanumNoise[i])=='',
-                                                           paste("Cluster", i, "GO Enrichment"),
-                                                           paste(names(Tables_SolanumNoise[i]), "GO Enrichment")),
-                                            colorHex = "#B40F20CC") +
+       function(i) GOPlot(Tables_SolanumNoise[[i]],
+                Title = ifelse(names(Tables_SolanumNoise[i])=='',
+                               paste("Cluster", i, "GO Enrichment"),
+                               paste(names(Tables_SolanumNoise[i]), "GO Enrichment")),
+                colorHex = "#B40F20CC",
+                LegendLimit = max(sapply(Tables_SolanumNoise, function(x) max(x$Significant)))) +
                            theme(legend.position = c(.9,.2)))
 
 
@@ -375,12 +376,13 @@ Tables_Solanum[["Overall"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go
 # Create a list of the GO Plots
 GO_Solanum <- list()
 GO_Solanum <- lapply(seq_along(Tables_Solanum), 
-                     function(i) GOPlot(Tables_Solanum[[i]],
-                                        Title = ifelse(names(Tables_Solanum[i])=='',
-                                                       paste("Cluster", i, "GO Enrichment"),
-                                                       paste(names(Tables_Solanum[i]), "GO Enrichment")),
-                                        colorHex = "#B40F20CC") +
-                       theme(legend.position = c(.9,.2)))
+                 function(i) GOPlot(Tables_Solanum[[i]],
+                        Title = ifelse(names(Tables_Solanum[i])=='',
+                                       paste("Cluster", i, "GO Enrichment"),
+                                       paste(names(Tables_Solanum[i]), "GO Enrichment")),
+                        colorHex = "#B40F20CC",
+                        LegendLimit = max(sapply(Tables_Solanum, function(x) max(x$Significant)))) +
+                   theme(legend.position = c(.9,.2)))
 
 
 # Solanum Genes --------------------------------------------------
@@ -463,19 +465,54 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
 
 # Solanum Figures -------------------------------------------------------------
 # Conserved Clusters
-(C2[[1]] + C2[[2]] + C2[[3]] + C2[[4]] + C2[[5]] + 
-   C2[[6]] + C2[[7]] + C2[[8]] + C2[[9]] + C2[[10]] + 
-   C2[[11]] + C2[[12]] + C2[[13]] + C2[[14]] + C2[[15]] + 
-   C2[[16]] + C2[[17]] + C2[[18]] + C2[[19]] + C2[[20]] ) +
-  plot_annotation(tag_levels = "A")
+((C2[[1]] | GO_SolanumNoise[[1]]) /  
+   (C2[[2]] | GO_SolanumNoise[[2]]) /  
+   (C2[[3]] | GO_SolanumNoise[[3]]) /  
+   (C2[[4]] | GO_SolanumNoise[[4]]) /  
+   (C2[[5]] | GO_SolanumNoise[[5]]) /  
+   (C2[[6]] | GO_SolanumNoise[[6]]) /  
+   (C2[[7]] | GO_SolanumNoise[[7]]) /  
+   (C2[[8]] | GO_SolanumNoise[[8]]) /  
+   (C2[[9]] | GO_SolanumNoise[[9]]) /  
+   (C2[[10]] | GO_SolanumNoise[[10]]) /  
+   (C2[[11]] | GO_SolanumNoise[[11]]) /  
+   (C2[[12]] | GO_SolanumNoise[[12]]) /  
+   (C2[[13]] | GO_SolanumNoise[[13]]) /  
+   (C2[[14]] | GO_SolanumNoise[[14]]) /  
+   (C2[[15]] | GO_SolanumNoise[[15]]) /  
+   (C2[[16]] | GO_SolanumNoise[[16]]) /  
+   (C2[[17]] | GO_SolanumNoise[[17]]) /  
+   (C2[[18]] | GO_SolanumNoise[[18]]) /  
+   (C2[[19]] | GO_SolanumNoise[[19]]) /  
+   (C2[[20]] | GO_SolanumNoise[[20]]) /
+   guide_area()) +
+  plot_layout(guides="collect")
+ggsave2("Figures/Suppl_TomatoNoise_Clusters.pdf",
+        height=70,
+        width=10,
+        limitsize = FALSE)
 
 #Divergent Clusters
-(C3[[1]] + C3[[2]] + C3[[3]] + C3[[4]] + C3[[5]] + 
-    C3[[6]] + C3[[7]] + C3[[8]] + C3[[9]] + C3[[10]] + 
-    C3[[11]] + C3[[12]] + C3[[13]] + C3[[14]] + C3[[15]] + guide_area()) +
-  plot_annotation(tag_levels = "A") +
-  plot_layout(nrow=4,
-              guides="collect")
+((C3[[1]] | GO_Solanum[[1]]) / 
+    (C3[[2]] | GO_Solanum[[2]]) / 
+    (C3[[3]] | GO_Solanum[[3]]) / 
+    (C3[[4]] | GO_Solanum[[4]]) / 
+    (C3[[5]] | GO_Solanum[[5]]) / 
+    (C3[[6]] | GO_Solanum[[6]]) / 
+    (C3[[7]] | GO_Solanum[[7]]) / 
+    (C3[[8]] | GO_Solanum[[8]]) / 
+    (C3[[9]] | GO_Solanum[[9]]) / 
+    (C3[[10]] | GO_Solanum[[10]]) /     
+    (C3[[11]] | GO_Solanum[[11]]) / 
+    (C3[[12]] | GO_Solanum[[12]]) / 
+    (C3[[13]] | GO_Solanum[[13]]) / 
+    (C3[[14]] | GO_Solanum[[14]]) / 
+    (C3[[15]] | GO_Solanum[[15]]) +
+    guide_area()) +
+  plot_layout(guides="collect")
+ggsave2("Figures/Suppl_Tomato_Clusters.pdf",
+        height=49,
+        width=10)
 
 #Ethylene Biosynth and perception
 (G2[[1]] + G2[[2]] + G2[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G2[[7]] + G2[[8]] + 
