@@ -311,8 +311,8 @@ C2 <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$cluster)),
                                 aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Z-score of Expression",
                     x="Stage") +
-               scale_fill_manual(values=palfill[4]) +
-               scale_color_manual(values=palline[4]) +
+               scale_fill_manual(values=palw2[3]) +
+               scale_color_manual(values=palw2[3]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
                theme(plot.title = element_text(hjust = 0.5),
                      plot.subtitle = element_text(hjust=0.5),
@@ -329,8 +329,8 @@ C3 <- lapply(seq_along(unique(Cluster_Solanum$normalized$cluster)),
                                 aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Z-score of Expression",
                     x="Stage") +
-               scale_fill_manual(values=palfill[c(5,6)]) +
-               scale_color_manual(values=palline[c(5,6)]) +
+               scale_fill_manual(values=palw2[c(2,3)]) +
+               scale_color_manual(values=palw2[c(2,3)]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
                theme(plot.title = element_text(hjust = 0.5),
                      plot.subtitle = element_text(hjust=0.5),
@@ -468,6 +468,14 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
    C2[[11]] + C2[[12]] + C2[[13]] + C2[[14]] + C2[[15]] + 
    C2[[16]] + C2[[17]] + C2[[18]] + C2[[19]] + C2[[20]] ) +
   plot_annotation(tag_levels = "A")
+
+#Divergent Clusters
+(C3[[1]] + C3[[2]] + C3[[3]] + C3[[4]] + C3[[5]] + 
+    C3[[6]] + C3[[7]] + C3[[8]] + C3[[9]] + C3[[10]] + 
+    C3[[11]] + C3[[12]] + C3[[13]] + C3[[14]] + C3[[15]] + guide_area()) +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(nrow=4,
+              guides="collect")
 
 #Ethylene Biosynth and perception
 (G2[[1]] + G2[[2]] + G2[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G2[[7]] + G2[[8]] + 
