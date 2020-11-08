@@ -347,7 +347,7 @@ Tables_SolanumNoise <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$
                                                    GOIs=setNames(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[i])$genes)),
                                                                  Cluster_Solanum_Noise$normalized$genes)))
 # Include the overall, unclustered genes
-Tables_SolanumNoise[["Overall"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+Tables_SolanumNoise[["Conserved Genes"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
                                             GOIs=setNames(as.factor(as.numeric(rownames(DDS_SolanumNoise) %in% rownames(subset(results(DDS_SolanumNoise), padj<0.01)))), rownames(DDS_SolanumNoise)))
 
 # Create a list of the GO Plots
@@ -369,7 +369,7 @@ Tables_Solanum <- lapply(seq_along(unique(Cluster_Solanum$normalized$cluster)),
                              GOIs=setNames(as.factor(as.numeric(Cluster_Solanum$normalized$genes %in% subset(Cluster_Solanum$normalized, cluster==unique(Cluster_Solanum$normalized$cluster)[i])$genes)),
                                            Cluster_Solanum$normalized$genes)))
 # Include the overall, unclustered genes
-Tables_Solanum[["Overall"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+Tables_Solanum[["Divergent Genes"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
                                         GOIs=setNames(as.factor(as.numeric(rownames(DDS_Solanum) %in% rownames(subset(results(DDS_Solanum), padj<0.01)))), rownames(DDS_Solanum)))
 
 
@@ -513,6 +513,30 @@ ggsave2("Figures/Suppl_TomatoNoise_Clusters.pdf",
 ggsave2("Figures/Suppl_Tomato_Clusters.pdf",
         height=49,
         width=10)
+
+# Overall GO and selected Clusters
+# align better with wrap_elements, and overwrite the scale for GO Plots
+wrap_elements(full=GO_SolanumNoise[[21]] & 
+                scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
+                                     limits=c(1,max(Tables_SolanumNoise[[21]]$Significant)),
+                                     breaks=c(1,max(Tables_SolanumNoise[[21]]$Significant)))) /
+  (C2[[4]] | GO_SolanumNoise[[4]] &
+     scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"),
+                          limits=c(1,max(Tables_SolanumNoise[[4]]$Significant)),
+                          breaks=c(1,max(Tables_SolanumNoise[[4]]$Significant)))) /
+  (C2[[10]] | GO_SolanumNoise[[10]] &
+     scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
+                          limits=c(1,max(Tables_SolanumNoise[[10]]$Significant)),
+                          breaks=c(1,max(Tables_SolanumNoise[[10]]$Significant)))) /
+  wrap_elements(full=(GO_Solanum[[16]] & 
+                        scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
+                                             limits=c(1,max(Tables_Solanum[[16]]$Significant)),
+                                             breaks=c(1,max(Tables_Solanum[[16]]$Significant))))) +
+  plot_annotation(tag_levels = "A") + 
+  plot_layout(widths=1, heights=1)
+ggsave2("Figures/Tomato_Clusters.pdf",
+        height=20,
+        width=15)
 
 #Ethylene Biosynth and perception
 (G2[[1]] + G2[[2]] + G2[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G2[[7]] + G2[[8]] + 
