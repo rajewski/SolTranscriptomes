@@ -11,21 +11,25 @@ library("patchwork")
 
 # Read Data In ------------------------------------------------------------
 Cluster_Nobt <- readRDS("DEGAnalysis/RNA-seq/Cluster_Nobt.rds")
-Labs_NobtCluster <- ClusterLabs(Cluster_Nobt)
-
 DDS_Nobt <- readRDS("DEGAnalysis/RNA-seq/DDS_NobtSE.rds")
 Labs_NobtStage <- c("0"="1", "3"="2", "6"="3", "11"="Br")
 
 Cluster_Solanum <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF.rds")
-Labs_SolanumCluster <- ClusterLabs(Cluster_Solanum)
 Cluster_Solanum_Noise <-readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
-Labs_SolanumNoiseCluster <- ClusterLabs(Cluster_Solanum_Noise)
-
 DDS_SolanumNoise <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF_Noise.rds")
 DDS_Solanum <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF.rds")
 Labs_SolanumStage <- c("1"="1", "3"="2", "15"="3", "35"="Br", "45"="RR")
 
-# List important genes to plot
+Limit_genes <- c(-2.5,2.5)
+
+Cluster_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Noise.rds")
+Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Fruit.rds")
+Labs_Stage <- c("2"="2", "3"="3", "3.5"="Br")
+DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Noise.rds")
+DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Fruit.rds")
+
+# Important Genes for Plotting --------------------------------------------
+# Manually curated lsit of impt solaum genes
 impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc10g006880.3.1"="NOR",
                 "Solyc05g012020.4.1"="MADS-RIN",
@@ -80,12 +84,100 @@ impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc08g066860.2.1"="SlFKD",
                 "Solyc07g005840.2.1"="Cel3")
 
-Limit_genes <- c(-2.5,2.5)
+#Get Nobt orthologs
+orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
+                          sep="\t",
+                          stringsAsFactors = F,
+                          header=T)[,c(2:3)]
+orthogroups <- orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
 
-Cluster_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Noise.rds")
-Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Fruit.rds")
-DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Noise.rds")
-DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Fruit.rds")
+All_Genes <- cbind(Solanum=names(impt_genes), Solanum_Abbr=impt_genes)
+All_Genes <- merge(All_Genes, orthogroups, by.x="Solanum", by.y="Solanum", all.x=TRUE)
+All_Genes <- All_Genes[order(All_Genes$Solanum_Abbr),]
+row.names(All_Genes) <- NULL
+
+# Manually add in FUL genes
+All_Genes[c(21,22,23,29,31,32,35),"Nicotiana"] <- c("NIOBTv3_g17210.t1",
+                                                 "NIOBTv3_g28929-D2.t1",
+                                          "NIOBTv3_g39464.t1",
+                                          "NIOBTv3_g15806.t1",
+                                          "NIOBTv3_g07845.t1",
+                                          "NIOBT_gMBP20.t1",
+                                          "NIOBTv3_g08302.t1")
+All_Genes[!is.na(All_Genes$Nicotiana),"Nicotiana_Abbr"] <- c('NoACO4',
+                                                             'NoACO5',
+                                                             'NoACO6',
+                                                             'NoAGL11',
+                                                             'NoCel2',
+                                                             'NoCel3',
+                                                             'NoCNR',
+                                                             'NoEXP',
+                                                             'NoFUL1',
+                                                             'NoFUL2',
+                                                             'NoFYFL',
+                                                             'NoGAD1',
+                                                             'NoJ2',
+                                                             'NoMBP10',
+                                                             'NoMBP20',
+                                                             'NoMC',
+                                                             'NoNOR',
+                                                             'NoNR',
+                                                             'NoPSY1',
+                                                             'NoFKD',
+                                                             'NoFSR',
+                                                             'NoKFB',
+                                                             'NIOBTv3_g22270.t1',
+                                                             'NIOBTv3_g10008.t1',
+                                                             'NIOBTv3_g12238.t1', 
+                                                             'NIOBTv3_g11662.t1',
+                                                             'NoAG',
+                                                             'NoSHP',
+                                                             'NoSEP1')
+write.table(All_Genes,
+            file="Tables/Orthologs.csv",
+            row.names = F,
+            quote = F,
+            sep = ",")
+
+
+
+# Gene_Nobt <- as.data.frame(impt_genes)
+# tmp <- merge(Gene_Nobt, orthogroups, by.x=0, by.y="Solanum")
+# Gene_Nobt <- as.character(tmp$impt_genes)
+# names(Gene_Nobt) <- tmp$Nicotiana
+# Gene_Nobt <- c(Gene_Nobt, c("NIOBTv3_g28929-D2.t1"="NoFUL1","NIOBTv3_g39464.t1"="NoFUL2","NIOBTv3_g07845.t1"="NoMBP10","NIOBT_gMBP20.t1"="NoMBP20"))
+# rm(tmp)
+# 
+# #Rename and hardcode genes
+# Gene_Nobt <- c('NIOBTv3_g02352.t1'='NoACO6', 
+#                'NIOBTv3_g22632-D2.t1'='NoAG', 
+#                'NIOBTv3_g27953.t1'='NoCNR', 
+#                'NIOBTv3_g13660.t1'='NoACO4', 
+#                'NIOBTv3_g14235.t1'='NoSEP1', 
+#                'NIOBTv3_g10096.t1'='NoFYFL', 
+#                'NIOBTv3_g17569.t1'='NoPSY1', 
+#                'NIOBTv3_g11084.t1'='NoGAD1', 
+#                'NIOBTv3_g22270.t1'='NIOBTv3_g22270.t1', 
+#                'NIOBTv3_g10008.t1'='NIOBTv3_g10008.t1', 
+#                'NIOBTv3_g35607.t1'='NoKFB', 
+#                'NIOBTv3_g18077.t1'='NoMC', 
+#                'NIOBTv3_g12238.t1'='NIOBTv3_g12238.t1', 
+#                'NIOBTv3_g12440.t1'='NoCel3', 
+#                'NIOBTv3_g38689.t1'='NoACO5', 
+#                'NIOBTv3_g37943.t1'='NoGRAS38', 
+#                'NIOBTv3_g13969.t1'='NoSHP', 
+#                'NIOBTv3_g11662.t1'='NIOBTv3_g11662.t1', 
+#                'NIOBTv3_g12218.t1'='NoFKD', 
+#                'NIOBTv3_g19880.t1'='NoCel2', 
+#                'NIOBTv3_g10291.t1'='NoNR', 
+#                'NIOBTv3_g14436.t1'='NoAGL11', 
+#                'NIOBTv3_g28929-D2.t1'='NoFUL1', 
+#                'NIOBTv3_g39464.t1'='NoFUL2', 
+#                'NIOBTv3_g07845.t1'='NoMBP10', 
+#                'NIOBT_gMBP20.t1'='NoMBP20')
+
+
+# Create a table of Slyc and Nobt genes with common names, gene IDS and orthology information
 
 # Tobacco Clusters -----------------------------------------------------------
 C1 <- list()
@@ -109,80 +201,48 @@ C1 <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)),
 # Tobacco GO Plots --------------------------------------------------------
 # Do the GO Enrichment
 Tables_Nobt <- list()
-for (i in levels(as.factor(Cluster_Nobt$normalized$cluster))) {
-  tmpList <- as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% Cluster_Nobt$normalized$genes[Cluster_Nobt$normalized$cluster==i]))
-  names(tmpList) <- Cluster_Nobt$normalized$genes
-  Tables_Nobt[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Nobt.gene2go.tsv",
-                               GOIs=tmpList,
-                               NumCategories = 10)
-}
-names(Tables_Nobt) <- Labs_NobtCluster[names(Tables_Nobt)]
+Tables_Nobt <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)), 
+                      function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Nobt.gene2go.tsv",
+                                            GOIs=setNames(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[i])$genes)),
+                                                          Cluster_Nobt$normalized$genes)))
+Tables_Nobt[["Overall"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Nobt.gene2go.tsv",
+                                             GOIs=setNames(as.factor(as.numeric(rownames(DDS_Nobt) %in% rownames(subset(results(DDS_Nobt), padj<0.01)))), rownames(DDS_Nobt)))
+
 # Create a list of the GO Plots
 GO_Nobt <- list()
 GO_Nobt <- lapply(seq_along(Tables_Nobt), 
-                  function(i) GOPlot(Tables_Nobt[[i]], 
-                                     Title = paste("Cluster", i, "GO Enrichment"),
+                  function(i) GOPlot(Tables_Nobt[[i]],
+                                     Title = ifelse(names(Tables_Nobt[i])=='',
+                                                    paste("Cluster", i, "GO Enrichment"),
+                                                    paste(names(Tables_Nobt[i]), "GO Enrichment")),
                                      colorHex = palw2[1]) +
-                    theme(legend.position = "none"))
+                    theme(legend.position = c(.9,.2)))
 
 
 # Tobacco Gene Plots ------------------------------------------------------
-#Get Nobt orthologs
-orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
-                          sep="\t",
-                          stringsAsFactors = F,
-                          header=T)[,c(2:3)]
-orthogroups <- orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
-Gene_Nobt <- as.data.frame(impt_genes)
-tmp <- merge(Gene_Nobt, orthogroups, by.x=0, by.y="Solanum")
-Gene_Nobt <- as.character(tmp$impt_genes)
-names(Gene_Nobt) <- tmp$Nicotiana
-Gene_Nobt <- c(Gene_Nobt, c("NIOBTv3_g28929-D2.t1"="NoFUL1","NIOBTv3_g39464.t1"="NoFUL2","NIOBTv3_g07845.t1"="NoMBP10","NIOBT_gMBP20.t1"="NoMBP20"))
-rm(tmp)
-
-#Rename and hardcode genes
-Gene_Nobt <- c('NIOBTv3_g02352.t1'='NoACO6', 
-               'NIOBTv3_g22632-D2.t1'='NoAG', 
-               'NIOBTv3_g27953.t1'='NoCNR', 
-               'NIOBTv3_g13660.t1'='NoACO4', 
-               'NIOBTv3_g14235.t1'='NoSEP1', 
-               'NIOBTv3_g10096.t1'='NoFYFL', 
-               'NIOBTv3_g17569.t1'='NoPSY1', 
-               'NIOBTv3_g11084.t1'='NoGAD1', 
-               'NIOBTv3_g22270.t1'='NIOBTv3_g22270.t1', 
-               'NIOBTv3_g10008.t1'='NIOBTv3_g10008.t1', 
-               'NIOBTv3_g35607.t1'='NoKFB', 
-               'NIOBTv3_g18077.t1'='NoMC', 
-               'NIOBTv3_g12238.t1'='NIOBTv3_g12238.t1', 
-               'NIOBTv3_g12440.t1'='NoCel3', 
-               'NIOBTv3_g38689.t1'='NoACO5', 
-               'NIOBTv3_g37943.t1'='NoGRAS38', 
-               'NIOBTv3_g13969.t1'='NoSHP', 
-               'NIOBTv3_g11662.t1'='NIOBTv3_g11662.t1', 
-               'NIOBTv3_g12218.t1'='NoFKD', 
-               'NIOBTv3_g19880.t1'='NoCel2', 
-               'NIOBTv3_g10291.t1'='NoNR', 
-               'NIOBTv3_g14436.t1'='NoAGL11', 
-               'NIOBTv3_g28929-D2.t1'='NoFUL1', 
-               'NIOBTv3_g39464.t1'='NoFUL2', 
-               'NIOBTv3_g07845.t1'='NoMBP10', 
-               'NIOBT_gMBP20.t1'='NoMBP20')
 
 #Test if I should plot a gene at all
 Test_Nobt <- as.data.frame(results(DDS_Nobt))
-Test_Nobt <- Test_Nobt[row.names(Test_Nobt) %in% names(Gene_Nobt),]
-Test_Nobt$Abbr <- Gene_Nobt[row.names(Test_Nobt)]
-Test_Nobt <- Test_Nobt[order(Test_Nobt$Abbr),]
+Test_Nobt <- Test_Nobt[row.names(Test_Nobt) %in% All_Genes$Nicotiana,]
+
+Test_Nobt <- merge(Test_Nobt, 
+                        All_Genes[,c("Nicotiana", "Nicotiana_Abbr")],
+                        by.x=0,
+                        by.y="Nicotiana")
+Test_Nobt <- Test_Nobt[order(Test_Nobt$Nicotiana_Abbr),]
 Test_Nobt$Plot <- TRUE
 Test_Nobt$Plot[Test_Nobt$padj>0.01 | is.na(Test_Nobt$padj)] <- FALSE
-Test_Nobt <- Test_Nobt[,-c(1:5)]
+Test_Nobt <- Test_Nobt[,-c(2:6)]
 
 
 # Make a new dataframe with just those genes
 # Subset to just the important genes
-Subset_Nobt <- as.data.frame(assay(subset(DDS_Nobt, rownames(DDS_Nobt) %in% names(Gene_Nobt))))
-Subset_Nobt$Gene <- rownames(Subset_Nobt)
-Subset_Nobt$Abbr <- Gene_Nobt[Subset_Nobt$Gene]
+Subset_Nobt <- as.data.frame(assay(subset(DDS_Nobt, rownames(DDS_Nobt) %in% All_Genes$Nicotiana)))
+Subset_Nobt <- merge(Subset_Nobt,
+                     All_Genes[,c("Nicotiana", "Nicotiana_Abbr")],
+                     by.x=0,
+                     by.y="Nicotiana")
+Subset_Nobt <- Subset_Nobt %>% dplyr::rename(Gene=Row.names, Abbr=Nicotiana_Abbr)
 Subset_Nobt <- Subset_Nobt[order(Subset_Nobt$Abbr),]
 Subset_Nobt <- melt(Subset_Nobt, id.vars = c("Gene", "Abbr"))
 Subset_Nobt$DAP <- as.factor(rep(colData(DDS_Nobt)$DAP,
@@ -208,13 +268,34 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                ggtitle(unique(Subset_Nobt$Abbr)[i]))
 
 # Tobacco Figures ----------------------------------------------------------
-(G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] + G1[[10]] + 
+(G1[[5]] + 
+   G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] + G1[[10]] + 
    G1[[11]] + G1[[12]] + G1[[13]] + G1[[14]] + G1[[15]] + 
-  G1[[17]] + G1[[18]] + G1[[19]] +
-   G1[[21]] + G1[[22]] + G1[[23]] + G1[[24]] + G1[[25]] + 
-   G1[[26]]) +
+   G1[[16]] + G1[[17]] + G1[[19]] + G1[[20]] +
+   G1[[21]] + G1[[23]] + G1[[24]] + G1[[25]] + 
+   G1[[26]] + G1[[27]] + G1[[28]] + G1[[29]] ) +
   plot_annotation(tag_levels = "A")
 ggsave2("Figures/Tobacco_Genes.pdf", height=15, width=15)
+
+#Subplot by function
+# Ethylene
+Tobacco_Genes <- list()
+Tobacco_Genes[[1]] <- (G1[[5]] + G1[[6]] + G1[[7]] +
+                         plot_layout(tag_level = "new", nrow=1))
+# Cell Wall
+Tobacco_Genes[[2]] <- (G1[[10]] + G1[[11]] + G1[[13]] + 
+                         plot_layout(tag_level = "new", nrow=1))
+# Pigment
+Tobacco_Genes[[3]] <- (G1[[12]] + G1[[19]] + G1[[27]] + 
+                         plot_layout(tag_level = "new", nrow=1))
+# TFs
+Tobacco_Genes[[4]] <- (G1[[8]] + G1[[9]]  + G1[[16]] + G1[[17]] +
+                         G1[[20]] +G1[[23]] + G1[[24]] + G1[[25]] + G1[[26]] +
+                         G1[[28]] + G1[[29]] + 
+                         plot_layout(tag_level = "new"))
+(Tobacco_Genes[[1]] / plot_spacer() / Tobacco_Genes[[2]] / plot_spacer() / Tobacco_Genes[[3]] /
+    plot_spacer() / Tobacco_Genes[[4]])
+
 
 ((C1[[1]] | GO_Nobt[[1]]) / (C1[[2]] | GO_Nobt[[2]]) / (C1[[3]] | GO_Nobt[[3]]) /
     (C1[[4]] | GO_Nobt[[4]]) / (C1[[5]] | GO_Nobt[[5]]) / (C1[[6]] | GO_Nobt[[6]])) + 
@@ -225,7 +306,8 @@ ggsave("Figures/Tobacco_Clusters.pdf", height=20, width=15)
 # For common patterns
 C2 <- list()
 C2 <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$cluster)),
-             function(i) ggplot(Cluster_Solanum_Noise$normalized[Cluster_Solanum_Noise$normalized$cluster==i,], 
+             function(i) ggplot(subset(Cluster_Solanum_Noise$normalized, 
+                                       cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[i]), 
                                 aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Z-score of Expression",
                     x="Stage") +
@@ -235,14 +317,15 @@ C2 <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$cluster)),
                theme(plot.title = element_text(hjust = 0.5),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
-                     legend.justification = c(1, -1)) +
+                     legend.position = "none") +
                geom_violin(position=position_dodge(width=0), alpha=0.5) +
                stat_summary(fun=mean, geom="line", aes(group=Fruit))+
                ggtitle(paste("Cluster", i, "Expression")))
 # For divergent patterns
 C3 <- list()
 C3 <- lapply(seq_along(unique(Cluster_Solanum$normalized$cluster)),
-             function(i) ggplot(Cluster_Solanum$normalized[Cluster_Solanum$normalized$cluster==i,], 
+             function(i) ggplot(subset(Cluster_Solanum$normalized, 
+                                       cluster==unique(Cluster_Solanum$normalized$cluster)[i]), 
                                 aes(x=DAP, y=value, col=Species, fill=Species)) +
                labs(y="Z-score of Expression",
                     x="Stage") +
@@ -259,39 +342,48 @@ C3 <- lapply(seq_along(unique(Cluster_Solanum$normalized$cluster)),
 # Solanum GO Plots --------------------------------------------------------
 # For Common patterns
 Tables_SolanumNoise <- list()
-for (i in levels(as.factor(Cluster_Solanum_Noise$normalized$cluster))) {
-  tmpList <- as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% Cluster_Solanum_Noise$normalized$genes[Cluster_Solanum_Noise$normalized$cluster==i]))
-  names(tmpList) <- Cluster_Solanum_Noise$normalized$genes
-  Tables_SolanumNoise[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                                       GOIs=tmpList,
-                                       NumCategories = 10)
-}
-names(Tables_SolanumNoise) <- Labs_SolanumNoiseCluster[names(Tables_SolanumNoise)]
+Tables_SolanumNoise <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$cluster)), 
+                             function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                                                   GOIs=setNames(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[i])$genes)),
+                                                                 Cluster_Solanum_Noise$normalized$genes)))
+# Include the overall, unclustered genes
+Tables_SolanumNoise[["Overall"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                                            GOIs=setNames(as.factor(as.numeric(rownames(DDS_SolanumNoise) %in% rownames(subset(results(DDS_SolanumNoise), padj<0.01)))), rownames(DDS_SolanumNoise)))
+
 # Create a list of the GO Plots
 GO_SolanumNoise <- list()
 GO_SolanumNoise <- lapply(seq_along(Tables_SolanumNoise), 
-                          function(i) GOPlot(Tables_SolanumNoise[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
-                            theme(legend.position = "none"))
+                         function(i) GOPlot(Tables_SolanumNoise[[i]],
+                                            Title = ifelse(names(Tables_SolanumNoise[i])=='',
+                                                           paste("Cluster", i, "GO Enrichment"),
+                                                           paste(names(Tables_SolanumNoise[i]), "GO Enrichment")),
+                                            colorHex = "#B40F20CC") +
+                           theme(legend.position = c(.9,.2)))
+
 
 # For divergent patterns
 Tables_Solanum <- list()
-for (i in levels(as.factor(Cluster_Solanum$normalized$cluster))) {
-  tmpList <- as.factor(as.numeric(Cluster_Solanum$normalized$genes %in% Cluster_Solanum$normalized$genes[Cluster_Solanum$normalized$cluster==i]))
-  names(tmpList) <- Cluster_Solanum$normalized$genes
-  Tables_Solanum[[i]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                                  GOIs=tmpList,
-                                  NumCategories = 10)
-}
-names(Tables_Solanum) <- Labs_SolanumCluster[names(Tables_Solanum)]
+Tables_Solanum <- lapply(seq_along(unique(Cluster_Solanum$normalized$cluster)), 
+       function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                             GOIs=setNames(as.factor(as.numeric(Cluster_Solanum$normalized$genes %in% subset(Cluster_Solanum$normalized, cluster==unique(Cluster_Solanum$normalized$cluster)[i])$genes)),
+                                           Cluster_Solanum$normalized$genes)))
+# Include the overall, unclustered genes
+Tables_Solanum[["Overall"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
+                                        GOIs=setNames(as.factor(as.numeric(rownames(DDS_Solanum) %in% rownames(subset(results(DDS_Solanum), padj<0.01)))), rownames(DDS_Solanum)))
+
+
 # Create a list of the GO Plots
 GO_Solanum <- list()
 GO_Solanum <- lapply(seq_along(Tables_Solanum), 
-                     function(i) GOPlot(Tables_Solanum[[i]], Title = paste("Cluster", i, "GO Enrichment"))+
-                       theme(legend.position = "none"))
+                     function(i) GOPlot(Tables_Solanum[[i]],
+                                        Title = ifelse(names(Tables_Solanum[i])=='',
+                                                       paste("Cluster", i, "GO Enrichment"),
+                                                       paste(names(Tables_Solanum[i]), "GO Enrichment")),
+                                        colorHex = "#B40F20CC") +
+                       theme(legend.position = c(.9,.2)))
 
 
-
-# Solanum Gene Plots DDS --------------------------------------------------
+# Solanum Genes --------------------------------------------------
 # Determine if a plot should be combined by species or now
 Test_Solanum <- merge(as.data.frame(results(DDS_Solanum)),
                       as.data.frame(results(DDS_SolanumNoise)),
@@ -369,7 +461,14 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
                ggtitle(unique(Subset_Solanum$Abbr)[i]))
 
 
-# Gene Figure -------------------------------------------------------------
+# Solanum Figures -------------------------------------------------------------
+# Conserved Clusters
+(C2[[1]] + C2[[2]] + C2[[3]] + C2[[4]] + C2[[5]] + 
+   C2[[6]] + C2[[7]] + C2[[8]] + C2[[9]] + C2[[10]] + 
+   C2[[11]] + C2[[12]] + C2[[13]] + C2[[14]] + C2[[15]] + 
+   C2[[16]] + C2[[17]] + C2[[18]] + C2[[19]] + C2[[20]] ) +
+  plot_annotation(tag_levels = "A")
+
 #Ethylene Biosynth and perception
 (G2[[1]] + G2[[2]] + G2[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G2[[7]] + G2[[8]] + 
    G2[[9]] + G2[[17]] +  G2[[18]] + G2[[19]] + G2[[36]] + guide_area()) +
@@ -401,7 +500,7 @@ ggsave2("Figures/Tomato_TF_Genes.pdf",
         width=21)
 
 #Cell Wall
-(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]] + G2[[39]] + G2[[40]])
+(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]] + G2[[40]])
 ggsave2("Figures/Tomato_Cell_Genes.pdf",
         height=10,
         width=10)
@@ -462,36 +561,91 @@ venn.diagram(
   lwd=2,
   lty=1)
 
+# Five-Species Clusters ---------------------------------------------------
+# Conserved patterns first
+C4 <- list()
+C4 <- lapply(seq_along(unique(Cluster_Noise$normalized$cluster)),
+             function(i) ggplot(subset(Cluster_Noise$normalized, 
+                                       cluster==unique(Cluster_Noise$normalized$cluster)[i]),
+                                aes(x=Stage, y=value, col=Species, fill=Species)) +
+               labs(y="Z-score of Expression",
+                    x="Stage") +
+               scale_fill_manual(values="#9EBE91") +
+               scale_color_manual(values="#9EBE91") +
+               scale_x_discrete(labels=Labs_Stage) +
+               theme(plot.title = element_text(hjust = 0.5),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     legend.position = "none") +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", aes(group=Fruit))+
+               ggtitle(paste("Cluster", i, "Expression")))
+
+# For divergent patterns
+C5 <- list()
+C5 <- lapply(seq_along(unique(Cluster_Fruit$normalized$cluster)),
+             function(i) ggplot(subset(Cluster_Fruit$normalized, 
+                                       cluster==unique(Cluster_Fruit$normalized$cluster)[i]), 
+                                aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
+               labs(y="Z-score of Expression",
+                    x="Stage") +
+               scale_fill_manual(values=palw2[c(1,3)]) +
+               scale_color_manual(values=palw2[c(1,3)]) +
+               scale_x_discrete(labels=Labs_Stage) +
+               theme(plot.title = element_text(hjust = 0.5),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF")) +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", aes(group=Species))+
+               ggtitle(paste("Cluster", i, "Expression")))
+
+
 # Five-Species GO Plots ---------------------------------------------------
-# First get all the clusters when grouped by fruit
-Tables_Ortho <- list()
-Tables_Ortho <- lapply(seq_along(unique(Cluster_Fruit$normalized$cluster)), 
+# For Common patterns
+Tables_Ortho_Noise <- list()
+Tables_Ortho_Noise <- lapply(seq_along(unique(Cluster_Noise$normalized$cluster)), 
+                             function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+                                                   GOIs=setNames(as.factor(as.numeric(Cluster_Noise$normalized$genes %in% subset(Cluster_Noise$normalized, cluster==unique(Cluster_Noise$normalized$cluster)[i])$genes)),
+                                                                 Cluster_Noise$normalized$genes)))
+
+# For divergent patterns 
+Tables_Ortho_Fruit <- list()
+Tables_Ortho_Fruit <- lapply(seq_along(unique(Cluster_Fruit$normalized$cluster)), 
                        function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
                                              GOIs=setNames(as.factor(as.numeric(Cluster_Fruit$normalized$genes %in% Cluster_Fruit$normalized$genes[Cluster_Fruit$normalized$cluster==unique(Cluster_Fruit$normalized$cluster)[i]])),
                                                            Cluster_Fruit$normalized$genes)))
 # Then add in Overalls
-Tables_Ortho[["Model 1"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+Tables_Ortho_Noise[["Model 1"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
                                      GOIs=setNames(as.factor(as.numeric(rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<0.01)))), rownames(DDS_Noise)))
 
-Tables_Ortho[["Model 2"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+Tables_Ortho_Fruit[["Model 2"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
                                      GOIs=setNames(as.factor(as.numeric(rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<0.01)))), rownames(DDS_Fruit)))
                                      
 # Save the GO Plots
-GO_Ortho <- list()
-GO_Ortho <- lapply(seq_along(Tables_Ortho), 
-                     function(i) GOPlot(Tables_Ortho[[i]],
-                                        Title = ifelse(names(Tables_Ortho[i])=='',
-                                                             paste("Cluster", i, "GO Enrichment"),
-                                                             paste(names(Tables_Ortho[i]), "GO Enrichment")),
-                                        colorHex = "#9EBE91CC")+
-                       theme(legend.position = "none"))
+GO_Ortho_Noise <- list()
+GO_Ortho_Noise <- lapply(seq_along(Tables_Ortho_Noise), 
+                         function(i) GOPlot(Tables_Ortho_Noise[[i]],
+                                            Title = ifelse(names(Tables_Ortho_Noise[i])=='',
+                                                           paste("Cluster", i, "GO Enrichment"),
+                                                           paste(names(Tables_Ortho_Noise[i]), "GO Enrichment")),
+                                            colorHex = "#9EBE91CC") +
+                           theme(legend.position = c(.9,.2)))
+GO_Ortho_Fruit <- list()
+GO_Ortho_Fruit <- lapply(seq_along(Tables_Ortho_Fruit), 
+             function(i) GOPlot(Tables_Ortho_Fruit[[i]],
+                      Title = ifelse(names(Tables_Ortho_Fruit[i])=='',
+                             paste("Cluster", i, "GO Enrichment"),
+                             paste(names(Tables_Ortho_Fruit[i]), "GO Enrichment")),
+                      colorHex = "#9EBE91CC") +
+               theme(legend.position = c(.9,.2)))
+
 
 # Five-Species PCA --------------------------------------------------------
 Subset_Noise <- DDS_Noise[rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<=0.01))]
 RLD_Noise <- rlog(Subset_Noise, blind=FALSE)
 RLD_Noise$Stage[RLD_Noise$Stage=="3.5"] <- "Br"
 RLD_Noise$Stage <- as.factor(RLD_Noise$Stage)
-RLD_Noise$Species <- factor(RLD_Fruit$Species, levels=c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
+RLD_Noise$Species <- factor(RLD_Noise$Species, levels=c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
 # Make three PCA plots
 PCA1 <- lapply(list(c(1,2),c(2,3),c(1,3)),
                function(i) plotPCAmod(RLD_Noise,xPC=i[1], yPC=i[2]))
@@ -506,7 +660,45 @@ PCA2 <-  lapply(list(c(1,2),c(2,3),c(1,3)),
                                        xPC=i[1], yPC=i[2],
                                        ntop=dim(RLD_Fruit)[1]))
 
-# Five-Species Clusters ---------------------------------------------------
 
-#From 6_Dry_v_Fleshy.R
+# Five Ortho Figures ------------------------------------------------------
+# Overall Model 1 GO and PCA plots
+(GO_Ortho_Noise[[3]] |
+  (PCA1[[1]] / PCA1[[2]] + 
+     plot_layout(guides = "collect"))) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Model1_Overall.pdf",
+        width=14,
+        height=7)
+
+# Conserved clusters
+(C4[[1]] + GO_Ortho_Noise[[1]] + 
+    C4[[2]] + GO_Ortho_Noise[[2]]) +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(nrow=2)
+ggsave2("Figures/Model1_Clusters.pdf",
+       height=10,
+       width=15)
+
+# Overall Model 2 GO and PCA plots
+(GO_Ortho_Fruit[[9]] |
+    (PCA2[[1]] / PCA2[[2]] +
+       plot_layout(guides="collect"))) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Model2_Overall.pdf",
+        width=14,
+        height=7)
+
+# Selected Clusters from Fruit ortho data
+((C5[[4]] & theme(legend.position = c(.9,.9))) + GO_Ortho_Fruit[[4]] + 
+    (C5[[6]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[6]] + 
+    (C5[[7]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[7]] + 
+    (C5[[8]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[8]]) +
+  plot_layout(nrow = 4) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Model2_Clusters.pdf",
+       height=20,
+       width=15)
+
+
 
