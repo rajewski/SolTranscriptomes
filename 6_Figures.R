@@ -139,44 +139,6 @@ write.table(All_Genes,
             quote = F,
             sep = ",")
 
-
-
-# Gene_Nobt <- as.data.frame(impt_genes)
-# tmp <- merge(Gene_Nobt, orthogroups, by.x=0, by.y="Solanum")
-# Gene_Nobt <- as.character(tmp$impt_genes)
-# names(Gene_Nobt) <- tmp$Nicotiana
-# Gene_Nobt <- c(Gene_Nobt, c("NIOBTv3_g28929-D2.t1"="NoFUL1","NIOBTv3_g39464.t1"="NoFUL2","NIOBTv3_g07845.t1"="NoMBP10","NIOBT_gMBP20.t1"="NoMBP20"))
-# rm(tmp)
-# 
-# #Rename and hardcode genes
-# Gene_Nobt <- c('NIOBTv3_g02352.t1'='NoACO6', 
-#                'NIOBTv3_g22632-D2.t1'='NoAG', 
-#                'NIOBTv3_g27953.t1'='NoCNR', 
-#                'NIOBTv3_g13660.t1'='NoACO4', 
-#                'NIOBTv3_g14235.t1'='NoSEP1', 
-#                'NIOBTv3_g10096.t1'='NoFYFL', 
-#                'NIOBTv3_g17569.t1'='NoPSY1', 
-#                'NIOBTv3_g11084.t1'='NoGAD1', 
-#                'NIOBTv3_g22270.t1'='NIOBTv3_g22270.t1', 
-#                'NIOBTv3_g10008.t1'='NIOBTv3_g10008.t1', 
-#                'NIOBTv3_g35607.t1'='NoKFB', 
-#                'NIOBTv3_g18077.t1'='NoMC', 
-#                'NIOBTv3_g12238.t1'='NIOBTv3_g12238.t1', 
-#                'NIOBTv3_g12440.t1'='NoCel3', 
-#                'NIOBTv3_g38689.t1'='NoACO5', 
-#                'NIOBTv3_g37943.t1'='NoGRAS38', 
-#                'NIOBTv3_g13969.t1'='NoSHP', 
-#                'NIOBTv3_g11662.t1'='NIOBTv3_g11662.t1', 
-#                'NIOBTv3_g12218.t1'='NoFKD', 
-#                'NIOBTv3_g19880.t1'='NoCel2', 
-#                'NIOBTv3_g10291.t1'='NoNR', 
-#                'NIOBTv3_g14436.t1'='NoAGL11', 
-#                'NIOBTv3_g28929-D2.t1'='NoFUL1', 
-#                'NIOBTv3_g39464.t1'='NoFUL2', 
-#                'NIOBTv3_g07845.t1'='NoMBP10', 
-#                'NIOBT_gMBP20.t1'='NoMBP20')
-
-
 # Create a table of Slyc and Nobt genes with common names, gene IDS and orthology information
 
 # Tobacco Clusters -----------------------------------------------------------
@@ -226,7 +188,6 @@ GO_Nobt <- lapply(seq_along(Tables_Nobt),
 #Test if I should plot a gene at all
 Test_Nobt <- as.data.frame(results(DDS_Nobt))
 Test_Nobt <- Test_Nobt[row.names(Test_Nobt) %in% All_Genes$Nicotiana,]
-
 Test_Nobt <- merge(Test_Nobt, 
                         All_Genes[,c("Nicotiana", "Nicotiana_Abbr")],
                         by.x=0,
@@ -402,27 +363,32 @@ GO_Solanum <- lapply(seq_along(Tables_Solanum),
 # Solanum Genes --------------------------------------------------
 # Determine if a plot should be combined by species or now
 Test_Solanum <- merge(as.data.frame(results(DDS_Solanum)),
-                      as.data.frame(results(DDS_SolanumNoise)),
-                      by=0)
-Test_Solanum <- Test_Solanum[Test_Solanum$Row.names %in% names(impt_genes),c(1,7,13)]
-Test_Solanum$Abbr <- impt_genes[Test_Solanum$Row.names]
-Test_Solanum <- Test_Solanum[order(Test_Solanum$Abbr),]
+                         as.data.frame(results(DDS_SolanumNoise)),
+                         by=0)
+Test_Solanum <- Test_Solanum[Test_Solanum$Row.names %in% All_Genes$Solanum,]
+Test_Solanum <- merge(Test_Solanum, 
+                   All_Genes[,c("Solanum", "Solanum_Abbr")],
+                   by.x="Row.names",
+                   by.y="Solanum")
+Test_Solanum <- Test_Solanum[order(Test_Solanum$Solanum_Abbr),]
 Test_Solanum$padj.x[Test_Solanum$padj.x>0.01] <- 1
 Test_Solanum$padj.y[Test_Solanum$padj.y>0.01] <- 1
 Test_Solanum$Choose[Test_Solanum$padj.x < Test_Solanum$padj.y] <- "Separate"
 Test_Solanum$Choose[Test_Solanum$padj.y < Test_Solanum$padj.x] <- "Together"
 Test_Solanum$Choose[is.na(Test_Solanum$Choose)] <- "Neither"
+Test_Solanum <- Test_Solanum[,-c(2:13)]
 
 # Subset to just the important genes
-Subset_SolanumNoise <- as.data.frame(assay(subset(DDS_SolanumNoise, rownames(DDS_SolanumNoise) %in% names(impt_genes))))
-Subset_SolanumNoise$Gene <- rownames(Subset_SolanumNoise)
-Subset_SolanumNoise$Abbr <- impt_genes[Subset_SolanumNoise$Gene]
+Subset_SolanumNoise <- as.data.frame(assay(subset(DDS_SolanumNoise, rownames(DDS_SolanumNoise) %in% All_Genes$Solanum)))
+Subset_SolanumNoise <- merge(Subset_SolanumNoise,
+                     All_Genes[,c("Solanum", "Solanum_Abbr")],
+                     by.x=0,
+                     by.y="Solanum")
+Subset_SolanumNoise <- Subset_SolanumNoise %>% dplyr::rename(Gene=Row.names, Abbr=Solanum_Abbr)
 Subset_SolanumNoise <- Subset_SolanumNoise[order(Subset_SolanumNoise$Abbr),]
 Subset_SolanumNoise <- melt(Subset_SolanumNoise, id.vars = c("Gene", "Abbr"))
-Subset_SolanumNoise$Species <- rep(colData(DDS_SolanumNoise)$Species,
-                                   each=length(unique(Subset_SolanumNoise$Gene)))
 Subset_SolanumNoise$DAP <- as.factor(rep(colData(DDS_SolanumNoise)$DAP,
-                               each=length(unique(Subset_SolanumNoise$Gene))))
+                                 each=length(unique(Subset_SolanumNoise$Gene))))
 
 G2 <- list()
 G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
@@ -445,12 +411,15 @@ G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
                ggtitle(unique(Subset_SolanumNoise$Abbr)[i]))
 
 # Subset to just the important genes
-Subset_Solanum <- as.data.frame(assay(subset(DDS_Solanum, rownames(DDS_Solanum) %in% names(impt_genes))))
-Subset_Solanum$Gene <- rownames(Subset_Solanum)
-Subset_Solanum$Abbr <- impt_genes[Subset_Solanum$Gene]
+Subset_Solanum <- as.data.frame(assay(subset(DDS_Solanum, rownames(DDS_Solanum) %in% All_Genes$Solanum)))
+Subset_Solanum <- merge(Subset_Solanum,
+                             All_Genes[,c("Solanum", "Solanum_Abbr")],
+                             by.x=0,
+                             by.y="Solanum")
+Subset_Solanum <- Subset_Solanum %>% dplyr::rename(Gene=Row.names, Abbr=Solanum_Abbr)
 Subset_Solanum <- Subset_Solanum[order(Subset_Solanum$Abbr),]
 Subset_Solanum <- melt(Subset_Solanum, id.vars = c("Gene", "Abbr"))
-Subset_Solanum$Species <- rep(colData(DDS_Solanum)$Species,
+Subset_Solanum$Species <- rep(colData(DDS_Solanum)$Species, 
                               each=length(unique(Subset_Solanum$Gene)))
 Subset_Solanum$DAP <- as.factor(rep(colData(DDS_Solanum)$DAP,
                                     each=length(unique(Subset_Solanum$Gene))))
@@ -572,7 +541,7 @@ ggsave2("Figures/Tomato_Pigment_Genes.pdf",
 
 #Developmental TFs
 (G2[[10]] + G2[[20]] + G2[[22]] + G2[[23]] + G2[[24]] + G2[[28]] +
-    G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + G2[[33]] + G3[[34]] +
+    G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + G3[[33]] + G3[[34]] +
     G2[[35]] + G2[[36]] + G2[[47]] + G3[[48]] + G3[[49]] + G2[[50]] + 
     G2[[51]] + G2[[52]] + guide_area())  +
   plot_annotation(tag_levels = "A") +
@@ -583,7 +552,7 @@ ggsave2("Figures/Tomato_TF_Genes.pdf",
         width=21)
 
 #Cell Wall
-(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]] + G2[[40]])
+(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]])
 ggsave2("Figures/Tomato_Cell_Genes.pdf",
         height=10,
         width=10)
