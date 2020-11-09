@@ -8,6 +8,7 @@ library("VennDiagram")
 library("dplyr")
 library("reshape")
 library("patchwork")
+library("gt")
 
 # Read Data In ------------------------------------------------------------
 Cluster_Nobt <- readRDS("DEGAnalysis/RNA-seq/Cluster_Nobt.rds")
@@ -133,13 +134,48 @@ All_Genes[!is.na(All_Genes$Nicotiana),"Nicotiana_Abbr"] <- c('NoACO4',
                                                              'NoAG',
                                                              'NoSHP',
                                                              'NoSEP1')
-write.table(All_Genes,
+# Create a dummy column for whether this gene is actually used
+All_Genes$Type <- TRUE
+All_Genes$Type[40:46] <- FALSE
+write.table(All_Genes[All_Genes$Type,-5],
             file="Tables/Orthologs.csv",
             row.names = F,
             quote = F,
             sep = ",")
 
-# Create a table of Slyc and Nobt genes with common names, gene IDS and orthology information
+# Ortholog Table ----------------------------------------------------------
+
+# italicize everything
+# Convert NA to some kind of dash
+All_Genes[All_Genes$Type,-5] %>%
+  gt( ) %>%
+  tab_header(
+    title = "Orthology and Abbreviations") %>%
+  tab_style(
+    style=list(cell_text(style="italic")),
+    locations=cells_body()
+  ) %>%
+  cols_align(
+    align="left"
+  ) %>%
+  cols_label(
+    Solanum_Abbr = md("*Solanum* Abbreviation"),
+    Solanum = md("*Solanum* Gene ID"),
+    Nicotiana_Abbr = md("*Nicotiana* Abbreviation"),
+    Nicotiana = md("*Nicotiana* Gene ID")) %>%
+  cols_move_to_start(
+    columns=c(2,1,4,3)
+  ) %>%
+  fmt_missing(
+    columns=c(1:4)
+  ) %>%
+  tab_source_note(
+    source_note = "Only one-to-one and many-to-one orthologs" #make this a footnote
+  )
+
+%>%
+  gtsave(filename = "Tables/Orthologs.pdf")
+
 
 # Tobacco Clusters -----------------------------------------------------------
 C1 <- list()
