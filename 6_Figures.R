@@ -541,7 +541,7 @@ ggsave2("Figures/Tomato_Pigment_Genes.pdf",
 
 #Developmental TFs
 (G2[[10]] + G2[[20]] + G2[[22]] + G2[[23]] + G2[[24]] + G2[[28]] +
-    G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + G3[[33]] + G3[[34]] +
+    G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + G3[[33]] + G2[[34]] +
     G2[[35]] + G2[[36]] + G2[[47]] + G3[[48]] + G3[[49]] + G2[[50]] + 
     G2[[51]] + G2[[52]] + guide_area())  +
   plot_annotation(tag_levels = "A") +
@@ -554,7 +554,7 @@ ggsave2("Figures/Tomato_TF_Genes.pdf",
 #Cell Wall
 (G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]])
 ggsave2("Figures/Tomato_Cell_Genes.pdf",
-        height=10,
+        height=6,
         width=10)
 
 #Misc
