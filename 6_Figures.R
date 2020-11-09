@@ -204,7 +204,9 @@ Tables_Nobt <- list()
 Tables_Nobt <- lapply(seq_along(unique(Cluster_Nobt$normalized$cluster)), 
                       function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Nobt.gene2go.tsv",
                                             GOIs=setNames(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[i])$genes)),
-                                                          Cluster_Nobt$normalized$genes)))
+                                                          Cluster_Nobt$normalized$genes),
+                                            NumCategories = 10))
+
 Tables_Nobt[["Overall"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Nobt.gene2go.tsv",
                                              GOIs=setNames(as.factor(as.numeric(rownames(DDS_Nobt) %in% rownames(subset(results(DDS_Nobt), padj<0.01)))), rownames(DDS_Nobt)))
 
@@ -216,7 +218,7 @@ GO_Nobt <- lapply(seq_along(Tables_Nobt),
                                                     paste("Cluster", i, "GO Enrichment"),
                                                     paste(names(Tables_Nobt[i]), "GO Enrichment")),
                                      colorHex = palw2[1]) +
-                    theme(legend.position = c(.9,.2)))
+                    theme(legend.position = c(.9,.3)))
 
 
 # Tobacco Gene Plots ------------------------------------------------------
@@ -268,14 +270,16 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                ggtitle(unique(Subset_Nobt$Abbr)[i]))
 
 # Tobacco Figures ----------------------------------------------------------
-(G1[[5]] + 
-   G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] + G1[[10]] + 
-   G1[[11]] + G1[[12]] + G1[[13]] + G1[[14]] + G1[[15]] + 
-   G1[[16]] + G1[[17]] + G1[[19]] + G1[[20]] +
-   G1[[21]] + G1[[23]] + G1[[24]] + G1[[25]] + 
+(G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] 
+ + G1[[10]] + G1[[11]] + G1[[12]] + G1[[13]] + 
+   G1[[15]] + G1[[16]] + G1[[17]] + G1[[19]] + 
+   G1[[20]] +  G1[[23]] + G1[[24]] + G1[[25]] + 
    G1[[26]] + G1[[27]] + G1[[28]] + G1[[29]] ) +
-  plot_annotation(tag_levels = "A")
-ggsave2("Figures/Tobacco_Genes.pdf", height=15, width=15)
+  plot_annotation(tag_levels = "A") +
+  plot_layout(nrow=4)
+ggsave2("Figures/Tobacco_Genes.pdf",
+        height=10,
+        width=15)
 
 #Subplot by function
 # Ethylene
@@ -300,7 +304,17 @@ Tobacco_Genes[[4]] <- (G1[[8]] + G1[[9]]  + G1[[16]] + G1[[17]] +
 ((C1[[1]] | GO_Nobt[[1]]) / (C1[[2]] | GO_Nobt[[2]]) / (C1[[3]] | GO_Nobt[[3]]) /
     (C1[[4]] | GO_Nobt[[4]]) / (C1[[5]] | GO_Nobt[[5]]) / (C1[[6]] | GO_Nobt[[6]])) + 
   plot_annotation(tag_levels = "A")
-ggsave("Figures/Tobacco_Clusters.pdf", height=20, width=15)
+
+((C1[[1]] | GO_Nobt[[1]]) / 
+    (C1[[2]] | GO_Nobt[[2]]) / 
+    (C1[[3]] | GO_Nobt[[3]]) /
+    (C1[[4]] | GO_Nobt[[4]]) / 
+    (C1[[5]] | GO_Nobt[[5]]) / 
+    (C1[[6]] | GO_Nobt[[6]])) + 
+  plot_annotation(tag_levels = "A")
+ggsave("Figures/Tobacco_Clusters.pdf", 
+       height=20, 
+       width=15)
 
 # Solanum Clusters ------------------------------------------------------
 # For common patterns
