@@ -277,30 +277,6 @@ ggsave2("Figures/Tobacco_Genes.pdf",
         height=10,
         width=15)
 
-#Subplot by function
-# Ethylene
-Tobacco_Genes <- list()
-Tobacco_Genes[[1]] <- (G1[[5]] + G1[[6]] + G1[[7]] +
-                         plot_layout(tag_level = "new", nrow=1))
-# Cell Wall
-Tobacco_Genes[[2]] <- (G1[[10]] + G1[[11]] + G1[[13]] + 
-                         plot_layout(tag_level = "new", nrow=1))
-# Pigment
-Tobacco_Genes[[3]] <- (G1[[12]] + G1[[19]] + G1[[27]] + 
-                         plot_layout(tag_level = "new", nrow=1))
-# TFs
-Tobacco_Genes[[4]] <- (G1[[8]] + G1[[9]]  + G1[[16]] + G1[[17]] +
-                         G1[[20]] +G1[[23]] + G1[[24]] + G1[[25]] + G1[[26]] +
-                         G1[[28]] + G1[[29]] + 
-                         plot_layout(tag_level = "new"))
-(Tobacco_Genes[[1]] / plot_spacer() / Tobacco_Genes[[2]] / plot_spacer() / Tobacco_Genes[[3]] /
-    plot_spacer() / Tobacco_Genes[[4]])
-
-
-((C1[[1]] | GO_Nobt[[1]]) / (C1[[2]] | GO_Nobt[[2]]) / (C1[[3]] | GO_Nobt[[3]]) /
-    (C1[[4]] | GO_Nobt[[4]]) / (C1[[5]] | GO_Nobt[[5]]) / (C1[[6]] | GO_Nobt[[6]])) + 
-  plot_annotation(tag_levels = "A")
-
 ((C1[[1]] | GO_Nobt[[1]]) / 
     (C1[[2]] | GO_Nobt[[2]]) / 
     (C1[[3]] | GO_Nobt[[3]]) /
@@ -311,6 +287,17 @@ Tobacco_Genes[[4]] <- (G1[[8]] + G1[[9]]  + G1[[16]] + G1[[17]] +
 ggsave("Figures/Tobacco_Clusters.pdf", 
        height=20, 
        width=15)
+
+# Overall GO enrichment
+GO_Nobt[[7]] & 
+  theme(legend.position = c(0.9,0.2)) &
+  scale_fill_gradientn(colours = c("#87868140", palw2[1]),
+                       limits=c(min(Tables_Nobt[[7]]$Significant),max(Tables_Nobt[[7]]$Significant)),
+                       breaks=c(min(Tables_Nobt[[7]]$Significant),max(Tables_Nobt[[7]]$Significant)))
+ggsave2("Figures/Tobacco_OverallGO.pdf",
+        height=6,
+        width=8)
+
 
 # Solanum Clusters ------------------------------------------------------
 # For common patterns
