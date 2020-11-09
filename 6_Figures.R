@@ -137,7 +137,7 @@ All_Genes[!is.na(All_Genes$Nicotiana),"Nicotiana_Abbr"] <- c('NoACO4',
 # Create a dummy column for whether this gene is actually used
 All_Genes$Type <- TRUE
 All_Genes$Type[40:46] <- FALSE
-write.table(All_Genes[All_Genes$Type,-5],
+write.table(All_Genes,
             file="Tables/Orthologs.csv",
             row.names = F,
             quote = F,
@@ -159,22 +159,21 @@ All_Genes[All_Genes$Type,-5] %>%
     align="left"
   ) %>%
   cols_label(
-    Solanum_Abbr = md("*Solanum* Abbreviation"),
+    Solanum_Abbr = md("Gene Name"),
     Solanum = md("*Solanum* Gene ID"),
     Nicotiana_Abbr = md("*Nicotiana* Abbreviation"),
-    Nicotiana = md("*Nicotiana* Gene ID")) %>%
+    Nicotiana = md("*Nicotiana* Ortholog ID")) %>%
   cols_move_to_start(
-    columns=c(2,1,4,3)
+    columns=c(2,1,3,4)
   ) %>%
   fmt_missing(
     columns=c(1:4)
   ) %>%
-  tab_source_note(
-    source_note = "Only one-to-one and many-to-one orthologs" #make this a footnote
-  )
-
-%>%
-  gtsave(filename = "Tables/Orthologs.pdf")
+  tab_footnote(
+    footnote = "Only one-to-one and many-to-one orthologs",
+    locations = cells_column_labels(3)
+  ) %>%
+  gtsave(filename = "Orthologs.png")
 
 
 # Tobacco Clusters -----------------------------------------------------------
