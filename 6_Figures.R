@@ -137,7 +137,7 @@ All_Genes[!is.na(All_Genes$Nicotiana),"Nicotiana_Abbr"] <- c('NoACO4',
 # Create a dummy column for whether this gene is actually used
 All_Genes$Type <- TRUE
 All_Genes$Type[40:46] <- FALSE
-write.table(All_Genes[All_Genes$Type,-5],
+write.table(All_Genes,
             file="Tables/Orthologs.csv",
             row.names = F,
             quote = F,
@@ -159,22 +159,21 @@ All_Genes[All_Genes$Type,-5] %>%
     align="left"
   ) %>%
   cols_label(
-    Solanum_Abbr = md("*Solanum* Abbreviation"),
+    Solanum_Abbr = md("Gene Name"),
     Solanum = md("*Solanum* Gene ID"),
     Nicotiana_Abbr = md("*Nicotiana* Abbreviation"),
-    Nicotiana = md("*Nicotiana* Gene ID")) %>%
+    Nicotiana = md("*Nicotiana* Ortholog ID")) %>%
   cols_move_to_start(
-    columns=c(2,1,4,3)
+    columns=c(2,1,3,4)
   ) %>%
   fmt_missing(
     columns=c(1:4)
   ) %>%
-  tab_source_note(
-    source_note = "Only one-to-one and many-to-one orthologs" #make this a footnote
-  )
-
-%>%
-  gtsave(filename = "Tables/Orthologs.pdf")
+  tab_footnote(
+    footnote = "Only one-to-one and many-to-one orthologs",
+    locations = cells_column_labels(3)
+  ) %>%
+  gtsave(filename = "Orthologs.png")
 
 
 # Tobacco Clusters -----------------------------------------------------------
@@ -267,40 +266,15 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                ggtitle(unique(Subset_Nobt$Abbr)[i]))
 
 # Tobacco Figures ----------------------------------------------------------
-(G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] 
- + G1[[10]] + G1[[11]] + G1[[12]] + G1[[13]] + 
-   G1[[15]] + G1[[16]] + G1[[17]] + G1[[19]] + 
-   G1[[20]] +  G1[[23]] + G1[[24]] + G1[[25]] + 
-   G1[[26]] + G1[[27]] + G1[[28]] + G1[[29]] ) +
+(G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] +
+   G1[[10]] + G1[[11]] + G1[[12]] + G1[[13]] + G1[[16]] +
+   G1[[17]] + G1[[19]] + G1[[20]] +  G1[[23]] + G1[[24]] + 
+   G1[[25]] +  G1[[26]] + G1[[27]] + G1[[28]] + G1[[29]] ) +
   plot_annotation(tag_levels = "A") +
   plot_layout(nrow=4)
 ggsave2("Figures/Tobacco_Genes.pdf",
         height=10,
         width=15)
-
-#Subplot by function
-# Ethylene
-Tobacco_Genes <- list()
-Tobacco_Genes[[1]] <- (G1[[5]] + G1[[6]] + G1[[7]] +
-                         plot_layout(tag_level = "new", nrow=1))
-# Cell Wall
-Tobacco_Genes[[2]] <- (G1[[10]] + G1[[11]] + G1[[13]] + 
-                         plot_layout(tag_level = "new", nrow=1))
-# Pigment
-Tobacco_Genes[[3]] <- (G1[[12]] + G1[[19]] + G1[[27]] + 
-                         plot_layout(tag_level = "new", nrow=1))
-# TFs
-Tobacco_Genes[[4]] <- (G1[[8]] + G1[[9]]  + G1[[16]] + G1[[17]] +
-                         G1[[20]] +G1[[23]] + G1[[24]] + G1[[25]] + G1[[26]] +
-                         G1[[28]] + G1[[29]] + 
-                         plot_layout(tag_level = "new"))
-(Tobacco_Genes[[1]] / plot_spacer() / Tobacco_Genes[[2]] / plot_spacer() / Tobacco_Genes[[3]] /
-    plot_spacer() / Tobacco_Genes[[4]])
-
-
-((C1[[1]] | GO_Nobt[[1]]) / (C1[[2]] | GO_Nobt[[2]]) / (C1[[3]] | GO_Nobt[[3]]) /
-    (C1[[4]] | GO_Nobt[[4]]) / (C1[[5]] | GO_Nobt[[5]]) / (C1[[6]] | GO_Nobt[[6]])) + 
-  plot_annotation(tag_levels = "A")
 
 ((C1[[1]] | GO_Nobt[[1]]) / 
     (C1[[2]] | GO_Nobt[[2]]) / 
@@ -312,6 +286,17 @@ Tobacco_Genes[[4]] <- (G1[[8]] + G1[[9]]  + G1[[16]] + G1[[17]] +
 ggsave("Figures/Tobacco_Clusters.pdf", 
        height=20, 
        width=15)
+
+# Overall GO enrichment
+GO_Nobt[[7]] & 
+  theme(legend.position = c(0.9,0.2)) &
+  scale_fill_gradientn(colours = c("#87868140", palw2[1]),
+                       limits=c(min(Tables_Nobt[[7]]$Significant),max(Tables_Nobt[[7]]$Significant)),
+                       breaks=c(min(Tables_Nobt[[7]]$Significant),max(Tables_Nobt[[7]]$Significant)))
+ggsave2("Figures/Tobacco_OverallGO.pdf",
+        height=6,
+        width=8)
+
 
 # Solanum Clusters ------------------------------------------------------
 # For common patterns
@@ -588,7 +573,8 @@ ggsave2("Figures/Tomato_TF_Genes.pdf",
         width=21)
 
 #Cell Wall
-(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]])
+(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]])  +
+  plot_annotation(tag_levels = "A")
 ggsave2("Figures/Tomato_Cell_Genes.pdf",
         height=6,
         width=10)

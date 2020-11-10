@@ -259,8 +259,8 @@ GOPlot <- function(GoGraph=X,
     xlab(element_blank()) +
     ylab("Log Fold Enrichment") +
     scale_fill_gradientn(colours = c("#87868140", colorHex), #0000ff40
-                         limits=c(1,LegendLimit),
-                         breaks=c(1,LegendLimit)) +
+                         limits=c(min(GoGraph$Significant),LegendLimit),
+                         breaks=c(min(GoGraph$Significant),LegendLimit)) +
     ggtitle(Title) +
     scale_y_continuous(breaks=round(seq(0, max(-log10(GoGraph$Fisher),3)), 1)) +
     #theme_bw(base_size=12) +
