@@ -266,11 +266,10 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                ggtitle(unique(Subset_Nobt$Abbr)[i]))
 
 # Tobacco Figures ----------------------------------------------------------
-(G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] 
- + G1[[10]] + G1[[11]] + G1[[12]] + G1[[13]] + 
-   G1[[15]] + G1[[16]] + G1[[17]] + G1[[19]] + 
-   G1[[20]] +  G1[[23]] + G1[[24]] + G1[[25]] + 
-   G1[[26]] + G1[[27]] + G1[[28]] + G1[[29]] ) +
+(G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] +
+   G1[[10]] + G1[[11]] + G1[[12]] + G1[[13]] + G1[[16]] +
+   G1[[17]] + G1[[19]] + G1[[20]] +  G1[[23]] + G1[[24]] + 
+   G1[[25]] +  G1[[26]] + G1[[27]] + G1[[28]] + G1[[29]] ) +
   plot_annotation(tag_levels = "A") +
   plot_layout(nrow=4)
 ggsave2("Figures/Tobacco_Genes.pdf",
@@ -574,7 +573,8 @@ ggsave2("Figures/Tomato_TF_Genes.pdf",
         width=21)
 
 #Cell Wall
-(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]])
+(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]])  +
+  plot_annotation(tag_levels = "A")
 ggsave2("Figures/Tomato_Cell_Genes.pdf",
         height=6,
         width=10)
