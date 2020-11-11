@@ -38,11 +38,14 @@ sources %>%
   tab_header(title="Data Sources") %>%
   fmt_markdown(columns=c(1:6)) %>%
   cols_label(
-    Stage.1 = md("Stage&nbsp;1"),
-    Stage.2 = md("Stage&nbsp;2"),
-    Stage.3 = md("Stage&nbsp;3"),
-    Stage.4 = md("Stage&nbsp;4"),
-    Bioproject.Accession = md("Bioproject Accession")) %>%
+    Species = md("**Species**"),
+    Stage.1 = md("**Stage&nbsp;1**"),
+    Stage.2 = md("**Stage&nbsp;2**"),
+    Stage.3 = md("**Stage&nbsp;3**"),
+    Breaker = md("**Breaker**"),
+    Stage.4 = md("**Stage&nbsp;4**"),
+    Bioproject.Accession = md("**Bioproject Accession**"),
+    Reference = md("**Reference**")) %>%
   gtsave(filename = "DataSources.png",
          path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
 
@@ -56,7 +59,7 @@ stagedesc %>%
     Dry = md("***Nicotiana***"),
     Fleshy = md("***Solanum***"),
     Stage = md("**Stage**")) %>%
-  tab_source_note(source_note = "Pabón-Mora and Litt, 2011") %>%
+  tab_source_note(source_note = md("Pab&#243;n-Mora and Litt, 2011")) %>%
   gtsave(filename = "StageDesc.png",
          path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
       
