@@ -792,10 +792,11 @@ ggsave2("Figures/Model1_Clusters.pdf",
        width=15)
 
 # Overall Model 2 GO and PCA plots
-((PCA2[[1]] / PCA2[[2]] + plot_layout(guides="collect")) | GO_Ortho_Fruit[[9]]) +
+((PCA2[[1]] + PCA2[[2]] + PCA2[[10]] + guide_area() + plot_layout(guides="collect")) |
+    GO_Ortho_Fruit[[9]]) +
   plot_annotation(tag_levels = "A")
 ggsave2("Figures/Model2_Overall.pdf",
-        width=14,
+        width=16,
         height=7)
 
 # Selected Clusters from Fruit ortho data
