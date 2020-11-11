@@ -144,9 +144,7 @@ write.table(All_Genes,
             sep = ",")
 
 # Ortholog Table ----------------------------------------------------------
-
-# italicize everything
-# Convert NA to some kind of dash
+# Make table for Nobt to Slyc orthos
 All_Genes[All_Genes$Type,-5] %>%
   gt( ) %>%
   tab_header(
@@ -174,6 +172,46 @@ All_Genes[All_Genes$Type,-5] %>%
     locations = cells_column_labels(3)
   ) %>%
   gtsave(filename = "Orthologs.png")
+
+#Insert a list of the 78 conserved genes and find a way to include their TAIR abbreviations
+orthogroups_five <- read.table("Orthofinder/OrthoFinder/Results_Aug31/Orthogroups/Orthogroups.tsv",
+                               sep="\t",
+                               stringsAsFactors = F,
+                               header=T)
+orthogroups_noise <- orthogroups_five[orthogroups_five$Orthogroup %in% rownames(subset(results(DDS_Noise), padj<0.01)),]
+orthogroups_noise <- orthogroups_noise[order(orthogroups_noise$Arabidopsis),]
+write.table(orthogroups_noise,
+            file="Tables/Orthologs_Conserved.csv",
+            row.names = F,
+            quote = F,
+            sep = ",")
+
+orthogroups_noise[,-1] %>%
+  gt( ) %>%
+  tab_header(
+    title = "Genes with Conserved Expression") %>%
+  tab_style(
+    style=list(cell_text(style="italic")),
+    locations=cells_body()
+  ) %>%
+  cols_align(
+    align="left"
+  ) %>%
+  cols_label(
+    Arabidopsis = md("*A.&nbsp;thaliana*"),
+    Cucumis = md("Melon"),
+    Nicotiana = md("Desert Tobacco"),
+    Solanum = md("Tomato")) %>%
+  gtsave(filename = "Orthologs_Conserved.png", 
+         path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
+write.
+
+orthogroups_fruit <- orthogroups_five[orthogroups_five$Orthogroup %in% rownames(subset(results(DDS_Fruit), padj<0.01)),]
+write.table(orthogroups_fruit,
+            file="Tables/Orthologs_Divergent.csv",
+            row.names = F,
+            quote = F,
+            sep = ",")
 
 
 # Tobacco Clusters -----------------------------------------------------------
@@ -721,7 +759,7 @@ RLD_Noise$Stage[RLD_Noise$Stage=="3.5"] <- "Br"
 RLD_Noise$Stage <- as.factor(RLD_Noise$Stage)
 RLD_Noise$Species <- factor(RLD_Noise$Species, levels=c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
 # Make three PCA plots
-PCA1 <- lapply(list(c(1,2),c(2,3),c(1,3)),
+PCA1 <- lapply(list(c(1,2),c(2,3),c(1,3), c(1,4), c(2,4), c(3,4), c(1,5), c(2,5), c(3,5), c(4,5)),
                function(i) plotPCAmod(RLD_Noise,xPC=i[1], yPC=i[2]))
 
 Subset_Fruit <- DDS_Fruit[rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<=0.01))]
@@ -729,7 +767,7 @@ RLD_Fruit <- rlog(Subset_Fruit, blind=FALSE)
 RLD_Fruit$Stage[RLD_Fruit$Stage=="3.5"] <- "Br"
 RLD_Fruit$Stage <- as.factor(RLD_Fruit$Stage)
 RLD_Fruit$Species <- factor(RLD_Fruit$Species, levels=c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
-PCA2 <-  lapply(list(c(1,2),c(2,3),c(1,3)),
+PCA2 <-  lapply(list(c(1,2),c(2,3),c(1,3), c(1,4), c(2,4), c(3,4), c(1,5), c(2,5), c(3,5), c(4,5)),
                 function(i) plotPCAmod(RLD_Fruit,
                                        xPC=i[1], yPC=i[2],
                                        ntop=dim(RLD_Fruit)[1]))
@@ -737,12 +775,11 @@ PCA2 <-  lapply(list(c(1,2),c(2,3),c(1,3)),
 
 # Five Ortho Figures ------------------------------------------------------
 # Overall Model 1 GO and PCA plots
-(GO_Ortho_Noise[[3]] |
-  (PCA1[[1]] / PCA1[[2]] + 
-     plot_layout(guides = "collect"))) +
+((PCA1[[1]] + PCA1[[5]] + PCA1[[2]] + guide_area() + plot_layout(guides = "collect")) | 
+   GO_Ortho_Noise[[3]]) +
   plot_annotation(tag_levels = "A")
 ggsave2("Figures/Model1_Overall.pdf",
-        width=14,
+        width=16,
         height=7)
 
 # Conserved clusters
@@ -755,9 +792,7 @@ ggsave2("Figures/Model1_Clusters.pdf",
        width=15)
 
 # Overall Model 2 GO and PCA plots
-(GO_Ortho_Fruit[[9]] |
-    (PCA2[[1]] / PCA2[[2]] +
-       plot_layout(guides="collect"))) +
+((PCA2[[1]] / PCA2[[2]] + plot_layout(guides="collect")) | GO_Ortho_Fruit[[9]]) +
   plot_annotation(tag_levels = "A")
 ggsave2("Figures/Model2_Overall.pdf",
         width=14,
