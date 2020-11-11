@@ -810,5 +810,20 @@ ggsave2("Figures/Model2_Clusters.pdf",
        height=20,
        width=15)
 
+# All cluster for supplement
+((C5[[1]] & theme(legend.position = c(.9,.9))) + GO_Ortho_Fruit[[1]] + 
+    (C5[[2]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[2]] + 
+    (C5[[3]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[3]] + 
+    (C5[[4]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[4]] + 
+    (C5[[5]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[5]] + 
+    (C5[[6]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[6]] + 
+    (C5[[7]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[7]] + 
+    (C5[[8]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[8]]) +
+  plot_layout(nrow = 8) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Supplemental_Model2_Clusters.pdf",
+        height=40,
+        width=15)
+
 
 
