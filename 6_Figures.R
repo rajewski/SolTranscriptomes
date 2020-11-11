@@ -29,6 +29,23 @@ Labs_Stage <- c("2"="2", "3"="3", "3.5"="Br")
 DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Noise.rds")
 DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Fruit.rds")
 
+# Table of data sources ---------------------------------------------------
+sources <- read.csv("ExternalData/Sources.csv",
+                    stringsAsFactors = F)
+sources <- sources[order(sources$Species),]
+sources %>%
+  gt() %>%
+  tab_header(title="Data Sources") %>%
+  fmt_markdown(columns=c(1:6)) %>%
+  cols_label(
+    Stage.1 = md("Stage&nbsp;1"),
+    Stage.2 = md("Stage&nbsp;2"),
+    Stage.3 = md("Stage&nbsp;3"),
+    Stage.4 = md("Stage&nbsp;4"),
+    Bioproject.Accession = md("Bioproject Accession")) %>%
+  gtsave(filename = "DataSources.png",
+         path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
+  
 # Important Genes for Plotting --------------------------------------------
 # Manually curated lsit of impt solaum genes
 impt_genes <- c("Solyc02g077920.4.1"="CNR",
@@ -171,7 +188,8 @@ All_Genes[All_Genes$Type,-5] %>%
     footnote = "Only one-to-one and many-to-one orthologs",
     locations = cells_column_labels(3)
   ) %>%
-  gtsave(filename = "Orthologs.png")
+  gtsave(filename = "Orthologs.png",
+         path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
 
 #Insert a list of the 78 conserved genes and find a way to include their TAIR abbreviations
 orthogroups_five <- read.table("Orthofinder/OrthoFinder/Results_Aug31/Orthogroups/Orthogroups.tsv",
@@ -204,7 +222,6 @@ orthogroups_noise[,-1] %>%
     Solanum = md("Tomato")) %>%
   gtsave(filename = "Orthologs_Conserved.png", 
          path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
-write.
 
 orthogroups_fruit <- orthogroups_five[orthogroups_five$Orthogroup %in% rownames(subset(results(DDS_Fruit), padj<0.01)),]
 write.table(orthogroups_fruit,
