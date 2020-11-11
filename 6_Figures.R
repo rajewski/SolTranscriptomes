@@ -45,6 +45,21 @@ sources %>%
     Bioproject.Accession = md("Bioproject Accession")) %>%
   gtsave(filename = "DataSources.png",
          path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
+
+
+# Stage Description Table -------------------------------------------------
+stagedesc <- read.csv("ExternalData/StageDesc.csv", stringsAsFactors = F)
+stagedesc %>%
+  gt() %>%
+  tab_header(title="Description of Developmental Stages") %>%
+  cols_label(
+    Dry = md("***Nicotiana***"),
+    Fleshy = md("***Solanum***"),
+    Stage = md("**Stage**")) %>%
+  tab_source_note(source_note = "Pabón-Mora and Litt, 2011") %>%
+  gtsave(filename = "StageDesc.png",
+         path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
+      
   
 # Important Genes for Plotting --------------------------------------------
 # Manually curated lsit of impt solaum genes
