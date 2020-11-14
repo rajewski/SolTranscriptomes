@@ -257,7 +257,7 @@ GOPlot <- function(GoGraph=X,
   GoPlot <- ggplot(GoGraph, aes(x=Term, y=-log10(Fisher), fill=Significant)) +
     stat_summary(geom = "bar", fun = mean, position = "dodge") +
     xlab(element_blank()) +
-    ylab("Log Fold Enrichment") +
+    ylab(expression(-log[10]~"p-value")) +
     scale_fill_gradientn(colours = c("#87868140", colorHex), #0000ff40
                          limits=c(min(GoGraph$Significant),LegendLimit),
                          breaks=c(min(GoGraph$Significant),LegendLimit)) +
