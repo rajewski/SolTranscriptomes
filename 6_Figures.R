@@ -21,8 +21,6 @@ DDS_SolanumNoise <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF_Noise.rds")
 DDS_Solanum <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF.rds")
 Labs_SolanumStage <- c("1"="1", "3"="2", "15"="3", "35"="Br", "45"="RR")
 
-Limit_genes <- c(-2.5,2.5)
-
 Cluster_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Noise.rds")
 Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Fruit.rds")
 Labs_Stage <- c("2"="2", "3"="3", "3.5"="Br")
@@ -101,7 +99,6 @@ stagedesc %>%
   tab_footnote(
     footnote = "Zhang et al, 2016",
     locations = cells_column_labels(starts_with("Cmelo"))) %>%
-  tab_source_note(source_note = ) %>%
   gtsave(filename = "StageDesc.png",
          path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
       
@@ -406,8 +403,10 @@ ggsave("Figures/Tobacco_Clusters.pdf",
 GO_Nobt[[7]] & 
   theme(legend.position = c(0.9,0.2)) &
   scale_fill_gradientn(colours = c("#87868140", palw2[1]),
-                       limits=c(min(Tables_Nobt[[7]]$Significant),max(Tables_Nobt[[7]]$Significant)),
-                       breaks=c(min(Tables_Nobt[[7]]$Significant),max(Tables_Nobt[[7]]$Significant)))
+                       limits=c(min(Tables_Nobt[[7]]$Significant),
+                                max(Tables_Nobt[[7]]$Significant)),
+                       breaks=c(min(Tables_Nobt[[7]]$Significant),
+                                max(Tables_Nobt[[7]]$Significant)))
 ggsave2("Figures/Tobacco_OverallGO.pdf",
         height=6,
         width=8)
@@ -636,21 +635,29 @@ ggsave2("Figures/Suppl_Tomato_Clusters.pdf",
 # Overall GO and selected Clusters
 # align better with wrap_elements, and overwrite the scale for GO Plots
 wrap_elements(full=GO_SolanumNoise[[21]] & 
-                scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
-                                     limits=c(1,max(Tables_SolanumNoise[[21]]$Significant)),
-                                     breaks=c(1,max(Tables_SolanumNoise[[21]]$Significant)))) /
+     scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
+                          limits=c(min(Tables_SolanumNoise[[21]]$Significant),
+                                   max(Tables_SolanumNoise[[21]]$Significant)),
+                          breaks=c(min(Tables_SolanumNoise[[21]]$Significant),
+                                   max(Tables_SolanumNoise[[21]]$Significant)))) /
   (C2[[4]] | GO_SolanumNoise[[4]] &
      scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"),
-                          limits=c(1,max(Tables_SolanumNoise[[4]]$Significant)),
-                          breaks=c(1,max(Tables_SolanumNoise[[4]]$Significant)))) /
+                          limits=c(min(Tables_SolanumNoise[[4]]$Significant),
+                                   max(Tables_SolanumNoise[[4]]$Significant)),
+                          breaks=c(min(Tables_SolanumNoise[[4]]$Significant),
+                                   max(Tables_SolanumNoise[[4]]$Significant)))) /
   (C2[[10]] | GO_SolanumNoise[[10]] &
      scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
-                          limits=c(1,max(Tables_SolanumNoise[[10]]$Significant)),
-                          breaks=c(1,max(Tables_SolanumNoise[[10]]$Significant)))) /
+                          limits=c(min(Tables_SolanumNoise[[10]]$Significant),
+                                   max(Tables_SolanumNoise[[10]]$Significant)),
+                          breaks=c(min(Tables_SolanumNoise[[10]]$Significant),
+                                   max(Tables_SolanumNoise[[10]]$Significant)))) /
   wrap_elements(full=(GO_Solanum[[16]] & 
-                        scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
-                                             limits=c(1,max(Tables_Solanum[[16]]$Significant)),
-                                             breaks=c(1,max(Tables_Solanum[[16]]$Significant))))) +
+     scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
+                          limits=c(min(Tables_Solanum[[16]]$Significant),
+                                   max(Tables_Solanum[[16]]$Significant)),
+                          breaks=c(min(Tables_Solanum[[16]]$Significant),
+                                   max(Tables_Solanum[[16]]$Significant))))) +
   plot_annotation(tag_levels = "A") + 
   plot_layout(widths=1, heights=1)
 ggsave2("Figures/Tomato_Clusters.pdf",
