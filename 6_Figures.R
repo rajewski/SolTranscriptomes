@@ -30,6 +30,7 @@ DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Noise.rds")
 DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Fruit.rds")
 
 # Table of data sources ---------------------------------------------------
+#PATH=/bigdata/littlab/arajewski/Datura/software/phantomjs-2.1.1-linux-x86_64/bin:$PATH
 sources <- read.csv("ExternalData/Sources.csv",
                     stringsAsFactors = F)
 sources <- sources[order(sources$Species),]
@@ -51,15 +52,56 @@ sources %>%
 
 
 # Stage Description Table -------------------------------------------------
-stagedesc <- read.csv("ExternalData/StageDesc.csv", stringsAsFactors = F)
+stagedesc <- read.csv("ExternalData/StageDesc.csv", stringsAsFactors = F)[,-1]
+row.names(stagedesc) <- c("Stage 1",
+                          "Stage 2",
+                          "Stage 3",
+                          "Transition",
+                          "Stage 4")
+
 stagedesc %>%
-  gt() %>%
+  gt(rownames_to_stub = TRUE) %>%
   tab_header(title="Description of Developmental Stages") %>%
+  fmt_missing(
+    columns = ends_with("Day")) %>%
+  cols_merge(
+    columns = starts_with("Nobtusifolia"),
+    hide_columns = vars("NobtusifoliaDay"),
+    pattern = "{1}</br>({2})") %>%
+  cols_merge(
+    columns = starts_with("Athaliana"),
+    hide_columns = vars("AthalianaDay"),
+    pattern = "{1}</br>({2})") %>%
+  cols_merge(
+    columns = starts_with("Solanum"),
+    hide_columns = vars("SolanumDay"),
+    pattern = "{1}</br>({2})") %>%
+  cols_merge(
+    columns = starts_with("Cmelo"),
+    hide_columns = vars("CmeloDay"),
+    pattern = "{1}</br>({2})") %>%
   cols_label(
-    Dry = md("***Nicotiana***"),
-    Fleshy = md("***Solanum***"),
-    Stage = md("**Stage**")) %>%
-  tab_source_note(source_note = md("Pab&#243;n-Mora and Litt, 2011")) %>%
+    NobtusifoliaDesc = md("**Desert Tobacco**"),
+    AthalianaDesc = md("***A.&nbsp;thaliana***"),
+    SolanumDesc = md("**Tomato**"),
+    CmeloDesc = md("**Melon**")) %>%
+  tab_footnote(
+    footnote = "Not sampled",
+    locations = list(
+      cells_body(columns=starts_with(c("Nobt", "Atha")),
+                 rows=5),
+      cells_body(columns=starts_with("Cmel"),
+                 rows=1))) %>%
+  tab_footnote(
+    footnote = md("Pab&#243;n-Mora and Litt, 2011"),
+    locations = cells_column_labels(starts_with(c("Nobt", "Solan")))) %>%
+  tab_footnote(
+    footnote = "Mizzotti et al, 2018",
+    locations = cells_column_labels(starts_with("Atha"))) %>%
+  tab_footnote(
+    footnote = "Zhang et al, 2016",
+    locations = cells_column_labels(starts_with("Cmelo"))) %>%
+  tab_source_note(source_note = ) %>%
   gtsave(filename = "StageDesc.png",
          path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
       
