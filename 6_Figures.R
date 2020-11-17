@@ -3,7 +3,6 @@ library("DESeq2")
 library("ggplot2")
 library("cowplot")
 theme_set(theme_cowplot())
-library("lemon")
 library("VennDiagram")
 library("dplyr")
 library("reshape")
@@ -105,7 +104,7 @@ stagedesc %>%
   
 # Important Genes for Plotting --------------------------------------------
 # Manually curated lsit of impt solaum genes
-impt_genes <- c("Solyc02g077920.4.1"="CNR",
+impt_genes <- c("Solyc02g077920.4.1"="SPL-CNR",
                 "Solyc10g006880.3.1"="NOR",
                 "Solyc05g012020.4.1"="MADS-RIN",
                 "Solyc05g056620.2.1"="MC",
@@ -121,7 +120,7 @@ impt_genes <- c("Solyc02g077920.4.1"="CNR",
                 "Solyc03g114830.3.1"="FUL2",
                 "Solyc02g065730.2.1"="MBP10",
                 "Solyc02g089210.4.1"="MBP20",
-                "Solyc09g075440.4.1"="NR",
+                "Solyc09g075440.4.1"="NR/ETR3",
                 "Solyc07g055920.4.1"="TAGL1",
                 "Solyc01g095080.3.1"="ACS2",
                 "Solyc05g050010.3.1"="ACS4",
@@ -168,11 +167,12 @@ orthogroups <- orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multi
 
 All_Genes <- cbind(Solanum=names(impt_genes), Solanum_Abbr=impt_genes)
 All_Genes <- merge(All_Genes, orthogroups, by.x="Solanum", by.y="Solanum", all.x=TRUE)
+#Sys.setlocale(category = "LC_ALL", locale ="en_US.UTF-8")
 All_Genes <- All_Genes[order(All_Genes$Solanum_Abbr),]
 row.names(All_Genes) <- NULL
 
-# Manually add in FUL genes
-All_Genes[c(21,22,23,29,31,32,35),"Nicotiana"] <- c("NIOBTv3_g17210.t1",
+# Manually add in genes
+All_Genes[c(20,21,22,28,30,31,34),"Nicotiana"] <- c("NIOBTv3_g17210.t1",
                                                  "NIOBTv3_g28929-D2.t1",
                                           "NIOBTv3_g39464.t1",
                                           "NIOBTv3_g15806.t1",
@@ -185,7 +185,6 @@ All_Genes[!is.na(All_Genes$Nicotiana),"Nicotiana_Abbr"] <- c('NoACO4',
                                                              'NoAGL11',
                                                              'NoCel2',
                                                              'NoCel3',
-                                                             'NoCNR',
                                                              'NoEXP',
                                                              'NoFUL1',
                                                              'NoFUL2',
@@ -196,7 +195,7 @@ All_Genes[!is.na(All_Genes$Nicotiana),"Nicotiana_Abbr"] <- c('NoACO4',
                                                              'NoMBP20',
                                                              'NoMC',
                                                              'NoNOR',
-                                                             'NoNR',
+                                                             'NoETR3',
                                                              'NoPSY1',
                                                              'NoFKD',
                                                              'NoFSR',
@@ -205,12 +204,13 @@ All_Genes[!is.na(All_Genes$Nicotiana),"Nicotiana_Abbr"] <- c('NoACO4',
                                                              'NIOBTv3_g10008.t1',
                                                              'NIOBTv3_g12238.t1', 
                                                              'NIOBTv3_g11662.t1',
+                                                             'NoSPL-CNR',
                                                              'NoAG',
                                                              'NoSHP',
                                                              'NoSEP1')
 # Create a dummy column for whether this gene is actually used
 All_Genes$Type <- TRUE
-All_Genes$Type[40:46] <- FALSE
+All_Genes$Type[39:41] <- FALSE
 write.table(All_Genes,
             file="Tables/Orthologs.csv",
             row.names = F,
@@ -506,12 +506,12 @@ Test_Solanum <- merge(Test_Solanum,
                    by.x="Row.names",
                    by.y="Solanum")
 Test_Solanum <- Test_Solanum[order(Test_Solanum$Solanum_Abbr),]
-Test_Solanum$padj.x[Test_Solanum$padj.x>0.01] <- 1
-Test_Solanum$padj.y[Test_Solanum$padj.y>0.01] <- 1
-Test_Solanum$Choose[Test_Solanum$padj.x < Test_Solanum$padj.y] <- "Separate"
-Test_Solanum$Choose[Test_Solanum$padj.y < Test_Solanum$padj.x] <- "Together"
+Test_Solanum <- Test_Solanum[,-c(2:6,8:12)]
+Test_Solanum$Choose[Test_Solanum$padj.x<0.01] <- "Separate"
+Test_Solanum$Choose[Test_Solanum$padj.y<0.01 & is.na(Test_Solanum$Choose)] <- "Together"
 Test_Solanum$Choose[is.na(Test_Solanum$Choose)] <- "Neither"
-Test_Solanum <- Test_Solanum[,-c(2:13)]
+Test_Solanum <- Test_Solanum[order(Test_Solanum$Solanum_Abbr),]
+row.names(Test_Solanum) <- NULL
 
 # Subset to just the important genes
 Subset_SolanumNoise <- as.data.frame(assay(subset(DDS_SolanumNoise, rownames(DDS_SolanumNoise) %in% All_Genes$Solanum)))
@@ -536,7 +536,9 @@ G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
                scale_fill_manual(values=palw2[3]) +
                scale_x_discrete(labels=Labs_SolanumStage) +
                theme(plot.title = element_text(hjust = 0.5,
-                                  face = ifelse(Test_Solanum[i,"Choose"]=="Together", 'bold.italic', 'italic')),
+                                  face = ifelse(Test_Solanum[i,"Choose"]=="Together",
+                                                'bold.italic',
+                                                'italic')),
                      plot.subtitle = element_text(hjust=0.5),
                      strip.background = element_rect(fill="#FFFFFF"),
                      strip.text.x = element_text(face="italic"),
@@ -665,8 +667,8 @@ ggsave2("Figures/Tomato_Clusters.pdf",
         width=15)
 
 #Ethylene Biosynth and perception
-(G2[[1]] + G2[[2]] + G2[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G2[[7]] + G2[[8]] + 
-   G2[[9]] + G2[[17]] +  G2[[18]] + G2[[19]] + G2[[36]] + guide_area()) +
+(G2[[1]] + G2[[2]] + G3[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G3[[7]] + G2[[8]] + 
+   G2[[9]] + G3[[16]] +  G3[[17]] + G2[[18]] + G2[[35]] + guide_area()) +
   plot_annotation(tag_levels = "A") +
   plot_layout(guides="collect")
 ggsave2("Figures/Tomato_Ethylene_Genes.pdf",
@@ -674,8 +676,8 @@ ggsave2("Figures/Tomato_Ethylene_Genes.pdf",
         width=12)
 
 #Flavor and Pigment
-(G2[[13]] + G2[[14]] + G2[[15]] + G2[[16]] + G2[[25]] + G2[[26]] + G2[[27]] +
-   G2[[39]] +G2[[53]])  +
+(G2[[13]] + G2[[14]] + G2[[15]] + G3[[24]] + G2[[25]] + G2[[26]] +
+   G2[[38]] + G3[[53]] + guide_area())  +
   plot_annotation(tag_levels = "A") +
   plot_layout(guides="collect") 
 ggsave2("Figures/Tomato_Pigment_Genes.pdf",
@@ -683,10 +685,10 @@ ggsave2("Figures/Tomato_Pigment_Genes.pdf",
         width=10)
 
 #Developmental TFs
-(G2[[10]] + G2[[20]] + G2[[22]] + G2[[23]] + G2[[24]] + G2[[28]] +
-    G2[[29]] + G2[[30]] + G2[[31]] + G2[[32]] + G3[[33]] + G2[[34]] +
-    G2[[35]] + G2[[36]] + G2[[47]] + G3[[48]] + G3[[49]] + G2[[50]] + 
-    G2[[51]] + G2[[52]] + guide_area())  +
+(G3[[10]] + G3[[19]] + G2[[21]] + G3[[22]] + G2[[23]] + G3[[27]] +
+    G3[[28]] + G2[[29]] + G3[[32]] + G3[[30]] + G3[[31]] + G3[[33]] +
+    G2[[34]] + G2[[35]] + G3[[46]] + G3[[47]] + G3[[48]] + G3[[49]] + G2[[51]] + 
+    G3[[52]] + G3[[50]] + guide_area())  +
   plot_annotation(tag_levels = "A") +
   plot_layout(guides="collect",
               nrow=3) 
@@ -695,7 +697,7 @@ ggsave2("Figures/Tomato_TF_Genes.pdf",
         width=21)
 
 #Cell Wall
-(G2[[11]] + G2[[12]] + G2[[21]] + G2[[37]] + G2[[38]])  +
+(G2[[11]] + G2[[12]] + G2[[20]] + G2[[36]] + G2[[37]])  +
   plot_annotation(tag_levels = "A")
 ggsave2("Figures/Tomato_Cell_Genes.pdf",
         height=6,
@@ -706,6 +708,11 @@ ggsave2("Figures/Tomato_Cell_Genes.pdf",
   plot_annotation(tag_levels = "A") +
   plot_layout(guides="collect")
 ggsave2("Figures/Tomato_Misc_Genes.pdf", height=30, width=30)
+
+# Selected Divergent Genes
+(G3[[6]] + G3[[33]] + G3[[48]] + G3[[49]]) +
+  plot_annotation(tag_levels = "A") + 
+  plot_layout(guides="collect")
 
  
 # Five-Species Venn Diagram -----------------------------------------------
