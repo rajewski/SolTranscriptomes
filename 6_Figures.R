@@ -103,6 +103,20 @@ stagedesc %>%
       
   
 # Important Genes for Plotting --------------------------------------------
+#unimportant genes
+#Solyc06g068440.4.1 - CCR1 - Not DE
+#Solyc03g117600.3.1 - HCT - conserved (alllmost divergent)
+#Solyc09g007920.4.1 - PAL - conserved
+#Solyc12g042460.2.1 - 4CL - not DE
+#Solyc06g068650.4.1 - 4CL - conserved
+#Solyc03g117870.3.1 - 4CL - conserved
+#Solyc01g096670.4.1 - C3H -  conserved
+#Solyc06g150137.1.1 - C4H - conserved
+#Solyc02g084570.4.1 - F5H - conserved
+#Solyc01g107910.4.1 - CCOAOMT6 - not DE
+#Solyc10g050160.2.1 - CCOAOMT5 - not DE
+#Solyc02g093270.4.1 - CCOAOMT - conserved
+#Solyc03g080180.4.1 - SlCOMT - conserved
 # Manually curated lsit of impt solaum genes
 impt_genes <- c("Solyc02g077920.4.1"="SPL-CNR",
                 "Solyc10g006880.3.1"="NOR",
@@ -505,7 +519,6 @@ Test_Solanum <- merge(Test_Solanum,
                    All_Genes[,c("Solanum", "Solanum_Abbr")],
                    by.x="Row.names",
                    by.y="Solanum")
-Test_Solanum <- Test_Solanum[order(Test_Solanum$Solanum_Abbr),]
 Test_Solanum <- Test_Solanum[,-c(2:6,8:12)]
 Test_Solanum$Choose[Test_Solanum$padj.x<0.01] <- "Separate"
 Test_Solanum$Choose[Test_Solanum$padj.y<0.01 & is.na(Test_Solanum$Choose)] <- "Together"
@@ -710,7 +723,18 @@ ggsave2("Figures/Tomato_Cell_Genes.pdf",
 ggsave2("Figures/Tomato_Misc_Genes.pdf", height=30, width=30)
 
 # Selected Divergent Genes
-(G3[[6]] + G3[[33]] + G3[[48]] + G3[[49]]) +
+(G3[[32]] + 
+    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +
+    scale_fill_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +  
+    G3[[46]] + 
+    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +
+    scale_fill_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +  
+    G3[[48]] + 
+    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +
+    scale_fill_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +  
+    G3[[49]] +
+    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +
+    scale_fill_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated"))) +
   plot_annotation(tag_levels = "A") + 
   plot_layout(guides="collect")
 
