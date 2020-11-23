@@ -181,52 +181,55 @@ impt_genes <- c("Solyc02g077920.4.1"="SPL-CNR",
 orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
                           sep="\t",
                           stringsAsFactors = F,
-                          header=T)[,c(2:3)]
+                          header=T)
 orthogroups <- orthogroups %>% filter_all(all_vars(!grepl(',',.))) #Remove multiples
-
 All_Genes <- cbind(Solanum=names(impt_genes), Solanum_Abbr=impt_genes)
 All_Genes <- merge(All_Genes, orthogroups, by.x="Solanum", by.y="Solanum", all.x=TRUE)
 #Sys.setlocale(category = "LC_ALL", locale ="en_US.UTF-8")
 All_Genes <- All_Genes[order(All_Genes$Solanum_Abbr),]
 row.names(All_Genes) <- NULL
+rm(orthogroups)
 
 # Manually add in genes
-All_Genes[c(20,21,22,28,30,31,34),"Nicotiana"] <- c("NIOBTv3_g17210.t1",
-                                                 "NIOBTv3_g28929-D2.t1",
-                                          "NIOBTv3_g39464.t1",
-                                          "NIOBTv3_g15806.t1",
-                                          "NIOBTv3_g07845.t1",
-                                          "NIOBT_gMBP20.t1",
-                                          "NIOBTv3_g08302.t1")
-All_Genes[!is.na(All_Genes$Nicotiana),"Nicotiana_Abbr"] <- c('NoACO4',
-                                                             'NoACO5',
-                                                             'NoACO6',
-                                                             'NoAGL11',
-                                                             'NoCel2',
-                                                             'NoCel3',
-                                                             'NoEXP',
-                                                             'NoFUL1',
-                                                             'NoFUL2',
-                                                             'NoFYFL',
-                                                             'NoGAD1',
-                                                             'NoJ2',
-                                                             'NoMBP10',
-                                                             'NoMBP20',
-                                                             'NoMC',
-                                                             'NoNOR',
-                                                             'NoETR3',
-                                                             'NoPSY1',
-                                                             'NoFKD',
-                                                             'NoFSR',
-                                                             'NoKFB',
-                                                             'NIOBTv3_g22270.t1',
-                                                             'NIOBTv3_g10008.t1',
-                                                             'NIOBTv3_g12238.t1', 
-                                                             'NIOBTv3_g11662.t1',
-                                                             'NoSPL-CNR',
-                                                             'NoAG',
-                                                             'NoSHP',
-                                                             'NoSEP1')
+tmp <- c("NIOBTv3_g17210.t1" = "Solyc06g051800.3.1",
+         "NIOBTv3_g28929-D2.t1" = "Solyc06g069430.3.1",
+         "NIOBTv3_g39464.t1" = "Solyc03g114830.3.1",
+         "NIOBTv3_g15806.t1" = "Solyc12g038510.2.1",
+         "NIOBTv3_g07845.t1" = "Solyc02g065730.2.1",
+         "NIOBT_gMBP20.t1" = "Solyc02g089210.4.1",
+         "NIOBTv3_g08302.t1" = "Solyc10g006880.3.1")
+All_Genes[All_Genes$Solanum %in%tmp,"Nicotiana"] <- names(tmp)
+rm(tmp)
+tmp <- c('NoACO4'="NIOBTv3_g13660.t1",
+         'NoACO5'="NIOBTv3_g38689.t1",
+         'NoACO6'="NIOBTv3_g02352.t1",
+         'NoAGL11'="NIOBTv3_g14436.t1",
+         'NoCel2'="NIOBTv3_g19880.t1",
+         'NoCel3'="NIOBTv3_g12440.t1",
+         'NoEXP'="NIOBTv3_g17210.t1",
+         'NoFUL1'="NIOBTv3_g28929-D2.t1",
+         'NoFUL2'="NIOBTv3_g39464.t1",
+         'NoFYFL'="NIOBTv3_g10096.t1",
+         'NoGAD1'="NIOBTv3_g11084.t1",
+         'NoJ2'="NIOBTv3_g15806.t1",
+         'NoMBP10'="NIOBTv3_g07845.t1",
+         'NoMBP20'="NIOBT_gMBP20.t1",
+         'NoMC'="NIOBTv3_g18077.t1",
+         'NoNOR'="NIOBTv3_g08302.t1",
+         'NoETR3'="NIOBTv3_g10291.t1",
+         'NoPSY1'="NIOBTv3_g17569.t1",
+         'NoFKD'="NIOBTv3_g12218.t1",
+         'NoFSR'="NIOBTv3_g37943.t1",
+         'NoKFB'="NIOBTv3_g35607.t1",
+         'NIOBTv3_g22270.t1'="NIOBTv3_g22270.t1",
+         'NIOBTv3_g10008.t1'="NIOBTv3_g10008.t1",
+         'NIOBTv3_g12238.t1'="NIOBTv3_g12238.t1", 
+         'NIOBTv3_g11662.t1'="NIOBTv3_g11662.t1",
+         'NoSPL-CNR'="NIOBTv3_g27953.t1",
+         'NoAG'="NIOBTv3_g22632-D2.t1",
+         'NoSHP'="NIOBTv3_g13969.t1",
+         'NoSEP1'="NIOBTv3_g14235.t1")
+All_Genes[All_Genes$Nicotiana %in% tmp,"Nicotiana_Abbr"] <- names(tmp)
 # Create a dummy column for whether this gene is actually used
 All_Genes$Type <- TRUE
 All_Genes$Type[39:41] <- FALSE
@@ -815,17 +818,107 @@ Tables_Solanaceae <- lapply(seq_along(unique(Cluster_Solanaceae$normalized$clust
 Tables_Solanaceae[["Divergent Genes"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.1029Sol.gene2go.tsv",
                                                 GOIs=setNames(as.factor(as.numeric(rownames(DDS_Solanaceae) %in% rownames(subset(results(DDS_Solanaceae), padj<0.01)))), rownames(DDS_Solanaceae)))
 
-
 # Create a list of the GO Plots
 GO_Solanaceae <- list()
-GO_Solanaceae <- lapply(seq_along(Tables_Solanaceae), 
+GO_Solanaceae <- lapply(seq_along(Tables_Solanaceae)[-c(which(sapply(Tables_Solanaceae,is.null)))], 
                      function(i) GOPlot(Tables_Solanaceae[[i]],
                                         Title = ifelse(names(Tables_Solanaceae[i])=='',
                                                        paste("Cluster", i, "GO Enrichment"),
                                                        paste(names(Tables_Solanaceae[i]), "GO Enrichment")),
-                                        colorHex = "#B40F20CC",
-                                        LegendLimit = max(sapply(Tables_Solanaceae, function(x) max(x$Significant)))) +
+                                        colorHex = "#B40F20CC") +
                        theme(legend.position = c(.9,.2)))
+
+
+
+# Solanaceae Genes --------------------------------------------------------
+# Determine if a plot should be combined by species or now
+Test_Solanaceae <- merge(as.data.frame(results(DDS_Solanaceae)),
+                      as.data.frame(results(DDS_Solanaceae_Noise)),
+                      by=0)
+Test_Solanaceae <- Test_Solanaceae[Test_Solanaceae$Row.names %in% All_Genes$Orthogroup,]
+Test_Solanaceae <- merge(Test_Solanaceae, 
+                      All_Genes[,c("Orthogroup", "Solanum_Abbr")],
+                      by.x="Row.names",
+                      by.y="Orthogroup")
+Test_Solanaceae <- Test_Solanaceae[,-c(2:6,8:12)]
+Test_Solanaceae$Choose[Test_Solanaceae$padj.x<0.01] <- "Separate"
+Test_Solanaceae$Choose[Test_Solanaceae$padj.y<0.01 & is.na(Test_Solanaceae$Choose)] <- "Together"
+Test_Solanaceae$Choose[is.na(Test_Solanaceae$Choose)] <- "Neither"
+Test_Solanaceae <- Test_Solanaceae[order(Test_Solanaceae$Solanum_Abbr),]
+row.names(Test_Solanaceae) <- NULL
+
+# Subset to just the important genes
+Subset_Solanaceae_Noise <- as.data.frame(assay(subset(DDS_Solanaceae_Noise, rownames(DDS_Solanaceae_Noise) %in% All_Genes$Orthogroup)))
+Subset_Solanaceae_Noise <- merge(Subset_Solanaceae_Noise,
+                             All_Genes[,c("Orthogroup", "Solanum_Abbr")],
+                             by.x=0,
+                             by.y="Orthogroup")
+Subset_Solanaceae_Noise <- Subset_Solanaceae_Noise %>% dplyr::rename(Gene=Row.names, Abbr=Solanum_Abbr)
+Subset_Solanaceae_Noise <- Subset_Solanaceae_Noise[order(Subset_Solanaceae_Noise$Abbr),]
+Subset_Solanaceae_Noise <- melt(Subset_Solanaceae_Noise, id.vars = c("Gene", "Abbr"))
+Subset_Solanaceae_Noise$Stage <- as.factor(rep(colData(DDS_Solanaceae_Noise)$Stage,
+                                         each=length(unique(Subset_Solanaceae_Noise$Gene))))
+
+G4 <- list()
+G4 <- lapply(seq_along(unique(Subset_Solanaceae_Noise$Abbr)),
+             function(i) ggplot(Subset_Solanaceae_Noise[Subset_Solanaceae_Noise$Abbr==unique(Subset_Solanaceae_Noise$Abbr)[i],], 
+                                aes(x=Stage, y=value, col=Abbr, fill=Abbr)) +
+               labs(y="Normalized Counts",
+                    x="Stage") +
+               scale_color_manual(values=palw2[3]) +
+               scale_fill_manual(values=palw2[1]) +
+               scale_x_discrete(labels=Labs_Stage) +
+               theme(plot.title = element_text(hjust = 0.5,
+                                               face = ifelse(Test_Solanaceae[i,"Choose"]=="Together",
+                                                             'bold.italic',
+                                                             'italic')),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     strip.text.x = element_text(face="italic"),
+                     legend.position = "none") +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", group="Abbr")+
+               ggtitle(unique(Subset_Solanaceae_Noise$Abbr)[i]))
+names(G4) <- unique(Subset_Solanaceae_Noise$Abbr)
+
+# Subset to just the important genes
+Subset_Solanaceae <- as.data.frame(assay(subset(DDS_Solanaceae, rownames(DDS_Solanaceae) %in% 
+                                                  All_Genes$Orthogroup)))
+Subset_Solanaceae <- merge(Subset_Solanaceae,
+                        All_Genes[,c("Orthogroup", "Solanum_Abbr")],
+                        by.x=0,
+                        by.y="Orthogroup")
+Subset_Solanaceae <- Subset_Solanaceae %>% dplyr::rename(Gene=Row.names, Abbr=Solanum_Abbr)
+Subset_Solanaceae <- Subset_Solanaceae[order(Subset_Solanaceae$Abbr),]
+Subset_Solanaceae <- melt(Subset_Solanaceae, id.vars = c("Gene", "Abbr"))
+Subset_Solanaceae$Fruit <- rep(colData(DDS_Solanaceae)$Fruit, 
+                              each=length(unique(Subset_Solanaceae$Gene)))
+Subset_Solanaceae$Stage <- as.factor(rep(colData(DDS_Solanaceae)$Stage,
+                                    each=length(unique(Subset_Solanaceae$Gene))))
+
+G5 <- list()
+G5 <- lapply(seq_along(unique(Subset_Solanaceae$Abbr)),
+             function(i) ggplot(Subset_Solanaceae[Subset_Solanaceae$Abbr==unique(Subset_Solanaceae$Abbr)[i],], 
+                                aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
+               labs(y="Normalized Counts",
+                    x="Stage") +
+               scale_color_manual(values=palw2[c(1,3)],
+                                  labels=c("Desert Tobacco", "Tomato")) +
+               scale_fill_manual(values=palw2[c(1,3)],
+                                 labels=c("Desert Tobacco", "Tomato")) +
+               scale_x_discrete(labels=Labs_Stage) +
+               theme(plot.title = element_text(hjust = 0.5,
+                                               face = ifelse(Test_Solanaceae[i,"Choose"]=="Separate", 'bold.italic', 'italic')),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     strip.text.x = element_text(face="italic")) +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", aes(group=Fruit)) +
+               ggtitle(unique(Subset_Solanaceae$Abbr)[i]))
+names(G5) <- unique(Subset_Solanaceae$Abbr)
+
+# Solanaceae Figures ------------------------------------------------------
+
 
 
 # Five-Species Venn Diagram -----------------------------------------------
@@ -959,7 +1052,7 @@ GO_Ortho_Fruit <- lapply(seq_along(Tables_Ortho_Fruit),
 # Five-Species PCA --------------------------------------------------------
 Subset_Noise <- DDS_Noise[rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<=0.01))]
 RLD_Noise <- rlog(Subset_Noise, blind=FALSE)
-RLD_Noise$Stage[RLD_Noise$Stage=="3.5"] <- "Br"
+RLD_Noise$Stage[RLD_Noise$Stage=="3.5"] <- "Tr"
 RLD_Noise$Stage <- as.factor(RLD_Noise$Stage)
 RLD_Noise$Species <- factor(RLD_Noise$Species, levels=c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
 # Make three PCA plots
@@ -968,7 +1061,7 @@ PCA1 <- lapply(list(c(1,2),c(2,3),c(1,3), c(1,4), c(2,4), c(3,4), c(1,5), c(2,5)
 
 Subset_Fruit <- DDS_Fruit[rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<=0.01))]
 RLD_Fruit <- rlog(Subset_Fruit, blind=FALSE)
-RLD_Fruit$Stage[RLD_Fruit$Stage=="3.5"] <- "Br"
+RLD_Fruit$Stage[RLD_Fruit$Stage=="3.5"] <- "Tr"
 RLD_Fruit$Stage <- as.factor(RLD_Fruit$Stage)
 RLD_Fruit$Species <- factor(RLD_Fruit$Species, levels=c("Arabidopsis", "Melon", "Tobacco", "Tomato", "Pimpinellifolium"))
 PCA2 <-  lapply(list(c(1,2),c(2,3),c(1,3), c(1,4), c(2,4), c(3,4), c(1,5), c(2,5), c(3,5), c(4,5)),
@@ -979,7 +1072,7 @@ PCA2 <-  lapply(list(c(1,2),c(2,3),c(1,3), c(1,4), c(2,4), c(3,4), c(1,5), c(2,5
 
 # Five Ortho Figures ------------------------------------------------------
 # Overall Model 1 GO and PCA plots
-((PCA1[[1]] + PCA1[[5]] + PCA1[[2]] + guide_area() + plot_layout(guides = "collect")) | 
+((PCA1[[1]] + PCA1[[6]] + PCA1[[9]] + guide_area() + plot_layout(guides = "collect")) | 
    GO_Ortho_Noise[[3]]) +
   plot_annotation(tag_levels = "A")
 ggsave2("Figures/Model1_Overall.pdf",
