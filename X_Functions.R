@@ -124,7 +124,7 @@ DESeqCluster <- function(dds=dds,
   cluster_rlog <- rld[clustering_sig_genes$gene, ]
   colData(cluster_rlog)[,timeVar] <- as.factor(colData(cluster_rlog)[,timeVar])
   if (length(unique(colData(cluster_rlog)[,CaseCtlVar]))>1) {
-    message("Two entries detected for ", CaseCtlVar,". Plots will be colored by ", CaseCtlVar)
+    message("Multiple entries detected for ", CaseCtlVar,". Plots will be colored by ", CaseCtlVar)
     clusters <- degPatterns(assay(cluster_rlog), metadata = colData(cluster_rlog), time = timeVar, col=CaseCtlVar, reduce = T)
   } else {
     message("Only one entry detected for ", CaseCtlVar, ". Ignoring ", CaseCtlVar, " for plotting.")
