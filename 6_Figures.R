@@ -872,6 +872,7 @@ Subset_Solanaceae_Noise <- melt(Subset_Solanaceae_Noise, id.vars = c("Gene", "Ab
 Subset_Solanaceae_Noise$Stage <- as.factor(rep(colData(DDS_Solanaceae_Noise)$Stage,
                                          each=length(unique(Subset_Solanaceae_Noise$Gene))))
 
+# Genes with conserved patterns (there really arent any)
 G4 <- list()
 G4 <- lapply(seq_along(unique(Subset_Solanaceae_Noise$Abbr)),
              function(i) ggplot(Subset_Solanaceae_Noise[Subset_Solanaceae_Noise$Abbr==unique(Subset_Solanaceae_Noise$Abbr)[i],], 
@@ -908,17 +909,30 @@ Subset_Solanaceae$Fruit <- rep(colData(DDS_Solanaceae)$Fruit,
                               each=length(unique(Subset_Solanaceae$Gene)))
 Subset_Solanaceae$Stage <- as.factor(rep(colData(DDS_Solanaceae)$Stage,
                                     each=length(unique(Subset_Solanaceae$Gene))))
+Subset_Solanaceae$Species <- rep(colData(DDS_Solanaceae)$Species,
+                                 each=length(unique(Subset_Solanaceae$Gene)))
 
+#Genes with divergent patterns between fruits
 G5 <- list()
 G5 <- lapply(seq_along(unique(Subset_Solanaceae$Abbr)),
              function(i) ggplot(Subset_Solanaceae[Subset_Solanaceae$Abbr==unique(Subset_Solanaceae$Abbr)[i],], 
                                 aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
                labs(y="Normalized Counts",
                     x="Stage") +
-               scale_color_manual(values=palw2[c(1,3)],
-                                  labels=c("Desert Tobacco", "Tomato")) +
-               scale_fill_manual(values=palw2[c(1,3)],
-                                 labels=c("Desert Tobacco", "Tomato")) +
+               scale_color_manual(values=c("Pimpinellifolium"=palw2[2],
+                                           "Dry"= palw2[1],
+                                           "Fleshy"=palw2[3]),
+                                  labels=c("Pimpinellifolium"="Wild Tomato",
+                                           "Dry"="Desert Tobacco",
+                                           "Fleshy"="Cultivated Tomato"),
+                                  name="Species") +
+               scale_fill_manual(values=c("Pimpinellifolium"=palw2[2],
+                                          "Dry"= palw2[1],
+                                          "Fleshy"=palw2[3]),
+                                 labels=c("Pimpinellifolium"="Wild Tomato",
+                                          "Dry"="Desert Tobacco",
+                                          "Fleshy"="Cultivated Tomato"),
+                                 name="Species") +
                scale_x_discrete(labels=Labs_Stage) +
                theme(plot.title = element_text(hjust = 0.5,
                                                face = ifelse(Test_Solanaceae[i,"Choose"]=="Separate", 'bold.italic', 'italic')),
@@ -930,8 +944,63 @@ G5 <- lapply(seq_along(unique(Subset_Solanaceae$Abbr)),
                ggtitle(unique(Subset_Solanaceae$Abbr)[i]))
 names(G5) <- unique(Subset_Solanaceae$Abbr)
 
-# Solanaceae Figures ------------------------------------------------------
+# Same as G5 really, but with separate plots by species to highlight differences if necessary
+G6 <- list()
+G6 <- lapply(seq_along(unique(Subset_Solanaceae$Abbr)),
+             function(i) ggplot(Subset_Solanaceae[Subset_Solanaceae$Abbr==unique(Subset_Solanaceae$Abbr)[i],], 
+                                aes(x=Stage, y=value, col=Species, fill=Species)) +
+               labs(y="Normalized Counts",
+                    x="Stage") +
+               scale_color_manual(values=palw2[c(2,1,3)],
+                                  labels=c("Tobacco"="Desert Tobacco/Dry",
+                                           "Tomato"="Cultivated Tomato/Fleshy",
+                                           "Pimpinellifolium"="Wild Tomato"),
+                                  name="Species") +
+               scale_fill_manual(values=palw2[c(2,1,3)],
+                                 labels=c("Tobacco"="Desert Tobacco/Dry",
+                                          "Tomato"="Cultivated Tomato/Fleshy",
+                                          "Pimpinellifolium"="Wild Tomato"),
+                                 name="Species") +
+               scale_x_discrete(labels=Labs_Stage) +
+               theme(plot.title = element_text(hjust = 0.5,
+                                               face = ifelse(Test_Solanaceae[i,"Choose"]=="Separate", 'bold.italic', 'italic')),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     strip.text.x = element_text(face="italic")) +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", aes(group=Species)) +
+               ggtitle(unique(Subset_Solanaceae$Abbr)[i]))
+names(G6) <- unique(Subset_Solanaceae$Abbr)
 
+# Solanaceae Figures ------------------------------------------------------
+#Ethylene Genes
+((G5[["ACO4"]] & theme(legend.position="none")) + 
+   (G5[["ACO5"]] & theme(legend.position="none")) + 
+   (G6[["ACO6"]]) + 
+   (G5[["NR/ETR3"]] & theme(legend.position="none")) +
+   guide_area()) +
+  plot_layout(guides="collect",
+              nrow=2) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Solanaceae_Ethylene_Genes.pdf",
+        height=6,
+        width=10)
+
+#Transcription Factors
+((G5[["AGL11"]] & theme(legend.position="none")) +
+    (G6[["FYFL"]] & theme(legend.position="none")) + 
+    (G5[["MC"]] & theme(legend.position="none")) + 
+    (G5[["SPL-CNR"]] & theme(legend.position="none")) +
+    (G6[["TAG1"]]) + 
+    (G5[["TAGL1"]] & theme(legend.position="none")) + 
+    (G5[["TM29"]] & theme(legend.position="none")) + 
+    guide_area()) +
+  plot_layout(guides="collect",
+              nrow=2) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Solanaceae_TF_Genes.pdf",
+        height=6,
+        width=12)
 
 
 # Five-Species Venn Diagram -----------------------------------------------
