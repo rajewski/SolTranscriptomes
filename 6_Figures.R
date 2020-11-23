@@ -230,6 +230,7 @@ tmp <- c('NoACO4'="NIOBTv3_g13660.t1",
          'NoSHP'="NIOBTv3_g13969.t1",
          'NoSEP1'="NIOBTv3_g14235.t1")
 All_Genes[All_Genes$Nicotiana %in% tmp,"Nicotiana_Abbr"] <- names(tmp)
+rm(tmp)
 # Create a dummy column for whether this gene is actually used
 All_Genes$Type <- TRUE
 All_Genes$Type[39:41] <- FALSE
@@ -238,6 +239,18 @@ write.table(All_Genes,
             row.names = F,
             quote = F,
             sep = ",")
+
+# # Check if we can do ortholog stuff for 5-species data
+# deleteme <- read.table("Orthofinder/OrthoFinder/Results_Aug31/Orthogroups/Orthogroups.tsv",
+#                   sep="\t",
+#                   stringsAsFactors = F,
+#                   header=T) %>% 
+#   filter_all(all_vars(!grepl(',',.))) %>%
+#   filter_all(all_vars(!grepl("^$",.)))
+# deleteme <- merge(deleteme,
+#              All_Genes[All_Genes$Type,],
+#              by.x="Solanum",
+#              by.y="Solanum")
 
 # Ortholog Table ----------------------------------------------------------
 # Make table for Nobt to Slyc orthos
