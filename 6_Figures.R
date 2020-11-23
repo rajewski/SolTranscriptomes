@@ -12,7 +12,7 @@ library("gt")
 # Read Data In ------------------------------------------------------------
 Cluster_Nobt <- readRDS("DEGAnalysis/RNA-seq/Cluster_Nobt.rds")
 DDS_Nobt <- readRDS("DEGAnalysis/RNA-seq/DDS_NobtSE.rds")
-Labs_NobtStage <- c("0"="1", "3"="2", "6"="3", "11"="Br")
+Labs_NobtStage <- c("0"="1", "3"="2", "6"="3", "11"="Tr")
 
 Cluster_Solanum <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF.rds")
 Cluster_Solanum_Noise <-readRDS("DEGAnalysis/RNA-seq/Cluster_Solanum_3DF_Noise.rds")
@@ -20,9 +20,14 @@ DDS_SolanumNoise <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF_Noise.rds")
 DDS_Solanum <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanum_3DF.rds")
 Labs_SolanumStage <- c("1"="1", "3"="2", "15"="3", "35"="Br", "45"="RR")
 
+Cluster_Solanaceae_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanaceae_Noise.rds")
+Cluster_Solanaceae <- readRDS("DEGAnalysis/RNA-seq/Cluster_Solanaceae.rds")
+DDS_Solanaceae_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanaceae_Noise.rds")
+DDS_Solanaceae <- readRDS("DEGAnalysis/RNA-seq/DDS_Solanaceae.rds")
+
 Cluster_Noise <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Noise.rds")
 Cluster_Fruit <- readRDS("DEGAnalysis/RNA-seq/Cluster_FiveOrtho_Fruit.rds")
-Labs_Stage <- c("2"="2", "3"="3", "3.5"="Br")
+Labs_Stage <- c("1"="1","2"="2", "3"="3", "3.5"="Tr")
 DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Noise.rds")
 DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Fruit.rds")
 
@@ -739,6 +744,90 @@ ggsave2("Figures/Tomato_Misc_Genes.pdf", height=30, width=30)
   plot_layout(guides="collect")
 
  
+
+# Solanaceae Clusters -----------------------------------------------------
+C6 <- list()
+C6 <- lapply(seq_along(unique(Cluster_Solanaceae_Noise$normalized$cluster)),
+             function(i) ggplot(subset(Cluster_Solanaceae_Noise$normalized, 
+                                       cluster==unique(Cluster_Solanaceae_Noise$normalized$cluster)[i]), 
+                                aes(x=Stage, y=value, col=Species, fill=Species)) +
+               labs(y="Z-score of Expression",
+                    x="Stage") +
+               scale_fill_manual(values=palw2[1]) +
+               scale_color_manual(values=palw2[3]) +
+               scale_x_discrete(labels=Labs_Stage) +
+               theme(plot.title = element_text(hjust = 0.5),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF"),
+                     legend.position = "none") +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", aes(group=Fruit))+
+               ggtitle(paste("Cluster", i, "Expression")))
+# For divergent patterns
+C7 <- list()
+C7 <- lapply(seq_along(unique(Cluster_Solanaceae$normalized$cluster)),
+             function(i) ggplot(subset(Cluster_Solanaceae$normalized, 
+                                       cluster==unique(Cluster_Solanaceae$normalized$cluster)[i]), 
+                                aes(x=Stage, y=value, col=Fruit, fill=Fruit)) +
+               labs(y="Z-score of Expression",
+                    x="Stage") +
+               scale_fill_manual(values=palw2[c(1,3)]) +
+               scale_color_manual(values=palw2[c(1,3)]) +
+               scale_x_discrete(labels=Labs_Stage) +
+               theme(plot.title = element_text(hjust = 0.5),
+                     plot.subtitle = element_text(hjust=0.5),
+                     strip.background = element_rect(fill="#FFFFFF")) +
+               geom_violin(position=position_dodge(width=0), alpha=0.5) +
+               stat_summary(fun=mean, geom="line", aes(group=Fruit))+
+               ggtitle(paste("Cluster", i, "Expression")))
+
+# Solanaceae GO Plots --------------------------------------------------------
+# For Common patterns
+Tables_SolanaceaeNoise <- list()
+Tables_SolanaceaeNoise <- lapply(seq_along(unique(Cluster_Solanaceae_Noise$normalized$cluster)), 
+                              function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.1029Sol.gene2go.tsv",
+                                                    GOIs=setNames(as.factor(as.numeric(Cluster_Solanaceae_Noise$normalized$genes %in% subset(Cluster_Solanaceae_Noise$normalized, cluster==unique(Cluster_Solanaceae_Noise$normalized$cluster)[i])$genes)),
+                                                                  Cluster_Solanaceae_Noise$normalized$genes)))
+
+# Include the overall, unclustered genes
+Tables_SolanaceaeNoise[["Conserved Genes"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.1029Sol.gene2go.tsv",
+                                                     GOIs=setNames(as.factor(as.numeric(rownames(DDS_Solanaceae_Noise) %in% rownames(subset(results(DDS_Solanaceae_Noise), padj<0.01)))), rownames(DDS_Solanaceae_Noise)))
+
+# Create a list of the GO Plots
+GO_SolanaceaeNoise <- list()
+GO_SolanaceaeNoise <- lapply(seq_along(Tables_SolanaceaeNoise), 
+                          function(i) GOPlot(Tables_SolanaceaeNoise[[i]],
+                                             Title = ifelse(names(Tables_SolanaceaeNoise[i])=='',
+                                                            paste("Cluster", i, "GO Enrichment"),
+                                                            paste(names(Tables_SolanaceaeNoise[i]), "GO Enrichment")),
+                                             colorHex = "#B40F20CC",
+                                             LegendLimit = max(sapply(Tables_SolanaceaeNoise, function(x) max(x$Significant)))) +
+                            theme(legend.position = c(.9,.2)))
+
+
+# For divergent patterns
+Tables_Solanaceae <- list()
+Tables_Solanaceae <- lapply(seq_along(unique(Cluster_Solanaceae$normalized$cluster)), 
+                         function(i)  GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.1029Sol.gene2go.tsv",
+                                               GOIs=setNames(as.factor(as.numeric(Cluster_Solanaceae$normalized$genes %in% subset(Cluster_Solanaceae$normalized, cluster==unique(Cluster_Solanaceae$normalized$cluster)[i])$genes)),
+                                                             Cluster_Solanaceae$normalized$genes)))
+# Include the overall, unclustered genes
+Tables_Solanaceae[["Divergent Genes"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Ortho.1029Sol.gene2go.tsv",
+                                                GOIs=setNames(as.factor(as.numeric(rownames(DDS_Solanaceae) %in% rownames(subset(results(DDS_Solanaceae), padj<0.01)))), rownames(DDS_Solanaceae)))
+
+
+# Create a list of the GO Plots
+GO_Solanaceae <- list()
+GO_Solanaceae <- lapply(seq_along(Tables_Solanaceae), 
+                     function(i) GOPlot(Tables_Solanaceae[[i]],
+                                        Title = ifelse(names(Tables_Solanaceae[i])=='',
+                                                       paste("Cluster", i, "GO Enrichment"),
+                                                       paste(names(Tables_Solanaceae[i]), "GO Enrichment")),
+                                        colorHex = "#B40F20CC",
+                                        LegendLimit = max(sapply(Tables_Solanaceae, function(x) max(x$Significant)))) +
+                       theme(legend.position = c(.9,.2)))
+
+
 # Five-Species Venn Diagram -----------------------------------------------
 VennOrthos <- read.table("Orthofinder/OrthoFinder/Results_Aug31/Orthogroups/Orthogroups.tsv",
                          sep="\t",

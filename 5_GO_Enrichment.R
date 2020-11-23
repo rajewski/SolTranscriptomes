@@ -72,3 +72,29 @@ GOfleshy <- GOfleshy %>%
   mutate(V2 = paste0(V2, collapse = "|")) %>%
   distinct()
 write.table(GOfleshy, "DEGAnalysis/Pfam/Ortho.831Fleshy.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
+
+# Make a superlist just for Solanaceae
+Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
+                          sep="\t",
+                          stringsAsFactors = F,
+                          header=T)
+Orthogroups <- Orthogroups %>% 
+  filter_all(all_vars(!grepl(',',.))) %>% 
+  filter_all(all_vars(!grepl("^$",.))) #Remove multiples and empties
+GOSlyc <- merge(read.table("DEGAnalysis/Pfam/Slyc.gene2go.tsv", stringsAsFactors = F),
+                Orthogroups, 
+                by.x=1, 
+                by.y="Solanum")[,c("Orthogroup", "V2")]
+GONobt <- merge(read.table("DEGAnalysis/Pfam/Nobt.gene2go.tsv", stringsAsFactors = F),
+                Orthogroups,
+                by.x=1,
+                by.y="Nicotiana")[,c("Orthogroup", "V2")]
+#make superlist of of all GO terms across species
+GO <- rbind(GOSlyc, GONobt) 
+GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
+GO <- GO %>% 
+  distinct() %>% 
+  group_by(Orthogroup) %>% 
+  mutate(V2 = paste0(V2, collapse = "|")) %>%
+  distinct()
+write.table(GO, "DEGAnalysis/Pfam/Ortho.1029Sol.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
