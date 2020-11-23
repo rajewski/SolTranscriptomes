@@ -344,6 +344,69 @@ plotPCAmod = function(object,
 }
 
 
+# Get Orthogroup to GO Term mappings --------------------------------------
+# Make a file of orthogroups to GO terms
+if(!file.exists("DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv")){
+  Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Aug31/Orthogroups/Orthogroups.tsv",
+                            sep="\t",
+                            stringsAsFactors = F,
+                            header=T)
+  Orthogroups <- Orthogroups %>% 
+    filter_all(all_vars(!grepl("^$",.))) %>% 
+    filter_all(all_vars(!grepl(',',.))) # Remove empties and multiples
+  Orthogroups$Cucumis <- strtrim(Orthogroups$Cucumis,12) # trim names to match
+  GOSlyc <- merge(read.table("DEGAnalysis/Pfam/Slyc.gene2go.tsv", stringsAsFactors = F),
+                  Orthogroups, by.x=1, by.y="Solanum")[,c("Orthogroup", "V2")]
+  GOTAIR <- merge(read.table("DEGAnalysis/Pfam/TAIR10.gene2go.tsv", stringsAsFactors = F),
+                  Orthogroups, by.x=1, by.y="Arabidopsis")[,c("Orthogroup", "V2")]
+  GONobt <- merge(read.table("DEGAnalysis/Pfam/Nobt.gene2go.tsv", stringsAsFactors = F),
+                  Orthogroups, by.x=1, by.y="Nicotiana")[,c("Orthogroup", "V2")]
+  GOMelon <- merge(read.table("DEGAnalysis/Pfam/Melon.gene2go.tsv", stringsAsFactors = F, sep="\t")[,1:2],
+                   Orthogroups, by.x=1, by.y="Cucumis")[,c("Orthogroup", "V2")]
+  # make list for all species
+  GO <- rbind(GOSlyc, GOTAIR, GONobt, GOMelon) 
+  GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
+  GO <- GO %>% 
+    distinct() %>% 
+    group_by(Orthogroup) %>% 
+    mutate(V2 = paste0(V2, collapse = "|")) %>%
+    distinct()
+  write.table(GO, "DEGAnalysis/Pfam/Ortho.831All.gene2go.tsv",
+              sep="\t",
+              quote=F,
+              col.names = F,
+              row.names = F)
+}
+
+# Make list just for Solanaceae
+if(!file.exists("DEGAnalysis/Pfam/Ortho.1029Sol.gene2go.tsv")) {
+  Orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
+                            sep="\t",
+                            stringsAsFactors = F,
+                            header=T)
+  Orthogroups <- Orthogroups %>% 
+    filter_all(all_vars(!grepl(',',.))) %>% 
+    filter_all(all_vars(!grepl("^$",.))) #Remove multiples and empties
+  GOSlyc <- merge(read.table("DEGAnalysis/Pfam/Slyc.gene2go.tsv", stringsAsFactors = F),
+                  Orthogroups, 
+                  by.x=1, 
+                  by.y="Solanum")[,c("Orthogroup", "V2")]
+  GONobt <- merge(read.table("DEGAnalysis/Pfam/Nobt.gene2go.tsv", stringsAsFactors = F),
+                  Orthogroups,
+                  by.x=1,
+                  by.y="Nicotiana")[,c("Orthogroup", "V2")]
+  #make superlist of of all GO terms across species
+  GO <- rbind(GOSlyc, GONobt) 
+  GO <- separate_rows(as.data.frame(GO[,c(1,2)]), 2, sep="\\|")
+  GO <- GO %>% 
+    distinct() %>% 
+    group_by(Orthogroup) %>% 
+    mutate(V2 = paste0(V2, collapse = "|")) %>%
+    distinct()
+  write.table(GO, "DEGAnalysis/Pfam/Ortho.1029Sol.gene2go.tsv", sep="\t", quote=F, col.names = F, row.names = F)
+}
+
+
 # IPR Domain Enrichment ---------------------------------------------------
 #this  borrows heavily from the supplement of https://doi.org/10.1104/pp.108.132985
 PfamEnrichment <- function(AllGenesFile = "",
