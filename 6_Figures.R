@@ -816,8 +816,7 @@ GO_SolanaceaeNoise <- lapply(seq_along(Tables_SolanaceaeNoise),
                                              Title = ifelse(names(Tables_SolanaceaeNoise[i])=='',
                                                             paste("Cluster", i, "GO Enrichment"),
                                                             paste(names(Tables_SolanaceaeNoise[i]), "GO Enrichment")),
-                                             colorHex = "#B40F20CC",
-                                             LegendLimit = max(sapply(Tables_SolanaceaeNoise, function(x) max(x$Significant)))) +
+                                             colorHex = "#B40F20CC") +
                             theme(legend.position = c(.9,.2)))
 
 
@@ -1001,6 +1000,15 @@ ggsave2("Figures/Solanaceae_Ethylene_Genes.pdf",
 ggsave2("Figures/Solanaceae_TF_Genes.pdf",
         height=6,
         width=12)
+
+(wrap_elements(GO_SolanaceaeNoise[[8]] & theme(legend.position = c(0.9,0.3))) /
+    (C6[[3]] + GO_SolanaceaeNoise[[3]]) /
+    wrap_elements(GO_Solanaceae[[36]] & theme(legend.position = c(0.9,0.3)))) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Solanaceae_Clusters.pdf",
+        height=14,
+        width=13)
+
 
 
 # Five-Species Venn Diagram -----------------------------------------------
