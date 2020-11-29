@@ -31,37 +31,17 @@ Labs_Stage <- c("1"="1","2"="2", "3"="3", "3.5"="Tr")
 DDS_Noise <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Noise.rds")
 DDS_Fruit <- readRDS("DEGAnalysis/RNA-seq/DDS_FiveOrtho_Fruit.rds")
 
-# Table of data sources ---------------------------------------------------
+# Data Source and Stage Table ---------------------------------------------
 #PATH=/bigdata/littlab/arajewski/Datura/software/phantomjs-2.1.1-linux-x86_64/bin:$PATH
-sources <- read.csv("ExternalData/Sources.csv",
-                    stringsAsFactors = F)
-sources <- sources[order(sources$Species),]
-sources %>%
-  gt() %>%
-  tab_header(title="Data Sources") %>%
-  fmt_markdown(columns=c(1:6)) %>%
-  cols_label(
-    Species = md("**Species**"),
-    Stage.1 = md("**Stage&nbsp;1**"),
-    Stage.2 = md("**Stage&nbsp;2**"),
-    Stage.3 = md("**Stage&nbsp;3**"),
-    Breaker = md("**Breaker**"),
-    Stage.4 = md("**Stage&nbsp;4**"),
-    Bioproject.Accession = md("**Bioproject Accession**"),
-    Reference = md("**Reference**")) %>%
-  gtsave(filename = "DataSources.png",
-         path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
+Design <- read.csv("ExternalData/Design.csv", stringsAsFactors = F)[,-1]
+row.names(Design) <- c("Stage 1",
+                       "Stage 2",
+                       "Stage 3",
+                       "Transition",
+                       "Stage 4",
+                       "Bioproject Accession")
 
-
-# Stage Description Table -------------------------------------------------
-stagedesc <- read.csv("ExternalData/StageDesc.csv", stringsAsFactors = F)[,-1]
-row.names(stagedesc) <- c("Stage 1",
-                          "Stage 2",
-                          "Stage 3",
-                          "Transition",
-                          "Stage 4")
-
-stagedesc %>%
+Design %>%
   gt(rownames_to_stub = TRUE) %>%
   tab_header(title="Description of Developmental Stages") %>%
   fmt_missing(
@@ -94,18 +74,11 @@ stagedesc %>%
                  rows=5),
       cells_body(columns=starts_with("Cmel"),
                  rows=1))) %>%
-  tab_footnote(
-    footnote = md("Pab&#243;n-Mora and Litt, 2011"),
-    locations = cells_column_labels(starts_with(c("Nobt", "Solan")))) %>%
-  tab_footnote(
-    footnote = "Mizzotti et al, 2018",
-    locations = cells_column_labels(starts_with("Atha"))) %>%
-  tab_footnote(
-    footnote = "Zhang et al, 2016",
-    locations = cells_column_labels(starts_with("Cmelo"))) %>%
-  gtsave(filename = "StageDesc.png",
-         path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
-      
+  tab_source_note(
+    source_note = md("Pab&#243;n-Mora and Litt, 2011; Mizzotti et al, 2018; and Zhang et al, 2016")) %>%
+  gtsave(filename = "Design.png",
+         path = "Tables")
+
   
 # Important Genes for Plotting --------------------------------------------
 #unimportant genes
