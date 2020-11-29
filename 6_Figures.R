@@ -83,7 +83,7 @@ Design %>%
 # Important Genes for Plotting --------------------------------------------
 #unimportant genes
 #Solyc06g068440.4.1 - CCR1 - Not DE
-#Solyc03g117600.3.1 - HCT - conserved (alllmost divergent)
+#Solyc03g117600.3.1 - HCT - conserved 
 #Solyc09g007920.4.1 - PAL - conserved
 #Solyc12g042460.2.1 - 4CL - not DE
 #Solyc06g068650.4.1 - 4CL - conserved
@@ -97,7 +97,7 @@ Design %>%
 #Solyc03g080180.4.1 - SlCOMT - conserved
 # Manually curated lsit of impt solaum genes
 impt_genes <- c("Solyc02g077920.4.1"="SPL-CNR",
-                "Solyc10g006880.3.1"="NOR",
+                "Solyc10g006880.3.1"="NAC-NOR",
                 "Solyc05g012020.4.1"="MADS-RIN",
                 "Solyc05g056620.2.1"="MC",
                 "Solyc11g010570.2.1"="J",
@@ -227,34 +227,29 @@ write.table(All_Genes,
 
 # Ortholog Table ----------------------------------------------------------
 # Make table for Nobt to Slyc orthos
-All_Genes[All_Genes$Type,-5] %>%
+All_Genes[All_Genes$Type,-c(3,6)] %>%
   gt( ) %>%
   tab_header(
     title = "Orthology and Abbreviations") %>%
   tab_style(
     style=list(cell_text(style="italic")),
-    locations=cells_body()
-  ) %>%
+    locations=cells_body()) %>%
   cols_align(
-    align="left"
-  ) %>%
+    align="left") %>%
   cols_label(
     Solanum_Abbr = md("Gene Name"),
     Solanum = md("*Solanum* Gene ID"),
     Nicotiana_Abbr = md("*Nicotiana* Abbreviation"),
     Nicotiana = md("*Nicotiana* Ortholog ID")) %>%
   cols_move_to_start(
-    columns=c(2,1,3,4)
-  ) %>%
+    columns=c(2,1,3,4)) %>%
   fmt_missing(
-    columns=c(1:4)
-  ) %>%
+    columns=c(1:4)) %>%
   tab_footnote(
     footnote = "Only one-to-one and many-to-one orthologs",
-    locations = cells_column_labels(3)
-  ) %>%
+    locations = cells_column_labels(3)) %>%
   gtsave(filename = "Orthologs.png",
-         path = "/bigdata/littlab/arajewski/FULTranscriptomes/Tables")
+         path = "Tables")
 
 #Insert a list of the 78 conserved genes and find a way to include their TAIR abbreviations
 orthogroups_five <- read.table("Orthofinder/OrthoFinder/Results_Aug31/Orthogroups/Orthogroups.tsv",
@@ -553,6 +548,7 @@ G2 <- lapply(seq_along(unique(Subset_SolanumNoise$Abbr)),
                geom_violin(position=position_dodge(width=0), alpha=0.5) +
                stat_summary(fun=mean, geom="line", group="Abbr")+
                ggtitle(unique(Subset_SolanumNoise$Abbr)[i]))
+names(G2) <- unique(Subset_SolanumNoise$Abbr)
 
 # Subset to just the important genes
 Subset_Solanum <- as.data.frame(assay(subset(DDS_Solanum, rownames(DDS_Solanum) %in% All_Genes$Solanum)))
@@ -588,6 +584,7 @@ G3 <- lapply(seq_along(unique(Subset_Solanum$Abbr)),
                stat_summary(fun=mean, geom="line", aes(group=Species)) +
                #stat_summary(fun.data=mean_se, geom="errorbar", aes(group=Species)) +
                ggtitle(unique(Subset_Solanum$Abbr)[i]))
+names(G3) <- unique(Subset_Solanum$Abbr)
 
 
 # Solanum Figures -------------------------------------------------------------
@@ -641,6 +638,7 @@ ggsave2("Figures/Suppl_Tomato_Clusters.pdf",
         height=49,
         width=10)
 
+### Figure 1
 # Overall GO and selected Clusters
 # align better with wrap_elements, and overwrite the scale for GO Plots
 wrap_elements(full=GO_SolanumNoise[[21]] & 
@@ -669,68 +667,85 @@ wrap_elements(full=GO_SolanumNoise[[21]] &
                                    max(Tables_Solanum[[16]]$Significant))))) +
   plot_annotation(tag_levels = "A") + 
   plot_layout(widths=1, heights=1)
-ggsave2("Figures/Tomato_Clusters.pdf",
+ggsave2("Figures/Figure 1.pdf",
         height=20,
         width=15)
 
-#Ethylene Biosynth and perception
-(G2[[1]] + G2[[2]] + G3[[3]] + G2[[4]] + G2[[5]] + G3[[6]] + G3[[7]] + G2[[8]] + 
-   G2[[9]] + G3[[16]] +  G3[[17]] + G2[[18]] + G2[[35]] + guide_area()) +
-  plot_annotation(tag_levels = "A") +
-  plot_layout(guides="collect")
-ggsave2("Figures/Tomato_Ethylene_Genes.pdf",
-        height=12,
-        width=12)
+#Structural Genes
+(G2[["ACO1"]] + 
+    G2[["ACO2"]] + 
+    G3[["ACO3"]] + 
+    G2[["ACO4"]] + 
+    G2[["ACO5"]] + 
+    G3[["ACO6"]] + 
+    G3[["ACO7"]] + 
+    G2[["ACS2"]] +
+    G2[["ACS4"]] + 
+    G3[["EIL1"]] +  
+    G3[["EIL2"]] + 
+    G2[["EIL4"]] +
+    G2[["NR/ETR3"]] + plot_spacer() +plot_spacer() +
+    G2[["CHS-1"]] + 
+    G2[["CHS-2"]] + 
+    G2[["CTOMT1"]] + 
+    G3[["GAD1"]] + 
+    G2[["GAD2"]] + 
+    G2[["GAD3"]] +
+    G2[["PSY1"]] + 
+    G3[["TOMLOXC"]] +
+    guide_area()) +
+  plot_layout(guides="collect",
+              nrow=5) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Suppl_Tomato_Structural.pdf",
+        height=14,
+        width=14)
 
-#Flavor and Pigment
-(G2[[13]] + G2[[14]] + G2[[15]] + G3[[24]] + G2[[25]] + G2[[26]] +
-   G2[[38]] + G3[[53]] + guide_area())  +
-  plot_annotation(tag_levels = "A") +
-  plot_layout(guides="collect") 
-ggsave2("Figures/Tomato_Pigment_Genes.pdf",
-        height=10,
-        width=10)
 
 #Developmental TFs
-(G3[[10]] + G3[[19]] + G2[[21]] + G3[[22]] + G2[[23]] + G3[[27]] +
-    G3[[28]] + G2[[29]] + G3[[32]] + G3[[30]] + G3[[31]] + G3[[33]] +
-    G2[[34]] + G2[[35]] + G3[[46]] + G3[[47]] + G3[[48]] + G3[[49]] + G2[[51]] + 
-    G3[[52]] + G3[[50]] + guide_area())  +
+(G3[["AGL11"]] + 
+    G3[["EJ2/MADS1"]] + 
+    G2[["FUL1"]] + 
+    G3[["FUL2"]] + 
+    G2[["FYFL"]] + 
+    G3[["J"]] +
+    G3[["J2"]] + 
+    G2[["MADS-RIN"]] + 
+    G3[["MBP3"]] + 
+    G3[["MBP10"]] + 
+    G3[["MBP20"]] + 
+    G2[["NAC-NOR"]] + 
+    G3[["SPL-CNR"]] + 
+    G3[["STM3"]] + 
+    G3[["TAG1"]] + 
+    G3[["TAGL1"]] + 
+    G2[["TM3"]] + 
+    G3[["TM5"]] + 
+    guide_area())  +
   plot_annotation(tag_levels = "A") +
   plot_layout(guides="collect",
-              nrow=3) 
-ggsave2("Figures/Tomato_TF_Genes.pdf",
-        height=10,
-        width=21)
+              nrow=4) 
+ggsave2("Figures/Suppl_Tomato_Regulatory.pdf",
+        height=11.2,
+        width=14)
 
-#Cell Wall
-(G2[[11]] + G2[[12]] + G2[[20]] + G2[[36]] + G2[[37]])  +
-  plot_annotation(tag_levels = "A")
-ggsave2("Figures/Tomato_Cell_Genes.pdf",
-        height=6,
-        width=10)
-
-#Misc
-(G2[[41]] + G2[[42]] + G3[[43]] + G2[[44]] + G2[[45]] + G2[[46]]) +
-  plot_annotation(tag_levels = "A") +
-  plot_layout(guides="collect")
-ggsave2("Figures/Tomato_Misc_Genes.pdf", height=30, width=30)
 
 # Selected Divergent Genes
-(G3[[32]] + 
-    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +
-    scale_fill_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +  
-    G3[[46]] + 
-    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +
-    scale_fill_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +  
-    G3[[48]] + 
-    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +
-    scale_fill_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +  
-    G3[[49]] +
-    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) +
+((G3[["ACO6"]] +
+    G3[["TOMLOXC"]] +
+    G3[["GAD1"]] +
+    G3[["MBP3"]] + 
+    G3[["SPL-CNR"]] + 
+    G3[["TAG1"]] + 
+    G3[["TAGL1"]] +
+    guide_area()) *
+    scale_color_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated")) *
     scale_fill_manual(values=palw2[c(2,3)],labels=c("Wild", "Cultivated"))) +
   plot_annotation(tag_levels = "A") + 
   plot_layout(guides="collect")
+ggsave2("Figures/Figure 2.pdf",
+        height=8.4,
+        width=8.4)
 
  
 
