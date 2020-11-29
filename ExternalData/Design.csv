@@ -1,0 +1,7 @@
+X,NobtusifoliaDesc,NobtusifoliaDay,AthalianaDesc,AthalianaDay,SolanumDesc,SolanumDay,CmeloDesc,CmeloDay
+Stage1,Ovary patterning,0 DAP,Ovary patterning,3 DAP,Ovary patterning,1 DAP,Ovary patterning,NA
+Stage2,Transverse anticlinal cell division,3 DAP,Cell division and expansion,6 DAP,Anticlinal and periclinal cell division,3 DAP,Cell division,10 DAP
+Stage3,Beginning basipetal lignification,6 DAP,Beginning basipetal lignification,9 DAP,Cell expansion and endoreduplication,15 DAP,Cell expansion,20 DAP
+Breaker,Color change from green to brown,11 DAP,Color change to from green to yellow,12 DAP,"Initial color change from green to red, often termed 'breaker' stage",35 DAP,"Increase in sugar content, maximum firmness",30 DAP
+Stage4,Senescence and dehiscence,NA,Senescence and dehiscence,NA,"Cell wall softening, increase in sugar content, and full accumulation of pigments",45 DAP,"Fruit softening, mamximum sugar content",40 DAP
+Bioproject Accession,PRJNA646747,This Study,PRJEB25745,"Mizzotti et al, 2018",PRJNA646747,This Study,PRJNA314069,"Chayut et al, 2017"
