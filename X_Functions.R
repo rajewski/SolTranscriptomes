@@ -502,15 +502,15 @@ Stage_Labs <- c("1"="1", "2"="2", "3"="3", "3.5"="Br", "4"="RR")
 
 # Common Color Palette  ---------------------------------------------------
 library("wesanderson")
-palw <- wes_palette("Zissou1",4,"continuous") 
+#palw <- wes_palette("Zissou1",4,"continuous") 
 palw2 <- wes_palette("FantasticFox1", 3, "continuous")
 #"#3B9AB2" = Blue = Pimpinellifolium
 #"#9EBE91" = Green = Arabidopsis
 #"#E4B80E" = Yellow = Obtusifolia or dry
 #"#F21A00" = Red = Lycopersicum or fleshy
 
-palfill <- c("#E4B80E", "#FFFFFF", "#808080", "#F21A00", "#FFFFFF", "#808080", "#000000")
-palline <- c("#E4B80E", "#E4B80E", "#E4B80E", "#F21A00", "#F21A00", "#F21A00", "#F21A00")
+#palfill <- c("#E4B80E", "#FFFFFF", "#808080", "#F21A00", "#FFFFFF", "#808080", "#000000")
+#palline <- c("#E4B80E", "#E4B80E", "#E4B80E", "#F21A00", "#F21A00", "#F21A00", "#F21A00")
 #"#E4B80E" within "#E4B80E" = dry
 #"#FFFFFF" within "#E4B80E" = Obtusifolia
 #"#808080" within "#E4B80E" = Arabidopsis
