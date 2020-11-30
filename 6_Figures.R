@@ -379,9 +379,38 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
                geom_violin(position=position_dodge(width=0), alpha=0.5) +
                stat_summary(fun=mean, geom="line", group="Abbr")+
                ggtitle(unique(Subset_Nobt$Abbr)[i]))
+names(G1) <- unique(Subset_Nobt$Abbr)
 
 # Tobacco Figures ----------------------------------------------------------
-(G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] +
+### Figure 3
+(wrap_elements(GO_Nobt[[7]] & theme(legend.position = c(0.9,0.2))) /
+   (C1[[1]] | C1[[2]]) /
+   (C1[[3]] | C1[[4]]) /
+   (C1[[5]] | C1[[6]])) +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(nrow=4,
+              heights = c(2.5,1,1,1))
+ggsave2("Figures/Figure 3.pdf",
+        height=13,
+        width=9)
+
+# Cluster GO supplement
+(GO_Nobt[[1]] +
+    GO_Nobt[[2]] +
+    GO_Nobt[[3]] + 
+    GO_Nobt[[4]] +
+    GO_Nobt[[5]] +
+    GO_Nobt[[6]]) *
+  theme(legend.position = c(0.9,0.4)) + 
+  plot_annotation(tag_levels = "A") +
+  plot_layout(nrow=3,
+              byrow = TRUE)
+ggsave("Figures/Suppl_Tobacco_GO.pdf", 
+       height=9, 
+       width=15)
+
+
+ (G1[[5]] + G1[[6]] + G1[[7]] + G1[[8]] + G1[[9]] +
    G1[[10]] + G1[[11]] + G1[[12]] + G1[[13]] + G1[[16]] +
    G1[[17]] + G1[[19]] + G1[[20]] +  G1[[23]] + G1[[24]] + 
    G1[[25]] +  G1[[26]] + G1[[27]] + G1[[28]] + G1[[29]] ) +
@@ -390,29 +419,6 @@ G1 <- lapply(seq_along(unique(Subset_Nobt$Abbr)),
 ggsave2("Figures/Tobacco_Genes.pdf",
         height=10,
         width=15)
-
-((C1[[1]] | GO_Nobt[[1]]) / 
-    (C1[[2]] | GO_Nobt[[2]]) / 
-    (C1[[3]] | GO_Nobt[[3]]) /
-    (C1[[4]] | GO_Nobt[[4]]) / 
-    (C1[[5]] | GO_Nobt[[5]]) / 
-    (C1[[6]] | GO_Nobt[[6]])) + 
-  plot_annotation(tag_levels = "A")
-ggsave("Figures/Tobacco_Clusters.pdf", 
-       height=20, 
-       width=15)
-
-# Overall GO enrichment
-GO_Nobt[[7]] & 
-  theme(legend.position = c(0.9,0.2)) &
-  scale_fill_gradientn(colours = c("#87868140", palw2[1]),
-                       limits=c(min(Tables_Nobt[[7]]$Significant),
-                                max(Tables_Nobt[[7]]$Significant)),
-                       breaks=c(min(Tables_Nobt[[7]]$Significant),
-                                max(Tables_Nobt[[7]]$Significant)))
-ggsave2("Figures/Tobacco_OverallGO.pdf",
-        height=6,
-        width=8)
 
 
 # Solanum Clusters ------------------------------------------------------
@@ -729,7 +735,7 @@ ggsave2("Figures/Suppl_Tomato_Regulatory.pdf",
         height=11.2,
         width=14)
 
-
+### Figure 2
 # Selected Divergent Genes
 ((G3[["ACO6"]] +
     G3[["TOMLOXC"]] +
@@ -748,7 +754,6 @@ ggsave2("Figures/Figure 2.pdf",
         width=8.4)
 
  
-
 # Solanaceae Clusters -----------------------------------------------------
 C6 <- list()
 C6 <- lapply(seq_along(unique(Cluster_Solanaceae_Noise$normalized$cluster)),
