@@ -1181,11 +1181,20 @@ PCA2 <-  lapply(list(c(1,2),c(2,3),c(1,3), c(1,4), c(2,4), c(3,4), c(1,5), c(2,5
 
 
 # Five Ortho Figures ------------------------------------------------------
-# Overall Model 1 GO and PCA plots
+
+### Figure 7
 ((PCA1[[1]] + PCA1[[6]] + PCA1[[9]] + guide_area() + plot_layout(guides = "collect")) | 
    GO_Ortho_Noise[[3]]) +
   plot_annotation(tag_levels = "A")
-ggsave2("Figures/Model1_Overall.pdf",
+ggsave2("Figures/Figure 7.pdf",
+        width=16,
+        height=7)
+
+### Figure 8
+((PCA2[[1]] + PCA2[[2]] + PCA2[[10]] + guide_area() + plot_layout(guides="collect")) |
+    GO_Ortho_Fruit[[9]]) +
+  plot_annotation(tag_levels = "A")
+ggsave2("Figures/Figure 8.pdf",
         width=16,
         height=7)
 
@@ -1194,18 +1203,11 @@ ggsave2("Figures/Model1_Overall.pdf",
     C4[[2]] + GO_Ortho_Noise[[2]]) +
   plot_annotation(tag_levels = "A") +
   plot_layout(nrow=2)
-ggsave2("Figures/Model1_Clusters.pdf",
+ggsave2("Figures/Suppl_Model1_Clusters.pdf",
        height=10,
        width=15)
 
-# Overall Model 2 GO and PCA plots
-((PCA2[[1]] + PCA2[[2]] + PCA2[[10]] + guide_area() + plot_layout(guides="collect")) |
-    GO_Ortho_Fruit[[9]]) +
-  plot_annotation(tag_levels = "A")
-ggsave2("Figures/Model2_Overall.pdf",
-        width=16,
-        height=7)
-
+### Figure 9
 # Selected Clusters from Fruit ortho data
 ((C5[[4]] & theme(legend.position = c(.9,.9))) + GO_Ortho_Fruit[[4]] + 
     (C5[[6]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[6]] + 
@@ -1213,7 +1215,7 @@ ggsave2("Figures/Model2_Overall.pdf",
     (C5[[8]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[8]]) +
   plot_layout(nrow = 4) +
   plot_annotation(tag_levels = "A")
-ggsave2("Figures/Model2_Clusters.pdf",
+ggsave2("Figures/Figure 9.pdf",
        height=20,
        width=15)
 
@@ -1228,7 +1230,7 @@ ggsave2("Figures/Model2_Clusters.pdf",
     (C5[[8]] & theme(legend.position = "none")) + GO_Ortho_Fruit[[8]]) +
   plot_layout(nrow = 8) +
   plot_annotation(tag_levels = "A")
-ggsave2("Figures/Supplemental_Model2_Clusters.pdf",
+ggsave2("Figures/Suppl_Model2_Clusters.pdf",
         height=40,
         width=15)
 
