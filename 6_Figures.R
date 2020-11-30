@@ -965,43 +965,70 @@ G6 <- lapply(seq_along(unique(Subset_Solanaceae$Abbr)),
 names(G6) <- unique(Subset_Solanaceae$Abbr)
 
 # Solanaceae Figures ------------------------------------------------------
-#Ethylene Genes
-((G5[["ACO4"]] & theme(legend.position="none")) + 
-   (G5[["ACO5"]] & theme(legend.position="none")) + 
-   (G6[["ACO6"]]) + 
-   (G5[["NR/ETR3"]] & theme(legend.position="none")) +
-   guide_area()) +
-  plot_layout(guides="collect",
-              nrow=2) +
-  plot_annotation(tag_levels = "A")
-ggsave2("Figures/Solanaceae_Ethylene_Genes.pdf",
-        height=6,
-        width=10)
-
-#Transcription Factors
-((G5[["AGL11"]] & theme(legend.position="none")) +
-    (G6[["FYFL"]] & theme(legend.position="none")) + 
-    (G5[["MC"]] & theme(legend.position="none")) + 
-    (G5[["SPL-CNR"]] & theme(legend.position="none")) +
-    (G6[["TAG1"]]) + 
-    (G5[["TAGL1"]] & theme(legend.position="none")) + 
-    (G5[["TM29"]] & theme(legend.position="none")) + 
-    guide_area()) +
-  plot_layout(guides="collect",
-              nrow=2) +
-  plot_annotation(tag_levels = "A")
-ggsave2("Figures/Solanaceae_TF_Genes.pdf",
-        height=6,
-        width=12)
-
+### Figure 4
 (wrap_elements(GO_SolanaceaeNoise[[8]] & theme(legend.position = c(0.9,0.3))) /
-    (C6[[3]] + GO_SolanaceaeNoise[[3]]) /
-    wrap_elements(GO_Solanaceae[[36]] & theme(legend.position = c(0.9,0.3)))) +
+   (C6[[3]] + GO_SolanaceaeNoise[[3]]) /
+   wrap_elements(GO_Solanaceae[[36]] & theme(legend.position = c(0.9,0.3)))) +
   plot_annotation(tag_levels = "A")
-ggsave2("Figures/Solanaceae_Clusters.pdf",
+ggsave2("Figures/Figure 4.pdf",
         height=14,
         width=13)
 
+# All Conserved Clusters
+((C6[[1]] | GO_SolanaceaeNoise[[1]]) /
+    (C6[[2]] | GO_SolanaceaeNoise[[2]]) /
+    (C6[[3]] | GO_SolanaceaeNoise[[3]]) /
+    (C6[[4]] | GO_SolanaceaeNoise[[4]]) /
+    (C6[[5]] | GO_SolanaceaeNoise[[5]]) /
+    (C6[[6]] | GO_SolanaceaeNoise[[6]]) /
+    (C6[[7]] | GO_SolanaceaeNoise[[7]]))
+ggsave2("Figures/Suppl_SolNoise_Clusters.pdf",
+        height=27,
+        width=12)
+
+# God forgive me my sins for plotting this
+((C7[[1]] | GO_Solanaceae[[1]] | C7[[2]] | GO_Solanaceae[[2]]) /
+    (C7[[3]] | GO_Solanaceae[[3]] | C7[[4]] | GO_Solanaceae[[4]]) /
+    (C7[[5]] | GO_Solanaceae[[5]] | C7[[6]] | GO_Solanaceae[[6]]) /
+    (C7[[7]] | GO_Solanaceae[[7]] | C7[[8]] | GO_Solanaceae[[8]]) /
+    (C7[[9]] | GO_Solanaceae[[9]] | C7[[10]] | GO_Solanaceae[[10]]) /
+    (C7[[11]] | GO_Solanaceae[[11]] | C7[[12]] | GO_Solanaceae[[12]]) /
+    (C7[[13]] | GO_Solanaceae[[13]] | C7[[14]] | GO_Solanaceae[[14]]) /
+    (C7[[15]] | GO_Solanaceae[[15]] | C7[[16]] | GO_Solanaceae[[16]]) /
+    (C7[[17]] | GO_Solanaceae[[17]] | C7[[18]] | GO_Solanaceae[[18]]) /
+    (C7[[19]] | GO_Solanaceae[[19]] | C7[[20]] | GO_Solanaceae[[20]]) /
+    (C7[[21]] | GO_Solanaceae[[21]] | C7[[22]] | GO_Solanaceae[[22]]) /
+    (C7[[23]] | GO_Solanaceae[[23]] | C7[[24]] | GO_Solanaceae[[24]]) /
+    (C7[[25]] | GO_Solanaceae[[25]] | C7[[26]] | GO_Solanaceae[[26]]) /
+    (C7[[27]] | GO_Solanaceae[[27]] | C7[[28]] | GO_Solanaceae[[28]]) /
+    (C7[[29]] | GO_Solanaceae[[29]] | C7[[30]] | GO_Solanaceae[[30]]) /
+    (C7[[31]] | GO_Solanaceae[[31]] | C7[[32]] | GO_Solanaceae[[32]]) /
+    (C7[[33]] | GO_Solanaceae[[33]] | C7[[34]] | GO_Solanaceae[[35]]) /
+    (C7[[35]] | GO_Solanaceae[[35]] | C7[[36]] | GO_Solanaceae[[36]]))
+ggsave2("Figures/Suppl_Sol_Clusters.pdf",
+        height=60,
+        width=24,
+        limitsize=FALSE)
+
+### Figure 5
+((G5[["ACO4"]] & theme(legend.position="none")) +  
+    (G5[["ACO5"]] & theme(legend.position="none")) + 
+    (G6[["ACO6"]] & theme(legend.position="none")) + 
+    (G5[["NR/ETR3"]] & theme(legend.position="none")) + 
+    plot_spacer() + 
+    plot_spacer() +
+    (G5[["AGL11"]] & theme(legend.position="none")) + 
+    (G6[["FYFL"]]  & theme(legend.position="none")) +  
+    (G5[["SPL-CNR"]]  & theme(legend.position="none")) + 
+    (G6[["TAG1"]]) + 
+    (G5[["TAGL1"]] & theme(legend.position="none")) +
+    guide_area()) + 
+  plot_annotation(tag_levels = "A") +
+  plot_layout(guides="collect",
+              ncol = 3)
+ggsave2("Figures/Figure 5.pdf",
+        height=11.2,
+        width=8.4)
 
 
 # Five-Species Venn Diagram -----------------------------------------------
