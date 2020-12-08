@@ -79,7 +79,31 @@ Design %>%
   gtsave(filename = "Design.png",
          path = "Tables")
 
-  
+# Simplified Table for defense presentation
+Stages <- data.frame(t(Design)[c(4,2,8,6,6),],
+                     stringsAsFactors = F)
+row.names(Stages) <- c("Arabidopsis", "Desert Tobacco", "Melon", "Tomato (Cultivated)", "Tomato (Wild)")
+Stages[,1:5] <- Stages[,1:5] %>% mutate_all(~replace(., !is.na(.), "&#10003;"))
+Stages[,1:5] <- Stages[,1:5] %>% mutate_all(~replace(., is.na(.), "&#8709;"))
+Stages$Type <- c("Dry - Silique", "Dry - Capsule", "Fleshy - Pepo", "Fleshy - Berry", "Fleshy - Berry")
+
+Stages %>%
+  gt(
+    rownames_to_stub = TRUE) %>%
+  fmt_markdown(columns=c(2:6)) %>%
+  cols_label(
+    Stage.1 = md("**Stage&nbsp;1**"),
+    Stage.2 = md("**Stage&nbsp;2**"),
+    Stage.3 = md("**Stage&nbsp;3**"),
+    Transition = md("**Transition**"),
+    Stage.4 = md("**Stage&nbsp;4**"),
+    Type = md("**Fruit Type**"),
+    Bioproject.Accession = md("**Source**")) %>%
+  cols_move_to_end(vars(Bioproject.Accession)) %>%
+  gtsave(path = "Defense",
+         filename = "Stages.png")
+rm(Stages)
+
 # Important Genes for Plotting --------------------------------------------
 #unimportant genes
 #Solyc06g068440.4.1 - CCR1 - Not DE
@@ -994,17 +1018,17 @@ ggsave2("Figures/Suppl_SolNoise_Clusters.pdf",
     (C7[[9]] | GO_Solanaceae[[9]] | C7[[10]] | GO_Solanaceae[[10]]) /
     (C7[[11]] | GO_Solanaceae[[11]] | C7[[12]] | GO_Solanaceae[[12]]) /
     (C7[[13]] | GO_Solanaceae[[13]] | C7[[14]] | GO_Solanaceae[[14]]) /
-    (C7[[15]] | GO_Solanaceae[[15]] | C7[[16]] | GO_Solanaceae[[16]]) /
-    (C7[[17]] | GO_Solanaceae[[17]] | C7[[18]] | GO_Solanaceae[[18]]) /
-    (C7[[19]] | GO_Solanaceae[[19]] | C7[[20]] | GO_Solanaceae[[20]]) /
-    (C7[[21]] | GO_Solanaceae[[21]] | C7[[22]] | GO_Solanaceae[[22]]) /
-    (C7[[23]] | GO_Solanaceae[[23]] | C7[[24]] | GO_Solanaceae[[24]]) /
-    (C7[[25]] | GO_Solanaceae[[25]] | C7[[26]] | GO_Solanaceae[[26]]) /
-    (C7[[27]] | GO_Solanaceae[[27]] | C7[[28]] | GO_Solanaceae[[28]]) /
-    (C7[[29]] | GO_Solanaceae[[29]] | C7[[30]] | GO_Solanaceae[[30]]) /
-    (C7[[31]] | GO_Solanaceae[[31]] | C7[[32]] | GO_Solanaceae[[32]]) /
-    (C7[[33]] | GO_Solanaceae[[33]] | C7[[34]] | GO_Solanaceae[[35]]) /
-    (C7[[35]] | GO_Solanaceae[[35]] | C7[[36]] | GO_Solanaceae[[36]]))
+    (C7[[15]] | plot_spacer() | C7[[16]] | GO_Solanaceae[[15]]) /
+    (C7[[17]] | GO_Solanaceae[[16]] | C7[[18]] | GO_Solanaceae[[17]]) /
+    (C7[[19]] | GO_Solanaceae[[18]] | C7[[20]] | GO_Solanaceae[[19]]) /
+    (C7[[21]] | GO_Solanaceae[[20]] | C7[[22]] | GO_Solanaceae[[21]]) /
+    (C7[[23]] | GO_Solanaceae[[22]] | C7[[24]] | GO_Solanaceae[[23]]) /
+    (C7[[25]] | GO_Solanaceae[[24]] | C7[[26]] | GO_Solanaceae[[25]]) /
+    (C7[[27]] | GO_Solanaceae[[26]] | C7[[28]] | GO_Solanaceae[[27]]) /
+    (C7[[29]] | GO_Solanaceae[[28]] | C7[[30]] | GO_Solanaceae[[29]]) /
+    (C7[[31]] | GO_Solanaceae[[30]] | C7[[32]] | GO_Solanaceae[[31]]) /
+    (C7[[33]] | GO_Solanaceae[[32]] | C7[[34]] | GO_Solanaceae[[33]]) /
+    (C7[[35]] | GO_Solanaceae[[34]] | C7[[36]] | GO_Solanaceae[[35]]))
 ggsave2("Figures/Suppl_Sol_Clusters.pdf",
         height=60,
         width=24,
@@ -1236,3 +1260,102 @@ ggsave2("Figures/Suppl_Model2_Clusters.pdf",
 
 
 
+# Defense Figures ---------------------------------------------------------
+
+# Solanum Conserved Genes
+GO_SolanumNoise[[21]] & 
+  scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
+                       limits=c(min(Tables_SolanumNoise[[21]]$Significant),
+                                max(Tables_SolanumNoise[[21]]$Significant)),
+                       breaks=c(min(Tables_SolanumNoise[[21]]$Significant),
+                                max(Tables_SolanumNoise[[21]]$Significant)))
+ggsave2("Defense/GO_Solanum_Conserved.png",
+        height=8,
+        width=8)
+# Solanum Divergent Genes
+GO_Solanum[[16]] & 
+  scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
+                       limits=c(min(Tables_SolanumNoise[[16]]$Significant),
+                                max(Tables_SolanumNoise[[16]]$Significant)),
+                       breaks=c(min(Tables_SolanumNoise[[16]]$Significant),
+                                max(Tables_SolanumNoise[[16]]$Significant)))
+ggsave2("Defense/GO_Solanum_Divergent.png",
+        height=5.3,
+        width=8)
+
+# Solanaceae Conserved Genes
+GO_SolanaceaeNoise[[8]]
+ggsave2("Defense/GO_Solanaceae_Conserved.png",
+        height=4.3,
+        width=8)
+
+# Solanaceae Conserved Cluster 3 example
+(C6[[3]] | GO_SolanaceaeNoise[[3]]) +
+  plot_layout(widths=c(1.3,1))
+ggsave2("Defense/GO_Solanaceae_Cluster3.png",
+        height=6,
+        width=14)
+
+# Solanaceae Divergent GO
+GO_Solanaceae[[36]] &
+  theme(legend.position = c(0.8,0.2))
+ggsave2("Defense/GO_Solanaceae_Divergent.png",
+        height=6,
+        width=8)
+
+# Solanaceae Divergent Cluster 36 example
+(C7[[36]] &
+    scale_fill_manual(values=palw2[c(1,3)],
+                      labels=c("Desert Tobacco", "Tomato"),
+                      name="Species") &
+    scale_color_manual(values=palw2[c(1,3)],
+                       labels=c("Desert Tobacco", "Tomato"),
+                       name="Species") &
+    ggtitle(element_blank()) &
+    theme(legend.position = c(0.55,0.85))) / 
+    wrap_elements(GO_Solanaceae[[35]] &
+                    ggtitle(element_blank()) &
+                    theme(legend.position = c(0.85,0.25)))
+ggsave2("Defense/GO_Solanaceae_Cluster36.png",
+        height=8,
+        width=8)
+
+# Some Solanaceae Genes
+(G5[["ACO4"]] & theme(legend.position="none")) + 
+    (G5[["ACO5"]] & theme(legend.position="none")) + 
+    (G6[["ACO6"]] & 
+       theme(plot.title = element_text(face="bold.italic")) &
+       scale_color_manual(values=palw2[c(2,1,3)],
+                          labels=c("Tobacco"="Desert Tobacco",
+                                   "Tomato"="Tomato(es)",
+                                   "Pimpinellifolium"="(Wild Tomato)"),
+                          name="Species") &
+       scale_fill_manual(values=palw2[c(2,1,3)],
+                         labels=c("Tobacco"="Desert Tobacco",
+                                  "Tomato"="Tomato(es)",
+                                  "Pimpinellifolium"="(Wild Tomato)"),
+                         name="Species")) + 
+    (G6[["TAG1"]] & theme(legend.position="none",
+                          plot.title = element_text(face="bold.italic"))) +
+    (G5[["TAGL1"]] & theme(legend.position="none")) +
+  guide_area() +
+  plot_layout(guides="collect")
+ggsave2("Defense/Genes_Solanaceae.png",
+        height=6,
+        width=9)
+
+# Five species conserved
+((PCA1[[1]] + PCA1[[6]] + PCA1[[9]] + guide_area() + plot_layout(guides = "collect")) | 
+    GO_Ortho_Noise[[3]])
+ggsave2("Defense/PCA_Conserved.png",
+        width=16,
+        height=7)
+
+### Figure 8
+((PCA2[[1]] + PCA2[[2]] + PCA2[[10]] + guide_area() + plot_layout(guides="collect")) |
+    GO_Ortho_Fruit[[9]])
+ggsave2("Defense/PCA_Divergent.png",
+        width=16,
+        height=7)
+
+    
