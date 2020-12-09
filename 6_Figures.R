@@ -1275,10 +1275,10 @@ ggsave2("Defense/GO_Solanum_Conserved.png",
 # Solanum Divergent Genes
 GO_Solanum[[16]] & 
   scale_fill_gradientn(colours = c("#87868140", "#B40F20CC"), 
-                       limits=c(min(Tables_SolanumNoise[[16]]$Significant),
-                                max(Tables_SolanumNoise[[16]]$Significant)),
-                       breaks=c(min(Tables_SolanumNoise[[16]]$Significant),
-                                max(Tables_SolanumNoise[[16]]$Significant)))
+                       limits=c(min(Tables_Solanum[[16]]$Significant),
+                                max(Tables_Solanum[[16]]$Significant)),
+                       breaks=c(min(Tables_Solanum[[16]]$Significant),
+                                max(Tables_Solanum[[16]]$Significant)))
 ggsave2("Defense/GO_Solanum_Divergent.png",
         height=5.3,
         width=8)
@@ -1288,6 +1288,21 @@ GO_SolanaceaeNoise[[8]]
 ggsave2("Defense/GO_Solanaceae_Conserved.png",
         height=4.3,
         width=8)
+
+# All clusters as an example
+(C6[[1]] + 
+    C6[[2]] + 
+    C6[[3]] + 
+    C6[[4]] + 
+    C6[[5]] + 
+    C6[[6]] + 
+    C6[[7]]) *
+    ggtitle(element_blank()) +
+  plot_layout(nrow=2)
+ggsave2("Defense/Cluster_Solanaceae_All.png",
+        height=6,
+        width=13)
+
 
 # Solanaceae Conserved Cluster 3 example
 (C6[[3]] | GO_SolanaceaeNoise[[3]]) +
@@ -1344,18 +1359,91 @@ ggsave2("Defense/Genes_Solanaceae.png",
         height=6,
         width=9)
 
+# All Model 1 Clusters
+(C4[[1]] + C4[[2]]) * ggtitle(element_blank())
+ggsave2("Defense/Cluster_Model1.png",
+        height=3,
+        width=6.5)
+
+# All Model 2 Clusters
+((C5[[1]] & theme(legend.position="none")) + 
+    (C5[[2]] & theme(legend.position="none")) +
+    (C5[[3]] & theme(legend.position="none")) +
+    (C5[[4]] & theme(legend.position="none")) +
+    (C5[[5]] & theme(legend.position="none")) +
+    (C5[[6]] & theme(legend.position="none")) +
+    (C5[[7]] & theme(legend.position="none")) +
+    (C5[[8]]) + 
+    guide_area()) * 
+  ggtitle(element_blank()) +
+  plot_layout(guide="collect",
+              nrow=2)
+ggsave2("Defense/Cluster_Model2.png",
+        height=6,
+        width=16)
+
 # Five species conserved
 ((PCA1[[1]] + PCA1[[6]] + PCA1[[9]] + guide_area() + plot_layout(guides = "collect")) | 
-    GO_Ortho_Noise[[3]])
+    GO_Ortho_Noise[[3]] & ggtitle(element_blank()))
 ggsave2("Defense/PCA_Conserved.png",
         width=16,
         height=7)
 
-### Figure 8
+# Five Species divergent
 ((PCA2[[1]] + PCA2[[2]] + PCA2[[10]] + guide_area() + plot_layout(guides="collect")) |
-    GO_Ortho_Fruit[[9]])
+    GO_Ortho_Fruit[[9]] & ggtitle(element_blank()))
 ggsave2("Defense/PCA_Divergent.png",
         width=16,
         height=7)
 
+# explain model testing
+# generate sample data
+nObs=100
+test.df <- data.frame(Time=rep(rep(c(1:5),each=nObs/5),2),
+                      Case=rep(c("Slow", "Fast"), each=nObs))
+# create two patterns
+test.df$Counts <- c(sample(90:105, 100, replace = TRUE),
+                   10*rep(c(1:5),each=nObs/5) + sample(50:100, 100, replace = TRUE))
+test.df$RandCase <- rep(c("Fast1", "Fast2"))
+
+# plot as one group
+t1 <- ggplot(test.df, aes(x=Time, y=Counts, col=palw2[1])) +
+  scale_color_manual(values="black") +
+  geom_point() +
+  theme(legend.position = "none")
+
+t2 <- t1 +
+  geom_smooth(method="lm",
+              se=FALSE)
+
+# plot as two groups based on real difference
+t3 <- ggplot(test.df, aes(x=Time, y=Counts, col=Case, group=Case)) +
+  scale_color_manual(values=palw2[1:2]) +
+  geom_point()
+
+t4 <- t3 +
+  geom_smooth(method="lm",
+              se=FALSE)
+
+# plot as two groups based on nothing
+t5 <- ggplot(test.df, aes(x=Time, y=Counts, col=RandCase, group=RandCase)) +
+  scale_color_manual(values=palw2[1:2]) +
+  geom_point()
+
+t6 <- t5 +
+  geom_smooth(method="lm",
+              se=FALSE)
+
+# Combine into one figure
+(t1 + 
+    t2 + 
+    t3 +
+    t4 +
+    t5 +
+    t6) * 
+  theme(legend.position = "none") +
+  plot_layout(nrow=3)
+ggsave2("Defense/Test_Explanation.png",
+        height=9,
+        width=7)
     
