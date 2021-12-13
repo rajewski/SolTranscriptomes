@@ -1,3 +1,0 @@
-Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-FUL1_bound (FUL1.sm)	4.1	8e-03	5	424	Solyc01g007890.3.1,Solyc01g068250.2.1,Solyc01g096610.4.1,Solyc04g078840.3.1,Solyc04g078840.3.1
-FUL2_bound (FUL2.sm)	3.8	2e-03	8	726	Solyc01g007890.3.1,Solyc01g068250.2.1,Solyc01g096610.4.1,Solyc01g096610.4.1,Solyc03g031980.4.1,Solyc04g078840.3.1,Solyc04g078840.3.1,Solyc05g007010.3.1

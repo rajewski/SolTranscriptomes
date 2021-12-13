@@ -1,2 +1,0 @@
-Description	Enrichment	Enrichment_pval	Hits	Total	Gene_IDs
-Protein kinase domain (IPR000719)	4.4	3e-02	13	1115	Solyc01g091620.3.1,Solyc01g108280.3.1,Solyc03g120760.4.1,Solyc03g121050.3.1,Solyc04g072570.3.1,Solyc06g083830.4.1,Solyc07g009150.3.1,Solyc08g066870.4.1,Solyc09g064270.3.1,Solyc10g055720.2.1,Solyc10g085680.2.1,Solyc11g017270.2.1,Solyc12g009020.2.1
