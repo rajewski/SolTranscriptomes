@@ -22,7 +22,14 @@ The RNAseq and Microarray files were all downloaded with the `1_GetData.sh` and 
 | Arabidopsis | [PRJEB25745](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB25745) | RNA-seq of wild-type fruit valve tissue. From [Mizzotti et al, 2018](https://doi.org/10.1104/pp.18.00727) | 
 | Arabidopsis | [PRJNA316153](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA316153) | Unpublished(?) microarray of *ful-1* FUL-GR siliques under both mock and DEX treatment. Attached to [Bemer et al, 2017](https://doi.org/10.1093/jxb/erx184), but not reported in the text. |
 
-For the in-house generated libraries, they are symlinked to in the `SlycRNA`, `SpimpRNA`, and `NobtRNA` directories for cultivated tomato, wild tomato, and tobacco, respectively.
+For the in-house generated libraries, they are symlinked to in the `SlycRNA`, `SpimpRNA`, and `NobtRNA` directories for cultivated tomato, wild tomato, and tobacco, respectively. Those data have been uploaded (and are currently 12/13/21 embargoed with NCBI). Their bioprojects are:
+
+| Species                  | NCBI BioProject ID | Description                                                 |
+|--------------------------|--------------------|-------------------------------------------------------------|
+| Solanum lycopersicum     | PRJNA646747        | RNA-seq from a developmental series of pericarps (5 stages) |
+| Solanum pimpinellifolium | PRJNA646747        | RNA-seq from a developmental series of pericarps (5 stages) |
+| Nicotiana obtusifolia    | PRJNA646747        | RNA-seq from a developmental series of pericarps (4 stages) |
+
 
 #### Genomes
 
