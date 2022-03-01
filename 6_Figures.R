@@ -76,7 +76,7 @@ Design %>%
                  rows=1))) %>%
   tab_source_note(
     source_note = md("Pab&#243;n-Mora and Litt, 2011; Mizzotti et al, 2018; and Zhang et al, 2016")) %>%
-  gtsave(filename = "Design.png",
+  gtsave(filename = "Design.rtf",
          path = "Tables")
 
 # Simplified Table for defense presentation
@@ -101,7 +101,7 @@ Stages %>%
     Bioproject.Accession = md("**Source**")) %>%
   cols_move_to_end(vars(Bioproject.Accession)) %>%
   gtsave(path = "Defense",
-         filename = "Stages.png")
+         filename = "Stages.rtf")
 rm(Stages)
 
 # Important Genes for Plotting --------------------------------------------
@@ -272,7 +272,7 @@ All_Genes[All_Genes$Type,-c(3,6)] %>%
   tab_footnote(
     footnote = "Only one-to-one and many-to-one orthologs",
     locations = cells_column_labels(3)) %>%
-  gtsave(filename = "Orthologs.png",
+  gtsave(filename = "Orthologs.rtf",
          path = "Tables")
 
 #Insert a list of the 78 conserved genes and find a way to include their TAIR abbreviations
