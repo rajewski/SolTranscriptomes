@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --mail-user=rajewski23@gmail.com
 #SBATCH --mail-type=ALL
-#SBATCH -o ./logs/SRADownload-%A.out
+#SBATCH -o ./logs/SRADownload-%A_%a.out
 set -eu
 
 # Load SRA Toolkit
@@ -28,4 +28,4 @@ fastq-dump \
 
 # Rename the file
 # Thanks to: https://stackoverflow.com/a/40029320/13954432
-find . -type f | sed -n "s/$accession1\(_[1|2]\).fastq.gz/& Test\1.fastq.gz/p" | xargs -n 2 mv
+find . -type f | sed -n "s/$accession\(_[1|2]\).fastq.gz/& Test\1.fastq.gz/p" | xargs -n 2 mv
