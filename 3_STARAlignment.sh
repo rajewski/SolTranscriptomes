@@ -91,26 +91,26 @@ for i in ${SampleList[@]}; do
     echo Mapping $i
     #check if the mapping should be for paired end data
     if [ "$ISPE" -ge "1" ]; then
-      STAR \
-        --runThreadN $SLURM_CPUS_PER_TASK \
+	STAR \
+	    --runThreadN $SLURM_CPUS_PER_TASK \
   	    --genomeDir $INDEXDIR/ \
   	    --outFileNamePrefix $OUTDIR/$i. \
   	    --outSAMtype BAM SortedByCoordinate \
   	    --readFilesIn $INDIR/${i}_val_*.fq.gz \
   	    --readFilesCommand zcat
     else
-	    STAR \
-        --runThreadN $SLURM_CPUS_PER_TASK \
+	STAR \
+	    --runThreadN $SLURM_CPUS_PER_TASK \
   	    --genomeDir $INDEXDIR/ \
   	    --outFileNamePrefix $OUTDIR/$i. \
   	    --outSAMtype BAM SortedByCoordinate \
   	    --readFilesIn $INDIR/${i}_1_trimmed.fq.gz \
   	    --readFilesCommand zcat
-	  fi
-	  # remove useless logfiles and splice junction information
-	  rm $OUTDIR/*.out $OUTDIR/*.tab
-	  echo Done.
+    fi
+    # remove useless logfiles and splice junction information
+    rm $OUTDIR/*.out $OUTDIR/*.tab
+    echo Done.
   else
-    echo $i already mapped.
+      echo $i already mapped.
   fi
 done

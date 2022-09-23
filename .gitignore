@@ -1,5 +1,6 @@
 ExternalData/C_melo/*
 ExternalData/TAIR10/*
+ExternalData/Microarray/*
 ExternalData/Microarray/**/*.gz
 Orthofinder/OrthoFinder/
 .Rproj.user
