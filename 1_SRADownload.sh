@@ -26,6 +26,6 @@ fastq-dump \
 	-O ./SRA/ \
 	$accession
 
-# rename the file
+# Rename the file
 # Thanks: https://stackoverflow.com/a/40029320/13954432
 find . -type f | sed -n "s/$accession1\(_[1|2]\).fastq.gz/& Test\1.fastq.gz/p" | xargs -n 2 mv
