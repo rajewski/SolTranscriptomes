@@ -28,4 +28,5 @@ fastq-dump \
 
 # Rename the file
 # Thanks to: https://stackoverflow.com/a/40029320/13954432
-find . -type f | sed -n "s/$accession\(_[1|2]\).fastq.gz/& Test\1.fq.gz/p" | xargs -n 2 mv
+cd ./SRA || exit
+find . -type f | sed -n "s/$accession\(_[1|2]\).fastq.gz/& $stem\1.fq.gz/p" | xargs -n 2 mv
