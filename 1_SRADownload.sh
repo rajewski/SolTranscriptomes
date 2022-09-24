@@ -20,7 +20,7 @@ echo "Dumping FASTQ(s) for $accession with name $stem"
 fastq-dump \
 	--defline-seq '@$sn[_$rn]/$ri' \
 	--defline-qual '+$sn[_$rn]/$ri' \
-	--split-3 \
+	--split-files \
 	--gzip \
 	-B \
 	-O ./SRA/ \
@@ -28,4 +28,4 @@ fastq-dump \
 
 # Rename the file
 # Thanks to: https://stackoverflow.com/a/40029320/13954432
-find . -type f | sed -n "s/$accession\(_[1|2]\).fastq.gz/& Test\1.fastq.gz/p" | xargs -n 2 mv
+find . -type f | sed -n "s/$accession\(_[1|2]\).fastq.gz/& Test\1.fq.gz/p" | xargs -n 2 mv
