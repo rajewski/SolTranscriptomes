@@ -4,18 +4,19 @@
 #SBATCH --mem-per-cpu=20G
 #SBATCH --nodes=1
 #SBATCH --time=2:00:00
-#SBATCH --mail-user=araje002@ucr.edu
+#SBATCH --mail-user=rajewski23@gmail.com
 #SBATCH --mail-type=ALL
 #SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/STARIndex-%A.out
 set -e
 
 TAIRDIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/TAIR10
 NobtDIR=/rhome/arajewski/shared/Nobtusifolia/Genome_Files
-SlycDIR=/rhome/arajewski/bigdata/Datura/Alkaloids/ExternalData/Slyc
+SlycDIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/Slyc
 MelonDIR=/rhome/arajewski/bigdata/FULTranscriptomes/ExternalData/C_melo
 
-module load STAR/2.5.3a
-#Make index Files for Arabidopsis
+module load star/2.7.10a
+
+# Make index Files for Arabidopsis
 if [ ! -e $TAIRDIR/SAindex ]; then
     echo Making STAR index for Arabidopsis...
     #Change chromosome names for TAIR.fa to match TAIR.gff3
@@ -47,8 +48,8 @@ if [ ! -e $NobtDIR/SAindex ]; then
         --sjdbGTFtagExonParentTranscript Parent \
 	--genomeChrBinNbits 16 \
 	--limitSjdbInsertNsj 150000
-    #Add limitSjdbInsertNsj because of error (https://groups.google.com/forum/#!msg/rna-star/ddhJDgvZfNA/ULUGGYb0BgAJ)
-    #Change genomeChrBinNbits because the genome is highly fragmented
+    # Add limitSjdbInsertNsj because of error (https://groups.google.com/forum/#!msg/rna-star/ddhJDgvZfNA/ULUGGYb0BgAJ)
+    # Change genomeChrBinNbits because the genome is highly fragmented
     echo Done.
 else
     echo STAR index for N. obtusifolia already present.

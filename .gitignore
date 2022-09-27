@@ -2,6 +2,10 @@ ExternalData/C_melo/*
 ExternalData/TAIR10/*
 ExternalData/Microarray/*
 ExternalData/Microarray/**/*.gz
+ExternalData/RNAseq
+logs/
 Orthofinder/OrthoFinder/
 SRA/
+STAR/
 .Rproj.user
+.RData

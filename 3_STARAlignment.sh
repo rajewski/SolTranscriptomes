@@ -3,10 +3,11 @@
 #SBATCH --cpus-per-task=12
 #SBATCH --mem-per-cpu=8G
 #SBATCH --nodes=1
+#SBATCH -p batch
 #SBATCH --time=4:00:00
-#SBATCH --mail-user=araje002@ucr.edu
+#SBATCH --mail-user=rajewski23@gmail.com
 #SBATCH --mail-type=ALL
-#SBATCH -o /bigdata/littlab/arajewski/FULTranscriptomes/logs/STARAlignment-%A_%a.out
+#SBATCH -o ./logs/STARAlignment-%A_%a.out
 set -e
 
 # This is meant to be run as an array job with IDs between 0 and 10 to specify the experiment to map
@@ -85,7 +86,7 @@ SampleList=( SRR3199616 SRR3199617 SRR3199618 SRR3199656 SRR3199657 SRR3199622 S
 esac
 
 # General STAR commands
-module load STAR/2.5.3a
+module load star/2.7.10a
 for i in ${SampleList[@]}; do
   if [ ! -e $OUTDIR/${i}.Aligned.sortedByCoord.out.bam ]; then
     echo Mapping $i
@@ -108,7 +109,7 @@ for i in ${SampleList[@]}; do
   	    --readFilesCommand zcat
     fi
     # remove useless logfiles and splice junction information
-    rm $OUTDIR/*.out $OUTDIR/*.tab
+    # rm $OUTDIR/*.out $OUTDIR/*.tab # I need these logs for reviewers
     echo Done.
   else
       echo $i already mapped.
