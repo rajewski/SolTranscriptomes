@@ -1,10 +1,7 @@
-ExternalData/C_melo/*
-ExternalData/TAIR10/*
-ExternalData/Microarray/*
-ExternalData/Microarray/**/*.gz
-ExternalData/RNAseq
+ExternalData/
 logs/
 Orthofinder/OrthoFinder/
+SIFs/
 SRA/
 STAR/
 .Rproj.user
