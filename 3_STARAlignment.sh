@@ -144,9 +144,10 @@ for i in ${SampleList[@]}; do
 	echo "No QC for forced single-end experiments"
 	exit 0
       fi
-      echo "Performing QC of BAM file for $i"
       module load singularity
       # Qualimap
+      if [ ! -e "$OUTDIR/QC/${i}/BamQC_${i}.pdf" ]; then
+      echo "Performing QC of BAM file for $i"
       singularity exec \
 	-B /bigdata/littlab/shared/Nobtusifolia/Genome_Files/:/bigdata/littlab/shared/Nobtusifolia/Genome_Files/ \
 	SIFs/qualimap_2.2.1.sif qualimap bamqc \
@@ -155,6 +156,8 @@ for i in ${SampleList[@]}; do
 	-outdir $OUTDIR/QC/${i}/ \
 	-outfile BamQC_${i}.pdf \
 	--java-mem-size=8G
+      fi
+      if [ ! -e "$OUTDIR/QC/${i}/RSeQC_${i}.out" ]; then
       echo "Indexing BAM file"
       module load samtools
       samtools index $OUTDIR/${i}.Aligned.sortedByCoord.out.bam
@@ -165,6 +168,7 @@ for i in ${SampleList[@]}; do
 	SIFs/RSeQC_4.0.0.sif read_distribution.py  \
         -i $OUTDIR/${i}.Aligned.sortedByCoord.out.bam \
         -r $REFBED > $OUTDIR/QC/${i}/RSeQC_${i}.out
+      fi
   fi
 done
 
