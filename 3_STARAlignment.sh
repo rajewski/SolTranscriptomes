@@ -96,6 +96,7 @@ case "$SLURM_ARRAY_TASK_ID" in
 	--force \
 	--outdir ./ \
 	--ignore "*_SE/*" \
+	--ignore "*.SJ.out.tab" \
 	STAR
     echo "Done"
     exit 0
