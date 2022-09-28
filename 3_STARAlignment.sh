@@ -47,7 +47,7 @@ case "$SLURM_ARRAY_TASK_ID" in
     INDIR=ExternalData/RNAseq
     ISPE=0
     REFBED=/bigdata/littlab/arajewski/FULTranscriptomes/ExternalData/TAIR10/TAIR10.genes.bed
-    REFGFF=/bigdata/littlab/arajewski/FULTranscriptomes/ExternalData/TAIR10/TAIR10.gff3
+    REFGFF=/bigdata/littlab/arajewski/FULTranscriptomes/ExternalData/TAIR10/TAIR10.gff
     ;;
   "4")
     SampleList=( Nobtbr1 Nobtbr2 Nobtbr3 Nobtbr1.1 Nobtbr2.1 Nobtbr3.1 )
