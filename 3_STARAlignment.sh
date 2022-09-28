@@ -39,7 +39,7 @@ case "$SLURM_ARRAY_TASK_ID" in
     INDIR=SRA
     ISPE=1
     REFBED=/bigdata/littlab/shared/Nobtusifolia/Genome_Files/NIOBT_r1.0.update.bed
-    REFBED=/bigdata/littlab/shared/Nobtusifolia/Genome_Files/NIOBT_r1.0.update.gff
+    REFGFF=/bigdata/littlab/shared/Nobtusifolia/Genome_Files/NIOBT_r1.0.update.gff
     ;;
   "3")
     SampleList=( ERR2809794 ERR2809795 ERR2809796 ERR2809797 ERR2809798 ERR2809799 ERR2809800 ERR2809801 ERR2809802 ERR2809803 ERR2809804 ERR2809805 ERR2809806 ERR2809807 ERR2809808 ERR2809809 ERR2809810 ERR2809811 ERR2809812 ERR2809813 ERR2809814 ERR2809815 ERR2809816 ERR2809817 )
@@ -55,7 +55,7 @@ case "$SLURM_ARRAY_TASK_ID" in
     INDIR=SRA
     ISPE=0
     REFBED=/bigdata/littlab/shared/Nobtusifolia/Genome_Files/NIOBT_r1.0.update.bed
-    REFBED=/bigdata/littlab/shared/Nobtusifolia/Genome_Files/NIOBT_r1.0.update.gff
+    REFGFF=/bigdata/littlab/shared/Nobtusifolia/Genome_Files/NIOBT_r1.0.update.gff
     ;;
   "5")
     SampleList=( NobtPre1 NobtPre2 NobtPre3 Nobt3DPA1 Nobt3DPA2 Nobt3DPA3 Nobt6DPA1 Nobt6DPA2 Nobt6DPA3 )
@@ -95,6 +95,7 @@ case "$SLURM_ARRAY_TASK_ID" in
     singularity exec SIFs/multiQC_1.13.sif multiqc \
 	--force \
 	--outdir ./ \
+	--ignore "*_SE/*" \
 	STAR
     echo "Done"
     exit 0
@@ -145,7 +146,9 @@ for i in ${SampleList[@]}; do
       echo "Performing QC of BAM file for $i"
       module load singularity
       # Qualimap
-      singularity exec SIFs/qualimap_2.2.1.sif qualimap bamqc \
+      singularity exec \
+	-B /bigdata/littlab/shared/Nobtusifolia/Genome_Files/:/bigdata/littlab/shared/Nobtusifolia/Genome_Files/ \
+	SIFs/qualimap_2.2.1.sif qualimap bamqc \
 	-bam $OUTDIR/${i}.Aligned.sortedByCoord.out.bam \
 	-gff $REFGFF \
 	-outdir $OUTDIR/QC/${i}/ \
@@ -156,7 +159,9 @@ for i in ${SampleList[@]}; do
       samtools index $OUTDIR/${i}.Aligned.sortedByCoord.out.bam
       echo "Performing RSeQC for $i"
       # RSeQC
-      singularity exec SIFs/RSeQC_4.0.0.sif read_distribution.py  \
+      singularity exec \
+        -B /bigdata/littlab/shared/Nobtusifolia/Genome_Files/:/bigdata/littlab/shared/Nobtusifolia/Genome_Files/ \
+	SIFs/RSeQC_4.0.0.sif read_distribution.py  \
         -i $OUTDIR/${i}.Aligned.sortedByCoord.out.bam \
         -r $REFBED > $OUTDIR/QC/${i}/RSeQC_${i}.out
   fi
