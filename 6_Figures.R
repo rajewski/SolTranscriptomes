@@ -491,7 +491,8 @@ Tables_SolanumNoise <- lapply(seq_along(unique(Cluster_Solanum_Noise$normalized$
                                                                  Cluster_Solanum_Noise$normalized$genes)))
 # Include the overall, unclustered genes
 Tables_SolanumNoise[["Conserved Genes"]] <- GOEnrich(gene2go = "DEGAnalysis/Pfam/Slyc.gene2go.tsv",
-                                            GOIs=setNames(as.factor(as.numeric(rownames(DDS_SolanumNoise) %in% rownames(subset(results(DDS_SolanumNoise), padj<0.01)))), rownames(DDS_SolanumNoise)))
+                                            GOIs=setNames(as.factor(as.numeric(rownames(DDS_SolanumNoise) %in% rownames(subset(results(DDS_SolanumNoise), padj<0.01)))),
+                                                          rownames(DDS_SolanumNoise)))
 
 # Create a list of the GO Plots
 GO_SolanumNoise <- list()
@@ -1446,4 +1447,56 @@ t6 <- t5 +
 ggsave2("Defense/Test_Explanation.png",
         height=9,
         width=7)
-    
+
+
+# Reviewer Responses -------------------------------------------------------------
+
+## Gene Counts
+# In review, we were asked to provide gene counts for each figure panel
+# I'll include them in the figure legends, but make a list here to organize them
+Fig_Gene_Counts <- data.frame(matrix(ncol = 3, nrow = 0))
+colnames(Fig_Gene_Counts) <- c("Figure", "Panel", "GeneCount")
+# Add in rows as they're computed
+# Fig 1
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "A", sum(as.factor(as.numeric(rownames(DDS_SolanumNoise) %in% rownames(subset(results(DDS_SolanumNoise), padj<0.01))))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "B", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[4])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "C", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[4])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "D", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[10])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "D", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[10])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "E", sum(as.factor(as.numeric(rownames(DDS_Solanum) %in% rownames(subset(results(DDS_Solanum), padj<0.01))))==1))
+# Fig 3
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"A", sum(as.factor(as.numeric(rownames(DDS_Nobt) %in% rownames(subset(results(DDS_Nobt), padj<0.01))))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"B", sum(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[1])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"C", sum(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[2])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"D", sum(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[3])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"E", sum(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[4])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"F", sum(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[5])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"G", sum(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[6])$genes))==1))
+#Fig 4
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(4,"A", sum(as.factor(as.numeric(rownames(DDS_Solanaceae_Noise) %in% rownames(subset(results(DDS_Solanaceae_Noise), padj<0.01))))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(4,"B", sum(Cluster_Solanaceae_Noise$normalized$cluster==3))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(4,"C", sum(as.factor(as.numeric(Cluster_Solanaceae_Noise$normalized$genes %in% subset(Cluster_Solanaceae_Noise$normalized, cluster==unique(Cluster_Solanaceae_Noise$normalized$cluster)[3])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(4,"D", sum(as.factor(as.numeric(rownames(DDS_Solanaceae) %in% rownames(subset(results(DDS_Solanaceae), padj<0.01))))==1))
+# Fig 7
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(7,"A", sum(rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<=0.01))))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(7,"B", sum(rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<=0.01))))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(7,"C", sum(rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<=0.01))))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(7,"D", sum(as.factor(as.numeric(rownames(DDS_Noise) %in% rownames(subset(results(DDS_Noise), padj<0.01))))==1))
+# Fig 8
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(8,"A", sum(rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<=0.01))))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(8,"B", sum(rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<=0.01))))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(8,"C", sum(rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<=0.01))))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(8,"D", sum(as.factor(as.numeric(rownames(DDS_Fruit) %in% rownames(subset(results(DDS_Fruit), padj<0.01))))==1))
+# Fig 9
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"A", sum(Cluster_Fruit$normalized$cluster==4))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"B", sum(as.factor(as.numeric(Cluster_Fruit$normalized$genes %in% Cluster_Fruit$normalized$genes[Cluster_Fruit$normalized$cluster==unique(Cluster_Fruit$normalized$cluster)[4]]))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"C", sum(Cluster_Fruit$normalized$cluster==6))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"D", sum(as.factor(as.numeric(Cluster_Fruit$normalized$genes %in% Cluster_Fruit$normalized$genes[Cluster_Fruit$normalized$cluster==unique(Cluster_Fruit$normalized$cluster)[6]]))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"E", sum(Cluster_Fruit$normalized$cluster==11)) # Ungapped cluster=7, but must use original cluster number=11
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"F", sum(as.factor(as.numeric(Cluster_Fruit$normalized$genes %in% Cluster_Fruit$normalized$genes[Cluster_Fruit$normalized$cluster==unique(Cluster_Fruit$normalized$cluster)[7]]))==1)) # Ungapped cluster=7
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"G", sum(Cluster_Fruit$normalized$cluster==12)) # Ungapped cluster=8, but must use original cluster number=12
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"H", sum(as.factor(as.numeric(Cluster_Fruit$normalized$genes %in% Cluster_Fruit$normalized$genes[Cluster_Fruit$normalized$cluster==unique(Cluster_Fruit$normalized$cluster)[8]]))==1)) 
+
+
+
+
