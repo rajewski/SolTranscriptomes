@@ -1497,6 +1497,90 @@ Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"F", sum(as.factor(as.numeric(
 Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"G", sum(Cluster_Fruit$normalized$cluster==12)) # Ungapped cluster=8, but must use original cluster number=12
 Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(9,"H", sum(as.factor(as.numeric(Cluster_Fruit$normalized$genes %in% Cluster_Fruit$normalized$genes[Cluster_Fruit$normalized$cluster==unique(Cluster_Fruit$normalized$cluster)[8]]))==1)) 
 
+write.csv(Fig_Gene_Counts,
+          "./Tables/SelectedClusterGeneCounts.csv",row.names = FALSE)
+
+## Cluster Genes and Expression
+# In review we were asked to provide a supplemental list of genes in each cluster with their expression values
+# at each stage for every cluster in the MS. We'll do it, of course, but I'm not certain why they want this data.
+# I also don't know the most useful way to provide this data. Counts would need normalization and aggregation,
+# which would be a lot of work. Z-scores are not readily interpretable, but are aggregated properly and let 
+# you recreate the figures.
+
+Z_Solanum <- Cluster_Solanum_Noise$normalized %>% 
+  dplyr::select(Gene=genes, Zscore=value, Cluster=cluster,  DAP) %>%
+  dplyr::filter(Cluster %in% c(4,10)) %>% 
+  mutate(Stage = recode(DAP, !!!Labs_SolanumStage),
+         DAP = NULL) %>% 
+  arrange(Cluster, Stage, Gene)
+
+Z_Nobt <- Cluster_Nobt$normalized %>% 
+  dplyr::select(Gene=genes, Zscore=value, Cluster=cluster,  DAP) %>%
+  mutate(Stage = recode(DAP, !!!Labs_NobtStage),
+         DAP = NULL) %>% 
+  arrange(Cluster, Stage, Gene)
+
+# get orthos
+orthogroups <- read.table("Orthofinder/OrthoFinder/Results_Oct29/Orthogroups/Orthogroups.tsv",
+                          sep="\t",
+                          stringsAsFactors = F,
+                          header=T) %>% 
+  filter_all(all_vars(!grepl(',',.)))
+
+Z_Solanaceae <- Cluster_Solanaceae_Noise$normalized %>% 
+  dplyr::select(Orthogroup=genes, Zscore=value, Cluster=cluster, Stage) %>% 
+  dplyr::filter(Cluster %in% c(3)) %>% 
+  mutate(Stage = recode(Stage, !!!Labs_Stage)) %>% 
+  left_join(orthogroups, by = "Orthogroup") %>%
+  dplyr::select(Solanum_Gene=Solanum, Nicotiana_Gene=Nicotiana, Cluster, Stage, Zscore) %>% 
+  arrange(Cluster, Stage, Solanum_Gene)
+
+# Get orthos
+tmp_Orthos <- VennOrthos %>% 
+  filter_all(all_vars(!grepl("^$",.))) %>% 
+  filter_all(all_vars(!grepl(',',.)))
+
+Z_Model2 <- Cluster_Fruit$normalized %>% 
+  dplyr::select(Orthogroup=genes, Zscore=value, Cluster=cluster, Fruit_Type=Fruit, Stage) %>% 
+  dplyr::filter(Cluster %in% c(4,6,11,12)) %>% 
+  mutate(Stage = recode(Stage, !!!Labs_Stage),
+         Cluster = case_when(Cluster == 4 ~ 4,
+                             Cluster == 6 ~ 6,
+                             Cluster == 11 ~ 7,
+                             Cluster == 12 ~ 8)) %>% 
+  left_join(tmp_Orthos, by = "Orthogroup") %>% 
+  dplyr::select(Arabidopsis_Gene=Arabidopsis, Cucumis_Gene=Cucumis,
+                Solanum_Gene=Solanum, Nicotiana_Gene=Nicotiana, Cluster, Stage, Zscore) %>% 
+  arrange(Cluster, Stage, Arabidopsis_Gene)
+
+# Export to Excel
+wb <- openxlsx::createWorkbook()
+openxlsx::addWorksheet(wb, "Figure1") 
+openxlsx::writeData(wb,
+                    sheet = "Figure1",
+                    x=Z_Solanum) 
+openxlsx::addWorksheet(wb, "Figure3") 
+openxlsx::writeData(wb,
+                    sheet = "Figure3",
+                    x=Z_Nobt) 
+openxlsx::addWorksheet(wb, "Figure4") 
+openxlsx::writeData(wb,
+                    sheet = "Figure4",
+                    x=Z_Solanaceae) 
+openxlsx::addWorksheet(wb, "Figure9") 
+openxlsx::writeData(wb,
+                    sheet = "Figure9",
+                    x=Z_Model2) 
+openxlsx::saveWorkbook(wb,
+                       file = file.path("./Tables/SelectedClusterExpression.xlsx"),
+                       overwrite = T)
+  
+
+
+
+
+
+
 
 
 
