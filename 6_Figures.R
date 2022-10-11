@@ -1462,8 +1462,8 @@ Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "A", sum(as.factor(as.numeric
 Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "B", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[4])$genes))==1))
 Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "C", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[4])$genes))==1))
 Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "D", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[10])$genes))==1))
-Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "D", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[10])$genes))==1))
-Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "E", sum(as.factor(as.numeric(rownames(DDS_Solanum) %in% rownames(subset(results(DDS_Solanum), padj<0.01))))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "E", sum(as.factor(as.numeric(Cluster_Solanum_Noise$normalized$genes %in% subset(Cluster_Solanum_Noise$normalized, cluster==unique(Cluster_Solanum_Noise$normalized$cluster)[10])$genes))==1))
+Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(1, "F", sum(as.factor(as.numeric(rownames(DDS_Solanum) %in% rownames(subset(results(DDS_Solanum), padj<0.01))))==1))
 # Fig 3
 Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"A", sum(as.factor(as.numeric(rownames(DDS_Nobt) %in% rownames(subset(results(DDS_Nobt), padj<0.01))))==1))
 Fig_Gene_Counts[nrow(Fig_Gene_Counts) + 1,] = c(3,"B", sum(as.factor(as.numeric(Cluster_Nobt$normalized$genes %in% subset(Cluster_Nobt$normalized, cluster==unique(Cluster_Nobt$normalized$cluster)[1])$genes))==1))
