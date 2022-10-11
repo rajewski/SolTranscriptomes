@@ -1556,7 +1556,15 @@ openxlsx::writeData(wb,
 openxlsx::saveWorkbook(wb,
                        file = file.path("./Tables/SelectedClusterExpression.xlsx"),
                        overwrite = T)
-  
+
+
+## Overlap
+# We have also been asked how many of the 4163 conserved orthogenes are present as DEGs between the two tomato
+# species
+results(DDS_Solanum) %>% 
+  tibble::as_tibble(rownames = "Gene") %>% 
+  filter(padj <=0.01 & Gene %in% tmp_Orthos$Solanum) %>% 
+  nrow()  # 202
 
 
 
