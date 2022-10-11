@@ -1527,9 +1527,13 @@ Z_Model2 <- Cluster_Fruit$normalized %>%
                              Cluster == 11 ~ 7,
                              Cluster == 12 ~ 8)) %>% 
   left_join(tmp_Orthos, by = "Orthogroup") %>% 
-  dplyr::select(Arabidopsis_Gene=Arabidopsis, Cucumis_Gene=Cucumis,
-                Solanum_Gene=Solanum, Nicotiana_Gene=Nicotiana, Cluster, Stage, Zscore) %>% 
-  arrange(Cluster, Stage, Arabidopsis_Gene)
+  dplyr::select(Orthogroup, Arabidopsis_Gene=Arabidopsis, Cucumis_Gene=Cucumis,
+                Solanum_Gene=Solanum, Nicotiana_Gene=Nicotiana, Fruit_Type, Cluster, Stage, Zscore) %>% 
+  arrange(Cluster, Stage, Orthogroup) %>% 
+  mutate(Arabidopsis_Gene = ifelse(Fruit_Type=="Dry", Arabidopsis_Gene, NA),
+         Nicotiana_Gene = ifelse(Fruit_Type=="Dry", Nicotiana_Gene, NA),
+         Cucumis_Gene = ifelse(Fruit_Type=="Fleshy", Cucumis_Gene, NA),
+         Solanum_Gene = ifelse(Fruit_Type=="Fleshy", Solanum_Gene, NA))
 
 # Export to Excel
 wb <- openxlsx::createWorkbook()
