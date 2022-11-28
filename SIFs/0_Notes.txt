@@ -1,0 +1,15 @@
+#Some notes on how I'm handling files and conversions and things that are not yet in scripts
+
+# Bam files need to be indexed
+
+module load samtools
+samtools index
+
+# For the RSeQC tools, I had to make a bed13 annotation of the genome
+# https://gist.github.com/gireeshkbogu/f478ad8495dca56545746cd391615b93
+wget http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred
+wget http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/genePredToBed
+chmod +x gtfToGenePred genePredToBed 
+./gtfToGenePred GenomeAnnotation.gtf GenomeAnnotation.genePred
+./genePredToBed GenomeAnnotation.genePred GenomeAnnotation.bed
+
